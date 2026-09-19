@@ -1,0 +1,15 @@
+{
+  "source_objects": [
+    "GEO-body_male_realistic",
+    "GEO-body_male_realistic.eye.L",
+    "GEO-body_male_realistic.eye.R"
+  ],
+  "vertices": 11674,
+  "triangles": 23336,
+  "height_meters": 1.0,
+  "original_height_meters": 1.6899610231630504,
+  "origin": "Floor, under body centre",
+  "source_forward": "-Y",
+  "license": "CC0-1.0",
+  "version": "1.4.1"
+}

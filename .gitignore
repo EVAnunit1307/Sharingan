@@ -1,0 +1,40 @@
+# Unreal Engine generated folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Plugin build output (plugin source is kept)
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# Build/: keep hand-authored scripts, docs and Android Java sources;
+# ignore generated cook/editor file-open-order logs and Python caches
+Build/*/FileOpenOrder/
+__pycache__/
+*.pyc
+
+# IDE / Visual Studio
+.vs/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+*.user
+
+# Local backups
+*.before-mcp-*
+
+# Generated graphify knowledge graph and caches
+graphify-out/
+
+# Redundant download archive (extracted bundle is committed; URL + SHA256 in PROVENANCE.md)
+SourceAssets/HumanSilhouette/human-base-meshes-bundle-v1.4.1.zip
+
+# OS cruft
+Thumbs.db
+.DS_Store
