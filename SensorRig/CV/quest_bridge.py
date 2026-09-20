@@ -69,6 +69,8 @@ class QuestBridge:
         self.clients = 0
         self.server = None
         self.worker = None
+        self.stop_event = threading.Event()
+        self.connections = set()
 
     def pose(self):
         with self.lock:
@@ -96,8 +98,9 @@ class QuestBridge:
         from websockets.exceptions import ConnectionClosed
         with self.lock:
             self.clients += 1
+            self.connections.add(socket)
         try:
-            while True:
+            while not self.stop_event.is_set():
                 try:
                     data = socket.recv(timeout=.1)
                     try:
@@ -113,17 +116,27 @@ class QuestBridge:
         finally:
             with self.lock:
                 self.clients -= 1
+                self.connections.discard(socket)
 
     def start(self):
         from websockets.sync.server import serve
         # Bind before claiming readiness; surface an occupied port at startup.
-        self.server = serve(self.handle, self.host, self.port, max_size=65536, max_queue=4)
+        self.stop_event.clear()
+        self.server = serve(self.handle, self.host, self.port, max_size=65536, max_queue=4, close_timeout=1)
         self.worker = threading.Thread(target=self.server.serve_forever, daemon=True, name='quest-bridge')
         self.worker.start()
 
     def stop(self):
+        self.stop_event.set()
         if self.server:
             self.server.shutdown()
+        # shutdown() closes the listener, not established connections. Their
+        # non-daemon receive threads otherwise keep the Pi process alive after
+        # SIGTERM, especially when the relay is still attached during restart.
+        with self.lock:
+            connections = tuple(self.connections)
+        for socket in connections:
+            socket.close(code=1001, reason='Sensor bridge stopping')
         if self.worker:
             self.worker.join(timeout=2)
         self.server = None

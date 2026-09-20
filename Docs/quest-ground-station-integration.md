@@ -47,17 +47,17 @@ tracking after camera loss is provided.
 
 | Validation | Result |
 | --- | --- |
-| Pi regression and Pi-packet-to-fusion contract | 43 tests pass, Windows Python 3.14.6. |
-| Laptop matching, replay, HTTP, configuration and real loopback sockets | 46 tests pass. |
+| Pi regression and Pi-packet-to-fusion contract | 44 tests pass on Windows Python 3.14.6 and the physical Pi's Python 3.13.5. Includes shutdown with a relay still attached. |
+| Laptop matching, replay, HTTP, configuration and real loopback sockets | 46 tests pass on Windows and Pi. |
 | Full Unreal regression, including four sensor tests | 79 tests pass, zero test warnings/failures, UE 5.7.4. |
 | Actual Pi bridge → laptop relay → Unreal socket/actor | Additional `SensorSetup.NativeRelay` test passes with synthetic input and real loopback sockets. |
 | Detector runtime | Real YOLOX ONNX inference on a blank image succeeds; 30.45 ms on this laptop. This is not a Pi benchmark or accuracy evaluation. |
 | Browser visual QA | Both Pi and laptop dashboards pass Edge checks: desktop/mobile/Quest viewport, WebSocket, fullscreen, failure/recovery, no JS errors. Screenshots reviewed. |
 | Android build/cook | Full ARM64 ASTC build/cook succeeds (158 s); APK signature v2 and native-library hash verified. 28 package checks pass, including network/scene/anchor permissions and stereo renderer configuration. |
-| Live Pi camera/radar transport | 39 fresh camera and radar packets over four seconds; raw HTTP/WebSocket checks pass. Running Pi service lacks the new metadata (see below). |
+| Live Pi camera/radar transport | Updated service: 40 fresh camera and radar packets over four seconds, maximum sampled radar age 86.4 ms. Metadata accepted by laptop relay; no protocol error. |
 | Quest installation | Installed over USB; pulled APK SHA256 matches the verified candidate. |
 | Native Quest → laptop connection | Sensor-mode GameActivity launched on Quest at `172.20.10.4`; laptop relay reports one connected client over hotspot Wi-Fi. |
-| Live sensors → laptop → physical Quest | Pending Pi service update and physical reference/position checks. |
+| Live sensors → laptop → physical Quest | Pi update complete; physical reference/position and camera/radar alignment checks pending wearer. |
 
 The integration fixed UE 5.7 `TObjectPtr` compilation errors, an uninitialized
 parser variable, and an overstrict float tolerance in the incoming yaw test.
@@ -81,22 +81,37 @@ Local evidence (generated, not committed):
 - `Saved/NavigationVerification/TestRuns/20260919-231624/Report/index.json`.
 - `Saved/PiSensorPullTest/Integration/result.json`, `actual-relay-packet.json`,
   `Native/Report/index.json`, and `pi/` / `ground/` browser screenshots.
+- `Saved/PiSensorPullTest/IntegrationAfterShutdownFix/result.json`: native
+  loopback chain passes again after the live-discovered shutdown fix.
+- `Saved/PiSensorPullTest/pi-host-tests.log`, `pi-host-ground-tests.log`,
+  `pi-deployment.json`, `live-pi-updated-handoff.json`, and `live-relay-updated.json`.
 - `Saved/NavigationVerification/package-verification.json`, `signing.txt`,
   `FullPackage.log`, and `delivery.json` for the Android candidate.
 
-The Pi became reachable at `larp-pi.local` (`172.20.10.3`) after the laptop moved
-to the hotspot (`172.20.10.2`). Its existing service passes raw transport checks,
-but lacks `source_session_id`, camera generation/capture time/image geometry,
-and radar generation/capture time. The new relay correctly rejects these older
-packets. Updating the Pi service is required; SSH access is being arranged.
-Evidence: `Saved/PiSensorPullTest/live-pi-handoff.json` and
-`live-integration-status.json`.
+The Pi is reachable at `larp-pi.local` (`172.20.10.3`) from the laptop hotspot
+address `172.20.10.2`. Its previous service lacked session, generation and
+capture-time metadata. The new code is deployed separately at
+`/home/evanl1307/HTN2026/sensor-test/pi-sensor-pull-test-028ad24`, with the
+shutdown fix applied and existing radar/detector calibration copied. The
+original checkout remains available for rollback; `pi-deployment.json` records
+its command and working directory. Current process ID is recorded on the Pi in
+`/home/evanl1307/HTN2026/sensor-test/camera_dashboard.pid`.
+
+Restarting exposed a real bridge shutdown defect: closing the listener left
+established WebSocket connections alive and prevented process exit. The old
+process required a targeted forced exit after graceful shutdown failed. The
+fix explicitly stops handlers and closes attached connections, with a bounded
+close timeout. A new regression passes on both hosts. The replacement passed
+live camera/radar health checks, and the laptop now accepts its metadata.
 
 The candidate is installed on Quest 3S and its pulled APK hash matches. After
 moving it to the hotspot and unlocking, sensor-mode GameActivity launched and
 connected to `ws://172.20.10.2:8765/`. The relay reports one native client.
-The old Pi packet format still prevents positioned contacts. Physical
-calibration, native live people rendering, stereo and Quest performance remain pending.
+Radar matching remains disabled until the camera offset and parallel/level
+alignment are measured and confirmed. Full-body camera observations can supply
+ESTIMATED contacts; clipped people without an associated range remain
+unpositioned. Physical calibration, native live people rendering, stereo and
+Quest performance remain pending.
 The previous map-memory APK is retained as
 `Rollback-Navigation-BeforePiSensorPullTest.apk`.
 

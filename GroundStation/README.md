@@ -166,7 +166,8 @@ radar confidence or certainty that a bearing association is correct. See the
 
 ## Validation status and remaining work
 
-On the Windows integration branch: **46 ground-station tests and 43 Pi tests pass** with Python 3.14.6.
+On the Windows integration branch: **46 ground-station tests and 44 Pi tests pass** with Python 3.14.6.
+Both suites also pass on the physical Pi with Python 3.13.5.
 These include real loopback WebSockets, HTTP/config/proxy checks, and actual Pi
 snapshot → bridge packet → fusion matching/fallback. No physical sensors are
 opened by those tests.
@@ -208,7 +209,9 @@ socket, controller registration and people actor. All passed on this branch.
 Results and screenshots go to `Saved/PiSensorPullTest/Integration`.
 
 The full local results and remaining physical acceptance steps are recorded in
-the [integration report](../Docs/quest-ground-station-integration.md). Pi/Quest
-hardware, physical alignment, stereo and passthrough remain unverified for this
-candidate. Sensor mode displays contacts; manual navigation remains a separate
+the [integration report](../Docs/quest-ground-station-integration.md). The updated
+Pi passes live camera/radar transport checks; the verified APK is installed on
+Quest and its relay connection was checked. Physical alignment, native live
+people placement, stereo and passthrough still need wearer validation.
+Sensor mode displays contacts; manual navigation remains a separate
 mode and does not route to the live sensor contacts yet.

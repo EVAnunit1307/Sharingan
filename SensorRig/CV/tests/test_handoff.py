@@ -61,6 +61,30 @@ class RadarTests(unittest.TestCase):
 
 
 class BridgeTests(unittest.TestCase):
+    def test_stop_closes_an_attached_relay_connection(self):
+        from websockets.sync.client import connect
+        from websockets.exceptions import ConnectionClosed
+        bridge = QuestBridge(SimpleNamespace(snapshot=snapshot), host='127.0.0.1', port=0)
+        bridge.start()
+        closed = False
+        try:
+            port = bridge.server.socket.getsockname()[1]
+            with connect(f'ws://127.0.0.1:{port}/') as client:
+                self.assertEqual(json.loads(client.recv(timeout=2))['schema_version'], 1)
+                bridge.stop()
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline:
+                    try:
+                        client.recv(timeout=.5)
+                    except ConnectionClosed:
+                        closed = True
+                        break
+                    except TimeoutError:
+                        break
+                self.assertTrue(closed, 'Stopping the listener must also close existing relay sockets')
+        finally:
+            bridge.stop()
+
     def test_connection_manifest_uses_request_host_and_explicit_bridge_port(self):
         pipeline = CameraPipeline(SimpleNamespace(cfg={'model': 'test'}))
         pipeline.bridge = SimpleNamespace(status=lambda: {'status':'listening','clients':0,'port':8765,'pose_status':'awaiting rig pose'})
