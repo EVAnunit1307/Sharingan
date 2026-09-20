@@ -1,6 +1,6 @@
 # WALLHACK opening: voice-over script
 
-47.8 s picture, about 95 spoken words. One voice, low and unhurried, close to the mic: someone who has
+47.8 s picture, about 100 spoken words. One voice, low and unhurried, close to the mic: someone who has
 done this job, not an announcer. The picture is busy, so the voice is sparse, and the axe blow (40 to 42.5 s)
 plays with no voice at all. Timecodes are where each line STARTS; every line should be finished
 before the next timecode.
@@ -20,9 +20,9 @@ before the next timecode.
 | 35.0 s | Close-up backing away in front of the headset | You go in knowing who's waiting. | |
 | 37.5 s | Jump cut: the paramedic | Who's hurt. | Right after the cut. |
 | 38.8 s | Jump cut: the firefighter, axe high | Who's trapped. | Right after the cut. Then stop talking. |
-| 40.0 s to 44.0 s | Axe down, cocked back, the blow in slow motion, the partition splits | (no voice) | Breath in on the cock-back, silence in the slow motion, then the hit. |
-| 44.2 s | Through the breach, the camera finds the drone and the survivor | And which wall to go through. | Quiet. The picture is the punchline. |
-| 46.3 s | Drone hovering over the survivor | Wallhack. See who's inside. | Title line; end by 47.6 s. |
+| 40.0 s to 43.6 s | Axe down, cocked back, the blow in slow motion, the partition splits | (no voice) | Breath in on the cock-back, silence in the slow motion, then the hit. |
+| 43.7 s | Through the breach, the camera turning through the room beyond | And which wall to go through. | Quiet. Done by 45.4 s. |
+| 45.6 s | The camera settles on the drone and the survivor (the reveal lands at 45.9 s) | So this is why we built Sharingan. | The closing line, and the hand-off to the live pitch. Plain, no announcer lift; a small lean on "this". About 2.2 s: it ends with the picture, so if the read runs long, hold the last frame half a second rather than rush it. |
 
 ## Straight read (for a voice actor or text-to-speech)
 
@@ -48,9 +48,17 @@ You go in knowing who's waiting. Who's hurt. Who's trapped.
 
 And which wall to go through.
 
-Wallhack. See who's inside.
+So this is why we built Sharingan.
 
 ## If the video has to explain the product by itself
 
-Swap the 28.4 s line for: "Wallhack is a drone and a headset. The drone finds them. The headset shows you." (run it
+Swap the 28.4 s line for: "Sharingan is a drone and a headset. The drone finds them. The headset shows you." (run it
 28.4 to 32.6 s, over the burst through the doorway) and drop the 33.0 s line.
+
+## The name
+
+The product is called Sharingan in the voice (the working title WALLHACK never appears on screen, so nothing in the
+picture contradicts it). The line sits at the END on purpose: the film states the problem, shows the answer working in
+three worlds, and only then says "so this is why we built Sharingan", which is also the cue for whoever pitches live.
+If it has to come early instead, it can replace "Now they send this in ahead." at 10.4 s, over the drone leaving his
+hand; then close on "And which wall to go through." and let the last three seconds play silent.
