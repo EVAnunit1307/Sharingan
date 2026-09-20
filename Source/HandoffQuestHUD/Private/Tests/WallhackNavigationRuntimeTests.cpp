@@ -101,10 +101,50 @@ bool FNavLifecycleTest::RunTest(const FString&)
     F.Provider->bLocalized=true;F.Step(120);
     TestTrue(TEXT("Scene-anchor localization plus new observations restores guidance"),F.Nav->GetDisplaySnapshot().bGuidance);
     F.Nav->CoordinateDiscontinuity();TestFalse(TEXT("Recenter hides guidance immediately"),F.Nav->GetDisplaySnapshot().bGuidance);
-    F.Step(240);TestTrue(TEXT("Recenter requires reseed and fresh localization"),F.Nav->GetDisplaySnapshot().bGuidance);
+    F.Step(240);TestTrue(TEXT("Recenter requires fresh localization before reusing memory"),F.Nav->GetDisplaySnapshot().bGuidance);
     TestEqual(TEXT("MRUK-frame destination never independently counter-shifted"),F.Nav->GetDisplaySnapshot().Target.Standing,Saved.Standing);
     F.Nav->CancelNavigation();TestFalse(TEXT("Cancel clears active route"),F.Nav->GetDisplaySnapshot().bHasTarget);
     F.Nav->Confirm();TestFalse(TEXT("Trigger cannot resurrect a cancelled target"),F.Nav->GetDisplaySnapshot().bHasTarget);return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FNavSessionMemoryTest,"Wallhack.Navigation.Runtime.MemoryAcrossLookingAwayAndRecenter",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter|EAutomationTestFlags::NonNullRHI)
+bool FNavSessionMemoryTest::RunTest(const FString&)
+{
+    using namespace WallhackNav;
+    FNavigationWorld F;auto* HUD=F.NavigationHUD();
+    F.SetViewerPose({0,0,170},FRotator::ZeroRotator);F.Step(40);
+    auto* People=F.World->GetSubsystem<UWallhackPeopleSubsystem>();
+    const int32 PersonId=People->AddPerson({4,2,0},1.8f,90);
+    F.Provider->Live.Obstacles.Add({FBox(FVector(2.6,-3,0),FVector(2.7,3,2.5)),true});
+    F.Step(800);
+    TArray<FIntPoint> Seen;
+    const auto Memory=F.Nav->GetMap();
+    for(const auto& T:Memory.Tiles)for(int32 Y=0;Y<TileSize;++Y)for(int32 X=0;X<TileSize;++X)
+    {
+        const FIntPoint K=T.Key*TileSize+FIntPoint(X,Y);const auto* C=Memory.Find(K);
+        if(C&&C->Evidence==EEvidence::Depth&&C->Occupancy==EOccupancy::Occupied&&K.X>=25&&K.X<=27)Seen.Add(K);
+    }
+    if(!TestTrue(TEXT("Actual runtime depth queries discover the unscanned wall"),Seen.Num()>5))return false;
+    F.Provider->bAvailable=false;F.Step(500);
+    for(auto K:Seen)TestTrue(TEXT("Depth outage does not forget observed wall cells"),F.Nav->GetMap().State(K)==EOccupancy::Occupied);
+    TestFalse(TEXT("Cached map is not advertised as current live checks"),F.Nav->GetDisplaySnapshot().bDepthAvailable);
+    // A rapid head turn used to reset every live tile, despite MRUK retaining
+    // the same world frame for both the scan and manually placed people.
+    F.SetViewerPose({0,0,170},FRotator(0,180,0));F.Step(1);
+    TestFalse(TEXT("Pose discontinuity suppresses guidance"),F.Nav->GetDisplaySnapshot().bGuidance);
+    F.Nav->CoordinateDiscontinuity();F.Nav->Suspend();F.Nav->Resume();F.Step(120);
+    for(auto K:Seen)TestTrue(TEXT("Recenter and headset removal retain anchored wall memory"),F.Nav->GetMap().State(K)==EOccupancy::Occupied);
+    TestEqual(TEXT("Manual person's position stays in that same room frame"),People->GetPeople()[0].Feet,FVector(4,2,0));
+    TestEqual(TEXT("Manual person's identity survives relocalization"),People->GetPeople()[0].Id,PersonId);
+    F.Provider->bAvailable=true;F.Step(180);
+    TestTrue(TEXT("Fresh localized observation resumes the remembered map"),F.Nav->GetDisplaySnapshot().bGuidance);
+    const auto& Edges=F.Nav->GetMapOutline();int32 LiveEdges=0;
+    for(const auto& E:Edges)LiveEdges+=E.bObstacle&&E.A.X>2.49&&E.A.X<2.81&&E.B.X>2.49&&E.B.X<2.81;
+    TestTrue(TEXT("Minimap includes the remembered live wall absent from the room scan"),LiveEdges>0);
+    HUD->Tick(.25f);F.World->SendAllEndOfFrameUpdates();FlushRenderingCommands();
+    auto* RT=HUD->GetHUDRenderTarget();TArray<FColor> Pixels;RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
+    SaveNavigationImage(Pixels,RT->SizeX,RT->SizeY,TEXT("minimap-session-memory"));
+    return true;
 }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FNavInputTest,"Wallhack.Navigation.Runtime.ControllerActions",
     EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
@@ -427,21 +467,27 @@ bool FNavRaisedOccluderTest::RunTest(const FString&)
     using namespace WallhackNav;
     struct FDownwardProvider : FDeterministicProvider
     {
+        bool bDownOnly=true;
         virtual EDepthResult Query(FVector O,FVector D,float L,FSurfaceHit& H) override
-        {return D.Z>-.2?EDepthResult::Unknown:FDeterministicProvider::Query(O,D,L,H);}
+        {return bDownOnly&&D.Z>-.2?EDepthResult::Unknown:FDeterministicProvider::Query(O,D,L,H);}
     };
     auto P=MakeShared<FDownwardProvider>();auto Geometry=FDeterministicProvider::MakeRoom();
     P->Scanned=Geometry->Scanned;P->Live=P->Scanned;
     const int32 Raised=P->Live.Obstacles.Add({FBox(FVector(.7,-.25,1),FVector(1.1,.25,1.25)),false});
     FNavigationWorld F(false,P);F.SetViewerPose({0,0,170},FRotator(-35,0,0));F.Step(700);
     // The floor ray hits the raised surface well BEFORE the requested floor
-    // column. Moving it away must leave unknown depth, not a permanent step.
+    // column. Moving it away must leave obstacle memory, not a permanent step.
     P->Live.Obstacles.RemoveAt(Raised);
     F.SetViewerPose({40,5,170},FRotator(-35,0,0));F.Step(5);
     F.SetViewerPose({85,5,170},FRotator(-35,0,0));F.Step(400);
     TestTrue(TEXT("Target accepted after the transient surface moves"),F.Nav->SetDestination({4,2,0},{4,2,0}));F.Step(180);
-    TestFalse(TEXT("Unrelated raised hit cannot leave a permanent floor change under new start"),F.Nav->GetDisplaySnapshot().Route.bStartBlocked);
-    TestTrue(TEXT("Observed/estimated route can recover without inventing positive clearance"),F.Nav->GetDisplaySnapshot().Route.bComplete);
+    const auto* Start=F.Nav->GetMap().Find({8,0});
+    TestTrue(TEXT("Unrelated raised hit is remembered as an obstacle, not a permanent level change"),Start&&Start->Occupancy==EOccupancy::Occupied);
+    TestTrue(TEXT("A floor-only view cannot erase an unseen obstruction"),F.Nav->GetDisplaySnapshot().Route.bStartBlocked);
+    P->bDownOnly=false;
+    P->Live.Obstacles.Add({FBox(FVector(-3,-3,2.6),FVector(5,3,2.7)),true});F.Step(700);
+    TestFalse(TEXT("Repeated full-column observations clear the moved obstacle"),F.Nav->GetDisplaySnapshot().Route.bStartBlocked);
+    TestTrue(TEXT("Route recovers after positive clearance without a room rescan"),F.Nav->GetDisplaySnapshot().Route.bComplete);
     return true;
 }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FNavLocalAimTest,"Wallhack.Navigation.Runtime.LocalAimRespectsNearestSurface",

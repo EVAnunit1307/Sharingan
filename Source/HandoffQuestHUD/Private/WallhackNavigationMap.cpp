@@ -152,18 +152,11 @@ void AWallhackVRHUDActor::DrawNavigationMap(UCanvas* Canvas,UFont* Font)
         Draw.Triangle(Center,PA,PB,FLinearColor(1,1,1,.20),FLinearColor(1,1,1,.015),FLinearColor(1,1,1,.015));
     }
     Draw.Circle(Center,Map.Radius*.5f,FLinearColor(.7,.75,.8,.12),.8f);
-    for(const auto& Floor:Nav->GetScene().Floors)
-        for(int32 I=0;I<Floor.Polygon.Num();++I)
-            MapLine(FVector(Floor.Polygon[I],Floor.Z),FVector(Floor.Polygon[(I+1)%Floor.Polygon.Num()],Floor.Z),FLinearColor(.9,.92,.95,.50),1.4f);
-    for(const auto& Obstacle:Nav->GetScene().Obstacles)
-    {
-        const FBox Box=Obstacle.LocalBox.IsValid?Obstacle.LocalBox:Obstacle.Box;
-        if(!Box.IsValid)continue;
-        FVector Corners[4]={{Box.Min.X,Box.Min.Y,Box.Min.Z},{Box.Max.X,Box.Min.Y,Box.Min.Z},
-            {Box.Max.X,Box.Max.Y,Box.Min.Z},{Box.Min.X,Box.Max.Y,Box.Min.Z}};
-        if(Obstacle.LocalBox.IsValid)for(auto& P:Corners)P=Obstacle.LocalToWorld.TransformPosition(P);
-        for(int32 I=0;I<4;++I)MapLine(Corners[I],Corners[(I+1)%4],FLinearColor(.84,.88,.92,Obstacle.bWall?.65:.28),Obstacle.bWall?1.8f:1.f);
-    }
+    // Persistent scan + depth contours, including space discovered outside the
+    // original scan. Faint edges mark observed floor limits, brighter edges
+    // mark obstructions. Camera heading only rotates this stored world map.
+    for(const auto& Edge:Nav->GetMapOutline())
+        MapLine(Edge.A,Edge.B,FLinearColor(.84,.88,.92,Edge.bObstacle?.65:.24),Edge.bObstacle?1.8f:1.f);
     for(int32 I=1;I<D.Route.Points.Num();++I)
     {
         const auto& A=D.Route.Points[I-1];const auto& B=D.Route.Points[I];

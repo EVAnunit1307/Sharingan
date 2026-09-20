@@ -15,11 +15,15 @@ EOccupancy FMapSnapshot::State(FIntPoint K) const
 {
     const FCell* C = Find(K);
     if (!C) return EOccupancy::Unknown;
-    // Persistent walls and detected level changes never expire into a shortcut.
-    if (C->Occupancy == EOccupancy::Unsupported || C->Evidence == EEvidence::SceneWall) return C->Occupancy;
-    if (C->Evidence == EEvidence::Depth && Now - C->ObservedAt > 5) return EOccupancy::Unknown;
+    // Looking away is not evidence that an obstacle disappeared. Keep both
+    // supported floor and obstructions until positive observations change them.
     if (C->Occupancy == EOccupancy::Free && (!C->bFloor || !C->bClearance)) return EOccupancy::Unknown;
     return C->Occupancy;
+}
+bool FMapSnapshot::IsEstimated(FIntPoint K) const
+{
+    const auto* C=Find(K);
+    return State(K)!=EOccupancy::Free || (C&&C->Evidence==EEvidence::Depth&&Now-C->ObservedAt>LiveEvidenceSeconds);
 }
 EOccupancy FMapSnapshot::Walkability(FIntPoint K, FIntPoint* FirstBlockingCell) const
 {
@@ -67,9 +71,50 @@ bool FMap::Observe(FIntPoint K, const FCell& O)
     C.ClearVotes = 0;
     const bool Changed = Before.Occupancy != C.Occupancy || Before.Evidence != C.Evidence
         || Before.bFloor != C.bFloor || Before.bClearance != C.bClearance || FMath::Abs(Before.Floor - C.Floor) > .02f
-        || (Before.Evidence == EEvidence::Depth && O.ObservedAt - Before.ObservedAt > 5);
+        || (Before.Evidence == EEvidence::Depth && O.ObservedAt - Before.ObservedAt > LiveEvidenceSeconds);
     if (Changed) ++Revision;
     return Changed;
+}
+TArray<FMapEdge> BuildMapOutline(const FMapSnapshot& Map)
+{
+    // Integer grid edges merge into long strokes, instead of thousands of
+    // canvas lines. Both the minimap and planner use the same fused memory;
+    // a positively cleared doorway cannot remain drawn as a scanned wall.
+    struct FEdge { int32 Axis,Line,Start,End; bool Blocked; };
+    TArray<FEdge> Edges;
+    auto Kind=[&](FIntPoint K)
+    {
+        const auto S=Map.Walkability(K);
+        return S==EOccupancy::Occupied?2:S==EOccupancy::Free?1:0;
+    };
+    for(const auto& Tile:Map.Tiles)for(int32 Y=0;Y<TileSize;++Y)for(int32 X=0;X<TileSize;++X)
+    {
+        const FIntPoint K=Tile.Key*TileSize+FIntPoint(X,Y);
+        const int32 C=Kind(K);if(!C)continue;
+        auto Boundary=[&](FIntPoint N){const int32 V=Kind(N);return C==2?V!=2:V==0;};
+        if(Boundary(K+FIntPoint(0,-1)))Edges.Add({0,K.Y,K.X,K.X+1,C==2});
+        if(Boundary(K+FIntPoint(0,1)))Edges.Add({0,K.Y+1,K.X,K.X+1,C==2});
+        if(Boundary(K+FIntPoint(-1,0)))Edges.Add({1,K.X,K.Y,K.Y+1,C==2});
+        if(Boundary(K+FIntPoint(1,0)))Edges.Add({1,K.X+1,K.Y,K.Y+1,C==2});
+    }
+    Edges.Sort([](const FEdge& A,const FEdge& B)
+    {
+        if(A.Axis!=B.Axis)return A.Axis<B.Axis;
+        if(A.Line!=B.Line)return A.Line<B.Line;
+        if(A.Blocked!=B.Blocked)return A.Blocked<B.Blocked;
+        return A.Start<B.Start;
+    });
+    TArray<FMapEdge> Out;
+    for(int32 I=0;I<Edges.Num();)
+    {
+        FEdge E=Edges[I++];
+        while(I<Edges.Num()&&Edges[I].Axis==E.Axis&&Edges[I].Line==E.Line&&Edges[I].Blocked==E.Blocked&&Edges[I].Start==E.End)
+            E.End=Edges[I++].End;
+        auto P=[&](int32 T){return E.Axis==0?FVector(T*double(CellSize),E.Line*double(CellSize),Map.Floor)
+            :FVector(E.Line*double(CellSize),T*double(CellSize),Map.Floor);};
+        Out.Add({P(E.Start),P(E.End),E.Blocked});
+    }
+    return Out;
 }
 namespace
 {
@@ -161,8 +206,8 @@ FRoute Search(const FMapSnapshot& M, FVector Start, FVector Goal, bool Unknown, 
     for (int32 I = Reverse.Num()-1; I >= 0; --I)
     {
         const auto K = Reverse[I];
-        const bool Estimated = Walk(K) != EOccupancy::Free;
-        if (!Estimated) if (const auto* C = M.Find(K)) Z = C->Floor;
+        const bool Estimated = M.IsEstimated(K);
+        if (Walk(K)==EOccupancy::Free) if (const auto* C = M.Find(K)) Z = C->Floor;
         Out.Points.Add({FMapSnapshot::Center(K,Z),Estimated});
     }
     if (Out.Points.Num()) Out.Points[0].Position = FVector(Start.X,Start.Y,Out.Points[0].Position.Z);
@@ -212,7 +257,7 @@ void SmoothRoute(const FMapSnapshot& Map,FRoute& Route)
         for(int32 J=I+2;J<Route.Points.Num()&&J<=I+20;++J)
         {
             if(Route.Points[J-1].bEstimated!=Route.Points[I].bEstimated||Route.Points[J].bEstimated!=Route.Points[I].bEstimated)break;
-            if(SegmentAllowed(Map,Route.Points[I].Position,Route.Points[J].Position,Route.Points[I].bEstimated))Best=J;
+            if(SegmentAllowed(Map,Route.Points[I].Position,Route.Points[J].Position,Map.WalkabilityAt(Route.Points[I].Position)==EOccupancy::Unknown))Best=J;
         }
         I=Best;
     }
@@ -231,7 +276,7 @@ void SmoothRoute(const FMapSnapshot& Map,FRoute& Route)
         {
             const double T=double(J)/Steps;
             const FVector P=FMath::Lerp(FMath::Lerp(In,B.Position,T),FMath::Lerp(B.Position,Out,T),T);
-            Valid=SegmentAllowed(Map,Curve.Last().Position,P,B.bEstimated);Curve.Add({P,B.bEstimated});
+            Valid=SegmentAllowed(Map,Curve.Last().Position,P,Map.WalkabilityAt(B.Position)==EOccupancy::Unknown);Curve.Add({P,B.bEstimated});
         }
         if(Valid)Rounded.Append(Curve);else Rounded.Add(B);
     }
@@ -246,22 +291,34 @@ void SmoothRoute(const FMapSnapshot& Map,FRoute& Route)
         for(int32 J=1;J<=Steps;++J)
         {
             const FVector P=FMath::Lerp(A.Position,B.Position,double(J)/Steps);
-            const bool Est=A.bEstimated||B.bEstimated||Map.WalkabilityAt(P)!=EOccupancy::Free;
+            const bool Est=A.bEstimated||B.bEstimated||Map.IsEstimated(FMapSnapshot::Key(P));
             Route.Points.Add({P,Est});
             (Est?Route.EstimatedMeters:Route.ObservedMeters)+=Length/Steps;
         }
     }
 }
-void TrimTraversedRoute(FRoute& Route,FVector Viewer)
+void TrimTraversedRoute(FRoute& Route,FVector Viewer,const FMapSnapshot* Map)
 {
-    int32 Closest=0;float Best=FLT_MAX;
+    Route.bAttachedToViewer=false;
+    int32 Closest=0;float Best=FLT_MAX,Nearest=FLT_MAX;
     for(int32 I=0;I<Route.Points.Num();++I)
     {
         const float D=FVector::DistSquared2D(Viewer,Route.Points[I].Position);
-        if(D<Best){Best=D;Closest=I;}
+        Nearest=FMath::Min(Nearest,D);
+        if(D<Best&&(!Map||(D<=.25f&&SegmentAllowed(*Map,Viewer,Route.Points[I].Position,true)))){Best=D;Closest=I;}
     }
+    if(Map&&Best>.25f&&Nearest<=.25f)
+    {Route.Points.Reset();Route.bComplete=false;return;} // Nearby route is behind a wall: replan.
     // Only advance on the current route; an off-route pose must be replanned.
     if(Closest>0&&Best<=.25f)Route.Points.RemoveAt(0,Closest,EAllowShrinking::No);
+    if(Map&&Best<=.25f&&!Route.Points.IsEmpty())
+    {
+        Viewer.Z=Route.Points[0].Position.Z;
+        const FRoutePoint Start{Viewer,Map->IsEstimated(FMapSnapshot::Key(Viewer))};
+        if(Route.Points.Num()>1&&SegmentAllowed(*Map,Viewer,Route.Points[1].Position,true))Route.Points[0]=Start;
+        else if(!Route.Points[0].Position.Equals(Viewer,.001))Route.Points.Insert(Start,0);
+        Route.bAttachedToViewer=true;
+    }
 }
 bool SelectStanding(const FMapSnapshot& Map, FVector Surface, bool bFloorHit, FVector Viewer, FVector& Out)
 {
@@ -295,7 +352,9 @@ bool SelectStanding(const FMapSnapshot& Map, FVector Surface, bool bFloorHit, FV
 bool HasArrived(const FMapSnapshot& Map, const FTarget& T, FVector Viewer)
 {
     return FVector::Dist2D(Viewer,T.Standing)<=.6f && Map.WalkabilityAt(T.Standing)==EOccupancy::Free
-        && Map.WalkabilityAt(Viewer)==EOccupancy::Free;
+        && Map.WalkabilityAt(Viewer)==EOccupancy::Free
+        && !Map.IsEstimated(FMapSnapshot::Key(T.Standing)) && !Map.IsEstimated(FMapSnapshot::Key(Viewer))
+        && SegmentAllowed(Map,Viewer,T.Standing,false);
 }
 const TCHAR* StateLabel(ERouteState S)
 {

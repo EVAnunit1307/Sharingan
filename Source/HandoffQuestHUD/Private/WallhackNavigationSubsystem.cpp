@@ -58,7 +58,11 @@ void UWallhackNavigationSubsystem::OnCaptureComplete(bool Success)
 {
     bCaptureInProgress=false;
     UE_LOG(LogTemp,Display,TEXT("Wallhack navigation: room capture completed success=%d"),Success);
-    if(Success&&SceneProvider){SceneProvider->Start();bSceneLoaded=false;Map.Reset();ClearanceColumns.Reset();ProbePhase=0;}
+    if(Success&&SceneProvider)
+    {
+        SceneProvider->Start();bSceneLoaded=false;Map.Reset();ClearanceColumns.Reset();ProbePhase=0;
+        MapOutline.Reset();OutlineRevision=Map.Revision; // Reject any outline from the previous scan.
+    }
     bNeedsCapture=!Success;
 }
 void UWallhackNavigationSubsystem::Deinitialize()
@@ -72,6 +76,7 @@ void UWallhackNavigationSubsystem::Deinitialize()
 #endif
     // Jobs own only immutable tiles and value poses. They never reference UObjects.
     if(Pending.IsValid())Pending.Wait();
+    if(PendingOutline.IsValid())PendingOutline.Wait();
     DepthProvider.Reset();SceneProvider.Reset();
     if(Renderer)Renderer->Destroy();
     Super::Deinitialize();
@@ -89,9 +94,13 @@ void UWallhackNavigationSubsystem::Resume(){bSuspended=false;bPreviousPose=false
 void UWallhackNavigationSubsystem::CoordinateDiscontinuity()
 {
     HideGuidance();bCoordinatePending=true;bPreviousPose=false;++DestinationVersion;
-    // MRUK owns camera correction; destinations stay in its scene frame. Live
-    // cells are discarded and reseeded after localization, never counter-shifted.
-    Map.Reset();bSceneLoaded=false;bSeeding=false;
+    // MRUK corrects the pawn into the existing room frame. Forgetting depth
+    // here erased unseen walls on a recenter or a quick head turn. Retain the
+    // same anchored memory as person poses; pause until localization and a new
+    // observation, then plan again from the corrected wearer position.
+    Display.Route={};bNeedsPlan=Display.bHasTarget;
+    if(Renderer)Renderer->InvalidateTrail();
+    UE_LOG(LogTemp,Display,TEXT("Wallhack navigation: relocalizing with %d memory tiles retained"),Map.Tiles.Num());
 }
 void UWallhackNavigationSubsystem::UpdatePose(float Dt)
 {
@@ -148,9 +157,28 @@ void UWallhackNavigationSubsystem::SampleDepth(double Deadline)
         if(ProbePhase==0)
         {
             ++ProbeIndex;
-            FIntPoint Blocking;
-            if(Display.bHasTarget&&ProbeIndex%2==0
-                &&Map.WalkabilityAt(Display.Viewer,&Blocking)==EOccupancy::Occupied)
+            FIntPoint Blocking(0,0);
+            bool bRevisitBlocker=false;
+            if(Display.bHasTarget&&ProbeIndex%2==0)
+            {
+                bRevisitBlocker=Map.WalkabilityAt(Display.Viewer,&Blocking)==EOccupancy::Occupied;
+                if(!bRevisitBlocker&&!Display.Route.bComplete)
+                {
+                    // After furniture moves, clearing only the start can leave
+                    // it surrounded by old hits. Recheck the blocked frontier
+                    // as well; the exploration sweep starts 30cm away and
+                    // otherwise never revisits these immediate neighbours.
+                    const FVector End=Display.Route.Points.IsEmpty()?Display.Viewer:Display.Route.Points.Last().Position;
+                    const FIntPoint K=FMapSnapshot::Key(End);
+                    static const FIntPoint Neighbours[]={{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
+                    for(int32 I=0;I<8;++I)
+                    {
+                        Blocking=K+Neighbours[(I+ProbeIndex/2)%8];
+                        if(Map.Walkability(Blocking)==EOccupancy::Occupied){bRevisitBlocker=true;break;}
+                    }
+                }
+            }
+            if(bRevisitBlocker)
             {
                 // Revisit the actual blocker so looking down and then up can
                 // positively disprove it. No start-cell clearance is assumed.
@@ -269,7 +297,7 @@ void UWallhackNavigationSubsystem::Tick(float Dt)
     }
     // Depth is in MRUK world coordinates. Until the scan establishes the floor
     // reference, a valid floor hit could otherwise become a persistent step.
-    if(bSceneLoaded&&!bSeeding)SampleDepth(Deadline);
+    if(bSceneLoaded&&!bSeeding&&StableSeconds>.5f)SampleDepth(Deadline);
     MappingAverage=FMath::Lerp(MappingAverage,float((FPlatformTime::Seconds()-Begin)*1000),.1f);
     Display.bDepthAvailable=Now-LastDepth<2&&Now-LastLiveHit<2;
     if(!bPose)Display.Tracking=TEXT("TRACKING LOST");
@@ -286,6 +314,7 @@ void UWallhackNavigationSubsystem::Tick(float Dt)
         LastLog=Now;UE_LOG(LogTemp,Display,TEXT("Wallhack navigation perf: mapping_ms=%.3f query_ms=%.3f planner_ms=%.3f tiles=%d state=%s live=%d tracking=%s aiming=%d preview=%d aim_status=%s"),Display.MappingMs,Display.QueryMs,Display.Route.PlannerMs,Map.Tiles.Num(),StateLabel(Display.State),Display.bDepthAvailable,*Display.Tracking,Display.bAiming,Display.bPreviewValid,*Display.AimStatus);
         UE_LOG(LogTemp,Display,TEXT("Wallhack navigation wearer: self_occluded_queries=%u tracked_hands=%d eye_height=%.3f"),WearerOccludedQueries,WearerMask.TrackedHands.Num(),Display.Viewer.Z-Map.Floor);
         WearerOccludedQueries=0;
+        UE_LOG(LogTemp,Display,TEXT("Wallhack navigation memory: revision=%llu outline_edges=%d outline_worker_ms=%.3f"),Map.Revision,MapOutline.Num(),OutlineMs);
         UE_LOG(LogTemp,Display,TEXT("Wallhack navigation clearance: partial_columns=%d completed=%u"),ClearanceColumns.Num(),CompletedClearanceChecks);
         CompletedClearanceChecks=0;
         if(Display.bHasTarget)
@@ -313,7 +342,7 @@ void UWallhackNavigationSubsystem::UpdateRoute()
         return;
     }
     // Furniture/feet behind the wearer cannot invalidate the remaining route.
-    TrimTraversedRoute(Display.Route,Display.Viewer);
+    TrimTraversedRoute(Display.Route,Display.Viewer,&Map);
     int32 Blocked=0;
     if(!ValidateRoute(Map,Display.Route,&Blocked))
     {
@@ -323,8 +352,8 @@ void UWallhackNavigationSubsystem::UpdateRoute()
         if(Renderer)Renderer->InvalidateTrail();
         Display.State=ERouteState::Blocked;bNeedsPlan=true;
     }
-    // Aging depth can only demote a segment to estimated, never keep it mint.
-    for(auto& P:Display.Route.Points)if(!P.bEstimated&&Map.WalkabilityAt(P.Position)!=EOccupancy::Free)
+    // Cached floor stays mapped but is visibly estimated until refreshed.
+    for(auto& P:Display.Route.Points)if(!P.bEstimated&&Map.IsEstimated(FMapSnapshot::Key(P.Position)))
     {P.bEstimated=true;bNeedsPlan=true;if(Renderer)Renderer->InvalidateTrail();}
     if(!Display.bGuidance)return;
     FVector Start=Display.Viewer;Start.Z=Map.Floor;
@@ -334,10 +363,10 @@ void UWallhackNavigationSubsystem::UpdateRoute()
     if(Pending.IsValid()&&Pending.IsReady())
     {
         FRoute New=Pending.Consume();
-        TrimTraversedRoute(New,Display.Viewer);
+        TrimTraversedRoute(New,Display.Viewer,&Map);
         if(PendingDestination==DestinationVersion&&ValidateRoute(Map,New))
         {
-            for(auto& P:New.Points)if(Map.WalkabilityAt(P.Position)!=EOccupancy::Free)P.bEstimated=true;
+            for(auto& P:New.Points)if(Map.IsEstimated(FMapSnapshot::Key(P.Position)))P.bEstimated=true;
             const bool Prefer=!Display.Route.bComplete||Deviation>.5f||New.EstimatedMeters<Display.Route.EstimatedMeters-.2f
                 || New.Length()<Display.Route.Length()*.9f||Display.State==ERouteState::Relocalizing||Display.State==ERouteState::Planning;
             if(Prefer)Display.Route=MoveTemp(New);
@@ -357,6 +386,22 @@ void UWallhackNavigationSubsystem::UpdateRoute()
 }
 void UWallhackNavigationSubsystem::UpdateMetrics()
 {
+    if(PendingOutline.IsValid()&&PendingOutline.IsReady())
+    {
+        auto Result=PendingOutline.Consume();
+        if(Result.Revision>=OutlineRevision)
+        {MapOutline=MoveTemp(Result.Edges);OutlineRevision=Result.Revision;OutlineMs=Result.Milliseconds;}
+    }
+    if(!bSeeding&&OutlineRevision!=Map.Revision&&!PendingOutline.IsValid())
+    {
+        FMapSnapshot Snapshot=Map;
+        PendingOutline=Async(EAsyncExecution::ThreadPool,[Snapshot=MoveTemp(Snapshot)]()
+        {
+            const double Begin=FPlatformTime::Seconds();
+            FOutlineResult Result;Result.Revision=Snapshot.Revision;Result.Edges=BuildMapOutline(Snapshot);
+            Result.Milliseconds=(FPlatformTime::Seconds()-Begin)*1000;return Result;
+        });
+    }
     Display.MappingMs=MappingAverage;Display.QueryMs=QueryAverage;Display.FPS=FPSAverage;Display.Battery=FPlatformMisc::GetBatteryLevel();
     Display.ObservationAge=LastLiveHit>=0?Now-LastLiveHit:(bSceneLoaded?Now-Scene.LoadedAt:-1);
     Display.CellCount=Map.Tiles.Num()*TileSize*TileSize;

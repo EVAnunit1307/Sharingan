@@ -1,6 +1,7 @@
 #include "WallhackNavigationTypes.h"
 #include "WallhackNavigationProviders.h"
 #include "WallhackNavigationRenderer.h"
+#include "WallhackNavigationPresentation.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -81,7 +82,7 @@ bool FNavEvidence::RunTest(const FString&)
 {
     FMap M;FCell C=Wall();C.Evidence=EEvidence::Depth;C.ObservedAt=1;M.Now=1;M.Observe({0,0},C);
     const FMapSnapshot Before=M;
-    M.Now=10;TestTrue(TEXT("Aging returns obstacle to unknown"),M.State({0,0})==EOccupancy::Unknown);
+    M.Now=10;TestTrue(TEXT("Looking away retains obstacle memory"),M.State({0,0})==EOccupancy::Occupied);
     TestTrue(TEXT("Immutable snapshot remains occupied"),Before.State({0,0})==EOccupancy::Occupied);
     FCell Clear=Free(11);Clear.Evidence=EEvidence::Depth;
     M.Observe({0,0},Clear);TestTrue(TEXT("First contradictory observation insufficient"),M.Find({0,0})->Occupancy==EOccupancy::Occupied);
@@ -106,11 +107,11 @@ bool FNavScanConfirmation::RunTest(const FString&)
     M.Observe({20,0},Block);
     TestFalse(TEXT("New obstruction immediately rejects the target point"),SelectStanding(M,Endpoint,true,{0,0,1.7},Standing));
     M.Now=20;
-    TestTrue(TEXT("Expired obstruction becomes unknown and never resurrects old scan"),M.State({20,0})==EOccupancy::Unknown);
-    TestFalse(TEXT("Unknown clearance cannot retain a preview"),SelectStanding(M,Endpoint,true,{0,0,1.7},Standing));
+    TestTrue(TEXT("Expired obstruction stays blocked and never resurrects old scan"),M.State({20,0})==EOccupancy::Occupied);
+    TestFalse(TEXT("Remembered obstruction cannot retain a preview"),SelectStanding(M,Endpoint,true,{0,0,1.7},Standing));
     for(int32 I=0;I<3;++I){Clear.ObservedAt=20+I*.2;M.Observe({20,0},Clear);}
     M.Now=20.4;TestTrue(TEXT("Repeated positive clearance can restore endpoint"),SelectStanding(M,Endpoint,true,{0,0,1.7},Standing));
-    M.Now=30;TestTrue(TEXT("Cleared dynamic obstruction still needs live evidence"),M.State({20,0})==EOccupancy::Unknown);
+    M.Now=30;TestTrue(TEXT("Cleared floor is remembered but guidance needs fresh evidence"),M.State({20,0})==EOccupancy::Free&&M.IsEstimated({20,0}));
     Clear.Occupancy=EOccupancy::Unsupported;Clear.Floor=.3f;Clear.ObservedAt=31;M.Observe({20,0},Clear);M.Now=100;
     TestTrue(TEXT("Detected level changes never fall back to scanned floor"),M.State({20,0})==EOccupancy::Unsupported);
     return true;
@@ -191,6 +192,78 @@ bool FNavPreciseClearance::RunTest(const FString&)
     FMap Single;Single.Observe({0,0},Free());
     TestTrue(TEXT("Adjacent unknown cells do not downgrade known route point"),Single.WalkabilityAt({.05,.05,0})==EOccupancy::Free);
     TestTrue(TEXT("Negative positions use their containing cell"),Single.WalkabilityAt({-.001,.05,0})==EOccupancy::Unknown);
+    return true;
+}
+NAVTEST(FNavRememberedWall,"Map.LookingAwayNeverOpensAWall");
+bool FNavRememberedWall::RunTest(const FString&)
+{
+    auto M=Room();FCell C=Wall();C.Evidence=EEvidence::Depth;C.ObservedAt=1;
+    for(int32 Y=-30;Y<=30;++Y)M.Observe({30,Y},C);
+    M.Now=120;
+    auto R=Plan(M,{0,0,0},{6,0,0});
+    TestFalse(TEXT("Two minutes without seeing a live-only wall cannot open a shortcut"),R.bComplete);
+    TestTrue(TEXT("Partial route respects remembered wall"),ValidateRoute(M,R));
+    M.Observe({30,0},FCell{});
+    TestFalse(TEXT("Misses cannot open a doorway"),Plan(M,{0,0,0},{6,0,0}).bComplete);
+    FCell Clear=Free();Clear.Evidence=EEvidence::Depth;
+    for(int32 I=0;I<3;++I){Clear.ObservedAt=120+I*.2;M.Observe({30,0},Clear);}
+    M.Now=140;R=Plan(M,{0,0,0},{6,0,0});
+    TestTrue(TEXT("Positively observed doorway stays connected after looking away"),R.bComplete&&ValidateRoute(M,R));
+    TestTrue(TEXT("Remembered live-only doorway is explicitly estimated"),R.EstimatedMeters>0);
+    FTarget T;T.Standing={3.05,.05,0};
+    TestFalse(TEXT("Cached floor alone cannot declare arrival"),HasArrived(M,T,{3.05,.05,1.7}));
+    return true;
+}
+NAVTEST(FNavCachedCorridor,"Map.CachedFloorKeepsItsShapeAndElevation");
+bool FNavCachedCorridor::RunTest(const FString&)
+{
+    FMap M;M.Floor=2.08f;M.Now=100;
+    FCell C=Free(1);C.Floor=M.Floor;C.Evidence=EEvidence::Depth;
+    for(int32 X=0;X<=20;++X)M.Observe({X,0},C);
+    for(int32 Y=1;Y<=20;++Y)M.Observe({20,Y},C);
+    auto R=Plan(M,{.05,.05,M.Floor},{2.05,2.05,M.Floor});
+    TestTrue(TEXT("Observed corridor remains connected in session memory"),R.bComplete);
+    TestTrue(TEXT("Stale observations are still distinguished from fresh ones"),R.EstimatedMeters>3.5&&R.ObservedMeters==0);
+    for(const auto& P:R.Points)
+    {
+        TestTrue(TEXT("Smoothing cached floor never cuts across unseen corner"),M.State(FMapSnapshot::Key(P.Position))==EOccupancy::Free);
+        TestTrue(TEXT("Cached floor keeps measured elevation"),FMath::IsNearlyEqual(float(P.Position.Z),M.Floor));
+    }
+    return true;
+}
+NAVTEST(FNavElevatedBoundary,"Providers.WallsOutsideElevatedFloorPolygon");
+bool FNavElevatedBoundary::RunTest(const FString&)
+{
+    for(float Z:{2.08f,-2.08f})
+    {
+        WallhackNav::FScene S;S.Floors.Add({{{0,0},{2,0},{2,2},{0,2}},Z});
+        S.Obstacles.Add({FBox(FVector(-.1,-.1,Z),FVector(0,2.1,Z+2.5)),true});
+        S.Obstacles.Add({FBox(FVector(2,-.1,Z),FVector(2.1,2.1,Z+2.5)),true});
+        S.Obstacles.Add({FBox(FVector(-.1,-.1,Z),FVector(2.1,0,Z+2.5)),true});
+        S.Obstacles.Add({FBox(FVector(-.1,2,Z),FVector(2.1,2.1,Z+2.5)),true});
+        FMap M;M.Floor=Z;
+        for(int32 Y=-3;Y<24;++Y)for(int32 X=-3;X<24;++X)
+        {FCell C;if(S.Sample(FMapSnapshot::Center({X,Y},Z),C))M.Observe({X,Y},C);}
+        TestTrue(TEXT("Outer side of scanned wall survives nonzero floor elevation"),M.State({20,10})==EOccupancy::Occupied);
+        TestFalse(TEXT("Unknown search cannot escape an elevated closed room"),Plan(M,{1,1,Z},{3,1,Z}).bComplete);
+    }
+    return true;
+}
+NAVTEST(FNavMemoryOutline,"Map.MinimapSharesFusedGeometry");
+bool FNavMemoryOutline::RunTest(const FString&)
+{
+    FMap M;FCell C=Free(1);C.Evidence=EEvidence::Depth;
+    for(int32 Y=0;Y<10;++Y)for(int32 X=0;X<10;++X)M.Observe({X,Y},C);
+    auto Outline=BuildMapOutline(M);
+    TestEqual(TEXT("A hundred floor cells merge into four contour strokes"),Outline.Num(),4);
+    C=Wall();C.Evidence=EEvidence::Depth;C.ObservedAt=2;
+    M.Observe({5,5},C);M.Now=200;Outline=BuildMapOutline(M);
+    int32 Obstacles=0;for(const auto& E:Outline)Obstacles+=E.bObstacle;
+    TestEqual(TEXT("Live-only obstacle stays visible outside the camera view"),Obstacles,4);
+    const FMapSnapshot Before=M;C=Free();C.Evidence=EEvidence::Depth;
+    for(int32 I=0;I<3;++I){C.ObservedAt=201+I*.2;M.Observe({5,5},C);}
+    TestEqual(TEXT("Positive clearance removes the same obstacle from the map"),BuildMapOutline(M).Num(),4);
+    TestTrue(TEXT("Planner snapshot is not mutated by map updates"),Before.State({5,5})==EOccupancy::Occupied);
     return true;
 }
 NAVTEST(FNavPointSegments,"Planner.PointSegmentsCannotClipWalls");
@@ -279,6 +352,24 @@ bool FNavMinimalArrows::RunTest(const FString&)
     D.Route.Points[0].bEstimated=D.Route.Points[1].bEstimated=true;G=BuildTrail(D);
     TestEqual(TEXT("Estimated sections use the same arrow-only geometry"),G.Vertices.Num(),ObservedVertices);
     for(auto C:G.Colors)if(C.R>.5f)TestTrue(TEXT("Unknown chevrons remain amber and distinct"),C.R>C.G&&C.A<.7f&&C.A>.5f);
+    return true;
+}
+NAVTEST(FNavAcrossWallProgress,"Planner.ProgressAndArrivalCannotJumpAcrossWall");
+bool FNavAcrossWallProgress::RunTest(const FString&)
+{
+    auto M=Room();for(int32 Y=0;Y<=10;++Y)M.Observe({10,Y},Wall());
+    const FVector Viewer(.999,.55,1.7);
+    FRoute R;R.bComplete=true;
+    R.Points={{{.65,.55,0},false},{{.65,-.15,0},false},{{1.25,-.15,0},false},{{1.15,.55,0},false}};
+    TestTrue(TEXT("Original route goes around the end of the wall"),ValidateRoute(M,R));
+    TrimTraversedRoute(R,Viewer,&M);
+    TestTrue(TEXT("Progress retains the detour despite a closer point on the far side"),R.Points.Num()>=4&&R.bComplete&&ValidateRoute(M,R));
+    const auto Cursor=WallhackNavPresentation::ProjectRoute(R,Viewer);
+    TestEqual(TEXT("Arrow rendering follows the checked connection from the wearer"),Cursor.Segment,0);
+    TestTrue(TEXT("Remaining route includes the trip around the wall"),Cursor.Remaining>1.5);
+    FTarget T;T.Standing={1.15,.55,0};
+    TestFalse(TEXT("A person fifteen centimetres away through a wall is not reached"),HasArrived(M,T,Viewer));
+    TestTrue(TEXT("Reaching the same side still arrives"),HasArrived(M,T,{1.2,.55,1.7}));
     return true;
 }
 NAVTEST(FNavNearArrows,"Render.ShortAndRemainingRouteVisibility");

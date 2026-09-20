@@ -58,8 +58,11 @@ bool BoxRay(const FBox& B,FVector O,FVector D,float Max,float& T,FVector& Normal
 }
 bool FScene::Sample(FVector P,FCell& Out) const
 {
-    bool Floor=false; float Z=0;
-    for(const auto& F:Floors) if(InPolygon(FVector2D(P),F.Polygon)){Z=F.Z;Floor=true;break;}
+    // The active floor is not necessarily world Z=0. Outside a floor polygon
+    // its elevation must still be used to rasterize the enclosing walls.
+    bool Floor=false; float Z=P.Z,Best=FLT_MAX;
+    for(const auto& F:Floors) if(InPolygon(FVector2D(P),F.Polygon)&&FMath::Abs(F.Z-P.Z)<Best)
+    {Z=F.Z;Best=FMath::Abs(F.Z-P.Z);Floor=true;}
     // Include walls outside the floor's polygon so unknown routes cannot bypass
     // scanned boundaries by stepping into the first unseeded cell.
     for(const auto& O:Obstacles)

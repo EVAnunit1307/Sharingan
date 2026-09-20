@@ -56,6 +56,7 @@ inline FRouteCursor ProjectRoute(const WallhackNav::FRoute& Route,FVector Viewer
     FRouteCursor Cursor;
     for(int32 I=0;I+1<Route.Points.Num();++I)
     {
+        if(Route.bAttachedToViewer&&I>0)break;
         const FVector A=Route.Points[I].Position,B=Route.Points[I+1].Position;
         const FVector Delta=B-A;
         if(Delta.SizeSquared2D()<UE_SMALL_NUMBER)continue;

@@ -10,6 +10,7 @@ constexpr float CellSize = .1f;
 constexpr float StandingHeight = 1.8f;
 constexpr float MaxStep = .15f;
 constexpr int32 TileSize = 16;
+constexpr double LiveEvidenceSeconds = 5;
 enum class EOccupancy : uint8 { Unknown, Free, Occupied, Unsupported };
 enum class EEvidence : uint8 { None, SceneFloor, SceneWall, SceneObject, Depth };
 enum class ERouteState : uint8 { Idle, Planning, Mapped, Estimated, Incomplete, Blocked, Arrived, Relocalizing, StartBlocked };
@@ -38,6 +39,9 @@ struct FMapSnapshot
     static FIntPoint TileKey(FIntPoint K) { return {FMath::FloorToInt32(double(K.X) / TileSize), FMath::FloorToInt32(double(K.Y) / TileSize)}; }
     const FCell* Find(FIntPoint K) const;
     EOccupancy State(FIntPoint K) const;
+    // Geometry is session memory. Freshness changes its presentation, not
+    // whether a remembered wall may be crossed.
+    bool IsEstimated(FIntPoint K) const;
     // Point navigation: only the containing cell, with no body-radius inflation.
     // Floor evidence and same-floor checks still apply.
     EOccupancy Walkability(FIntPoint K, FIntPoint* FirstBlockingCell = nullptr) const;
@@ -50,11 +54,15 @@ public:
     void Reset() { Tiles.Reset(); ++Revision; }
 };
 struct FRoutePoint { FVector Position = FVector::ZeroVector; bool bEstimated = false; };
+struct FMapEdge { FVector A, B; bool bObstacle = false; };
 struct FRoute
 {
     TArray<FRoutePoint> Points;
     bool bComplete = false;
     bool bStartBlocked = false;
+    // Runtime progress was joined to the wearer through checked map cells.
+    // Renderers must not project ahead onto a nearby leg through a wall.
+    bool bAttachedToViewer = false;
     int32 Expanded = 0;
     float ObservedMeters = 0, EstimatedMeters = 0;
     double PlannerMs = 0;
@@ -89,10 +97,11 @@ struct FDisplaySnapshot
     FTarget Preview;
 };
 HANDOFFQUESTHUD_API FRoute Plan(const FMapSnapshot& Map, FVector Start, FVector Goal, int32 ExpansionLimit = 50000);
+HANDOFFQUESTHUD_API TArray<FMapEdge> BuildMapOutline(const FMapSnapshot& Map);
 HANDOFFQUESTHUD_API bool ValidateRoute(const FMapSnapshot& Map, const FRoute& Route, int32* FirstBlocked = nullptr);
 // Rounded, densely sampled geometry is shared by guidance, metrics and the map.
 HANDOFFQUESTHUD_API void SmoothRoute(const FMapSnapshot& Map, FRoute& Route);
-HANDOFFQUESTHUD_API void TrimTraversedRoute(FRoute& Route, FVector Viewer);
+HANDOFFQUESTHUD_API void TrimTraversedRoute(FRoute& Route, FVector Viewer, const FMapSnapshot* Map = nullptr);
 HANDOFFQUESTHUD_API bool SelectStanding(const FMapSnapshot& Map, FVector Surface, bool bFloorHit, FVector Viewer, FVector& Out);
 HANDOFFQUESTHUD_API bool HasArrived(const FMapSnapshot& Map, const FTarget& Target, FVector Viewer);
 HANDOFFQUESTHUD_API const TCHAR* StateLabel(ERouteState State);

@@ -28,6 +28,8 @@ public:
     const WallhackNav::FDisplaySnapshot& GetDisplaySnapshot() const { return Display; }
     FString GetInteractionHint() const;
     const WallhackNav::FScene& GetScene() const { return Scene; }
+    const WallhackNav::FMapSnapshot& GetMap() const { return Map; }
+    const TArray<WallhackNav::FMapEdge>& GetMapOutline() const { return MapOutline; }
     bool IsSceneOccluded(FVector OriginMeters,FVector PointMeters) const;
     // Deterministic providers also exercise the actual subsystem in automation.
     void SetProviders(TSharedPtr<WallhackNav::ISceneProvider> InScene,TSharedPtr<WallhackNav::IDepthProvider> InDepth);
@@ -47,6 +49,15 @@ private:
     void UpdateMetrics();
     void HideGuidance();
     WallhackNav::FMap Map;
+    TArray<WallhackNav::FMapEdge> MapOutline;
+    uint64 OutlineRevision=0;
+    struct FOutlineResult
+    {
+        TArray<WallhackNav::FMapEdge> Edges;
+        uint64 Revision=0;
+        double Milliseconds=0;
+    };
+    TFuture<FOutlineResult> PendingOutline;
     WallhackNav::FScene Scene;
     WallhackNav::FDisplaySnapshot Display;
     TSharedPtr<WallhackNav::ISceneProvider> SceneProvider;
@@ -71,7 +82,7 @@ private:
     FQuat PreviousOrientation=FQuat::Identity;
     double Now=0, LastPlan=-100, LastMetrics=-100, LastDepth=-100, LastLiveHit=-100, LastPoll=-100, FreshAfter=0, LastLog=0;
     float StableSeconds=0;
-    float MappingAverage=0,QueryAverage=0,FPSAverage=0;
+    float MappingAverage=0,QueryAverage=0,FPSAverage=0,OutlineMs=0;
     bool bActive=false,bProvidersStarted=false,bSceneLoaded=false,bSeeding=false,bSuspended=false,bPose=false,bPreviousPose=false;
     bool bNeedsPlan=false,bNeedsCapture=false,bCaptureInProgress=false,bPermissionDenied=false,bCoordinatePending=false;
     FDelegateHandle BackgroundHandle,ForegroundHandle,RecenterHandle;
