@@ -115,7 +115,12 @@ The candidate is installed on Quest 3S and its pulled APK hash matches. On the
 preceding build, moving it to the hotspot and unlocking allowed sensor-mode
 GameActivity to connect to `ws://172.20.10.2:8765/`, with one native client.
 Radar matching is enabled with the wearer-confirmed camera offset of +0.032 m
-right and 0 m forward; both sensors are level and parallel. Full-body camera observations can supply
+right and +0.0128 m forward; both sensors are level and parallel. The radar is
+0.014 m higher than the camera (camera up-offset: -0.014 m). This vertical
+separation is recorded as mount geometry only: the current fusion uses
+right/forward floor-plane positions, and camera range comes from full-body box
+height, not a sensor-height/ground-ray intersection. It does not move silhouette
+feet off the registered floor. Full-body camera observations can supply
 ESTIMATED contacts; clipped people without an associated range remain
 unpositioned. The wearer confirmed a visible live silhouette; physical
 position-error measurement, stereo and Quest performance remain pending. The
