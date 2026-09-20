@@ -11,6 +11,9 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Kismet/KismetRenderingLibrary.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Components/PoseableMeshComponent.h"
+#include "Engine/SkeletalMesh.h"
+#include "WallhackHumanPose.h"
 
 AWallhackPeopleRenderer::AWallhackPeopleRenderer()
 {
@@ -24,6 +27,87 @@ AWallhackPeopleRenderer::AWallhackPeopleRenderer()
     OutlineMaterial = Outline.Object;
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> Label(TEXT("/Game/Materials/M_PersonLabel.M_PersonLabel"));
     LabelMaterial = Label.Object;
+    static ConstructorHelpers::FObjectFinder<USkeletalMesh> Rig(TEXT("/Game/People/SK_HumanSilhouette.SK_HumanSilhouette"));
+    ArticulatedMesh=Rig.Object;
+}
+
+bool AWallhackPeopleRenderer::PrepareArticulatedAsset(USkeletalMesh* Mesh)
+{
+#if WITH_EDITOR
+    if(!Mesh||Mesh->GetLODNum()<3)return false;
+    Mesh->Modify();
+    for(int32 I=0;I<Mesh->GetLODNum();++I)Mesh->GetLODInfo(I)->bAllowCPUAccess=true;
+    Mesh->SetSupportLODStreaming(FPerPlatformBool(false));
+    Mesh->PostEditChange();Mesh->MarkPackageDirty();
+    return true;
+#else
+    return false;
+#endif
+}
+
+UPoseableMeshComponent* AWallhackPeopleRenderer::CreateArticulatedBody()
+{
+    auto* Body=NewObject<UPoseableMeshComponent>(this);AddInstanceComponent(Body);
+    Body->SetupAttachment(GetRootComponent());Body->SetMobility(EComponentMobility::Movable);
+    if(ArticulatedMesh&&ArticulatedMesh->GetSkeleton())Body->SetSkinnedAssetAndUpdate(ArticulatedMesh);
+    Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);Body->SetGenerateOverlapEvents(false);
+    Body->SetCanEverAffectNavigation(false);Body->SetCastShadow(false);Body->bReceivesDecals=false;
+    Body->SetBoundsScale(2.f); // Raised arms must not be culled by the bind-pose box.
+    // The configured GPU skin path fails the isolated paired-eye render check.
+    // Use the CPU skin path, capped at LOD1 (3,711 vertices per person).
+    // CPU buffers are retained explicitly by import_articulated_human.py.
+    if(Body->GetSkinnedAsset())
+    {
+        Body->OverrideMinLOD(1);
+        Body->SetCPUSkinningEnabled(true,false);
+    }
+    auto* Material=UMaterialInstanceDynamic::Create(BodyMaterial,this);
+    // FBX section material indices need not start at zero. Share one identity
+    // instance across every slot, including preserved/reimported slot mappings.
+    for(int32 I=0;I<FMath::Max(1,Body->GetNumMaterials());++I)Body->SetMaterial(I,Material);
+    Body->RegisterComponent();
+    // Keep the component's normal tick for LOD and render-state maintenance.
+    // Joint targets are supplied together with the sensor actor below.
+    if(ReferenceBones.IsEmpty()&&ArticulatedMesh)
+    {
+        const auto& Skeleton=ArticulatedMesh->GetRefSkeleton();TArray<FTransform> Components;
+        for(int32 I=0;I<Skeleton.GetNum();++I)
+        {
+            FTransform T=Skeleton.GetRefBonePose()[I];const int32 Parent=Skeleton.GetParentIndex(I);
+            if(Parent>=0)T=T*Components[Parent];
+            Components.Add(T);ReferenceBones.Add(Skeleton.GetBoneName(I),T);
+        }
+    }
+    return Body;
+}
+
+FBox AWallhackPeopleRenderer::UpdateArticulated(int32 Slot,const FWallhackPersonPose& Person,const FTransform& Pose,double Now)
+{
+    auto* Body=ArticulatedBodies[Slot].Get();Body->SetWorldTransform(Pose);
+    const auto Solved=WallhackHumanPose::Solve(Person,ReferenceBones,Now);
+    auto& Smooth=SmoothedBones[Slot];
+    const bool Reset=BoneIds[Slot]!=Person.Id||Now<BoneTimes[Slot]||Now-BoneTimes[Slot]>.25;
+    const float Alpha=Reset?1.f:1.f-FMath::Exp(-FMath::Max(0.,Now-BoneTimes[Slot])/.08);
+    BoneTimes[Slot]=Now;BoneIds[Slot]=Person.Id;
+    FBox Bounds(ForceInit);
+    const auto& Skeleton=ArticulatedMesh->GetRefSkeleton();
+    // Parent-first component transforms keep PoseableMesh's local conversions coherent.
+    for(int32 I=0;I<Skeleton.GetNum();++I)
+    {
+        const FName Name=Skeleton.GetBoneName(I);const FTransform* Target=Solved.Find(Name);if(!Target)continue;
+        FTransform T=*Target;
+        if(!Reset)if(const auto* Previous=Smooth.Find(Name))
+        {
+            T.SetRotation(FQuat::Slerp(Previous->GetRotation(),T.GetRotation(),Alpha).GetNormalized());
+            T.SetLocation(FMath::Lerp(Previous->GetLocation(),T.GetLocation(),Alpha));
+        }
+        Smooth.Add(Name,T);Body->SetBoneTransformByName(Name,T,EBoneSpaces::ComponentSpace);
+        if(Name!=TEXT("root")&&Name!=TEXT("HumanSkeleton"))Bounds+=T.GetLocation();
+    }
+    Body->RefreshBoneTransforms();
+    if(!Bounds.IsValid)return BodyMesh->GetBoundingBox();
+    Bounds.Min-=FVector(6,6,5);Bounds.Max+=FVector(6,6,10);Bounds.Min.Z=FMath::Max(-1.,Bounds.Min.Z);
+    return Bounds;
 }
 
 UStaticMeshComponent* AWallhackPeopleRenderer::CreateBody()
@@ -99,6 +183,8 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
     {
         auto* Body = CreateBody();
         Bodies.Add(Body);
+        ArticulatedBodies.Add(CreateArticulatedBody());
+        SmoothedBones.Add({});BoneTimes.Add(-1);BoneIds.Add(INDEX_NONE);
         Outlines.Add(CreateOutline(Body));
         Telemetry.Add(CreateTelemetry());
         PresentationColors.Add(FLinearColor::Transparent);
@@ -110,11 +196,21 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
     {
         auto* Body = Bodies[I].Get();
         const bool PoseChanged=I<Count&&TelemetryIds[I]!=(I<People.Num()?People[I].Id:INDEX_NONE);
-        Body->SetHiddenInGame(I >= Count, true);
+        Outlines[I]->SetHiddenInGame(I>=Count);
         Telemetry[I]->SetHiddenInGame(I>=People.Num()); // Placement previews have no person ID yet.
-        if (I >= Count) continue;
+        if (I >= Count)
+        {
+            Body->SetHiddenInGame(true,false);
+            ArticulatedBodies[I]->SetHiddenInGame(true);
+            continue;
+        }
         const bool bPreview = I == People.Num();
         const auto& Person = bPreview ? *Preview : People[I];
+        const bool bUseArticulated=Person.bArticulated&&ArticulatedMesh&&ArticulatedMesh->GetSkeleton();
+        // A hide/show pair recreates the skeletal render object every frame and
+        // discards its bone upload. Apply each final visibility state only once.
+        Body->SetHiddenInGame(bUseArticulated,false);
+        ArticulatedBodies[I]->SetHiddenInGame(!bUseArticulated);
         const FLinearColor IdentityColor=WallhackPeopleStyle::Color(Person);
         if(PresentationColors[I]!=IdentityColor)
         {
@@ -132,6 +228,23 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
             FVector(Person.Height * WorldToMeters / MeshHeight));
         const bool Moved=!Body->GetComponentTransform().Equals(Pose);
         if (Moved) Body->SetWorldTransform(Pose);
+        FBox LocalBounds=BodyMesh->GetBoundingBox();
+        if(bUseArticulated)
+        {
+            LocalBounds=UpdateArticulated(I,Person,Pose,Now);
+            if(auto* Skin=Cast<UMaterialInstanceDynamic>(ArticulatedBodies[I]->GetMaterial(0)))
+            {Skin->SetVectorParameterValue(TEXT("Tint"),IdentityColor);Skin->SetScalarParameterValue(TEXT("Opacity"),.30f);}
+            // Adapt the twelve existing outline rods to the articulated bounds.
+            const FBox Base=BodyMesh->GetBoundingBox();const float Padding=MeshHeight*.025f;
+            const FVector BaseMin=Base.Min-FVector(Padding,Padding,-MeshHeight*.0015f);
+            const FVector BaseMax=Base.Max+FVector(Padding);
+            const FVector NewMin=LocalBounds.Min-FVector(Padding),NewMax=LocalBounds.Max+FVector(Padding);
+            // Keep rod geometry in its original coordinates; the outline's local
+            // transform changes the bounds without accumulating vertex edits.
+            const FVector Scale=(NewMax-NewMin)/(BaseMax-BaseMin);
+            Outlines[I]->SetRelativeTransform(FTransform(FQuat::Identity,NewMin-BaseMin*Scale,Scale));
+        }
+        else Outlines[I]->SetRelativeTransform(FTransform::Identity);
         auto* Material = Cast<UMaterialInstanceDynamic>(Body->GetMaterial(0));
         if (Material)
         {
@@ -146,7 +259,7 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
                 BuildTelemetry(I,Person,Distance,NorthOffset);
                 TelemetryTimes[I]=Now;TelemetryIds[I]=Person.Id;
             }
-            const FBox Bounds=BodyMesh->GetBoundingBox();
+            const FBox Bounds=LocalBounds;
             const float Padding=MeshHeight*.025f;
             const FVector Right=ViewOrientation.GetRightVector(),Up=ViewOrientation.GetUpVector();
             FVector Corner=FVector::ZeroVector;double Best=-DBL_MAX;
@@ -193,11 +306,14 @@ UProceduralMeshComponent* AWallhackPeopleRenderer::CreateTelemetry()
 
 void AWallhackPeopleRenderer::BuildTelemetry(int32 Slot,const FWallhackPersonPose& Person,float Distance,float NorthOffset)
 {
-    const FString Header=Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("PERSON %02d / MANUAL"),Person.Id)
+    const FString Header=Person.bArticulated?FString::Printf(TEXT("P%d / %s"),Person.Id,*Person.SourceLabel)
+        :Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("PERSON %02d / MANUAL"),Person.Id)
         :FString::Printf(TEXT("%s%d / %s"),Person.bRadarOnly?TEXT("R"):TEXT("C"),Person.Id,*Person.SourceLabel);
     const FString Range=FString::Printf(TEXT("%.1f M"),Distance);
     const int32 Facing=FMath::RoundToInt(FRotator::ClampAxis(Person.Facing+NorthOffset))%360;
-    const FString Detail=Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("H %.2f M / FACE %03d"),Person.Height,Facing)
+    const FString Detail=Person.bArticulated?FString::Printf(TEXT("%s H %.2f M / %s"),Person.bHeightEstimated?TEXT("EST."):TEXT("ASSUMED"),Person.Height,
+        Person.bCameraPose?TEXT("VISIBLE JOINTS"):TEXT("INFERRED MOTION"))
+        :Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("H %.2f M / FACE %03d"),Person.Height,Facing)
         :FString::Printf(TEXT("ASSUMED H %.2f M / FACES SENSOR"),Person.Height);
     const FString Text=Header+TEXT("\n")+Range+TEXT("\n")+Detail;
     if(TelemetryText[Slot]==Text)return;

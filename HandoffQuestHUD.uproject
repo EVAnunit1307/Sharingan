@@ -5,6 +5,11 @@
 	"Description": "Wallhack Quest 3S operator HUD.",
 	"Modules": [
 		{
+			"Name": "WallhackXR",
+			"Type": "Runtime",
+			"LoadingPhase": "PostConfigInit"
+		},
+		{
 			"Name": "HandoffQuestHUD",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

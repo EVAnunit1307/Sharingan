@@ -11,7 +11,7 @@ public class HandoffQuestHUD : ModuleRules
             "DeveloperSettings", "HeadMountedDisplay", "UMG", "ImageWrapper"
         });
 
-        PrivateDependencyModuleNames.AddRange(new[] { "Slate", "SlateCore", "EnhancedInput", "ProceduralMeshComponent", "AndroidPermission", "XRBase" });
+        PrivateDependencyModuleNames.AddRange(new[] { "Slate", "SlateCore", "EnhancedInput", "ProceduralMeshComponent", "AndroidPermission", "XRBase", "WallhackXR" });
         if (Target.bBuildEditor)
         {
             PrivateDependencyModuleNames.AddRange(new[] { "RenderCore", "RHI" });
@@ -23,6 +23,11 @@ public class HandoffQuestHUD : ModuleRules
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
             PrivateDependencyModuleNames.AddRange(new[] { "OculusXRHMD", "OculusXRPassthrough", "OculusXRAnchors", "MRUtilityKit", "OculusXRScene" });
+            // UE 5.7's base Quest manifest advertises hands even when Meta's
+            // HandTrackingSupport is ControllersOnly. Keep app input controller
+            // based; WallhackXR explicitly tracks unheld physical controllers.
+            AdditionalPropertiesForReceipt.Add("AndroidPlugin",
+                System.IO.Path.Combine(ModuleDirectory, "WallhackControllers_APL.xml"));
         }
     }
 }

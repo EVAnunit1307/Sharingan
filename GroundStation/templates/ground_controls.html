@@ -2,6 +2,10 @@
   <div class="head"><div><span class="tag">03 / ASSOCIATION + OBSERVATION HISTORY</span><h2 id="fusion-title">Native Quest people</h2></div><span id="fusion-mode" class="tag">Connecting</span></div>
   <div class="fusion-body">
     <p id="fusion-status" role="status">Waiting for sensor telemetry.</p>
+    <div class="fusion-grid">
+      <section class="fusion-chart"><h3>Camera pose · exact inference frame</h3><p id="human-pose-status" class="details">Pose worker disabled.</p><img id="pose-image" alt="Camera frame with supported body joints" hidden style="width:100%;max-height:440px;object-fit:contain"><p class="details">Visible joints drive the figure. Hidden joints and radar-only motion remain estimates.</p></section>
+      <section class="fusion-chart"><h3>Persistent tracks and filtering</h3><div id="pose-tracks"></div><p id="pose-decisions" class="details"></p><p id="pose-rig" class="details"></p></section>
+    </div>
     <div class="fusion-counts" aria-label="Current contact counts">
       <div><span>Camera observed</span><strong id="fusion-camera-count">—</strong></div>
       <div><span>Matched</span><strong id="fusion-matched-count" class="green">—</strong></div>
@@ -23,7 +27,7 @@
         <p id="fusion-selection-summary" class="details">Select a contact on the map or from the list.</p>
       </section>
     </div>
-    <div class="fusion-toolbar"><h3>Positions sent to Quest</h3><span class="details">Before Quest's 120 ms interpolation · up to 8 bodies</span></div>
+    <div class="fusion-toolbar"><h3>Positions sent to Quest</h3><span class="details">Filtered roots before Quest interpolation · up to 8 bodies</span></div>
     <div id="fusion-people" class="target-list" aria-live="off"></div>
     <p id="fusion-empty" class="details">No fresh positioned contacts.</p>
     <details open class="fusion-details"><summary>Every camera observation and radar return</summary><div class="fusion-table-scroll">
@@ -39,11 +43,14 @@
       <form id="fusion-form" class="fusion-config">
         <label>Camera offset right of radar reference (m)<input id="fusion-right" type="number" step="0.0001" min="-2" max="2" value="0" required></label>
         <label>Camera offset forward of radar reference (m)<input id="fusion-forward" type="number" step="0.0001" min="-2" max="2" value="0" required></label>
-        <p>Both sensors must be level and face the same direction. Measure offsets, then check a person standing left, centre and right.</p>
+        <label>Rig use<select id="fusion-rig-mode"><option value="stationary">Stationary and registered</option><option value="left_controller">Left controller / align in Quest</option><option value="untracked">Moving / pose unavailable</option></select></label>
+        <label>Camera lens height above floor (m, optional)<input id="fusion-height" type="number" step="0.001" min="0.1" max="4" placeholder="Not measured"></label>
+        <label>Camera downward pitch (degrees)<input id="fusion-pitch" type="number" step="0.1" min="-45" max="45" value="0"></label>
+          <p>Mount the left controller with its aiming ray parallel to camera/radar forward. At startup hold the rig upright, mark the radar centre with the right grip and press its trigger. Quest tracks the rigid mount and pauses figures if positional tracking is lost. Radar-only feet remain estimated on the session floor. Height/pitch fields apply only to stationary camera floor ranging.</p>
         <label><input id="fusion-confirmed" type="checkbox"> Enable matching with the confirmed mounting alignment</label>
         <button type="submit">Save alignment</button><p id="fusion-save" role="status"></p>
       </form>
     </details>
-    <p class="details fusion-footnote">Either sensor can produce a silhouette. Camera scores are model scores; radar-only returns are unclassified. Body height (1.65 m), posture and facing are assumptions. These graphs show sensor observations and positions sent to Quest, not measured Quest rendering or target velocity. History is kept in this browser tab for 30 seconds and cleared when the source/reference changes.</p>
+    <p class="details fusion-footnote">Either sensor can produce a silhouette. Radar-only returns are unclassified. Visible camera joints guide articulation; missing joints and motion animation are estimated. Height stays assumed until supported by calibrated floor observations. Motion/uncertainty are filter estimates. History is kept in this tab for 30 seconds and cleared when the source/reference changes.</p>
   </div>
 </section>

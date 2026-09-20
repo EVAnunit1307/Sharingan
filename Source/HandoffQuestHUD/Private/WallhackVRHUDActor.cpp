@@ -202,104 +202,47 @@ void AWallhackVRHUDActor::BeginPlay()
     StereoLayer->MarkTextureForUpdate();
     SpatialLabelAtlas = WallhackCanvasLabels::CreateAtlas();
 
-    // --- Interactive HUD density toggle -------------------------------
-    // Modeled on the "immersive/photo mode" toggle nearly every modern
-    // game ships, bound to the right controller's B button. It's not just
-    // a game-style flourish here: this is a real AR overlay over the
-    // operator's actual surroundings, so a single press to clear it away
-    // when the real world needs full attention is a genuine safety
-    // control, not a nice-to-have. Built entirely in C++ (Enhanced Input
-    // action + mapping context constructed at runtime) since the project
-    // has no Content assets to hang a Blueprint input asset off of.
-    CycleHUDAction = NewObject<UInputAction>(this, TEXT("WallhackCycleHUDAction"));
-    CycleHUDAction->ValueType = EInputActionValueType::Boolean;
-
-    // Left-controller X re-zeroes the compass reference. In spatial mode
-    // this changes compass labels only; world contact and local-map geometry
-    // continue to use the tracked viewer pose. Construct the action at runtime.
-    CalibrateNorthAction = NewObject<UInputAction>(this, TEXT("WallhackCalibrateNorthAction"));
-    CalibrateNorthAction->ValueType = EInputActionValueType::Boolean;
-
-    // Left-controller trigger: push-to-talk for the wrist-raise comms panel
-    // (see TransmitAction's comment in the header -- UI/button state only,
-    // no audio path wired up yet).
-    TransmitAction = NewObject<UInputAction>(this, TEXT("WallhackTransmitAction"));
-    TransmitAction->ValueType = EInputActionValueType::Boolean;
-    PlaceContactAction = NewObject<UInputAction>(this, TEXT("WallhackPlaceContactAction"));
-    PlaceContactAction->ValueType = EInputActionValueType::Boolean;
-    SelectContactAction = NewObject<UInputAction>(this, TEXT("WallhackSelectContactAction"));
-    SelectContactAction->ValueType = EInputActionValueType::Boolean;
-    MapRangeAction = NewObject<UInputAction>(this, TEXT("WallhackMapRangeAction"));
-    MapRangeAction->ValueType = EInputActionValueType::Boolean;
-    PauseSimulationAction = NewObject<UInputAction>(this, TEXT("WallhackPauseSimulationAction"));
-    PauseSimulationAction->ValueType = EInputActionValueType::Boolean;
-    ContactUpdatesAction = NewObject<UInputAction>(this, TEXT("WallhackContactUpdatesAction"));
-    ContactUpdatesAction->ValueType = EInputActionValueType::Boolean;
-
-    HUDMappingContext = NewObject<UInputMappingContext>(this, TEXT("WallhackHUDMappingContext"));
-    HUDMappingContext->MapKey(CycleHUDAction, EKeys::OculusTouch_Right_B_Click);
-    HUDMappingContext->MapKey(CalibrateNorthAction, EKeys::OculusTouch_Left_X_Click);
+    // OpenXR builds its action sets before BeginPlay. Use the same cooked
+    // contexts and actions declared in Enhanced Input's startup settings.
+    const auto Action = [](const TCHAR* Name)
+    {
+        const FString Path = FString::Printf(TEXT("/Game/Input/IA_%s.IA_%s"), Name, Name);
+        auto* Result = LoadObject<UInputAction>(nullptr, *Path);
+        ensureAlwaysMsgf(Result, TEXT("Missing cooked controller input action: %s"), *Path);
+        return Result;
+    };
+    CycleHUDAction = Action(TEXT("CycleHUD"));
+    CalibrateNorthAction = Action(TEXT("CalibrateNorth"));
+    TransmitAction = Action(TEXT("Transmit"));
+    PlaceContactAction = Action(TEXT("PlaceContact"));
+    SelectContactAction = Action(TEXT("SelectContact"));
+    MapRangeAction = Action(TEXT("MapRange"));
+    PauseSimulationAction = Action(TEXT("PauseSimulation"));
+    ContactUpdatesAction = Action(TEXT("ContactUpdates"));
+    CommonMappingContext = LoadObject<UInputMappingContext>(nullptr, TEXT("/Game/Input/IMC_WallhackCommon.IMC_WallhackCommon"));
+    const bool bSensor = FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople"));
     const bool bDemo = IsValid(WorldContact) || FParse::Param(FCommandLine::Get(), TEXT("WallhackDemo")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"));
-    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople")))
+    const TCHAR* Mode = bSensor ? TEXT("Sensor") : bDemo ? TEXT("Demo") : TEXT("Navigation");
+    HUDMappingContext = LoadObject<UInputMappingContext>(nullptr,
+        *FString::Printf(TEXT("/Game/Input/IMC_Wallhack%s.IMC_Wallhack%s"), Mode, Mode));
+    if (bSensor)
     {
-        SensorConfirmAction = NewObject<UInputAction>(this, TEXT("SensorConfirm"));
-        SensorResetAction = NewObject<UInputAction>(this, TEXT("SensorReset"));
-        HUDMappingContext->MapKey(SensorConfirmAction, EKeys::OculusTouch_Right_Trigger_Click);
-        HUDMappingContext->MapKey(SensorResetAction, EKeys::OculusTouch_Right_A_Click);
-        HUDMappingContext->MapKey(SensorConfirmAction, EKeys::Enter);
-        HUDMappingContext->MapKey(SensorResetAction, EKeys::C);
+        SensorConfirmAction = Action(TEXT("SensorConfirm"));
+        SensorResetAction = Action(TEXT("SensorReset"));
     }
-    else if (bDemo)
+    else if (!bDemo)
     {
-        HUDMappingContext->MapKey(TransmitAction, EKeys::OculusTouch_Left_Trigger_Click);
-        HUDMappingContext->MapKey(PlaceContactAction, EKeys::OculusTouch_Right_A_Click);
-        HUDMappingContext->MapKey(SelectContactAction, EKeys::OculusTouch_Right_Trigger_Click);
-        HUDMappingContext->MapKey(MapRangeAction, EKeys::OculusTouch_Right_Thumbstick_Click);
-        HUDMappingContext->MapKey(PauseSimulationAction, EKeys::OculusTouch_Left_Y_Click);
-        HUDMappingContext->MapKey(ContactUpdatesAction, EKeys::OculusTouch_Left_Thumbstick_Click);
+        NavigationAimAction = Action(TEXT("NavigationAim"));
+        NavigationConfirmAction = Action(TEXT("NavigationConfirm"));
+        NavigationCancelAction = Action(TEXT("NavigationCancel"));
+        PeopleModeAction = Action(TEXT("PeopleMode"));
+        PeopleSelectAction = Action(TEXT("PeopleSelect"));
+        PeopleHeightAction = Action(TEXT("PeopleHeight"));
+        PeopleFacingAction = Action(TEXT("PeopleFacing"));
+        PeopleMoveAction = Action(TEXT("PeopleMove"));
     }
-    else
-    {
-        HUDMappingContext->MapKey(MapRangeAction,EKeys::OculusTouch_Left_Thumbstick_Click);
-        NavigationAimAction=NewObject<UInputAction>(this,TEXT("NavigationAim"));
-        NavigationConfirmAction=NewObject<UInputAction>(this,TEXT("NavigationConfirm"));
-        NavigationCancelAction=NewObject<UInputAction>(this,TEXT("NavigationCancel"));
-        HUDMappingContext->MapKey(NavigationAimAction,EKeys::OculusTouch_Right_Grip_Click);
-        HUDMappingContext->MapKey(NavigationConfirmAction,EKeys::OculusTouch_Right_Trigger_Click);
-        HUDMappingContext->MapKey(NavigationCancelAction,EKeys::OculusTouch_Right_A_Click);
-        HUDMappingContext->MapKey(NavigationAimAction,EKeys::G);
-        HUDMappingContext->MapKey(NavigationConfirmAction,EKeys::Enter);
-        HUDMappingContext->MapKey(NavigationCancelAction,EKeys::C);
-        PeopleModeAction=NewObject<UInputAction>(this,TEXT("PeopleMode"));
-        PeopleSelectAction=NewObject<UInputAction>(this,TEXT("PeopleSelect"));
-        PeopleHeightAction=NewObject<UInputAction>(this,TEXT("PeopleHeight"));
-        PeopleFacingAction=NewObject<UInputAction>(this,TEXT("PeopleFacing"));
-        PeopleMoveAction=NewObject<UInputAction>(this,TEXT("PeopleMove"));
-        PeopleHeightAction->ValueType=EInputActionValueType::Axis1D;
-        PeopleFacingAction->ValueType=EInputActionValueType::Axis1D;
-        HUDMappingContext->MapKey(PeopleModeAction,EKeys::OculusTouch_Left_Y_Click);
-        HUDMappingContext->MapKey(PeopleSelectAction,EKeys::OculusTouch_Right_Thumbstick_Click);
-        HUDMappingContext->MapKey(PeopleMoveAction,EKeys::OculusTouch_Left_Trigger_Click);
-        HUDMappingContext->MapKey(PeopleMoveAction,EKeys::R);
-        HUDMappingContext->MapKey(PeopleHeightAction,EKeys::OculusTouch_Right_Thumbstick_Y);
-        HUDMappingContext->MapKey(PeopleFacingAction,EKeys::OculusTouch_Right_Thumbstick_X);
-        HUDMappingContext->MapKey(PeopleModeAction,EKeys::H);
-        HUDMappingContext->MapKey(PeopleSelectAction,EKeys::Tab);
-        HUDMappingContext->MapKey(PeopleHeightAction,EKeys::RightBracket);
-        HUDMappingContext->MapKey(PeopleHeightAction,EKeys::LeftBracket).Modifiers.Add(NewObject<UInputModifierNegate>(this));
-        HUDMappingContext->MapKey(PeopleFacingAction,EKeys::Period);
-        HUDMappingContext->MapKey(PeopleFacingAction,EKeys::Comma).Modifiers.Add(NewObject<UInputModifierNegate>(this));
-    }
-    if (IsDesktopTrackingPreview())
-    {
-        if(bDemo) HUDMappingContext->MapKey(PlaceContactAction, EKeys::SpaceBar);
-        HUDMappingContext->MapKey(CycleHUDAction, EKeys::B);
-        HUDMappingContext->MapKey(CalibrateNorthAction, EKeys::X);
-        if(bDemo) HUDMappingContext->MapKey(SelectContactAction, EKeys::Tab);
-        HUDMappingContext->MapKey(MapRangeAction, EKeys::M);
-        HUDMappingContext->MapKey(PauseSimulationAction, EKeys::P);
-        HUDMappingContext->MapKey(ContactUpdatesAction, EKeys::F);
-    }
+    if (!ensureAlwaysMsgf(CommonMappingContext && HUDMappingContext,
+        TEXT("Cooked OpenXR mapping contexts are missing"))) return;
 
     if (APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0))
     {
@@ -307,6 +250,7 @@ void AWallhackVRHUDActor::BeginPlay()
         EnableInput(PC);
         if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
         {
+            Subsystem->AddMappingContext(CommonMappingContext, 0);
             Subsystem->AddMappingContext(HUDMappingContext, 0);
         }
         if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
@@ -397,7 +341,10 @@ void AWallhackVRHUDActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
     {
         if (ULocalPlayer* Player = PC->GetLocalPlayer())
             if (auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player))
+            {
                 if (HUDMappingContext) Subsystem->RemoveMappingContext(HUDMappingContext);
+                if (CommonMappingContext) Subsystem->RemoveMappingContext(CommonMappingContext);
+            }
     }
     if (ContactLabels) ContactLabels->SetHiddenInGame(true);
     Super::EndPlay(EndPlayReason);

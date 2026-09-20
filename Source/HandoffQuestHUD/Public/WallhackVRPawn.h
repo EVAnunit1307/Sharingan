@@ -37,6 +37,9 @@ public:
     AWallhackVRPawn();
     virtual void Tick(float DeltaSeconds) override;
     bool GetNavigationAim(FVector& Origin, FVector& Direction) const;
+    bool GetTrackedGrip(bool bLeft,FTransform& Out) const;
+    bool GetSensorRigAim(FTransform& Out,bool* bEstimated=nullptr) const;
+    bool GetSensorCalibrationProbe(FTransform& Out) const;
     void GetTrackedNavigationHands(TArray<FVector>& WorldPositions) const;
 
 protected:
@@ -54,4 +57,6 @@ private:
     TObjectPtr<UMotionControllerComponent> RightGrip;
     UPROPERTY(VisibleAnywhere)
     TObjectPtr<UMotionControllerComponent> LeftGrip;
+    UPROPERTY(VisibleAnywhere)
+    TObjectPtr<UMotionControllerComponent> LeftAim;
 };

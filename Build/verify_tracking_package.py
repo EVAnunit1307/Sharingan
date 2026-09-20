@@ -142,6 +142,10 @@ def main() -> int:
             if args.navigation:
                 check("Scene and depth permission", "uses-permission: name='com.oculus.permission.USE_SCENE'" in badging,
                       "USE_SCENE declaration checked", "Enable scene support and fully repackage the application.")
+                check("Physical controller input only",
+                      'oculus.software.handtracking' not in xmltree and 'com.oculus.permission.HAND_TRACKING' not in xmltree,
+                      "Hand-tracking feature and permission must both be absent",
+                      "Apply WallhackControllers_APL.xml in the Android receipt and fully repackage; UE's base Quest manifest adds hand support independently of Meta settings.")
             check("Anchor API permission", permission, "declared" if permission else "missing",
                   "Enable bAnchorSupportEnabled, run Unreal packaging, and refresh the GreenTestGradle manifest.")
             network = "uses-permission: name='android.permission.INTERNET'" in badging
@@ -161,6 +165,19 @@ def main() -> int:
                 elf_ok = len(header) == 64 and header[:6] == b"\x7fELF\x02\x01" and struct.unpack_from("<H", header, 18)[0] == 183
                 check("Native library architecture", elf_ok, "64-bit little-endian AArch64 ELF" if elf_ok else "invalid ELF or architecture",
                       "Package the Android arm64 libUnreal.so, not a desktop library.")
+                if args.navigation:
+                    markers = {b"wallhack_mount", b"left_mount_aim_explicit",
+                               b"/user/detached_controller_meta/left/input/aim/pose"}
+                    remaining = set(markers)
+                    with apk.open("lib/arm64-v8a/libUnreal.so") as native:
+                        overlap = b""
+                        while block := native.read(1024 * 1024):
+                            window = overlap + block
+                            remaining = {marker for marker in remaining if marker not in window}
+                            overlap = window[-128:]
+                    check("Mounted controller native action bindings", not remaining,
+                          f"{len(markers) - len(remaining)}/{len(markers)} mounted-controller action/path markers present",
+                          "Build and package the WallhackXR early-loading module with held and detached aim bindings.")
                 obb_path = work / "main.obb.png"
                 copy_entry(apk, "assets/main.obb.png", obb_path)
 
@@ -183,12 +200,23 @@ def main() -> int:
                 raise RuntimeError("Packaged DefaultEngine.ini is missing; recook/package the project and refresh the embedded OBB")
             extract = work / "config"
             extract.mkdir()
-            run_tool(args.unrealpak, [str(pak), "-Extract", str(extract), f"-Filter={config_entry}", f"-abslog={work / 'pak-extract.log'}"], work)
+            run_tool(args.unrealpak, [str(pak), "-Extract", str(extract), "-Filter=HandoffQuestHUD/Config/Default*.ini", f"-abslog={work / 'pak-extract.log'}"], work)
             configs = list(extract.rglob("DefaultEngine.ini"))
             if len(configs) != 1:
                 raise RuntimeError("Could not extract exactly one packaged DefaultEngine.ini; check UnrealPak compatibility")
             configuration = configs[0].read_text(encoding="utf-8-sig")
             if args.navigation:
+                input_configs = list(extract.rglob("DefaultInput.ini"))
+                input_config = input_configs[0].read_text(encoding="utf-8-sig") if len(input_configs) == 1 else ''
+                input_section = '/Script/EnhancedInput.EnhancedInputDeveloperSettings'
+                enabled = ini_values(input_config, input_section, 'bEnableDefaultMappingContexts')
+                contexts = ini_values(input_config, input_section, '+DefaultMappingContexts')
+                check("Packaged OpenXR startup input contexts",
+                      enabled == ['True'] and all(any(f'IMC_Wallhack{mode}.IMC_Wallhack{mode}' in value
+                          and 'bAddImmediately=False' in value for value in contexts)
+                          for mode in ('Common', 'Sensor', 'Navigation', 'Demo')),
+                      f"enabled={enabled}; registered_contexts={len(contexts)}",
+                      "Package DefaultInput.ini with all four startup contexts; BeginPlay-only mappings are insufficient.")
                 values = ini_values(configuration, ANCHOR_SETTINGS, "bSceneSupportEnabled")
                 check("Packaged scene support", bool(values) and all(v.casefold() == "true" for v in values),
                       f"bSceneSupportEnabled={values}", "Recook with scene support enabled.")
@@ -213,8 +241,17 @@ def main() -> int:
             with container_csv.open(encoding="utf-8-sig", newline="") as stream:
                 rows = [{key.strip(): value.strip() for key, value in row.items()} for row in csv.DictReader(stream, skipinitialspace=True)]
             for name, filename in (
+                *(([(f"Cooked {mode} input context", f"../../../HandoffQuestHUD/Content/Input/IMC_Wallhack{mode}.uasset")
+                    for mode in ('Common', 'Sensor', 'Navigation', 'Demo')]) if args.navigation else []),
+                *(([(f"Cooked {action} input action", f"../../../HandoffQuestHUD/Content/Input/IA_{action}.uasset")
+                    for action in ('CycleHUD', 'CalibrateNorth', 'SensorConfirm', 'SensorReset', 'NavigationAim',
+                                   'NavigationConfirm', 'NavigationCancel', 'PeopleMode', 'PeopleSelect', 'PeopleMove',
+                                   'PeopleHeight', 'PeopleFacing', 'MapRange', 'Transmit', 'PlaceContact',
+                                   'SelectContact', 'PauseSimulation', 'ContactUpdates')]) if args.navigation else []),
                 *(([("Cooked navigation trail material", "../../../HandoffQuestHUD/Content/Materials/M_WallhackTrail.uasset")]) if args.navigation else []),
                 *(([("Cooked human mesh", "../../../HandoffQuestHUD/Content/People/SM_HumanSilhouette.uasset"),
+                    ("Cooked articulated human mesh", "../../../HandoffQuestHUD/Content/People/SK_HumanSilhouette.uasset"),
+                    ("Cooked human skeleton", "../../../HandoffQuestHUD/Content/People/SK_HumanSilhouette_Skeleton.uasset"),
                     ("Cooked human material", "../../../HandoffQuestHUD/Content/Materials/M_HumanSilhouette.uasset"),
                     ("Cooked person label material", "../../../HandoffQuestHUD/Content/Materials/M_PersonLabel.uasset"),
                     ("Cooked linear label default", "../../../HandoffQuestHUD/Content/Materials/T_PersonLabelDefault.uasset")]) if args.navigation else []),

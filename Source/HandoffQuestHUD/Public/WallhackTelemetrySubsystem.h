@@ -133,6 +133,7 @@ public:
     FString GetBridgeUrl() const { return ActiveBridgeUrl; }
 
     FWallhackSensorPeopleFrame GetSensorPeopleFrame() const;
+    void ReportControllerRig(bool bAligned,bool bTracked,const FString& Status);
 
 private:
     void OpenSocket();
@@ -156,4 +157,5 @@ private:
     bool bDesktopPreviewEnabled = false;
     FString ActiveBridgeUrl;
     FWallhackSensorPeopleStream SensorPeople;
+    double LastControllerReport=-1;
 };

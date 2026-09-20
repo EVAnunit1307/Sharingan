@@ -67,7 +67,7 @@ struct FNavigationWorld : FScopedWallhackRuntimeWorld
     {
         if(!HUD)return false;
         auto* Input=HUD->FindComponentByClass<UEnhancedInputComponent>();if(!Input)return false;
-        for(const auto& B:Input->GetActionEventBindings())if(B->GetAction()&&B->GetAction()->GetFName()==FName(Name)&&B->GetTriggerEvent()==Event)
+        for(const auto& B:Input->GetActionEventBindings())if(B->GetAction()&&B->GetAction()->GetFName()==FName(*FString::Printf(TEXT("IA_%s"),Name))&&B->GetTriggerEvent()==Event)
         {B->Execute(FInputActionInstance(B->GetAction()));return true;}
         return false;
     }
@@ -903,7 +903,7 @@ bool FNavMinimapRenderTest::RunTest(const FString&)
     const auto Tilt=Read(TEXT("minimap-pitch-roll"));
     TestTrue(TEXT("Pitch and roll do not tip the floor plan"),RedAt(Tilt,M.Project({3,0,0}))>12);
     TestTrue(TEXT("Looking down does not displace compass contacts"),RedAt(Tilt,{624,251})>12);
-    TestTrue(TEXT("Map range uses a real input binding"),F.Action(TEXT("WallhackMapRangeAction")));
+    TestTrue(TEXT("Map range uses a real input binding"),F.Action(TEXT("MapRange")));
     TestEqual(TEXT("Range cycles to ten metres"),HUD->GetMapRangeMeters(),10.f);
     Read(TEXT("minimap-ten-metres"));
     F.Nav->Suspend();const auto Lost=Read(TEXT("minimap-tracking-lost"));

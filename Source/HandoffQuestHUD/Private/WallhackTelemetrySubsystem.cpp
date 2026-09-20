@@ -209,6 +209,18 @@ FWallhackSensorPeopleFrame UWallhackTelemetrySubsystem::GetSensorPeopleFrame() c
     return SensorPeople.GetFrame(FPlatformTime::Seconds());
 }
 
+void UWallhackTelemetrySubsystem::ReportControllerRig(bool bAligned,bool bTracked,const FString& Status)
+{
+    const double Now=FPlatformTime::Seconds();
+    if(!bConnected||!Socket.IsValid()||!Socket->IsConnected()||Now-LastControllerReport<.2)return;
+    LastControllerReport=Now;
+    TSharedRef<FJsonObject> Message=MakeShared<FJsonObject>();
+    Message->SetStringField(TEXT("kind"),TEXT("quest_controller_rig"));
+    Message->SetBoolField(TEXT("aligned"),bAligned);Message->SetBoolField(TEXT("tracked"),bTracked);
+    Message->SetStringField(TEXT("status"),Status.Left(180));
+    FString Json;FJsonSerializer::Serialize(Message,TJsonWriterFactory<>::Create(&Json));Socket->Send(Json);
+}
+
 bool UWallhackTelemetrySubsystem::ParsePacket(const FString& JsonText, FWallhackRigPose& OutRig, TArray<FWallhackContact>& OutContacts) const
 {
     TSharedPtr<FJsonObject> Root;

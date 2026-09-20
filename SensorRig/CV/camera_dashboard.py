@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Camera-first person detection. No camera or worker is opened on import."""
 import argparse
+import base64
 import logging
 import math
 from pathlib import Path
@@ -192,7 +193,8 @@ class CameraPipeline:
                     p.update(camera_position(p["box"], w, h, self.hfov))
                 rendered = draw_detections(frame, people, self.detector.last_raw)
                 ok, jpeg = cv2.imencode('.jpg', rendered, [cv2.IMWRITE_JPEG_QUALITY, 85])
-                if not ok:
+                raw_ok, raw_jpeg = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+                if not ok or not raw_ok:
                     raise RuntimeError("JPEG encoding failed")
                 finished = time.monotonic()
                 if last_finished:
@@ -204,7 +206,7 @@ class CameraPipeline:
                               raw=self.detector.last_raw, infer_ms=round(infer_ms, 1),
                               infer_fps=round(rate, 1),
                               pipeline_ms=round((finished - captured) * 1000, 1),
-                              jpeg=jpeg.tobytes())
+                              jpeg=jpeg.tobytes(), inference_jpeg=raw_jpeg.tobytes())
                 with self.condition:
                     # A camera reconnect/error during inference must not restore
                     # an obsolete result from the previous connection.
@@ -312,6 +314,22 @@ def create_app(pipeline):
     def snapshot_image():
         seq, jpeg = pipeline.jpeg()
         return Response(jpeg, mimetype='image/jpeg', headers={"X-Frame-Id": str(seq)})
+
+    @app.get('/pose/frame')
+    def pose_frame():
+        # Image and detections are one immutable inference result, never two
+        # independently timed HTTP reads. JPEG excludes dashboard annotations.
+        with pipeline.condition:
+            r = pipeline.result
+            if not r or pipeline.error or time.monotonic()-r['captured_at']>.75:
+                return jsonify(error='No fresh inference frame'), 503
+            if 'inference_jpeg' not in r:
+                return jsonify(error='Raw inference image unavailable'), 503
+            return jsonify(source_session_id=pipeline.source_session_id,
+                generation=r['generation'],frame_id=r['frame_id'],
+                capture_ms=r['captured_at']*1000,age_ms=(time.monotonic()-r['captured_at'])*1000,
+                width=r['frame_width'],height=r['frame_height'],hfov=pipeline.hfov,
+                people=r['people'],jpeg_base64=base64.b64encode(r['inference_jpeg']).decode('ascii'))
 
     @app.get('/stream')
     def stream():

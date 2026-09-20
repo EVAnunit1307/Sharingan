@@ -23,7 +23,7 @@ SENSOR_UI = HERE.parent / "SensorRig" / "CV"
 
 
 class RelayState:
-    def __init__(self, config=None, clock=time.monotonic, recording=None, replay=False):
+    def __init__(self, config=None, clock=time.monotonic, recording=None, replay=False, record_pose_frames=False):
         self.lock = threading.RLock()
         self.clock = clock
         self.engine = FusionEngine(config, clock)
@@ -35,6 +35,67 @@ class RelayState:
         self.clients = 0
         self.recording = recording
         self.is_replay = replay
+        self.record_pose_frames=record_pose_frames
+        self.pose_status = dict(status='disabled',error=None)
+        self.pose_image = None
+        self.pose_image_at = 0
+        self.registration_generation=0
+        self.rig_motion=dict(status='unobserved',motion_alarm=False,metric_pose_available=False)
+        self.quest_rig=None
+
+    def accept_controller_report(self, message):
+        """Diagnostic uplink only; it never enables world placement on another client."""
+        if (not isinstance(message,dict) or message.get('kind')!='quest_controller_rig'
+                or type(message.get('aligned')) is not bool or type(message.get('tracked')) is not bool
+                or not isinstance(message.get('status'),str) or len(message['status'])>180):
+            return False
+        with self.lock:
+            self.quest_rig=dict(aligned=message['aligned'],tracked=message['tracked'],
+                                status=message['status'],received_at=self.clock())
+        return True
+
+    def accept_poses(self, frame, poses, elapsed_ms):
+        with self.lock:
+            now=self.clock()
+            current=self.engine.camera
+            valid=(frame['source_session_id']==self.engine.session and current is not None
+                   and frame['generation']==current.generation and frame['frame_id']<=current.frame_id
+                   and 0<=frame['age_ms']<=350 and current.age(now)<=750)
+            accepted=0
+            if valid:
+                observed={p['id'] for p in current.values}
+                for pose in poses:
+                    if pose['camera_id'] in observed:
+                        accepted+=self.engine.tracker.attach_pose(('C',frame['generation'],pose['camera_id']),pose,now)
+            self.pose_status=dict(status='live' if valid else 'stale',error=None,
+                source_session_id=frame['source_session_id'],generation=frame['generation'],frame_id=frame['frame_id'],
+                capture_ms=frame['capture_ms'],age_ms=frame['age_ms'],received_at=now,
+                processing_ms=round(elapsed_ms,1),poses=len(poses),accepted=accepted)
+            if self.recording and valid:
+                recorded_frame=dict(frame)
+                if not self.record_pose_frames:
+                    recorded_frame.pop('jpeg_base64',None)
+                self.recording.write(json.dumps(dict(received_at=now,kind='pose',frame=recorded_frame,
+                    poses=poses,processing_ms=elapsed_ms,rig_motion=self.rig_motion),allow_nan=False)+'\n')
+                self.recording.flush()
+            return valid
+
+    def publish_pose_image(self, image, poses, frame, accepted):
+        if not accepted:
+            return
+        import cv2
+        from .pose import CONNECTIONS
+        for pose in poses:
+            points=pose['image_points']
+            for a,b in CONNECTIONS:
+                if min(points[a][2],points[b][2])>=.5:
+                    cv2.line(image,tuple(round(x) for x in points[a][:2]),tuple(round(x) for x in points[b][:2]),(140,235,180),2)
+        cv2.putText(image,f"POSE FRAME {frame['frame_id']} / {len(poses)} PERSONS",(12,22),cv2.FONT_HERSHEY_SIMPLEX,.5,(255,255,255),1)
+        ok,jpeg=cv2.imencode('.jpg',image,[cv2.IMWRITE_JPEG_QUALITY,85])
+        if ok:
+            with self.lock:
+                self.pose_image=jpeg.tobytes()
+                self.pose_image_at=self.clock()+max(0,(750-frame['age_ms'])/1000)
 
     def ingest(self, packet):
         with self.lock:
@@ -52,6 +113,7 @@ class RelayState:
             self.engine.disconnect()
             self.packet = None
             self.error = message
+            self.pose_image = None
 
     def configure(self, value, config_path):
         if not isinstance(value, dict):
@@ -66,6 +128,8 @@ class RelayState:
             temporary.write_text(json.dumps(asdict(config), indent=2) + "\n")
             temporary.replace(config_path)
             self.engine.set_config(config)
+            self.registration_generation+=1
+            self.rig_motion=dict(status='unobserved',motion_alarm=False,metric_pose_available=False)
             return asdict(config)
 
     def snapshot(self):
@@ -95,6 +159,23 @@ class RelayState:
             self.sequence += 1
             root.update(spatial_people=self.engine.snapshot(now), relay_session_id=self.session,
                         relay_sequence=self.sequence, is_replay=self.is_replay)
+            status=dict(self.pose_status)
+            if 'received_at' in status:
+                status['age_ms']+=max(0,now-status.pop('received_at'))*1000
+                if status['age_ms']>350:
+                    status['status']='stale'
+            root['pose_pipeline']=status
+            root['rig_motion']=dict(self.rig_motion)
+            if self.quest_rig:
+                report=dict(self.quest_rig)
+                report['age_ms']=max(0,now-report.pop('received_at'))*1000
+                if report['age_ms']>750:
+                    report.update(tracked=False,status='Quest controller report stale')
+                root['quest_controller_rig']=report
+            if self.registration_generation and root['spatial_people']['reference_id']:
+                root['spatial_people']['reference_id']+=f'/registration-{self.registration_generation}'
+            if self.rig_motion['motion_alarm']:
+                root['spatial_people']['rig_pose_valid']=False
             return root
 
 
@@ -144,7 +225,22 @@ def run_recording(state, path, stop):
                 if previous is not None and stop.wait(at - previous):
                     return
                 previous = at
-                state.ingest(row["packet"])
+                if row.get('kind')=='pose':
+                    from .pose import validate_frame
+                    frame=row['frame'];validate_frame(frame)
+                    with state.lock:
+                        state.rig_motion=dict(row.get('rig_motion',state.rig_motion))
+                    accepted=state.accept_poses(frame,row['poses'],row['processing_ms'])
+                    if accepted and frame.get('jpeg_base64'):
+                        import base64
+                        import cv2
+                        import numpy as np
+                        image=cv2.imdecode(np.frombuffer(base64.b64decode(frame['jpeg_base64'],validate=True),np.uint8),cv2.IMREAD_COLOR)
+                        if image is None or image.shape[:2]!=(frame['height'],frame['width']):
+                            raise ValueError('Recorded pose image/metadata mismatch')
+                        state.publish_pose_image(image,row['poses'],frame,accepted)
+                else:
+                    state.ingest(row["packet"])
     except (OSError, ValueError, TypeError, KeyError) as error:
         state.disconnect(f"Replay failed: {error}")
         return
@@ -163,6 +259,17 @@ def start_websocket(state, host, port, stop):
         try:
             while not stop.is_set():
                 socket.send(json.dumps(state.snapshot(), allow_nan=False))
+                # Bounded nonblocking reads preserve telemetry cadence even if
+                # a client sends malformed or excessive diagnostic messages.
+                for _ in range(4):
+                    try:
+                        incoming=socket.recv(timeout=0)
+                    except TimeoutError:
+                        break
+                    try:
+                        state.accept_controller_report(json.loads(incoming,parse_constant=reject_constant))
+                    except (ValueError,TypeError,UnicodeError):
+                        pass
                 stop.wait(.1)
         except ConnectionClosed:
             pass
@@ -232,6 +339,13 @@ def create_app(state, pi_http, websocket_port=8765, config_path=Path("Saved/Grou
                        websocket_url=f"ws://{host}:{websocket_port}/", native_mode="WallhackSensorPeople",
                        camera_radar_association="ground_station", headset_validation="requires_physical_check")
 
+    @app.get('/pose/snapshot.jpg')
+    def pose_image():
+        with state.lock:
+            if state.pose_image is None or state.clock()>state.pose_image_at:
+                return jsonify(error='No fresh pose image'),503
+            return Response(state.pose_image,mimetype='image/jpeg')
+
     @app.get("/stream")
     @app.get("/snapshot.jpg")
     @app.get("/detections")
@@ -281,14 +395,20 @@ def main(argv=None):
     parser.add_argument("--quest-port", type=int, default=8765)
     parser.add_argument("--config", type=Path, default=Path("Saved/GroundStation/fusion.json"))
     parser.add_argument("--record", type=Path, help="Create a new input JSONL recording; never overwrite")
+    parser.add_argument('--pose-model',type=Path,help='Enable laptop pose estimation with a MediaPipe .task model')
+    parser.add_argument('--record-pose-frames',action='store_true',help='Include exact camera JPEGs in --record for pose-overlay replay')
     args = parser.parse_args(argv)
+    if args.pose_model and (not args.pi_http or not args.pose_model.is_file()):
+        parser.error('--pose-model requires a live Pi and an existing .task model')
+    if args.record_pose_frames and not args.record:
+        parser.error('--record-pose-frames requires --record')
     if args.pi_http:
         parsed = urlsplit(args.pi_http)
         if parsed.scheme not in ("http", "https") or not parsed.hostname:
             parser.error("--pi-http must be an HTTP(S) URL")
     config = FusionConfig(**json.loads(args.config.read_text(), parse_constant=reject_constant)) if args.config.exists() else FusionConfig()
     recording = args.record.open("x") if args.record else None
-    state = RelayState(config, recording=recording, replay=bool(args.replay))
+    state = RelayState(config, recording=recording, replay=bool(args.replay),record_pose_frames=args.record_pose_frames)
     stop = threading.Event()
     server, socket_thread = start_websocket(state, args.host, args.quest_port, stop)
     if args.replay:
@@ -300,6 +420,11 @@ def main(argv=None):
         target = run_upstream
     worker = threading.Thread(target=target, args=worker_args, daemon=True, name="pi-input")
     worker.start()
+    pose_worker=None
+    if args.pose_model:
+        from .pose import run_pose
+        pose_worker=threading.Thread(target=run_pose,args=(state,args.pi_http,args.pose_model,stop),daemon=True,name='camera-pose')
+        pose_worker.start()
     try:
         create_app(state, args.pi_http, args.quest_port, args.config).run(host=args.host, port=args.port, threaded=True, use_reloader=False)
     finally:
@@ -307,6 +432,8 @@ def main(argv=None):
         server.shutdown()
         worker.join(timeout=7)
         socket_thread.join(timeout=2)
+        if pose_worker:
+            pose_worker.join(timeout=3)
         if recording:
             recording.close()
 

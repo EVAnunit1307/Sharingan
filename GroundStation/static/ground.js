@@ -10,6 +10,7 @@
   let settings = null, latest = null, received = 0, failure = '', identity = '', selected = '';
   let previous = new Map(), histories = new Map(), health = [], events = [], hits = [];
   let requestMs = 0;
+  let poseImageToken='';
   const exportSnapshot = () => ({...latest, browser:{snapshot_time_utc:new Date().toISOString(),
     age_since_response_ms:performance.now()-received, diagnostics_error:failure||null}});
 
@@ -54,6 +55,13 @@
       outputs.push({key:key('R',radar.generation,radar.id),label:`R${radar.id}`,kind:'blue',source:'RADAR ONLY',
         pos:position(radar),age:radar.age_ms+elapsed,radarAge:radar.age_ms+elapsed,raw:radar});
     }
+    if(f.tracks_version===1){outputs.length=0;for(const t of f.tracks||[]){
+      if(!finite(t.valid_for_ms)||t.valid_for_ms<elapsed)continue;
+      const k=t.camera_id!=null?key('C',t.camera_generation,t.camera_id):key('R',t.radar_generation,t.radar_id);
+      outputs.push({key:k,label:`P${t.id}`,kind:t.position_source==='radar_matched'?'green':t.position_source==='radar_only'?'blue':'amber',
+        source:`${t.position_source.replaceAll('_',' ').toUpperCase()} / ${t.pose_source==='camera'&&t.pose_age_ms+elapsed<=350?'CAMERA POSE':'EST. POSE'}`,
+        pos:position(t),age:t.age_ms+elapsed,radarAge:t.position_source==='camera_estimate'?null:t.age_ms+elapsed,raw:t});
+    }}
     const rows = cameras.map(c => {
       const k = key('C',p.camera_generation,c.id), out = outputs.find(o => o.key === k);
       const pos = cameraPosition(c,p);
@@ -149,6 +157,11 @@
       ctx.fillStyle=colors[r.kind];ctx.textAlign='left';ctx.fillText(r.label,x+12,y-11);hits.push({x,y,key:r.key});
     }
     for(const o of m.outputs){if(!o.pos)continue;const[x,y]=xy(o.pos);
+      if(finite(o.raw.variance_right_m2)&&finite(o.raw.variance_forward_m2)){
+        ctx.strokeStyle='#c3d7e344';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x,y,
+          Math.min(scale*3,2*Math.sqrt(o.raw.variance_right_m2)*scale),Math.min(scale*3,2*Math.sqrt(o.raw.variance_forward_m2)*scale),0,0,Math.PI*2);ctx.stroke();
+        if(finite(o.raw.velocity_right_mps)&&finite(o.raw.velocity_forward_mps)){ctx.strokeStyle='#c3d7e399';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+o.raw.velocity_right_mps*scale*.5,y-o.raw.velocity_forward_mps*scale*.5);ctx.stroke();}
+      }
       if(o.kind==='green'){const camera=m.rows.find(r=>r.key===o.key);if(camera?.pos){ctx.strokeStyle='#98ed8377';ctx.setLineDash([5,6]);ctx.beginPath();ctx.moveTo(...xy(camera.pos));ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);}}
       ctx.strokeStyle=o.kind==='green'?colors.output:o.kind==='blue'?colors.radar:colors.camera;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,o.key===selected?13:9,0,Math.PI*2);ctx.stroke();hits.push({x,y,key:o.key});
     }
@@ -158,11 +171,26 @@
     const now=performance.now(),m=model(now);
     if(!latest){get('fusion-status').textContent=failure||'Waiting for sensor telemetry.';return;}
     const p=latest.packet,f=p.spatial_people;
+    const pp=p.pose_pipeline||{status:'disabled'},elapsed=now-received;
+    const poseFresh=!failure&&pp.status==='live'&&finite(pp.age_ms)&&pp.age_ms+elapsed<=350;
+    get('human-pose-status').textContent=`${poseFresh?'LIVE POSE':pp.status.toUpperCase()} · ${pp.accepted??0} bound poses · processing ${fmt(pp.processing_ms,0)} ms · age ${fmt(pp.age_ms==null?null:pp.age_ms+elapsed,0)} ms${pp.error?' · '+pp.error:''}`;
+    const img=get('pose-image');img.hidden=!poseFresh;
+    const imageToken=`${pp.source_session_id}/${pp.generation}/${pp.frame_id}`;
+    if(poseFresh&&imageToken!==poseImageToken){poseImageToken=imageToken;img.src='/pose/snapshot.jpg?frame='+encodeURIComponent(imageToken);}
+    get('pose-tracks').replaceChildren(...(failure?[]:(f.tracks||[]).filter(t=>t.valid_for_ms>=elapsed)).map(t=>{
+      const speed=f.rig_motion_mode==='left_controller'?'World speed estimated on Quest':`${fmt(Math.hypot(t.velocity_right_mps,t.velocity_forward_mps))} m/s relative to rig`;
+      const n=element('p',`P${t.id} · ${t.person_evidence} · ${t.pose_source==='camera'&&t.pose_age_ms+elapsed<=350?'camera joints':'estimated motion'}\n${speed} · height ${fmt(t.height_m)} m (${t.height_source})\n${t.camera_visibility}`,'details');n.style.whiteSpace='pre-line';return n;
+    }));
+    get('pose-decisions').textContent=[...(f.track_decisions||[]),...(p.radar?.filter_decisions||[])].map(d=>`P${d.id??'?'}: ${d.reason}`).join(' · ')||'No current filter rejections.';
+    const rig=p.quest_controller_rig,rigFresh=!failure&&rig&&rig.age_ms+elapsed<=750;
+    get('pose-rig').textContent=f.rig_motion_mode==='left_controller'
+      ?`LEFT CONTROLLER · ${rigFresh?rig.status:'Waiting for Quest alignment / fresh tracking report'}. Radar floor positions are estimated; camera floor ranging is disabled in this mode.`
+      :f.rig_pose_valid===false?`Quest world placement paused: ${p.rig_motion?.motion_alarm?'background motion detected':'rig motion is untracked'}. Relative sensor data remains available.`:'Quest placement assumes the registered rig remains stationary. Re-register after moving it.';
     remember(m,now);
     if(!m.rows.some(r=>r.key===selected))selected=m.rows[0]?.key||'';
     const options=m.rows.map(r=>`${r.key}:${r.label} · ${r.state}`).join('|');
     const select=get('fusion-select');
-    if(select.dataset.options!==options){select.replaceChildren(...(m.rows.length?m.rows.map(r=>{const o=element('option',`${r.label} · ${r.state}`);o.value=r.key;return o;}):[element('option','No current contacts')]));select.dataset.options=options;}
+    if(select.dataset.options!==options){select.replaceChildren(...(m.rows.length?m.rows.map(r=>{const o=element('option',`${r.label} · ${r.state}`);o.value=r.key;return o;}):[Object.assign(element('option','No current contacts'),{value:''})]));select.dataset.options=options;}
     select.value=selected;
     get('fusion-mode').textContent=latest.is_replay?'RECORDED REPLAY':'LIVE INPUT';
     get('fusion-status').textContent=failure||`${m.cameraLive?'CAMERA LIVE':'CAMERA STALE / UNAVAILABLE'} · ${m.radarLive?'RADAR LIVE':'RADAR STALE / UNAVAILABLE'} · ${latest.clients} relay clients · matching ${f.alignment_confirmed?'enabled':'awaiting calibration'}${latest.error?' · '+latest.error:''}`;
@@ -175,8 +203,8 @@
       node.append(element('strong',`${o.label} / ${o.source}${i>=8?' · MAP ONLY':''}`),
         element('div',`${fmt(o.pos?.right)} right / ${fmt(o.pos?.forward)} forward m`),
         element('div',`${fmt(range(o.pos))} m range · ${fmt(bearing(o.pos),1)}° bearing`,'details'),
-        element('div',o.kind==='blue'?`Radar age ${fmt(o.age,0)} ms · unclassified`:`Camera score ${fmt(o.raw.confidence*100,1)}% · age ${fmt(o.age,0)} ms${o.kind==='green'?` / radar ${fmt(o.radarAge,0)} ms`:''}`,'details'),
-        element('div',o.kind==='blue'?`Radar generation ${o.raw.generation} / frame ${o.raw.frame_id}`:`Camera generation ${o.raw.camera_generation} / frame ${o.raw.camera_frame_id}`,'details'));return node;});
+        element('div',`Observation age ${fmt(o.age,0)} ms${o.kind==='blue'?' · unclassified':''}`,'details'),
+        element('div',o.raw.sample_key?`Source ${o.raw.sample_key} · ${o.raw.person_evidence}`:o.kind==='blue'?`Radar generation ${o.raw.generation} / frame ${o.raw.frame_id}`:`Camera generation ${o.raw.camera_generation} / frame ${o.raw.camera_frame_id}`,'details'));return node;});
     get('fusion-people').replaceChildren(...cards);get('fusion-empty').hidden=cards.length>0;
     get('fusion-observations').querySelector('tbody').replaceChildren(...m.rows.map(r=>{
       const tr=document.createElement('tr');tr.className=r.key===selected?'selected':'';tr.onclick=()=>choose(r.key);
@@ -208,7 +236,8 @@
       const nextIdentity=`${p.relay_session_id}/${f.source_session_id}/${f.reference_id}`;
       if(identity && identity!==nextIdentity){histories.clear();health=[];previous.clear();events=[];selected='';event('Source or reference changed · history cleared');}
       identity=nextIdentity;latest=data;received=performance.now();requestMs=received-start;failure='';
-      if(!settings){settings=data.config;get('fusion-right').value=settings.camera_offset_right_m;get('fusion-forward').value=settings.camera_offset_forward_m;get('fusion-confirmed').checked=settings.alignment_confirmed;}
+      if(!settings){settings=data.config;get('fusion-right').value=settings.camera_offset_right_m;get('fusion-forward').value=settings.camera_offset_forward_m;get('fusion-confirmed').checked=settings.alignment_confirmed;
+        get('fusion-rig-mode').value=settings.rig_motion_mode||'stationary';get('fusion-height').value=settings.camera_height_m??'';get('fusion-pitch').value=settings.camera_pitch_deg||0;}
       const m=model(received);health.push({t:received,camera:m.cameraAge,radar:m.radarAge});health=health.filter(v=>received-v.t<=30000).slice(-300);
       render();
     } catch(error){if(!failure)event('Diagnostics connection interrupted');failure=error.message;render();}
@@ -223,7 +252,8 @@
     const a=element('a','');a.href=url;a.download='sensor-diagnostics.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   get('fusion-form').onsubmit=async e=>{
     e.preventDefault();
-    try{if(!settings)throw Error('Wait for the relay configuration first');const value={...settings,camera_offset_right_m:Number(get('fusion-right').value),camera_offset_forward_m:Number(get('fusion-forward').value),alignment_confirmed:get('fusion-confirmed').checked};
+    try{if(!settings)throw Error('Wait for the relay configuration first');const value={...settings,camera_offset_right_m:Number(get('fusion-right').value),camera_offset_forward_m:Number(get('fusion-forward').value),alignment_confirmed:get('fusion-confirmed').checked,
+      rig_motion_mode:get('fusion-rig-mode').value,camera_height_m:get('fusion-height').value===''?null:Number(get('fusion-height').value),camera_pitch_deg:Number(get('fusion-pitch').value)};
       const response=await fetch('/fusion/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(value)}),result=await response.json();
       if(!response.ok)throw Error(result.error||'Unable to save alignment');settings=result;get('fusion-save').textContent='Saved. If offsets changed, place the sensor reference again in Quest.';
     }catch(error){get('fusion-save').textContent=error.message;}

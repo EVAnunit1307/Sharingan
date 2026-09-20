@@ -164,7 +164,7 @@ def main():
                 assert page.locator("#fusion-mode").inner_text() == "RECORDED REPLAY"
                 page.wait_for_function("document.querySelectorAll('#fusion-observations tbody tr').length === 2")
                 assert page.locator("#fusion-matched-count").inner_text() == "1"
-                assert "Matched to C" in page.locator("#fusion-observations").inner_text()
+                assert "Matched to P" in page.locator("#fusion-observations").inner_text()
                 page.locator("#fusion-metric").select_option("right")
                 page.locator("#fusion-range").select_option("4")
                 page.get_by_text("Selected observation · all available fields", exact=True).click()
@@ -198,6 +198,7 @@ def main():
                 coasting["packet"]["camera_people"][0]["observed"] = False
                 coasting["packet"]["camera_age_ms"] = 0
                 coasting["packet"]["spatial_people"]["people"] = []
+                coasting["packet"]["spatial_people"]["tracks"] = []
                 coasting["packet"]["source_session_id"] = "diagnostic-coasting-fixture"
                 coasting["packet"]["spatial_people"]["source_session_id"] = "diagnostic-coasting-fixture"
                 page.route("**/diagnostics.json", lambda route: route.fulfill(json=coasting))

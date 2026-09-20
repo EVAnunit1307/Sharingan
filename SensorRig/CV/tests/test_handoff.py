@@ -44,13 +44,13 @@ class RadarTests(unittest.TestCase):
         self.assertEqual(len(decode_frame(frame(speed=0))),1)
         self.assertEqual(decode_frame(frame(y=7000)),[])
 
-    def test_confirmation_requires_consecutive_matches(self):
+    def test_confirmation_requires_three_of_five_distinct_observations(self):
         t=RadarTracker();d=[{'x':0,'y':1000,'spd':0}]
         self.assertEqual(t.update(d,1),[])
         self.assertEqual(t.update(d,1.1),[])
         self.assertEqual(t.update([],1.2),[])
-        self.assertEqual(t.update(d,1.3),[])
-        self.assertEqual(t.update(d,1.4),[])
+        self.assertEqual(len(t.update(d,1.3)),1)
+        self.assertEqual(len(t.update(d,1.4)),1)
         self.assertEqual(len(t.update(d,1.5)),1)
         self.assertEqual(t.update([],1.6),[])
 

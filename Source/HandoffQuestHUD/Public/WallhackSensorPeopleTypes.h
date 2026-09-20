@@ -25,6 +25,19 @@ struct FWallhackSensorDot
     double Expires = 0;
 };
 
+struct FWallhackTrackedPerson
+{
+    int32 Id = INDEX_NONE;
+    FVector2D Position = FVector2D::ZeroVector, Velocity = FVector2D::ZeroVector;
+    float Height = 1.65f, Facing = 0, PoseYaw = 0;
+    FString Source, HeightSource, FacingSource, PersonEvidence;
+    TArray<FVector> Joints; // Camera-relative UE axes, metres, hip origin.
+    TArray<float> JointQuality;
+    double Expires = 0, PoseExpires = 0;
+    double ObservedAt = 0, PoseObservedAt = 0;
+    FString SampleKey;
+};
+
 /** Presentation only: blend fresh positions for 120 ms, never predict motion or
  * keep a contact alive. Call BeginFrame/EndFrame around the current fresh set. */
 class HANDOFFQUESTHUD_API FWallhackSensorPositionInterpolator
@@ -55,6 +68,10 @@ struct FWallhackSensorPeopleFrame
     int32 Unpositioned = 0;
     TArray<FWallhackSensorPerson> People;
     TArray<FWallhackSensorDot> Radar;
+    bool bHasTracks = false;
+    bool bRigPoseValid = true;
+    FString RigMotionMode = TEXT("stationary");
+    TArray<FWallhackTrackedPerson> Tracks;
 };
 
 /** Validates the additive spatial_people protocol independently of the legacy rig schema. */
@@ -73,6 +90,7 @@ private:
     int32 RadarGeneration = -1;
     int32 RadarHighWater = -1;
     TMap<int32, double> RadarExpiries;
+    TMap<FString, double> TrackExpiries;
     double CameraDeadline(int32 Generation, int32 Frame, double AgeMs, double Now);
     double RadarDeadline(int32 Generation, int32 Frame, double AgeMs, double Now);
 };

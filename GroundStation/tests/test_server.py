@@ -17,6 +17,14 @@ class RelayTests(unittest.TestCase):
         self.now = 0
         self.state = RelayState(FusionConfig(alignment_confirmed=True), clock=lambda: self.now)
 
+    def test_controller_report_is_diagnostic_bounded_and_expires(self):
+        self.assertFalse(self.state.accept_controller_report(dict(kind='quest_controller_rig',aligned=1,tracked=True,status='bad')))
+        self.assertTrue(self.state.accept_controller_report(dict(kind='quest_controller_rig',aligned=True,tracked=True,status='LEFT RIG TRACKED')))
+        self.assertTrue(self.state.snapshot()['quest_controller_rig']['tracked'])
+        self.now=.751
+        self.assertFalse(self.state.snapshot()['quest_controller_rig']['tracked'])
+        self.assertFalse(self.state.accept_controller_report(dict(kind='quest_controller_rig',aligned=True,tracked=True,status='x'*181)))
+
     def test_live_snapshot_expires_and_preserves_legacy_fields(self):
         first = packet()
         first.update(rig=dict(x=5, y=6, heading_deg=7, tracking_ok=True), detections=[dict(id=1)])
@@ -63,6 +71,26 @@ class RelayTests(unittest.TestCase):
             run_recording(self.state, recording, threading.Event())
             self.assertIn("Replay failed", self.state.error)
             self.assertEqual(self.state.snapshot()["spatial_people"]["people"], [])
+
+    def test_pose_recording_replays_joints_without_renewing_their_age(self):
+        recorded=io.StringIO();self.state.recording=recorded
+        self.state.ingest(packet());self.state.snapshot()
+        frame=dict(source_session_id='pi-session',generation=1,frame_id=1,capture_ms=1100,
+            age_ms=200,width=640,height=480,hfov=62,people=[],jpeg_base64='not-recorded-by-default')
+        pose=dict(camera_id=1,capture_ms=1100,age_ms=200,frame_id=1,generation=1,
+            joints=[[0,0,0,1] for _ in range(33)],facing_deg=180,height_m=None)
+        self.assertTrue(self.state.accept_poses(frame,[pose],40))
+        rows=[json.loads(line) for line in recorded.getvalue().splitlines()]
+        self.assertEqual(rows[1]['kind'],'pose')
+        self.assertNotIn('jpeg_base64',rows[1]['frame'])
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'pose.jsonl';path.write_text(recorded.getvalue())
+            replay=RelayState(FusionConfig(alignment_confirmed=True),clock=lambda:self.now,replay=True)
+            run_recording(replay,path,threading.Event())
+            tracks=replay.snapshot()['spatial_people']['tracks']
+            self.assertEqual(tracks[0]['pose']['age_ms'],200)
+            self.now=.151
+            self.assertIsNone(replay.snapshot()['spatial_people']['tracks'][0]['pose'])
 
     def test_dashboard_config_and_read_only_proxy(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -125,6 +153,11 @@ class RelayTests(unittest.TestCase):
             with connect(f"ws://127.0.0.1:{port}") as client:
                 data = json.loads(client.recv(timeout=2))
                 self.assertEqual(data["spatial_people"]["people"][0]["position_source"], "radar_matched")
+                client.send(json.dumps(dict(kind='quest_controller_rig',aligned=True,tracked=True,status='LEFT RIG TRACKED')))
+                for _ in range(10):
+                    data=json.loads(client.recv(timeout=2))
+                    if 'quest_controller_rig' in data:break
+                self.assertTrue(data['quest_controller_rig']['tracked'])
                 self.state.disconnect("test outage")
                 for _ in range(10):
                     data = json.loads(client.recv(timeout=2))

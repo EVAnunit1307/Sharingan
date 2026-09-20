@@ -6,6 +6,7 @@ from pathlib import Path
 import struct
 import threading
 import time
+from tracking_math import MotionFilter, assignment
 
 HEADER = b'\xaa\xff\x03\x00'
 FOOTER = b'\x55\xcc'
@@ -95,40 +96,56 @@ class RadarTracker:
     def __init__(self):
         self.tracks = []
         self.next_id = 1
+        self.last_at = -1
+        self.decisions = []
 
     def update(self, detections, now):
-        self.tracks = [t for t in self.tracks if now-t['seen'] <= .4]
-        pairs = sorted((math.hypot(t['x']-d['x'], t['y']-d['y']), ti, di)
-                       for ti, t in enumerate(self.tracks) for di, d in enumerate(detections))
-        matches, used = {}, set()
-        for distance, ti, di in pairs:
-            if distance <= 450 and ti not in matches and di not in used:
-                matches[ti] = di
-                used.add(di)
+        if not math.isfinite(now) or now <= self.last_at:
+            return []  # Duplicate/buffered samples cannot confirm tracks.
+        self.last_at = now
+        self.tracks = [t for t in self.tracks if now-t['seen'] <= .5]
+        self.decisions = []
+        costs = []
+        for t in self.tracks:
+            row = []
+            for d in detections:
+                score = t['filter'].innovation(d['x']/1000, d['y']/1000, now, .15)
+                distance = math.hypot(t['raw']['x']-d['x'], t['raw']['y']-d['y'])/1000
+                allowed = score <= 16 and distance <= .3+4*(now-t['seen'])
+                row.append(score if allowed else math.inf)
+            costs.append(row)
+        matches = assignment(costs)
+        used = set(matches.values())
         for ti, track in enumerate(self.tracks):
             track['observed'] = ti in matches
+            track['hits'].append(ti in matches)
             if ti in matches:
                 d = detections[matches[ti]]
-                for key in ('x', 'y', 'spd'):
-                    track[key] = .5*d[key] + .5*track[key]
+                track['filter'].update(d['x']/1000,d['y']/1000,now,.15)
                 track['raw'] = d
                 track['seen'] = now
-                track['hits'] += 1
-                track['confirmed'] |= track['hits'] >= 3
-            else:
-                track['hits'] = 0
+                track['confirmed'] |= sum(track['hits']) >= 3
         for di, d in enumerate(detections):
             if di not in used:
-                self.tracks.append(dict(d, id=self.next_id, seen=now, first_seen=now,
-                                        hits=1, confirmed=False, observed=True, raw=d))
+                self.tracks.append(dict(id=self.next_id, seen=now, first_seen=now,
+                    hits=deque([True],maxlen=5), confirmed=False, observed=True, raw=d,
+                    filter=MotionFilter(d['x']/1000,d['y']/1000,now)))
+                self.decisions.append(dict(id=self.next_id,reason='new return: awaiting 3 of 5 observations'))
                 self.next_id += 1
         result = []
         for t in self.tracks:
             if t['confirmed'] and t['observed']:
-                result.append(dict(id=t['id'], x=round(t['x']), y=round(t['y']),
-                    spd=round(t['spd']), raw_x=t['raw']['x'], raw_y=t['raw']['y'],
+                state = t['filter'].state()
+                result.append(dict(id=t['id'], x=round(state['right_m']*1000), y=round(state['forward_m']*1000),
+                    spd=t['raw']['spd'], raw_x=t['raw']['x'], raw_y=t['raw']['y'],
                     resolution_mm=t['raw'].get('resolution_mm', 0), slot=t['raw'].get('slot'),
-                    track_age_s=round(now-t['first_seen'], 2), observed=True))
+                    track_age_s=round(now-t['first_seen'], 2), observed=True,
+                    filter='constant_velocity', sensor_velocity_x_mps=state['velocity_right_mps'],
+                    sensor_velocity_y_mps=state['velocity_forward_mps'],
+                    position_sigma_m=math.sqrt(max(state['variance_right_m2'],state['variance_forward_m2']))))
+            elif t['observed']:
+                self.decisions.append(dict(id=t['id'],reason='tentative return',hits=sum(t['hits'])))
+        self.tracks = self.tracks[-16:]
         return result
 
 
@@ -180,6 +197,7 @@ class RadarService:
         targets = tracker.update(detections, now)
         with self.lock:
             self.targets, self.raw_targets = targets, raw
+            self.filter_decisions = list(tracker.decisions)
             self.last_frame, self.frame_timestamp, self.error = now, time.time(), None
             self.frame_id += 1
             self.frame_times.append(now)
@@ -225,7 +243,8 @@ class RadarService:
                          capture_mono_ms=self.last_frame * 1000 if self.last_frame is not None else 0,
                          age_ms=round(age*1000, 1) if age is not None else None,
                          timestamp=self.frame_timestamp, frame_id=self.frame_id,
-                         error=self.error, diagnostics=dict(self.diagnostics))
+                         error=self.error, diagnostics=dict(self.diagnostics),
+                         filter_decisions=list(getattr(self,'filter_decisions',[])) if live else [])
         calibrated = config['mounting_confirmed'] and config['mount_level']
         output = []
         for t in targets:

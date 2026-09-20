@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidManifestUpdates>
+        <!-- UEDeployAndroid adds these independently of Meta runtime settings.
+             This app uses physical controllers, including a rigid sensor mount. -->
+        <removeFeature android:name="oculus.software.handtracking" />
+        <removePermission android:name="com.oculus.permission.HAND_TRACKING" />
+    </androidManifestUpdates>
+</root>

@@ -11,6 +11,8 @@ import hashlib
 import json
 import math
 import time
+from .tracking import PeopleTracker
+from SensorRig.CV.tracking_math import assignment
 
 
 CAMERA_TTL_MS = 750.0
@@ -47,8 +49,27 @@ class FusionConfig:
     ambiguity_margin_deg: float = 3.0
     confirmation_frames: int = 2
     max_people: int = 8
+    camera_offset_up_m: float = -.014
+    camera_height_m: float | None = None
+    camera_pitch_deg: float = 0.
+    camera_fx_px: float = 0.
+    camera_fy_px: float = 0.
+    camera_cx_px: float = 0.
+    camera_cy_px: float = 0.
+    rig_motion_mode: str = 'stationary'
 
     def __post_init__(self):
+        if self.rig_motion_mode not in ('stationary','untracked','left_controller'):
+            raise ValueError('Rig mode must be stationary, untracked, or left_controller')
+        if not number(self.camera_offset_up_m) or abs(self.camera_offset_up_m)>2:
+            raise ValueError('Invalid camera vertical offset')
+        if self.camera_height_m is not None and (not number(self.camera_height_m) or not .1<=self.camera_height_m<=4):
+            raise ValueError('Camera lens height must be 0.1–4 metres or null')
+        if not number(self.camera_pitch_deg) or abs(self.camera_pitch_deg)>45:
+            raise ValueError('Invalid camera pitch')
+        for key in ('camera_fx_px','camera_fy_px','camera_cx_px','camera_cy_px'):
+            if not number(getattr(self,key)) or not 0<=getattr(self,key)<=16384:
+                raise ValueError('Invalid camera intrinsics')
         for name in ("camera_offset_right_m", "camera_offset_forward_m"):
             if not number(getattr(self, name)) or abs(getattr(self, name)) > 2:
                 raise ValueError(f"{name} must be finite and within two metres")
@@ -151,7 +172,7 @@ def _people(packet):
     return output, dict(width=width, height=height, hfov=float(hfov))
 
 
-def _radar_targets(radar):
+def _radar_targets(radar, use_measurements=False):
     values = radar.get("targets")
     if not isinstance(values, list) or len(values) > 32:
         raise ValueError("Radar observations must be a bounded array")
@@ -160,6 +181,10 @@ def _radar_targets(radar):
         if not isinstance(value, dict) or value.get("observed") is not True:
             continue
         target_id, right, forward = value.get("id"), value.get("right_m"), value.get("forward_m")
+        if use_measurements and number(value.get('raw_right_m')) and number(value.get('raw_forward_m')):
+            # These are accepted, confirmed returns before sensor-frame smoothing.
+            # Filtering happens after the tracked rig transform on Quest.
+            right,forward=value['raw_right_m'],value['raw_forward_m']
         if not identity(target_id) or not number(right) or not number(forward):
             continue
         if target_id in seen:
@@ -193,6 +218,7 @@ class FusionEngine:
         self.radar_generation = None
         self.camera_geometry = None
         self.status = "waiting_for_sensor"
+        self.tracker = PeopleTracker()
 
     def disconnect(self):
         self.camera = None
@@ -201,6 +227,7 @@ class FusionEngine:
         self.matches.clear()
         self.camera_high_water = self.radar_high_water = -1
         self.status = "sensor_disconnected"
+        self.tracker.reset()
 
     def set_config(self, config):
         if not isinstance(config, FusionConfig):
@@ -212,7 +239,10 @@ class FusionEngine:
 
     def _reference_id(self):
         basis = dict(mount=self.mount, camera_offset_right_m=self.config.camera_offset_right_m,
-                     camera_offset_forward_m=self.config.camera_offset_forward_m)
+                     camera_offset_forward_m=self.config.camera_offset_forward_m,
+                     camera_offset_up_m=self.config.camera_offset_up_m,
+                     camera_height_m=self.config.camera_height_m,camera_pitch_deg=self.config.camera_pitch_deg,
+                     rig_motion_mode=self.config.rig_motion_mode)
         return hashlib.sha256(json.dumps(basis, sort_keys=True).encode()).hexdigest()[:24]
 
     def ingest(self, packet, now=None):
@@ -242,7 +272,7 @@ class FusionEngine:
             _sample_fields(rf, rg, rt)
             if radar.get("position_units") != "m":
                 raise ValueError("Radar position_units must be metres")
-            targets = _radar_targets(radar)
+            targets = _radar_targets(radar,self.config.rig_motion_mode=='left_controller')
             rs = Sample(rf, rg, rt, now, _age(radar.get("age_ms")), targets, {})
 
         same_reference = session == self.session and mount == self.mount
@@ -264,12 +294,16 @@ class FusionEngine:
             self.camera_geometry = None
             self.reference_id = self._reference_id()
         if cg != self.camera_generation:
+            if self.camera_generation is not None:
+                self.tracker.reset()
             self.camera = None
             self.camera_high_water = -1
             self.confirmations.clear()
             self.matches.clear()
             self.camera_generation = cg
         if rg != self.radar_generation:
+            if self.radar_generation is not None:
+                self.tracker.reset()
             self.radar.clear()
             self.radar_high_water = -1
             self.confirmations.clear()
@@ -335,12 +369,22 @@ class FusionEngine:
                         <= person["right_bearing"] + self.config.box_margin_deg):
                     edges.append((error, person["id"], target["id"]))
         edges.sort()
+        # Bounded global assignment, while refusing locally ambiguous pairs.
+        # A maximum of eight camera candidates and three LD2450 returns keeps
+        # the deterministic bitmask solver bounded on the relay thread.
+        camera_ids=[p['id'] for p in self.camera.values[:8]]
+        radar_ids=[r['id'] for r in radar.values[:3]]
+        costs=[[next((e[0] for e in edges if e[1]==c and e[2]==r),math.inf)
+                for r in radar_ids] for c in camera_ids]
+        assigned={camera_ids[i]:radar_ids[j] for i,j in assignment(costs,30.).items()}
         confirmations = {}
         for person in self.camera.values:
             ranked = [e for e in edges if e[1] == person["id"]]
             if not ranked:
                 continue
             best = ranked[0]
+            if assigned.get(person['id']) != best[2]:
+                continue
             reverse = [e for e in edges if e[2] == best[2]]
             if reverse[0] != best:
                 continue
@@ -369,6 +413,10 @@ class FusionEngine:
         associated = set()
         for observation in sorted(camera.values, key=lambda p: (-p["confidence"], p["id"])) if fresh else []:
             fallback = observation["fallback"]
+            pose=self.tracker.poses.get(('C',camera.generation,observation['id']))
+            if pose and pose.get('floor_position') and pose['age_ms']+(now-pose['received_at'])*1000<=350:
+                floor=pose['floor_position']
+                fallback=(floor['right_m'],floor['forward_m'])
             fallback = rotate(*fallback, self.mount["yaw_deg"]) if fallback else None
             fallback = dict(right_m=fallback[0] + self.config.camera_offset_right_m,
                             forward_m=fallback[1] + self.config.camera_offset_forward_m) if fallback else None
@@ -402,7 +450,12 @@ class FusionEngine:
                      age_ms=round(latest_radar.age(now), 3), classification="unverified_radar_target")
                 for t in latest_radar.values
                 if (latest_radar.generation, t["id"]) not in associated] if latest_radar else []
-        return dict(version=1, source_session_id=self.session, reference_id=self.reference_id,
+        tracks=self.tracker.snapshot(people,dots,camera if fresh else None,now,
+            (self.session,self.reference_id,self.camera_generation,self.radar_generation),self.config,
+            self.mount['yaw_deg'] if self.mount else 0.)
+        return dict(version=1, tracks_version=1, tracks=tracks,track_decisions=[dict(d) for d in self.tracker.decisions],
+                    rig_pose_valid=self.config.rig_motion_mode=='stationary',rig_motion_mode=self.config.rig_motion_mode,
+                    source_session_id=self.session, reference_id=self.reference_id,
                     camera_frame_id=camera.frame_id if camera else self.camera_high_water,
                     camera_generation=self.camera_generation,
                     camera_age_ms=round(camera.age(now), 3) if camera else None,

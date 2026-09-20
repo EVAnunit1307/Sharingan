@@ -71,6 +71,8 @@ public:
     void CycleMapRange();
     float GetMapRangeMeters() const { return SpatialMapRangeMeters; }
     EWallhackHUDDensity GetHUDDensity() const { return HUDDensity; }
+    const UInputMappingContext* GetModeInputContext() const { return HUDMappingContext; }
+    const UInputMappingContext* GetCommonInputContext() const { return CommonMappingContext; }
 
 private:
     void DrawOperatorHUD(float DeltaSeconds = 0.f);
@@ -154,6 +156,8 @@ private:
 
     UPROPERTY(Transient)
     TObjectPtr<UInputMappingContext> HUDMappingContext;
+    UPROPERTY(Transient)
+    TObjectPtr<UInputMappingContext> CommonMappingContext;
 
     // Left-controller X sets the current facing direction as compass "north".
     // The first valid viewer yaw supplies the initial reference; neither is a

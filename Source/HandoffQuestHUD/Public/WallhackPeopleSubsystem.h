@@ -17,6 +17,13 @@ struct FWallhackPersonPose
     FLinearColor Tint = FLinearColor::Transparent; // Optional sensor-source accent.
     FString SourceLabel; // Empty for manual poses; RADAR / ESTIMATED / RADAR ONLY for sensors.
     bool bRadarOnly = false; // Radar IDs use R, independently of the camera's C identities.
+    bool bArticulated = false;
+    bool bCameraPose = false;
+    bool bHeightEstimated = false;
+    float Speed = 0;
+    FVector LocalVelocity = FVector::ZeroVector;
+    TArray<FVector> Joints; // Body-local directions/positions in metres, hip origin.
+    TArray<float> JointQuality;
 };
 
 UCLASS()

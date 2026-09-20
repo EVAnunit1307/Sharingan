@@ -1,0 +1,290 @@
+{
+  "bones": [
+    {
+      "name": "root",
+      "head": [
+        0,
+        0,
+        0
+      ],
+      "tail": [
+        0,
+        0,
+        0.1
+      ],
+      "parent": null
+    },
+    {
+      "name": "pelvis",
+      "head": [
+        0,
+        0,
+        0.53
+      ],
+      "tail": [
+        0,
+        0,
+        0.6
+      ],
+      "parent": "root"
+    },
+    {
+      "name": "spine",
+      "head": [
+        0,
+        0,
+        0.6
+      ],
+      "tail": [
+        0,
+        0,
+        0.73
+      ],
+      "parent": "pelvis"
+    },
+    {
+      "name": "chest",
+      "head": [
+        0,
+        0,
+        0.73
+      ],
+      "tail": [
+        0,
+        0,
+        0.83
+      ],
+      "parent": "spine"
+    },
+    {
+      "name": "neck",
+      "head": [
+        0,
+        0,
+        0.83
+      ],
+      "tail": [
+        0,
+        0,
+        0.89
+      ],
+      "parent": "chest"
+    },
+    {
+      "name": "head",
+      "head": [
+        0,
+        0,
+        0.89
+      ],
+      "tail": [
+        0,
+        0,
+        0.99
+      ],
+      "parent": "neck"
+    },
+    {
+      "name": "clavicle_l",
+      "head": [
+        0,
+        0,
+        0.81
+      ],
+      "tail": [
+        0.1,
+        0,
+        0.81
+      ],
+      "parent": "chest"
+    },
+    {
+      "name": "upperarm_l",
+      "head": [
+        0.1,
+        0,
+        0.81
+      ],
+      "tail": [
+        0.165,
+        0,
+        0.65
+      ],
+      "parent": "clavicle_l"
+    },
+    {
+      "name": "lowerarm_l",
+      "head": [
+        0.165,
+        0,
+        0.65
+      ],
+      "tail": [
+        0.225,
+        -0.005,
+        0.5
+      ],
+      "parent": "upperarm_l"
+    },
+    {
+      "name": "hand_l",
+      "head": [
+        0.225,
+        -0.005,
+        0.5
+      ],
+      "tail": [
+        0.255,
+        -0.01,
+        0.445
+      ],
+      "parent": "lowerarm_l"
+    },
+    {
+      "name": "thigh_l",
+      "head": [
+        0.05,
+        0,
+        0.53
+      ],
+      "tail": [
+        0.065,
+        -0.005,
+        0.285
+      ],
+      "parent": "pelvis"
+    },
+    {
+      "name": "calf_l",
+      "head": [
+        0.065,
+        -0.005,
+        0.285
+      ],
+      "tail": [
+        0.075,
+        0,
+        0.055
+      ],
+      "parent": "thigh_l"
+    },
+    {
+      "name": "foot_l",
+      "head": [
+        0.075,
+        0,
+        0.055
+      ],
+      "tail": [
+        0.085,
+        -0.09,
+        0.03
+      ],
+      "parent": "calf_l"
+    },
+    {
+      "name": "clavicle_r",
+      "head": [
+        0,
+        0,
+        0.81
+      ],
+      "tail": [
+        -0.1,
+        0,
+        0.81
+      ],
+      "parent": "chest"
+    },
+    {
+      "name": "upperarm_r",
+      "head": [
+        -0.1,
+        0,
+        0.81
+      ],
+      "tail": [
+        -0.165,
+        0,
+        0.65
+      ],
+      "parent": "clavicle_r"
+    },
+    {
+      "name": "lowerarm_r",
+      "head": [
+        -0.165,
+        0,
+        0.65
+      ],
+      "tail": [
+        -0.225,
+        -0.005,
+        0.5
+      ],
+      "parent": "upperarm_r"
+    },
+    {
+      "name": "hand_r",
+      "head": [
+        -0.225,
+        -0.005,
+        0.5
+      ],
+      "tail": [
+        -0.255,
+        -0.01,
+        0.445
+      ],
+      "parent": "lowerarm_r"
+    },
+    {
+      "name": "thigh_r",
+      "head": [
+        -0.05,
+        0,
+        0.53
+      ],
+      "tail": [
+        -0.065,
+        -0.005,
+        0.285
+      ],
+      "parent": "pelvis"
+    },
+    {
+      "name": "calf_r",
+      "head": [
+        -0.065,
+        -0.005,
+        0.285
+      ],
+      "tail": [
+        -0.075,
+        0,
+        0.055
+      ],
+      "parent": "thigh_r"
+    },
+    {
+      "name": "foot_r",
+      "head": [
+        -0.075,
+        0,
+        0.055
+      ],
+      "tail": [
+        -0.085,
+        -0.09,
+        0.03
+      ],
+      "parent": "calf_r"
+    }
+  ],
+  "vertices": 11674,
+  "fallback_weight_vertices": 1092,
+  "max_influences": 4,
+  "license": "CC0-1.0",
+  "height_m": 0.9999999403953552,
+  "source": "existing Blender Studio realistic base mesh"
+}

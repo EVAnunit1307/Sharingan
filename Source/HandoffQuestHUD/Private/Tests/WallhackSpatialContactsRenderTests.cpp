@@ -323,7 +323,7 @@ bool FWallhackMultipleContactsRenderTest::RunTest(const FString& Parameters)
     {
         for (const TUniquePtr<FEnhancedInputActionEventBinding>& Binding : Input->GetActionEventBindings())
         {
-            if (Binding->GetAction() && Binding->GetAction()->GetFName() == FName(TEXT("WallhackCycleHUDAction"))
+            if (Binding->GetAction() && Binding->GetAction()->GetFName() == FName(TEXT("IA_CycleHUD"))
                 && Binding->GetTriggerEvent() == ETriggerEvent::Started)
             {
                 Binding->Execute(FInputActionInstance(Binding->GetAction()));

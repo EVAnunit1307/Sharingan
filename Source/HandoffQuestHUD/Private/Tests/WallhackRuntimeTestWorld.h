@@ -129,7 +129,7 @@ public:
             bool bInvoked = false;
             for (const auto& Binding : Input->GetActionEventBindings())
             {
-                if (Binding->GetAction() && Binding->GetAction()->GetFName() == FName(TEXT("WallhackCycleHUDAction"))
+                if (Binding->GetAction() && Binding->GetAction()->GetFName() == FName(TEXT("IA_CycleHUD"))
                     && Binding->GetTriggerEvent() == ETriggerEvent::Started)
                 {
                     Binding->Execute(FInputActionInstance(Binding->GetAction()));

@@ -66,6 +66,7 @@ void FWallhackSensorPeopleStream::Reset()
 {
     Last = {}; RelaySession.Reset(); Sequence = -1; CameraExpiry = {};
     RadarGeneration = RadarHighWater = -1; RadarExpiries.Reset();
+    TrackExpiries.Reset();
 }
 
 double FWallhackSensorPeopleStream::CameraDeadline(int32 Generation, int32 Frame, double AgeMs, double Now)
@@ -187,6 +188,72 @@ bool FWallhackSensorPeopleStream::Ingest(const FString& Json, double Now)
         Dot.Generation = Generation;
         Frame.Radar.Add(Dot);
     }
+    if(E->HasField(TEXT("rig_pose_valid"))&&!E->TryGetBoolField(TEXT("rig_pose_valid"),Frame.bRigPoseValid))return false;
+    if(E->HasField(TEXT("rig_motion_mode")))
+    {
+        if(!E->TryGetStringField(TEXT("rig_motion_mode"),Frame.RigMotionMode)
+            ||(Frame.RigMotionMode!=TEXT("stationary")&&Frame.RigMotionMode!=TEXT("untracked")
+                &&Frame.RigMotionMode!=TEXT("left_controller")))return false;
+    }
+    if (E->HasField(TEXT("tracks_version")))
+    {
+        int32 TrackVersion;
+        const TArray<TSharedPtr<FJsonValue>>* Tracks=nullptr;
+        if(!Id(E,TEXT("tracks_version"),TrackVersion)||TrackVersion!=1
+            ||!E->TryGetArrayField(TEXT("tracks"),Tracks)||!Tracks||Tracks->Num()>8)return false;
+        Frame.bHasTracks=true;
+        TSet<int32> TrackIds;
+        for(auto It=Candidate.TrackExpiries.CreateIterator();It;++It)if(It.Value()<Now-1)It.RemoveCurrent();
+        for(const auto& Value:*Tracks)
+        {
+            if(!Value.IsValid()||Value->Type!=EJson::Object)return false;
+            const auto O=Value->AsObject();FWallhackTrackedPerson P;
+            double VX,VY,Height,Facing,Remaining;FString Sample;
+            if(!Id(O,TEXT("id"),P.Id)||TrackIds.Contains(P.Id)||!Position(O,P.Position)
+                ||!Number(O,TEXT("velocity_right_mps"),VX,-20,20)||!Number(O,TEXT("velocity_forward_mps"),VY,-20,20)
+                ||!Number(O,TEXT("height_m"),Height,.5,2.8)||!Number(O,TEXT("facing_deg"),Facing,-720,720)
+                ||!Number(O,TEXT("valid_for_ms"),Remaining,0,750)||!String(O,TEXT("sample_key"),Sample)
+                ||!String(O,TEXT("position_source"),P.Source))return false;
+            if(P.Source!=TEXT("radar_matched")&&P.Source!=TEXT("radar_only")&&P.Source!=TEXT("camera_estimate"))return false;
+            if(P.Source!=TEXT("camera_estimate")&&Remaining>500)return false;
+            TrackIds.Add(P.Id);P.Velocity={VX,VY};P.Height=Height;P.Facing=Facing;
+            O->TryGetStringField(TEXT("height_source"),P.HeightSource);
+            O->TryGetStringField(TEXT("facing_source"),P.FacingSource);
+            O->TryGetStringField(TEXT("person_evidence"),P.PersonEvidence);
+            double PoseYaw=0;Number(O,TEXT("pose_yaw_deg"),PoseYaw,-720,720);P.PoseYaw=PoseYaw;
+            const FString ExpiryKey=FString::FromInt(P.Id)+TEXT("/")+Sample;
+            const double Deadline=Now+Remaining/1000.;
+            if(auto* Old=Candidate.TrackExpiries.Find(ExpiryKey))*Old=FMath::Min(*Old,Deadline);
+            else Candidate.TrackExpiries.Add(ExpiryKey,Deadline);
+            P.Expires=Candidate.TrackExpiries[ExpiryKey];
+            P.SampleKey=Sample;
+            P.ObservedAt=P.Expires-(P.Source==TEXT("camera_estimate")?.750:.500);
+            const TSharedPtr<FJsonObject>* Pose=nullptr;
+            if(O->TryGetObjectField(TEXT("pose"),Pose)&&Pose&&Pose->IsValid())
+            {
+                const TArray<TSharedPtr<FJsonValue>>* Joints=nullptr;double Age,Capture;
+                if(!Number(*Pose,TEXT("age_ms"),Age,0,1.e9)||!Number(*Pose,TEXT("capture_ms"),Capture,0,1.e15)
+                    ||!(*Pose)->TryGetArrayField(TEXT("joints"),Joints)||!Joints||Joints->Num()!=33)return false;
+                const FString PoseKey=FString::Printf(TEXT("P/%d/%.0f"),P.Id,Capture);
+                const double PoseDeadline=Now+.350-Age/1000.;
+                if(auto* Old=Candidate.TrackExpiries.Find(PoseKey))*Old=FMath::Min(*Old,PoseDeadline);
+                else Candidate.TrackExpiries.Add(PoseKey,PoseDeadline);
+                P.PoseExpires=Candidate.TrackExpiries[PoseKey];
+                P.PoseObservedAt=P.PoseExpires-.350;
+                for(const auto& Joint:*Joints)
+                {
+                    const TArray<TSharedPtr<FJsonValue>>* V=nullptr;
+                    if(!Joint.IsValid()||!Joint->TryGetArray(V)||!V||V->Num()!=4)return false;
+                    double A[4];
+                    for(int32 I=0;I<4;++I)if(!(*V)[I]->TryGetNumber(A[I])||!FMath::IsFinite(A[I])||FMath::Abs(A[I])>4)return false;
+                    if(A[3]<0||A[3]>1)return false;
+                    P.Joints.Add(FVector(A[2],A[0],A[1]));P.JointQuality.Add(A[3]);
+                }
+            }
+            Frame.Tracks.Add(MoveTemp(P));
+        }
+        if(Candidate.TrackExpiries.Num()>512)return false;
+    }
     Candidate.Last = MoveTemp(Frame); Candidate.RelaySession = Session; Candidate.Sequence = int64(Seq);
     *this = MoveTemp(Candidate);
     return true;
@@ -206,5 +273,11 @@ FWallhackSensorPeopleFrame FWallhackSensorPeopleStream::GetFrame(double Now) con
         return false;
     });
     Frame.Radar.RemoveAll([Now](const FWallhackSensorDot& D) { return !FMath::IsFinite(Now) || Now > D.Expires; });
+    Frame.Tracks.RemoveAll([Now](FWallhackTrackedPerson& P)
+    {
+        if(!FMath::IsFinite(Now)||Now>P.Expires)return true;
+        if(Now>P.PoseExpires){P.Joints.Reset();P.JointQuality.Reset();}
+        return false;
+    });
     return Frame;
 }

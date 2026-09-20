@@ -58,18 +58,21 @@ namespace
     bool InvokeHUDKey(AWallhackVRHUDActor* HUD, const FKey& Key)
     {
         if (!HUD) return false;
-        const UInputMappingContext* Mapping = FindObject<UInputMappingContext>(HUD, TEXT("WallhackHUDMappingContext"));
         const UEnhancedInputComponent* Input = HUD->FindComponentByClass<UEnhancedInputComponent>();
-        if (!Mapping || !Input) return false;
-        for (const FEnhancedActionKeyMapping& KeyMapping : Mapping->GetMappings())
+        if (!Input) return false;
+        for (const auto* Mapping : {HUD->GetCommonInputContext(), HUD->GetModeInputContext()})
         {
-            if (KeyMapping.Key != Key) continue;
-            for (const TUniquePtr<FEnhancedInputActionEventBinding>& Binding : Input->GetActionEventBindings())
+            if (!Mapping) continue;
+            for (const FEnhancedActionKeyMapping& KeyMapping : Mapping->GetMappings())
             {
-                if (Binding->GetAction() == KeyMapping.Action && Binding->GetTriggerEvent() == ETriggerEvent::Started)
+                if (KeyMapping.Key != Key) continue;
+                for (const TUniquePtr<FEnhancedInputActionEventBinding>& Binding : Input->GetActionEventBindings())
                 {
-                    Binding->Execute(FInputActionInstance(Binding->GetAction()));
-                    return true;
+                    if (Binding->GetAction() == KeyMapping.Action && Binding->GetTriggerEvent() == ETriggerEvent::Started)
+                    {
+                        Binding->Execute(FInputActionInstance(Binding->GetAction()));
+                        return true;
+                    }
                 }
             }
         }

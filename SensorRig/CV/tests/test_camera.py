@@ -3,6 +3,7 @@ from pathlib import Path
 import threading
 import time
 import unittest
+import base64
 
 import numpy as np
 
@@ -13,6 +14,21 @@ from detector.person_detector import PersonDetector
 
 def observation(score=.65, x=10):
     return {"box": [x, 20, x + 50, 160], "score": score}
+
+
+class InferenceFrameTests(unittest.TestCase):
+    def test_exact_frame_endpoint_cannot_mix_metadata_or_serve_stale_image(self):
+        pipeline=CameraPipeline(type('UnusedDetector',(),{'cfg':{'model':'fixture'}})())
+        pipeline.result=dict(generation=3,frame_id=42,captured_at=time.monotonic(),frame_width=640,
+            frame_height=480,people=[dict(id=7,observed=True,box=[100,10,200,470])],inference_jpeg=b'exact-image')
+        client=create_app(pipeline).test_client()
+        frame=client.get('/pose/frame')
+        self.assertEqual(frame.status_code,200)
+        self.assertEqual(frame.json['frame_id'],42)
+        self.assertEqual(frame.json['generation'],3)
+        self.assertEqual(base64.b64decode(frame.json['jpeg_base64']),b'exact-image')
+        pipeline.result['captured_at']-=1
+        self.assertEqual(client.get('/pose/frame').status_code,503)
 
 
 class TrackingTests(unittest.TestCase):
