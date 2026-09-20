@@ -7,6 +7,7 @@ namespace WallhackPeopleStyle
 // Identity colors, not classifications. Numeric IDs remain visible as well.
 inline FLinearColor Color(const FWallhackPersonPose& Person)
 {
+    if(Person.Tint.A>0)return Person.Tint;
     static const FColor Palette[] = {
         {241,92,92}, {88,186,244}, {181,137,250}, {247,203,97},
         {71,216,194}, {245,142,202}, {170,213,90}, {250,156,80}

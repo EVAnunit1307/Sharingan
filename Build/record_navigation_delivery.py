@@ -16,7 +16,7 @@ assert package['passed'], 'Package verification must pass first'
 reports = sorted((evidence / 'TestRuns').glob('*/Report/index.json'))
 assert reports, 'Automation report missing'
 tests = json.loads(reports[-1].read_text(encoding='utf-8-sig'))
-assert len(tests['tests']) >= 75 and all(t['state'] == 'Success' for t in tests['tests'])
+assert len(tests['tests']) >= 79 and all(t['state'] == 'Success' for t in tests['tests'])
 
 def digest(path):
     with path.open('rb') as stream:

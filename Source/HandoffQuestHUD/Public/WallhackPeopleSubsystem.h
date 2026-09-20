@@ -5,8 +5,8 @@
 
 class AWallhackPeopleRenderer;
 
-/** A manually supplied person pose in the shared MRUK navigation frame (metres).
- * This is a generic body representation, not recognition or live tracking. */
+/** Renderer pose in the shared world frame (metres). The manual subsystem and
+ * live sensor actor keep separate stores; body height/facing may be assumptions. */
 struct FWallhackPersonPose
 {
     int32 Id = INDEX_NONE;
@@ -14,6 +14,8 @@ struct FWallhackPersonPose
     float Height = 1.75f;
     float Facing = 0.f; // World yaw, +X forward. Compass calibration does not alter this.
     int32 ColorSlot = INDEX_NONE; // Assigned once; unique among active session people.
+    FLinearColor Tint = FLinearColor::Transparent; // Optional sensor-source accent.
+    FString SourceLabel; // Empty for manual poses; RADAR / ESTIMATED for live sensors.
 };
 
 UCLASS()

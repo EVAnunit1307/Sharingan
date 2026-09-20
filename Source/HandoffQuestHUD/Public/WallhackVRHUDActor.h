@@ -15,6 +15,7 @@ class UFont;
 class UMotionControllerComponent;
 class UTexture2D;
 class AWallhackWorldContact;
+class AWallhackSensorPeopleActor;
 class UCanvas;
 class UInstancedStaticMeshComponent;
 struct FInputActionValue;
@@ -61,6 +62,7 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual void Tick(float DeltaSeconds) override;
     void SetWorldContact(AWallhackWorldContact* Contact);
+    void SetSensorPeople(AWallhackSensorPeopleActor* People);
     void ExportSpatialHUD();
     /** The actual compositor texture, also presented by the opt-in desktop preview. */
     UTextureRenderTarget2D* GetHUDRenderTarget() const { return HUDRenderTarget; }
@@ -77,6 +79,12 @@ private:
     void DrawNavigationMap(UCanvas* Canvas, UFont* Font);
     void DrawNavigationDirection(UCanvas* Canvas, UFont* Font);
     void DrawNavigationCompass(UCanvas* Canvas, UFont* Font);
+    void DrawSensorPeopleHUD(UCanvas* Canvas);
+    void ConfirmSensorPlacement();
+    void ResetSensorPlacement();
+    UPROPERTY(Transient) TObjectPtr<AWallhackSensorPeopleActor> SensorPeople;
+    UPROPERTY(Transient) TObjectPtr<UInputAction> SensorConfirmAction;
+    UPROPERTY(Transient) TObjectPtr<UInputAction> SensorResetAction;
     void BeginNavigationAim();
     void EndNavigationAim();
     void ConfirmNavigation();

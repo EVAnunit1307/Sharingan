@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "source_session_id": "pi-session",
+  "camera_generation": 1,
+  "camera_frame_id": 2,
+  "camera_capture_mono_ms": 1200,
+  "camera_age_ms": 0,
+  "camera_frame_width": 640,
+  "camera_frame_height": 480,
+  "camera_hfov_deg": 62,
+  "camera_connected": true,
+  "camera_people": [
+    {
+      "id": 1,
+      "score": 0.9,
+      "observed": true,
+      "box": [
+        302.0,
+        20,
+        338.0,
+        450
+      ],
+      "x_m": 0.0,
+      "y_m": 2,
+      "range_source": "monocular_estimate"
+    }
+  ],
+  "radar": {
+    "status": "live",
+    "generation": 1,
+    "frame_id": 2,
+    "capture_mono_ms": 1200,
+    "age_ms": 0,
+    "position_units": "m",
+    "reference_origin": "radar",
+    "coordinate_frame": "drone_body_2d",
+    "config": {
+      "invert_x": true,
+      "mount_level": true,
+      "mounting_confirmed": true,
+      "yaw_deg": 0,
+      "offset_right_m": 0,
+      "offset_forward_m": 0
+    },
+    "targets": [
+      {
+        "id": 7,
+        "observed": true,
+        "right_m": 0.0,
+        "forward_m": 3
+      }
+    ]
+  },
+  "rig": {
+    "x": 0,
+    "y": 0,
+    "heading_deg": 0,
+    "tracking_ok": false
+  },
+  "detections": [],
+  "drone_relative_radar_targets": [],
+  "spatial_people": {
+    "version": 1,
+    "source_session_id": "pi-session",
+    "reference_id": "3f2a20701908888e6d5e9031",
+    "camera_frame_id": 2,
+    "camera_generation": 1,
+    "camera_age_ms": 0.0,
+    "reference_origin": "radar",
+    "coordinate_frame": "sensor_reference_2d",
+    "units": "m",
+    "status": "live",
+    "alignment_confirmed": true,
+    "people": [
+      {
+        "camera_id": 1,
+        "camera_generation": 1,
+        "camera_frame_id": 2,
+        "confidence": 0.9,
+        "right_m": 0.0,
+        "forward_m": 3.0,
+        "position_source": "radar_matched",
+        "radar_id": 7,
+        "radar_generation": 1,
+        "radar_frame_id": 2,
+        "camera_age_ms": 0.0,
+        "radar_age_ms": 0.0,
+        "fallback_position": {
+          "right_m": 0.0,
+          "forward_m": 2.0
+        }
+      }
+    ],
+    "radar_targets": [],
+    "observed_people": 1,
+    "unmatched_people": 0,
+    "unpositioned_people": 0
+  },
+  "relay_session_id": "synthetic-contract-fixture",
+  "relay_sequence": 1,
+  "is_replay": true
+}

@@ -144,6 +144,9 @@ def main() -> int:
                       "USE_SCENE declaration checked", "Enable scene support and fully repackage the application.")
             check("Anchor API permission", permission, "declared" if permission else "missing",
                   "Enable bAnchorSupportEnabled, run Unreal packaging, and refresh the GreenTestGradle manifest.")
+            network = "uses-permission: name='android.permission.INTERNET'" in badging
+            check("Sensor relay network permission", network, "INTERNET declared" if network else "missing",
+                  "Enable Android INTERNET permission and fully repackage for the WebSocket sensor relay.")
             check("Arm64 ABI", "native-code: 'arm64-v8a'" in badging, "arm64-v8a" if "native-code: 'arm64-v8a'" in badging else "missing or unexpected ABI",
                   "Refresh the arm64-v8a libUnreal.so in GreenTestGradle and assemble again.")
 

@@ -1,0 +1,2 @@
+# Optional browser regression checks; runtime and unittest do not need this.
+playwright>=1.63,<2

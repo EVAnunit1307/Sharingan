@@ -4,6 +4,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Tickable.h"
 #include "IWebSocket.h"
+#include "WallhackSensorPeopleTypes.h"
 #include "WallhackTelemetrySubsystem.generated.h"
 
 UENUM(BlueprintType)
@@ -131,6 +132,8 @@ public:
     UFUNCTION(BlueprintPure, Category="Wallhack")
     FString GetBridgeUrl() const { return ActiveBridgeUrl; }
 
+    FWallhackSensorPeopleFrame GetSensorPeopleFrame() const;
+
 private:
     void OpenSocket();
     void CloseSocket();
@@ -152,4 +155,5 @@ private:
     bool bConnected = false;
     bool bDesktopPreviewEnabled = false;
     FString ActiveBridgeUrl;
+    FWallhackSensorPeopleStream SensorPeople;
 };

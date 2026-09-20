@@ -12,6 +12,7 @@ void UWallhackTelemetrySubsystem::Initialize(FSubsystemCollectionBase& Collectio
 {
     Super::Initialize(Collection);
     ActiveBridgeUrl = GetDefault<UWallhackHUDSettings>()->BridgeUrl;
+    FParse::Value(FCommandLine::Get(), TEXT("WallhackBridgeUrl="), ActiveBridgeUrl);
     bDesktopPreviewEnabled = PLATFORM_WINDOWS && FParse::Param(FCommandLine::Get(), TEXT("WallhackPreview"));
     if (bDesktopPreviewEnabled)
     {
@@ -28,7 +29,8 @@ void UWallhackTelemetrySubsystem::Deinitialize()
 
 void UWallhackTelemetrySubsystem::Tick(float DeltaTime)
 {
-    if (!FParse::Param(FCommandLine::Get(), TEXT("WallhackBridge"))) return;
+    if (!FParse::Param(FCommandLine::Get(), TEXT("WallhackBridge"))
+        && !FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople"))) return;
     const double Now = FPlatformTime::Seconds();
     if (!bConnected && !Socket.IsValid() && Now >= NextReconnectSeconds)
     {
@@ -147,8 +149,15 @@ void UWallhackTelemetrySubsystem::OpenSocket()
 void UWallhackTelemetrySubsystem::CloseSocket()
 {
     bConnected = false;
+    SensorPeople.Reset();
+    LastContacts.Reset();
+    LastPacketSeconds = -1;
     if (Socket.IsValid())
     {
+        Socket->OnConnected().RemoveAll(this);
+        Socket->OnConnectionError().RemoveAll(this);
+        Socket->OnClosed().RemoveAll(this);
+        Socket->OnMessage().RemoveAll(this);
         Socket->Close();
         Socket.Reset();
     }
@@ -163,21 +172,24 @@ void UWallhackTelemetrySubsystem::HandleSocketConnected()
 void UWallhackTelemetrySubsystem::HandleSocketError(const FString& Error)
 {
     UE_LOG(LogTemp, Warning, TEXT("Wallhack HUD socket error: %s"), *Error);
-    bConnected = false;
-    Socket.Reset();
+    CloseSocket();
     NextReconnectSeconds = FPlatformTime::Seconds() + 2.0;
 }
 
 void UWallhackTelemetrySubsystem::HandleSocketClosed(int32 StatusCode, const FString& Reason, bool bWasClean)
 {
     UE_LOG(LogTemp, Warning, TEXT("Wallhack HUD socket closed (%d): %s"), StatusCode, *Reason);
-    bConnected = false;
-    Socket.Reset();
+    CloseSocket();
     NextReconnectSeconds = FPlatformTime::Seconds() + 2.0;
 }
 
 void UWallhackTelemetrySubsystem::HandleMessage(const FString& JsonText)
 {
+    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople")))
+    {
+        if (SensorPeople.Ingest(JsonText, FPlatformTime::Seconds())) LastPacketSeconds = FPlatformTime::Seconds();
+        return;
+    }
     FWallhackRigPose CandidateRig;
     TArray<FWallhackContact> CandidateContacts;
     if (!ParsePacket(JsonText, CandidateRig, CandidateContacts))
@@ -189,6 +201,12 @@ void UWallhackTelemetrySubsystem::HandleMessage(const FString& JsonText)
     LastRig = CandidateRig;
     LastContacts = MoveTemp(CandidateContacts);
     LastPacketSeconds = FPlatformTime::Seconds();
+}
+
+FWallhackSensorPeopleFrame UWallhackTelemetrySubsystem::GetSensorPeopleFrame() const
+{
+    if (!bConnected) return {};
+    return SensorPeople.GetFrame(FPlatformTime::Seconds());
 }
 
 bool UWallhackTelemetrySubsystem::ParsePacket(const FString& JsonText, FWallhackRigPose& OutRig, TArray<FWallhackContact>& OutContacts) const

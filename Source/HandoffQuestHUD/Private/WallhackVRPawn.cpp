@@ -52,11 +52,14 @@ void AWallhackVRPawn::BeginPlay()
     Super::BeginPlay();
 
 #if !PLATFORM_ANDROID && !UE_BUILD_SHIPPING
-    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview")))
+    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeoplePreview")))
     {
         Camera->bLockToHmd = false;
         Camera->SetRelativeTransform(FTransform::Identity);
-        if (FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))) SetActorLocation(FVector(0,0,170));
+        if (FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))
+            || FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeoplePreview"))) SetActorLocation(FVector(0,0,170));
         SetActorTickEnabled(true);
     }
 #endif
@@ -68,7 +71,9 @@ void AWallhackVRPawn::Tick(float DeltaSeconds)
 
 #if !PLATFORM_ANDROID && !UE_BUILD_SHIPPING
     APlayerController* PC = Cast<APlayerController>(GetController());
-    if (!PC || !(FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))))
+    if (!PC || !(FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeoplePreview"))))
     {
         return;
     }

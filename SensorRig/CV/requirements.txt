@@ -1,0 +1,7 @@
+# Pi: install Picamera2/libcamera and OpenCV from Raspberry Pi OS packages.
+# Non-Pi tests/offline work: install opencv-python-headless separately.
+numpy>=1.24,<3
+onnxruntime>=1.20,<2
+Flask>=3,<4
+pyserial>=3.5,<4
+websockets>=14,<18

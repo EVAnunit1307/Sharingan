@@ -1,0 +1,12 @@
+{
+  "samples": 30,
+  "camera_fresh_samples": 30,
+  "median_detection_fps": 10.0,
+  "median_inference_ms": 51.75,
+  "median_capture_fps": 24.1,
+  "unit_tests_passed": 39,
+  "radar_invert_x": true,
+  "radar_live": true,
+  "radar_hz": 11.2,
+  "context": "combined dashboard with Chromium checks on the same Pi"
+}

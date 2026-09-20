@@ -140,7 +140,7 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
         }
         if(!bPreview)
         {
-            const float Distance=FVector::Dist(ViewerMeters,Person.Feet);
+            const float Distance=Person.SourceLabel.IsEmpty()?FVector::Dist(ViewerMeters,Person.Feet):FVector::Dist2D(ViewerMeters,Person.Feet);
             if(PoseChanged||Moved||Now-TelemetryTimes[I]>=.2)
             {
                 BuildTelemetry(I,Person,Distance,NorthOffset);
@@ -193,10 +193,12 @@ UProceduralMeshComponent* AWallhackPeopleRenderer::CreateTelemetry()
 
 void AWallhackPeopleRenderer::BuildTelemetry(int32 Slot,const FWallhackPersonPose& Person,float Distance,float NorthOffset)
 {
-    const FString Header=FString::Printf(TEXT("PERSON %02d / MANUAL"),Person.Id);
+    const FString Header=Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("PERSON %02d / MANUAL"),Person.Id)
+        :FString::Printf(TEXT("C%d / %s"),Person.Id,*Person.SourceLabel);
     const FString Range=FString::Printf(TEXT("%.1f M"),Distance);
     const int32 Facing=FMath::RoundToInt(FRotator::ClampAxis(Person.Facing+NorthOffset))%360;
-    const FString Detail=FString::Printf(TEXT("H %.2f M / FACE %03d"),Person.Height,Facing);
+    const FString Detail=Person.SourceLabel.IsEmpty()?FString::Printf(TEXT("H %.2f M / FACE %03d"),Person.Height,Facing)
+        :FString::Printf(TEXT("ASSUMED H %.2f M / FACES SENSOR"),Person.Height);
     const FString Text=Header+TEXT("\n")+Range+TEXT("\n")+Detail;
     if(TelemetryText[Slot]==Text)return;
     TelemetryText[Slot]=Text;
