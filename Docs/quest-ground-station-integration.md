@@ -46,6 +46,20 @@ stereo and performance checks await the devices returning to the same network.
 The earlier live boot/checks succeeded before this network change; latest
 operational evidence is kept in `Saved/PiSensorPullTest/live-integration-status.json`.
 
+After reconnection, Pi was verified at 172.20.10.3 using its existing trusted
+`larp-pi.local` SSH host key (`HostKeyAlias`), while hostname resolution remained
+unavailable. It had rebooted; the existing deployed sensor service was started
+as PID 1902 after checking that no other camera/radar service was running. The
+laptop relay now uses `http://172.20.10.3:8766` / `ws://172.20.10.3:8765/` directly.
+The installed smoothing build launched on the awake Quest at 172.20.10.4. Eight
+live samples reported one Quest client, fresh camera/radar and no relay error.
+The actual camera image and live diagnostics rendered in Edge with no JavaScript
+errors. No contacts were detected in that short sample. Two-point reference
+placement and a moving-person smoothness/alignment/stereo check remain pending
+the wearer. Evidence: `smoothing-live-connection.json`,
+`diagnostics-live-browser.json`, `diagnostics-live.png` and
+`diagnostics-live-panel.png` under `Saved/PiSensorPullTest`.
+
 ```mermaid
 flowchart LR
     C[Pi camera: person boxes and estimates] --> L[Laptop: timing and bearing association]
