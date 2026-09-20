@@ -98,7 +98,7 @@ public:
             Test->TestEqual(TEXT("Visible recovers fresh contact"),Views.Num(),1);
             Stage=1; Mode(TEXT("radar_off"));
         }
-        else if (Stage == 1 && Views.Num()==1 && !Views[0].bRadar)
+        else if (Stage == 1 && Views.Num()==1 && !Views[0].bRadar && Views[0].Feet.X < 399.9)
         {
             Test->TestEqual(TEXT("Radar outage preserves camera identity"),Views[0].Id,PersonId);
             Test->TestTrue(TEXT("Radar outage uses camera estimate in the same frame"),Views[0].Feet.X>250 && Views[0].Feet.X<400);
@@ -111,7 +111,7 @@ public:
             Test->TestEqual(TEXT("Radar silhouette is not also drawn as a map-only dot"),People->GetRadarViews().Num(),0);
             Stage=3; Mode(TEXT("live"));
         }
-        else if (Stage == 3 && Views.Num()==1 && Views[0].bRadar && !Views[0].bRadarOnly)
+        else if (Stage == 3 && Views.Num()==1 && Views[0].bRadar && !Views[0].bRadarOnly && Views[0].Feet.Equals({400,0,0},.1))
         {
             Test->TestTrue(TEXT("Fresh packets recover against the same registration"),Views[0].Feet.Equals({400,0,0},.1));
             Stage=4; Mode(TEXT("frozen"));

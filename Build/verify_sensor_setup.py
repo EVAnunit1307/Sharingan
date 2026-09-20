@@ -157,9 +157,29 @@ def main():
             with sync_playwright() as p:
                 browser = p.chromium.launch(executable_path=str(args.browser), headless=True)
                 page = browser.new_page(viewport={"width":1440,"height":1100})
+                errors = []
+                page.on("pageerror", lambda error: errors.append(str(error)))
                 page.goto(ground_url)
                 page.locator("#fusion-people .green").wait_for()
                 assert page.locator("#fusion-mode").inner_text() == "RECORDED REPLAY"
+                page.wait_for_function("document.querySelectorAll('#fusion-observations tbody tr').length === 2")
+                assert page.locator("#fusion-matched-count").inner_text() == "1"
+                assert "Matched to C" in page.locator("#fusion-observations").inner_text()
+                page.locator("#fusion-metric").select_option("right")
+                page.locator("#fusion-range").select_option("4")
+                page.get_by_text("Selected observation · all available fields", exact=True).click()
+                page.wait_for_function("document.querySelector('#fusion-inspector').textContent.includes('output_to_quest')")
+                page.get_by_text("Packet, reference and calibration details", exact=True).click()
+                with page.expect_download() as download:
+                    page.locator("#fusion-download").click()
+                download.value.save_as(str(out / "ground/diagnostics-snapshot.json"))
+                saved = json.loads((out / "ground/diagnostics-snapshot.json").read_text())
+                assert saved["packet"]["spatial_people"]["people"][0]["position_source"] == "radar_matched"
+                assert saved["browser"]["diagnostics_error"] is None
+                assert saved["browser"]["age_since_response_ms"] >= 0
+                page.get_by_text("Packet, reference and calibration details", exact=True).click()
+                page.get_by_text("Selected observation · all available fields", exact=True).click()
+                page.screenshot(path=str(out / "ground/diagnostics-matched.png"), full_page=True)
                 control.write_text("radar_off")
                 page.locator("#fusion-people .amber").wait_for()
                 page.screenshot(path=str(out / "ground/fusion-fallback.png"), full_page=True)
@@ -171,6 +191,33 @@ def main():
                 control.write_text("live")
                 page.locator("#fusion-people .green").wait_for()
                 page.wait_for_function("document.querySelectorAll('#fusion-people .blue').length === 0")
+                # A retained/coasting camera box is diagnostic context, not a
+                # new detection or a new confidence sample. Exercise only this
+                # headless browser with explicit replay input.
+                coasting = json.loads(json.dumps(saved))
+                coasting["packet"]["camera_people"][0]["observed"] = False
+                coasting["packet"]["camera_age_ms"] = 0
+                coasting["packet"]["spatial_people"]["people"] = []
+                coasting["packet"]["source_session_id"] = "diagnostic-coasting-fixture"
+                coasting["packet"]["spatial_people"]["source_session_id"] = "diagnostic-coasting-fixture"
+                page.route("**/diagnostics.json", lambda route: route.fulfill(json=coasting))
+                page.wait_for_function("document.querySelector('#fusion-observations').textContent.includes('Coasting')")
+                assert page.locator("#fusion-camera-count").inner_text() == "0"
+                assert page.locator("#fusion-observations tbody tr").first.locator("td").nth(2).inner_text() == "—"
+                assert "history cleared" in page.locator("#fusion-events").inner_text()
+                page.unroute("**/diagnostics.json")
+                page.locator("#fusion-people .green").wait_for()
+                # A diagnostics fetch failure must remove live markers/cards while
+                # leaving clearly labelled historical graphs available.
+                page.route("**/diagnostics.json", lambda route: route.fulfill(status=503, body="offline"))
+                page.wait_for_function("document.querySelector('#fusion-people').childElementCount === 0")
+                assert "unavailable" in page.locator("#fusion-status").inner_text().lower()
+                page.unroute("**/diagnostics.json")
+                page.locator("#fusion-people .green").wait_for()
+                page.set_viewport_size({"width":390,"height":844})
+                page.screenshot(path=str(out / "ground/diagnostics-mobile.png"), full_page=True)
+                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                assert not errors, errors
                 browser.close()
             result["fusion_browser_source_transitions"] = "passed"
 

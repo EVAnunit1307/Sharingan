@@ -7,6 +7,7 @@ struct FWallhackSensorPerson
     int32 Id = INDEX_NONE;
     int32 CameraGeneration = 0;
     int32 RadarId = INDEX_NONE;
+    int32 RadarGeneration = 0;
     float Confidence = 0;
     FVector2D Position = FVector2D::ZeroVector; // right, forward; metres
     FVector2D Fallback = FVector2D::ZeroVector;
@@ -19,8 +20,31 @@ struct FWallhackSensorPerson
 struct FWallhackSensorDot
 {
     int32 Id = INDEX_NONE;
+    int32 Generation = 0;
     FVector2D Position = FVector2D::ZeroVector;
     double Expires = 0;
+};
+
+/** Presentation only: blend fresh positions for 120 ms, never predict motion or
+ * keep a contact alive. Call BeginFrame/EndFrame around the current fresh set. */
+class HANDOFFQUESTHUD_API FWallhackSensorPositionInterpolator
+{
+public:
+    void BeginFrame(double Now);
+    FVector2D Sample(const FString& Key, FVector2D Position);
+    void EndFrame();
+    void Reset();
+    int32 Num() const { return Tracks.Num(); }
+private:
+    struct FTrack
+    {
+        FVector2D From = FVector2D::ZeroVector, To = FVector2D::ZeroVector;
+        double StartedAt = 0;
+        bool bSeen = false;
+    };
+    TMap<FString, FTrack> Tracks;
+    double Time = -1;
+    FVector2D Evaluate(const FTrack& Track) const;
 };
 
 struct FWallhackSensorPeopleFrame

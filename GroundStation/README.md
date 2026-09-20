@@ -93,6 +93,42 @@ movement is not detected automatically. Nothing is persisted across sessions.
 Manual people placement/navigation and synthetic demo contacts keep their own
 stores and modes.
 
+Quest interpolates each fresh contact toward its newest position over 120 ms,
+in sensor-reference coordinates before the anchor/world transform. It never
+extrapolates or extends camera/radar expiry. Camera and radar identities include
+their reconnect generation. Removal, Hidden, tracking/anchor loss and reference
+replacement clear interpolation; a rendering pause over 250 ms or a position
+jump over 1.5 m snaps to the new reading instead of sweeping through the room.
+
+## Detailed laptop diagnostics
+
+Open `http://localhost:8766/` on the laptop. The camera feed with detector boxes
+and radar map are followed by **Native Quest people**:
+
+- A combined floor-plane graph with camera estimates, bearing-only rays,
+  radar returns, association links and eight-second trails.
+- Per-contact counts/cards and a table including unpositioned camera detections,
+  model score, corrected position, range, bearing, age, generation/frame ID,
+  camera box coordinates and measured radar radial speed when available.
+- A selectable 30-second history of range, right/forward coordinates or camera
+  model score, plus camera/radar age graphs with the actual expiry thresholds.
+- Track appearance/removal/source events, a full selected-observation inspector,
+  calibration/reference details and JSON snapshot download.
+
+Click a plotted point, table row or contact card to inspect it. History is
+bounded to 64 tracks / 300 samples per track, lives only in the browser tab and
+resets on relay/source/reference changes. Stale/current markers are removed
+independently of the explicitly historical trails. The graphs show observations
+and positions **sent to Quest before interpolation**, not measured headset
+rendering. Radar-only returns have no invented person confidence; body height
+and facing remain assumptions. Detailed graphs are confined to the laptop
+dashboard; the native Quest HUD stays uncluttered.
+
+`GET /diagnostics.json` returns one age-corrected relay packet with camera/radar
+observations, `spatial_people`, configuration, client count, relay error and
+receipt age. HTTP reads do not renew observation freshness. Exported snapshots
+also record browser response age and any diagnostics connection error.
+
 For an Unreal desktop preview, also supply `-WallhackSensorPeoplePreview -nohmd`.
 Use WASD and arrow keys to move/look, Enter to mark a floor point and C to restart.
 This bypasses the headset/anchor requirement explicitly and does not validate
@@ -176,7 +212,7 @@ radar confidence or certainty that a bearing association is correct. See the
 
 ## Validation status and remaining work
 
-On the Windows integration branch: **48 ground-station tests and 44 Pi tests pass** with Python 3.14.6.
+On the Windows integration branch: **49 ground-station tests and 44 Pi tests pass** with Python 3.14.6.
 The previous 46-test ground-station suite and the unchanged 44 Pi tests also
 passed on the physical Pi with Python 3.13.5.
 These include real loopback WebSockets, HTTP/config/proxy checks, and actual Pi
@@ -189,9 +225,9 @@ python -m unittest discover -s GroundStation/tests -v
 python -m unittest discover -s SensorRig/CV/tests -v
 ```
 
-All **79 `Wallhack.*` Unreal tests pass**, including four sensor tests for the
-shared packet fixture, expiry/order, coordinates/viewer motion, and renderer
-source changes/removal. The full suite and Android cook commands are:
+All **80 `Wallhack.*` Unreal tests pass**, including five sensor tests for the
+shared packet fixture, expiry/order, coordinates/viewer motion, interpolation,
+and renderer source changes/removal. The full suite and Android cook commands are:
 
 ```powershell
 ./Build/run_navigation_tests.ps1

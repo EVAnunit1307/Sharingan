@@ -7,7 +7,7 @@
   <title>Sharingan · Camera + radar</title>
   <link rel="stylesheet" href="/assets/dashboard.css">
   <script src="/assets/dashboard.js" defer></script>
-  {% if ground_station %}<script src="/assets/ground.js" defer></script>{% endif %}
+  {% if ground_station %}<link rel="stylesheet" href="/assets/ground.css"><script src="/assets/ground.js" defer></script>{% endif %}
 </head>
 <body class="{{ 'quest-view' if quest_mode else '' }}" data-ground-station="{{ 'true' if ground_station else 'false' }}">
 <main>

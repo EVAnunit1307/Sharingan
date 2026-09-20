@@ -52,6 +52,7 @@ private:
     TWeakObjectPtr<UActorComponent> Anchor;
     TArray<FWallhackSensorPersonView> Views;
     TArray<WallhackSpatialMath::FContactView> RadarViews;
+    FWallhackSensorPositionInterpolator Positions;
     FString RegistrationKey;
     FString Status = TEXT("WAITING FOR GROUND STATION");
     FVector Origin = FVector::ZeroVector;

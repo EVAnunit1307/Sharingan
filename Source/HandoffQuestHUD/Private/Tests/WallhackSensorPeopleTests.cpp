@@ -100,6 +100,35 @@ bool FWallhackSensorPeopleInvalidPacketTest::RunTest(const FString&)
     return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWallhackSensorInterpolationTest,
+    "Wallhack.SensorPeople.InterpolationAndRemoval", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FWallhackSensorInterpolationTest::RunTest(const FString&)
+{
+    FWallhackSensorPositionInterpolator S;
+    auto At = [&](double Time, const FString& Key, FVector2D Target)
+    {
+        S.BeginFrame(Time); const auto Value = S.Sample(Key, Target); S.EndFrame(); return Value;
+    };
+    TestTrue(TEXT("First position has no artificial travel from origin"), At(0,TEXT("C/1/1"),{0,2}).Equals({0,2}));
+    TestTrue(TEXT("New sample starts at the displayed position"), At(.1,TEXT("C/1/1"),{.4,2}).Equals({0,2}));
+    TestTrue(TEXT("Halfway between samples after 60 ms"), At(.16,TEXT("C/1/1"),{.4,2}).Equals({.2,2},1.e-5));
+    TestTrue(TEXT("Duplicate target does not restart interpolation"), At(.22,TEXT("C/1/1"),{.4,2}).Equals({.4,2},1.e-5));
+    TestTrue(TEXT("No extrapolation beyond measured target"), At(.3,TEXT("C/1/1"),{.4,2}).Equals({.4,2}));
+    S.BeginFrame(.31);
+    S.Sample(TEXT("C/1/1"),{.4,2});
+    TestTrue(TEXT("Same radar ID is independent of camera ID"), S.Sample(TEXT("R/1/1"),{1,3}).Equals({1,3}));
+    S.EndFrame(); TestEqual(TEXT("Two independent tracks"),S.Num(),2);
+    S.BeginFrame(.32); S.EndFrame();
+    TestEqual(TEXT("Empty or expired fresh set removes all smoothing state immediately"),S.Num(),0);
+    TestTrue(TEXT("Reappearing contact starts at its new observation"),At(.33,TEXT("C/1/1"),{.8,2}).Equals({.8,2}));
+    TestTrue(TEXT("Large discontinuity snaps rather than sweeping the room"),At(.34,TEXT("C/1/1"),{4,2}).Equals({4,2}));
+    TestTrue(TEXT("Reconnect generation does not inherit the old track"),At(.35,TEXT("C/2/1"),{4.4,2}).Equals({4.4,2}));
+    At(.4,TEXT("C/2/1"),{4.6,2});
+    TestTrue(TEXT("Rendering pause discards obsolete interpolation"),At(.7,TEXT("C/2/1"),{4.7,2}).Equals({4.7,2}));
+    S.Reset(); TestEqual(TEXT("Re-registration or tracking loss clears history"),S.Num(),0);
+    return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWallhackSensorPeopleRegistrationMathTest,
     "Wallhack.SensorPeople.ReferenceAndViewerMotion", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FWallhackSensorPeopleRegistrationMathTest::RunTest(const FString&)

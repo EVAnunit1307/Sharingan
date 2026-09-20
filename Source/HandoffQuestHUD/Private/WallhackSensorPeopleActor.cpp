@@ -160,7 +160,7 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
     if (bPending && FPlatformTime::Seconds() - RequestedAt > 20)
     { ResetPlacement(); Status = TEXT("ANCHOR TIMED OUT / A TO RETRY"); return; }
     FVector Viewer; FQuat Orientation;
-    if (!ViewerPose(Viewer, Orientation)) { Status = TEXT("HEAD TRACKING UNAVAILABLE"); return; }
+    if (!ViewerPose(Viewer, Orientation)) { Positions.Reset(); Status = TEXT("HEAD TRACKING UNAVAILABLE"); return; }
     if (bHidden) return;
     const float Scale = GetWorld()->GetWorldSettings()->WorldToMeters;
     if (!FMath::IsFinite(Scale) || Scale <= 0) return;
@@ -179,13 +179,15 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
         return;
     }
     FTransform Reference;
-    if (!ReferencePose(Reference)) { Status = TEXT("SENSOR ANCHOR NOT LOCALIZED"); return; }
+    if (!ReferencePose(Reference)) { Positions.Reset(); Status = TEXT("SENSOR ANCHOR NOT LOCALIZED"); return; }
     Status = Frame.RegistrationKey.IsEmpty() ? TEXT("GROUND LINK DISCONNECTED")
         : Frame.People.IsEmpty() && Frame.Radar.IsEmpty() ? TEXT("NO FRESH POSITIONED CONTACTS") : TEXT("SENSOR CONTACTS LIVE");
     TArray<FWallhackPersonPose> Poses;
+    Positions.BeginFrame(FPlatformTime::Seconds());
     for (const auto& Person : Frame.People)
     {
-        const FVector Feet = WallhackSensorPeopleMath::ToWorld(Person.Position, Reference, Scale);
+        const FString Key = FString::Printf(TEXT("C/%d/%d"), Person.CameraGeneration, Person.Id);
+        const FVector Feet = WallhackSensorPeopleMath::ToWorld(Positions.Sample(Key, Person.Position), Reference, Scale);
         FWallhackSensorPersonView View; View.Id = Person.Id; View.bRadar = Person.bRadar; View.Feet = Feet;
         if (!WallhackSpatialMath::ProjectContact(Feet, Viewer, Orientation.Rotator().Yaw, Scale, View.View)) continue;
         Views.Add(View);
@@ -200,7 +202,8 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
     // A generic body is a display assumption, not a camera-confirmed person.
     for (const auto& Dot : Frame.Radar)
     {
-        const FVector Feet = WallhackSensorPeopleMath::ToWorld(Dot.Position, Reference, Scale);
+        const FString Key = FString::Printf(TEXT("R/%d/%d"), Dot.Generation, Dot.Id);
+        const FVector Feet = WallhackSensorPeopleMath::ToWorld(Positions.Sample(Key, Dot.Position), Reference, Scale);
         FWallhackSensorPersonView View;
         View.Id = Dot.Id; View.bRadar = true; View.bRadarOnly = true; View.Feet = Feet;
         if (!WallhackSpatialMath::ProjectContact(Feet, Viewer, Orientation.Rotator().Yaw, Scale, View.View)) continue;
@@ -217,6 +220,7 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
         Pose.SourceLabel = TEXT("RADAR ONLY");
         Poses.Add(Pose);
     }
+    Positions.EndFrame();
     // Reuse the stereo-tested corner labels with the actual viewer pose.
     // Separate TextRender labels would duplicate telemetry and use a different
     // mobile translucency path from the fixed manual-person renderer.
@@ -240,12 +244,12 @@ void AWallhackSensorPeopleActor::ReleaseReference()
 void AWallhackSensorPeopleActor::ResetPlacement()
 {
     ++Generation; bPending = false; PlacementStep = 0;
-    ReleaseReference(); HidePeople();
+    ReleaseReference(); HidePeople(); Positions.Reset();
     Status = TEXT("MARK FLOOR BELOW RADAR / RIGHT TRIGGER");
 }
 
 void AWallhackSensorPeopleActor::SetPresentationHidden(bool Hidden)
-{ bHidden = Hidden; if (Hidden) { HidePeople(); AimMarker->SetHiddenInGame(true); } }
+{ bHidden = Hidden; if (Hidden) { HidePeople(); Positions.Reset(); AimMarker->SetHiddenInGame(true); } }
 void AWallhackSensorPeopleActor::Suspend() { bSuspended = true; ResetPlacement(); }
 void AWallhackSensorPeopleActor::Resume() { bSuspended = false; ResetPlacement(); }
 void AWallhackSensorPeopleActor::EndPlay(const EEndPlayReason::Type Reason)

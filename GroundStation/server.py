@@ -192,7 +192,7 @@ def create_app(state, pi_http, websocket_port=8765, config_path=Path("Saved/Grou
 
     @app.get("/assets/<path:name>")
     def assets(name):
-        directory = HERE / "static" if name == "ground.js" else SENSOR_UI / "static"
+        directory = HERE / "static" if name in ("ground.js", "ground.css") else SENSOR_UI / "static"
         return send_from_directory(directory, name)
 
     @app.get("/fusion.json")
@@ -211,6 +211,17 @@ def create_app(state, pi_http, websocket_port=8765, config_path=Path("Saved/Grou
             return jsonify(state.configure(request.get_json(), config_path))
         except (ValueError, OSError) as error:
             return jsonify(error=str(error)), 400
+
+    @app.get("/diagnostics.json")
+    def diagnostics():
+        # One age-corrected packet keeps raw observations, associations and
+        # graphs on the same sample. Reading never renews sensor freshness.
+        with state.lock:
+            packet = state.snapshot()
+            return jsonify(packet=packet, error=state.error, clients=state.clients,
+                           is_replay=state.is_replay, config=asdict(state.engine.config),
+                           received_age_ms=round(max(0, state.clock()-state.received_at)*1000, 3)
+                           if state.packet else None)
 
     @app.get("/handoff.json")
     def handoff():

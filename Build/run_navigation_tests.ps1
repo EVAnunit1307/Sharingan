@@ -16,6 +16,6 @@ if(-not $SkipBuild){
     '-ExecCmds=Automation RunTests Wallhack.' '-TestExit=Automation Test Queue Empty' `
     "-ReportExportPath=$navEvidence\Report" "-abslog=$navEvidence\Tests.log" *> "$navEvidence\stdout.log"
 $navReport=Get-Content -LiteralPath "$navEvidence\Report\index.json" -Raw | ConvertFrom-Json
-if($LASTEXITCODE -ne 0 -or $navReport.failed -gt 0 -or $navReport.tests.Count -lt 79 -or @($navReport.tests | Where-Object state -ne 'Success').Count){throw "Tests failed or incomplete: $navEvidence"}
+if($LASTEXITCODE -ne 0 -or $navReport.failed -gt 0 -or $navReport.tests.Count -lt 80 -or @($navReport.tests | Where-Object state -ne 'Success').Count){throw "Tests failed or incomplete: $navEvidence"}
 $navReport | Select-Object succeeded,succeededWithWarnings,failed
 Write-Host "Reports: $navEvidence"

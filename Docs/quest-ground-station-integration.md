@@ -6,6 +6,46 @@ preserves the current HUD/stereo fixes and the session map-memory checkpoint
 `dc4aae8`. Local and remote `main` were not changed by this integration.
 Use the [ground-station runbook](../GroundStation/README.md) for setup and protocol.
 
+## Interpolation and laptop diagnostics update
+
+The current Quest build interpolates fresh per-person positions over 120 ms in
+sensor-reference coordinates, then applies the current spatial-anchor transform.
+Camera and radar tracks use separate IDs plus reconnect generations. Repeated
+positions do not restart the blend; no extrapolation or freshness extension is
+performed. Missing/expired contacts disappear immediately. Tracking/anchor loss,
+Hidden, re-registration, a rendering pause over 250 ms or a position jump over
+1.5 m discards interpolation history. Native labels/maps use the same smoothed
+position as the silhouette.
+
+The laptop dashboard at `http://localhost:8766/` retains the camera feed and radar
+map and adds a combined sensor map, association links, bearing-only rays, recent
+trails, per-contact counts/cards and a detailed observation table. Select a track
+to graph its range, right/forward coordinates or camera model score for the last
+30 seconds. Sensor age graphs, track/source events, raw observation/packet
+inspectors and JSON download expose the remaining timing and calibration data.
+Exports include browser response age/error; coasting detections have no new
+score sample. Graphs show observations and positions sent to Quest before its
+interpolation, not measured headset rendering. User requested the detailed view
+on the laptop only.
+
+Current validation: 80 Unreal regressions pass without warnings, 49 relay tests
+pass, and the real loopback Pi/relay/native actor test passes. Browser checks
+cover feeds, source transitions, contact selection, snapshot download, stale
+removal, coasting observations, source resets and mobile layout. Full Android
+ASTC cook succeeds (150 s), with 28 package checks and v2 signature verification.
+Evidence is in `Saved/PiSensorPullTest/SmoothingDiagnostics/`,
+`SmoothingDiagnosticsBrowser/`, `diagnostics-ground-tests.log`, and
+`Saved/NavigationVerification/TestRuns/20260920-020705/Report/index.json`.
+The preceding APK is preserved as
+`Saved/PiSensorPullTest/Rollback-BeforeSmoothing.apk`.
+
+At installation the laptop was on 172.20.10.2, Quest had moved to 10.26.0.248
+and was asleep, and the Pi hostname/172.20.10.3 were unreachable. The updated
+laptop dashboard is running and open. New-build physical smoothness, alignment,
+stereo and performance checks await the devices returning to the same network.
+The earlier live boot/checks succeeded before this network change; latest
+operational evidence is kept in `Saved/PiSensorPullTest/live-integration-status.json`.
+
 ```mermaid
 flowchart LR
     C[Pi camera: person boxes and estimates] --> L[Laptop: timing and bearing association]
@@ -49,12 +89,12 @@ including during camera loss, until their own observations expire.
 | Validation | Result |
 | --- | --- |
 | Pi regression and Pi-packet-to-fusion contract | 44 tests pass on Windows Python 3.14.6 and the physical Pi's Python 3.13.5. Includes shutdown with a relay still attached. |
-| Laptop matching, replay, HTTP, configuration and real loopback sockets | 48 tests pass on Windows, including brief receive pauses and sustained stalls. Previous 46-test suite passed on Pi. |
-| Full Unreal regression, including four sensor tests | 79 tests pass, zero test warnings/failures, UE 5.7.4. |
+| Laptop matching, replay, HTTP, configuration and real loopback sockets | 49 tests pass on Windows, including diagnostic freshness, brief receive pauses and sustained stalls. Previous 46-test suite passed on Pi. |
+| Full Unreal regression, including five sensor tests | 80 tests pass, zero test warnings/failures, UE 5.7.4. |
 | Actual Pi bridge → laptop relay → Unreal socket/actor | Additional `SensorSetup.NativeRelay` test passes with synthetic input and real loopback sockets. |
-| Detector runtime | Real YOLOX ONNX inference on a blank image succeeds; 31.13 ms on this laptop. This is not a Pi benchmark or accuracy evaluation. |
+| Detector runtime | Real YOLOX ONNX inference on a blank image succeeds; 32.81 ms in the latest browser run. This is not a Pi benchmark or accuracy evaluation. |
 | Browser visual QA | Both Pi and laptop dashboards pass Edge checks: desktop/mobile/Quest viewport, WebSocket, fullscreen, failure/recovery, no JS errors. Screenshots reviewed. |
-| Android build/cook | Full ARM64 ASTC build/cook succeeds (79 s on sequential retry); APK signature v2 and native-library hash verified. 28 package checks pass, including network/scene/anchor permissions and stereo renderer configuration. |
+| Android build/cook | Full ARM64 ASTC build/cook succeeds (150 s); APK signature v2 and native-library hash verified. 28 package checks pass, including network/scene/anchor permissions and stereo renderer configuration. |
 | Live Pi camera/radar transport | Updated service: 40 fresh camera and radar packets over four seconds, maximum sampled radar age 86.4 ms. Metadata accepted by laptop relay; no protocol error. |
 | Quest installation | Installed over USB; pulled APK SHA256 matches the verified candidate. |
 | Native Quest → laptop connection | Preceding build connected over hotspot Wi-Fi. New build is installed; launch requested against `10.26.0.247:8765`, but Quest is asleep, with no app process or relay client. |
@@ -151,9 +191,9 @@ The previous map-memory APK is retained as
 build is retained at `Saved/PiSensorPullTest/Rollback-BeforeIndependentSensors.apk`.
 
 Candidate APK SHA256:
-`040B921C5EE5C54BB8F1085A9217D526E6B3EEF9E38D69481A75ACAE9A849366`.
+`1326C84F0420C42E04C3C03A58DFEC8CDAD42907C38663850BE7418C52BA607E`.
 Packaged native-library SHA256:
-`5D0D02C8F60E09D658410955B9AFD519DAE8FE07AFAFCAE283B6EB8B9AD659E8`.
+`A575CD302C77FA02B201B27CABE2E5A706929A0FE41DB0DA0C25FD6B5652262A`.
 
 ## Headset acceptance procedure
 

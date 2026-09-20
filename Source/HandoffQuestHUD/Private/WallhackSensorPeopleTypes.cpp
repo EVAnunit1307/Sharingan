@@ -1,6 +1,43 @@
 #include "WallhackSensorPeopleTypes.h"
 #include "Json.h"
 
+void FWallhackSensorPositionInterpolator::Reset() { Tracks.Reset(); Time = -1; }
+void FWallhackSensorPositionInterpolator::BeginFrame(double Now)
+{
+    // A rendering/tracking pause must not animate from an obsolete location.
+    if (!FMath::IsFinite(Now) || Now < Time || (Time >= 0 && Now - Time > .25)) Reset();
+    Time = FMath::IsFinite(Now) ? Now : -1;
+    for (auto& Entry : Tracks) Entry.Value.bSeen = false;
+}
+FVector2D FWallhackSensorPositionInterpolator::Evaluate(const FTrack& Track) const
+{
+    return FMath::Lerp(Track.From, Track.To, FMath::Clamp((Time - Track.StartedAt) / .12, 0., 1.));
+}
+FVector2D FWallhackSensorPositionInterpolator::Sample(const FString& Key, FVector2D Position)
+{
+    if (Time < 0 || Position.ContainsNaN()) return Position;
+    auto* Track = Tracks.Find(Key);
+    if (!Track)
+    {
+        Tracks.Add(Key, {Position, Position, Time, true});
+        return Position;
+    }
+    Track->bSeen = true;
+    const FVector2D Current = Evaluate(*Track);
+    if (!Position.Equals(Track->To, 1.e-6))
+    {
+        // Identity reassignment/outliers must not sweep a body across a room.
+        Track->From = FVector2D::Distance(Current, Position) > 1.5 ? Position : Current;
+        Track->To = Position;
+        Track->StartedAt = Time;
+    }
+    return Evaluate(*Track);
+}
+void FWallhackSensorPositionInterpolator::EndFrame()
+{
+    for (auto It = Tracks.CreateIterator(); It; ++It) if (!It.Value().bSeen) It.RemoveCurrent();
+}
+
 namespace
 {
 bool Number(const TSharedPtr<FJsonObject>& O, const TCHAR* Key, double& Out, double Min, double Max)
@@ -132,6 +169,7 @@ bool FWallhackSensorPeopleStream::Ingest(const FString& Json, double Now)
             if (!Id(O, TEXT("radar_id"), P.RadarId) || !Id(O, TEXT("radar_generation"), Generation)
                 || !Id(O, TEXT("radar_frame_id"), RadarFrame) || !Number(O, TEXT("radar_age_ms"), Age, 0, 1.e9)) return false;
             P.bRadar = true;
+            P.RadarGeneration = Generation;
             P.RadarExpires = Candidate.RadarDeadline(Generation, RadarFrame, Age, Now);
         }
         else if (Kind != TEXT("camera_estimate")) return false;
@@ -146,6 +184,7 @@ bool FWallhackSensorPeopleStream::Ingest(const FString& Json, double Now)
             || !Id(O, TEXT("generation"), Generation) || !Id(O, TEXT("frame_id"), RadarFrame)
             || !Number(O, TEXT("age_ms"), Age, 0, 1.e9)) return false;
         Dot.Expires = Candidate.RadarDeadline(Generation, RadarFrame, Age, Now);
+        Dot.Generation = Generation;
         Frame.Radar.Add(Dot);
     }
     Candidate.Last = MoveTemp(Frame); Candidate.RelaySession = Session; Candidate.Sequence = int64(Seq);

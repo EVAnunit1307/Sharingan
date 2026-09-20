@@ -1,17 +1,49 @@
-<section class="panel" style="padding:24px;margin-top:20px">
-  <h2>Native Quest people <span id="fusion-mode" class="tag">Connecting</span></h2>
-  <p id="fusion-status" role="status">Waiting for sensor telemetry.</p>
-  <div id="fusion-people" class="target-list"></div>
-  <details><summary>Camera / radar alignment</summary>
-    <form id="fusion-form" style="display:grid;gap:16px;max-width:580px;margin-top:20px">
-      <label>Camera offset right of radar reference (m)
-        <input id="fusion-right" type="number" step="0.001" min="-2" max="2" value="0" required></label>
-      <label>Camera offset forward of radar reference (m)
-        <input id="fusion-forward" type="number" step="0.001" min="-2" max="2" value="0" required></label>
-      <p>Both sensors must be level and face the same direction. Measure offsets, then check a single person standing left, centre and right.</p>
-      <label><input id="fusion-confirmed" type="checkbox"> I verified left / centre / right alignment</label>
-      <button type="submit">Save alignment</button><p id="fusion-save" role="status"></p>
-    </form>
-  </details>
-  <p class="details">Quest: point at the floor below the configured radar reference and press right trigger, then mark a point at least 0.5 m along the reference's forward axis. A restarts placement. Green RADAR uses a matched position; amber ESTIMATED uses camera range; blue RADAR ONLY uses an unmatched radar return. Either sensor can produce a silhouette. Generic height, posture and facing; radar alone does not identify a person. Quest shows at most eight bodies, with overflow radar returns on the map.</p>
+<section class="panel fusion-panel" aria-labelledby="fusion-title">
+  <div class="head"><div><span class="tag">03 / ASSOCIATION + OBSERVATION HISTORY</span><h2 id="fusion-title">Native Quest people</h2></div><span id="fusion-mode" class="tag">Connecting</span></div>
+  <div class="fusion-body">
+    <p id="fusion-status" role="status">Waiting for sensor telemetry.</p>
+    <div class="fusion-counts" aria-label="Current contact counts">
+      <div><span>Camera observed</span><strong id="fusion-camera-count">—</strong></div>
+      <div><span>Matched</span><strong id="fusion-matched-count" class="green">—</strong></div>
+      <div><span>Camera estimate</span><strong id="fusion-estimated-count" class="amber">—</strong></div>
+      <div><span>Radar only</span><strong id="fusion-radar-count" class="blue">—</strong></div>
+      <div><span>Camera without range</span><strong id="fusion-unpositioned-count">—</strong></div>
+    </div>
+    <div class="fusion-grid">
+      <section class="fusion-chart" aria-label="Combined sensor position graph">
+        <div class="fusion-toolbar"><h3>Where each sensor sees a contact</h3><label>Range <select id="fusion-range"><option value="4">4 m</option><option value="6" selected>6 m</option><option value="10">10 m</option></select></label></div>
+        <canvas id="fusion-map" width="1000" height="640" aria-label="Combined map in metres. Right is right, forward is up. Use the contact selector for details."></canvas>
+        <div class="fusion-legend"><span class="amber">□ Camera estimate</span><span class="blue">× Radar return</span><span class="green">● Matched output</span><span>Faint trails: last 8 s</span></div>
+        <p class="details">All points share the radar reference. Dashed links join matched readings. Camera rays have bearing only when range is unavailable. Click a point to inspect it.</p>
+      </section>
+      <section class="fusion-chart" aria-label="Selected contact history">
+        <div class="fusion-toolbar"><label>Inspect <select id="fusion-select" aria-label="Contact to inspect"><option value="">No current contacts</option></select></label><label>History <select id="fusion-metric"><option value="range">Range (m)</option><option value="right">Right (m)</option><option value="forward">Forward (m)</option><option value="score">Camera model score (%)</option></select></label></div>
+        <canvas id="fusion-history" width="1000" height="490" aria-label="Selected contact observations over the last thirty seconds"></canvas>
+        <div class="fusion-legend"><span class="amber">Camera</span><span class="blue">Radar</span><span class="green">Output to Quest</span></div>
+        <p id="fusion-selection-summary" class="details">Select a contact on the map or from the list.</p>
+      </section>
+    </div>
+    <div class="fusion-toolbar"><h3>Positions sent to Quest</h3><span class="details">Before Quest's 120 ms interpolation · up to 8 bodies</span></div>
+    <div id="fusion-people" class="target-list" aria-live="off"></div>
+    <p id="fusion-empty" class="details">No fresh positioned contacts.</p>
+    <details open class="fusion-details"><summary>Every camera observation and radar return</summary><div class="fusion-table-scroll">
+      <table id="fusion-observations"><thead><tr><th>Track</th><th>Observation / association</th><th>Model score</th><th>Right / forward (m)</th><th>Range / bearing</th><th>Age</th><th>Generation / frame</th><th>Box / radial speed</th></tr></thead><tbody></tbody></table>
+    </div></details>
+    <div class="fusion-grid">
+      <section class="fusion-chart"><h3>Observation age · last 30 seconds</h3><canvas id="fusion-health" width="1000" height="350" aria-label="Camera and radar observation age in milliseconds, including expiry thresholds"></canvas><div class="fusion-legend"><span class="amber">Camera · expires at 750 ms</span><span class="blue">Radar · expires at 500 ms</span></div><p id="fusion-timing" class="details"></p></section>
+      <section class="fusion-chart"><h3>Track events</h3><ol id="fusion-events" aria-live="off"></ol></section>
+    </div>
+    <details class="fusion-details"><summary>Selected observation · all available fields</summary><pre id="fusion-inspector">No contact selected.</pre></details>
+    <details class="fusion-details"><summary>Packet, reference and calibration details</summary><div class="fusion-toolbar"><span class="details">Current received packet; camera images are served separately above.</span><button id="fusion-download">Download JSON snapshot</button></div><pre id="fusion-packet"></pre></details>
+    <details class="fusion-details"><summary>Camera / radar alignment</summary>
+      <form id="fusion-form" class="fusion-config">
+        <label>Camera offset right of radar reference (m)<input id="fusion-right" type="number" step="0.0001" min="-2" max="2" value="0" required></label>
+        <label>Camera offset forward of radar reference (m)<input id="fusion-forward" type="number" step="0.0001" min="-2" max="2" value="0" required></label>
+        <p>Both sensors must be level and face the same direction. Measure offsets, then check a person standing left, centre and right.</p>
+        <label><input id="fusion-confirmed" type="checkbox"> Enable matching with the confirmed mounting alignment</label>
+        <button type="submit">Save alignment</button><p id="fusion-save" role="status"></p>
+      </form>
+    </details>
+    <p class="details fusion-footnote">Either sensor can produce a silhouette. Camera scores are model scores; radar-only returns are unclassified. Body height (1.65 m), posture and facing are assumptions. These graphs show sensor observations and positions sent to Quest, not measured Quest rendering or target velocity. History is kept in this browser tab for 30 seconds and cleared when the source/reference changes.</p>
+  </div>
 </section>

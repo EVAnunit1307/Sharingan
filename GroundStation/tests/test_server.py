@@ -91,6 +91,28 @@ class RelayTests(unittest.TestCase):
         with patch("GroundStation.server.urlopen", side_effect=OSError("offline")):
             self.assertEqual(client.get("/detections").status_code, 502)
 
+    def test_diagnostics_exposes_one_coherent_packet_without_renewing_observations(self):
+        self.state.ingest(packet())
+        self.now = .1
+        self.state.ingest(packet(2))
+        client = create_app(self.state, "http://sensor:8766").test_client()
+        result = client.get("/diagnostics.json").json
+        raw = result["packet"]
+        self.assertEqual(raw["camera_frame_id"], raw["spatial_people"]["camera_frame_id"])
+        self.assertEqual(raw["camera_people"][0]["id"], raw["spatial_people"]["people"][0]["camera_id"])
+        self.assertEqual(raw["radar"]["targets"][0]["id"], raw["spatial_people"]["people"][0]["radar_id"])
+        self.assertEqual(result["received_age_ms"], 0)
+        self.assertEqual(result["config"]["alignment_confirmed"], True)
+        self.now = .851
+        expired = client.get("/diagnostics.json").json
+        self.assertAlmostEqual(expired["received_age_ms"], 751)
+        self.assertEqual(expired["packet"]["camera_people"], [])
+        self.assertEqual(expired["packet"]["radar"]["targets"], [])
+        self.assertEqual(expired["packet"]["spatial_people"]["people"], [])
+        self.assertEqual(expired["packet"]["spatial_people"]["radar_targets"], [])
+        with client.get("/assets/ground.css") as css:
+            self.assertEqual(css.status_code, 200)
+
     def test_real_websocket_reports_matches_and_clears_disconnect(self):
         from websockets.sync.client import connect
         stop = threading.Event()
