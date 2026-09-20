@@ -1,5 +1,6 @@
 #include "WallhackWorldContact.h"
 #include "WallhackSpatialMath.h"
+#include "WallhackAnchorLifetime.h"
 
 #include "Camera/PlayerCameraManager.h"
 #include "Components/SceneComponent.h"
@@ -50,32 +51,9 @@ namespace
 #if PLATFORM_ANDROID
     void DestroyContactAnchor(UOculusXRAnchorComponent* Anchor)
     {
-        if (!IsValid(Anchor))
-        {
-            return;
-        }
-
-        Anchor->SetComponentTickEnabled(false);
-        // A late callback can add its component after the actor's EndPlay,
-        // when component EndPlay is no longer guaranteed to run. Release the
-        // runtime space explicitly and clear its handle to prevent a second
-        // destroy from the plugin's ordinary component EndPlay path.
-        if (Anchor->HasValidHandle())
-        {
-            EOculusXRAnchorResult::Type Result = EOculusXRAnchorResult::Failure;
-            if (OculusXRAnchors::FOculusXRAnchors::DestroyAnchor(Anchor->GetHandle().GetValue(), Result))
-            {
-                Anchor->SetHandle(FOculusXRUInt64(0));
-            }
-            else
-            {
-                UE_LOG(LogWallhackContact, Warning, TEXT("ContactAnchorReleaseFailed handle=%llu result=%d"),
-                    Anchor->GetHandle().GetValue(), static_cast<int32>(Result));
-                // Leave the handle intact so component EndPlay can retry.
-            }
-        }
-        Anchor->DestroyComponent();
+        DestroyWallhackAnchor(Anchor);
     }
+
 #endif
 
 #if !UE_BUILD_SHIPPING

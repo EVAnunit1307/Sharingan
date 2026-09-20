@@ -35,6 +35,12 @@ def make_packet(snapshot, rig, pose_status):
                 y=rig['y']-x*math.sin(angle)+y*math.cos(angle),
                 conf=person['score'], source='camera', range_source=person['range_source']))
     return {'schema_version': 1, 't': time.time(),
+            'source_session_id': snapshot.get('source_session_id'),
+            'camera_generation': snapshot.get('camera_generation', 0),
+            'camera_capture_mono_ms': snapshot.get('camera_capture_mono_ms'),
+            'camera_frame_width': snapshot.get('frame_width'),
+            'camera_frame_height': snapshot.get('frame_height'),
+            'camera_hfov_deg': snapshot.get('camera_hfov_deg'),
             'rig': dict(rig, tracking_ok=valid, tracking_note=pose_status),
             'detections': detections, 'camera_connected': snapshot['camera_connected'],
             'camera_frame_id': snapshot['frame_id'], 'camera_timestamp': snapshot['timestamp'],

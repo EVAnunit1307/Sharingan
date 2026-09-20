@@ -31,6 +31,7 @@
 #include "WallhackHUDPalette.h"
 #include "WallhackTelemetrySubsystem.h"
 #include "WallhackWorldContact.h"
+#include "WallhackSensorPeopleActor.h"
 #include "WallhackNavigationSubsystem.h"
 #include "WallhackSpatialMath.h"
 #include "WallhackCanvasLabels.h"
@@ -47,7 +48,7 @@ namespace
     bool IsDesktopTrackingPreview()
     {
 #if !PLATFORM_ANDROID && !UE_BUILD_SHIPPING
-        return FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"));
+        return FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeoplePreview"));
 #else
         return false;
 #endif
@@ -227,7 +228,16 @@ void AWallhackVRHUDActor::BeginPlay()
     HUDMappingContext->MapKey(CycleHUDAction, EKeys::OculusTouch_Right_B_Click);
     HUDMappingContext->MapKey(CalibrateNorthAction, EKeys::OculusTouch_Left_X_Click);
     const bool bDemo = IsValid(WorldContact) || FParse::Param(FCommandLine::Get(), TEXT("WallhackDemo")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"));
-    if (bDemo)
+    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople")))
+    {
+        SensorConfirmAction = NewObject<UInputAction>(this, TEXT("SensorConfirm"));
+        SensorResetAction = NewObject<UInputAction>(this, TEXT("SensorReset"));
+        HUDMappingContext->MapKey(SensorConfirmAction, EKeys::OculusTouch_Right_Trigger_Click);
+        HUDMappingContext->MapKey(SensorResetAction, EKeys::OculusTouch_Right_A_Click);
+        HUDMappingContext->MapKey(SensorConfirmAction, EKeys::Enter);
+        HUDMappingContext->MapKey(SensorResetAction, EKeys::C);
+    }
+    else if (bDemo)
     {
         HUDMappingContext->MapKey(TransmitAction, EKeys::OculusTouch_Left_Trigger_Click);
         HUDMappingContext->MapKey(PlaceContactAction, EKeys::OculusTouch_Right_A_Click);
@@ -288,6 +298,11 @@ void AWallhackVRHUDActor::BeginPlay()
         }
         if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
         {
+            if (SensorConfirmAction)
+            {
+                EIC->BindAction(SensorConfirmAction, ETriggerEvent::Started, this, &AWallhackVRHUDActor::ConfirmSensorPlacement);
+                EIC->BindAction(SensorResetAction, ETriggerEvent::Started, this, &AWallhackVRHUDActor::ResetSensorPlacement);
+            }
             if(NavigationAimAction)
             {
                 EIC->BindAction(NavigationAimAction,ETriggerEvent::Started,this,&AWallhackVRHUDActor::BeginNavigationAim);
@@ -380,6 +395,7 @@ void AWallhackVRHUDActor::CycleHUDDensity()
     HUDDensity = static_cast<EWallhackHUDDensity>((static_cast<uint8>(HUDDensity) + 1) % 3);
     SpatialHelpUntilSeconds = ElapsedSeconds + 4.f;
     if (WorldContact) WorldContact->SetActorHiddenInGame(HUDDensity == EWallhackHUDDensity::Hidden);
+    if (SensorPeople) SensorPeople->SetPresentationHidden(HUDDensity == EWallhackHUDDensity::Hidden);
     if (!WorldContact) if(auto* Nav=GetWorld()->GetSubsystem<UWallhackNavigationSubsystem>()) Nav->SetHidden(HUDDensity == EWallhackHUDDensity::Hidden);
     UpdateSpatialLabels();
     switch (HUDDensity)
@@ -509,6 +525,11 @@ void AWallhackVRHUDActor::DrawOperatorHUD(float DeltaSeconds)
     if (!Font && GEngine) { Font = GEngine->GetMediumFont(); }
     if (!Font && GEngine) { Font = GEngine->GetLargeFont(); }
 
+    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople")))
+    {
+        DrawSensorPeopleHUD(Canvas);
+        return;
+    }
     if (IsValid(WorldContact))
     {
         DrawSpatialHUD(Canvas, Font);

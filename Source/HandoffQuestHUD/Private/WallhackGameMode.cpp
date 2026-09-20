@@ -4,6 +4,7 @@
 #include "WallhackVRPawn.h"
 #include "WallhackWorldContact.h"
 #include "WallhackNavigationSubsystem.h"
+#include "WallhackSensorPeopleActor.h"
 #include "Engine/Engine.h"
 #include "IXRTrackingSystem.h"
 #include "Misc/CommandLine.h"
@@ -53,8 +54,9 @@ void AWallhackGameMode::BeginPlay()
 
     // The compositor layer only belongs in the Quest build.  Windows uses
     // AWallhackHUD's clearly-labelled simulated operator preview instead.
-    const bool bDemo = FParse::Param(FCommandLine::Get(), TEXT("WallhackDemo")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"));
-    const bool bBridge = FParse::Param(FCommandLine::Get(), TEXT("WallhackBridge"));
+    const bool bSensorPeople = FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeople"));
+    const bool bDemo = !bSensorPeople && (FParse::Param(FCommandLine::Get(), TEXT("WallhackDemo")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")));
+    const bool bBridge = bSensorPeople || FParse::Param(FCommandLine::Get(), TEXT("WallhackBridge"));
     bool bCreateSpatialHUD = bDemo || bBridge || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"));
 #if PLATFORM_ANDROID
     bCreateSpatialHUD = true;
@@ -65,5 +67,6 @@ void AWallhackGameMode::BeginPlay()
         else if (!bBridge) GetWorld()->GetSubsystem<UWallhackNavigationSubsystem>()->Start();
         VRHUDActor = GetWorld()->SpawnActor<AWallhackVRHUDActor>();
         VRHUDActor->SetWorldContact(WorldContact);
+        if (bSensorPeople) VRHUDActor->SetSensorPeople(GetWorld()->SpawnActor<AWallhackSensorPeopleActor>());
     }
 }

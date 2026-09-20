@@ -7,8 +7,9 @@
   <title>Sharingan · Camera + radar</title>
   <link rel="stylesheet" href="/assets/dashboard.css">
   <script src="/assets/dashboard.js" defer></script>
+  {% if ground_station %}<script src="/assets/ground.js" defer></script>{% endif %}
 </head>
-<body class="{{ 'quest-view' if quest_mode else '' }}">
+<body class="{{ 'quest-view' if quest_mode else '' }}" data-ground-station="{{ 'true' if ground_station else 'false' }}">
 <main>
   <header>
     <div><div class="brand"><span>◉</span> SHARINGAN</div><div class="sub">Camera + radar / live sensor station</div></div>
@@ -31,7 +32,7 @@
       <div class="video"><img id="feed" src="/stream" alt="Live camera with detected person boxes"><div class="video-notice" id="camera-notice">Waiting for a fresh camera image…</div></div>
       <div class="legend"><span class="green">▣ Observed person</span><span class="amber">▣ Candidate</span><span>▣ Briefly lost</span></div>
       <div class="camera-tracks" id="camera-tracks">Waiting for camera observations.</div>
-      <div class="note">Camera range is an estimate. Camera and radar IDs have not been associated.</div>
+      <div class="note">Camera range is an estimate. {% if ground_station %}See native people below for radar matches and estimated fallback positions.{% else %}Camera and radar IDs have not been associated.{% endif %}</div>
     </section>
     <section class="panel radar-panel">
       <div class="head"><span>02 / RADAR POSITION</span><div class="controls"><label><input type="checkbox" id="showRaw" checked> Raw points</label><label>View <select id="zoom" aria-label="Radar map range"><option value="2">2 m</option><option value="4">4 m</option><option value="6" selected>6 m</option></select></label></div></div>
@@ -44,14 +45,15 @@
   </div>
   <div class="feedback" id="display-message" role="status"></div>
   <div class="feedback" id="error" role="status"></div>
+  {% if ground_station %}{% include 'ground_controls.html' %}{% endif %}
   <details class="panel handoff" id="handoff-panel" {{ 'open' if not quest_mode else '' }}>
     <summary>Meta Quest handoff <span id="bridge-status" class="hint">Checking bridge…</span></summary>
     <div class="body handoff-grid">
-      <div><p>Open this address in the Quest browser on the same Wi-Fi. Quest view keeps both sensors visible with larger controls.</p><label for="quest-url">Quest dashboard address</label><div class="copy-row"><input id="quest-url" readonly><button id="copy-url">Copy</button></div><div class="feedback" id="copy-state" role="status"></div><p class="details">This is a browser dashboard. A native, room-anchored overlay still needs headset registration and radar rendering.</p></div>
+      <div><p>Open this address in the Quest browser on the same Wi-Fi. Quest view keeps both sensors visible with larger controls.</p><label for="quest-url">Quest dashboard address</label><div class="copy-row"><input id="quest-url" readonly><button id="copy-url">Copy</button></div><div class="feedback" id="copy-state" role="status"></div><p class="details">{% if ground_station %}For room-anchored silhouettes, launch the native app in sensor-people mode using the laptop WebSocket address, then place the sensor reference with the controller.{% else %}This is a browser dashboard. Native silhouettes use the laptop ground station and controller registration; see GroundStation/README.md.{% endif %}</p></div>
       <div><div class="row"><span>WebSocket</span><code id="ws-url">Checking…</code></div><div class="row"><span>World pose</span><span id="pose-status">Awaiting pose</span></div><button id="check-bridge">Check connection from this device</button><div class="feedback" id="bridge-check" role="status">Tests a real telemetry packet without changing the rig pose.</div><a class="details" href="/handoff.json" target="_blank" rel="noopener">Connection manifest ↗</a></div>
     </div>
   </details>
-  <details class="panel operator-tools"><summary>Bench tools · mounting, diagnostics and drywall trials</summary><div class="tools-grid">{% include 'radar_controls.html' %}</div></details>
+  <details class="panel operator-tools" {% if ground_station %}hidden{% endif %}><summary>Bench tools · mounting, diagnostics and drywall trials</summary><div class="tools-grid">{% include 'radar_controls.html' %}</div></details>
   <footer><span id="camera-frame">CAMERA FRAME —</span><span id="radar-frame">RADAR FRAME —</span><a href="/detections" target="_blank" rel="noopener">Live JSON ↗</a></footer>
 </main>
 </body>

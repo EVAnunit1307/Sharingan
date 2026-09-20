@@ -146,6 +146,7 @@ class RadarService:
         self.last_frame = None
         self.frame_timestamp = None
         self.frame_id = 0
+        self.generation = 0
         self.frame_times = deque(maxlen=30)
         self.diagnostics = {}
         self.error = None
@@ -189,6 +190,9 @@ class RadarService:
         while not self.stop_event.is_set():
             try:
                 with serial.Serial(self.port, 256000, timeout=.1, write_timeout=.5, exclusive=True) as uart:
+                    with self.lock:
+                        self.generation += 1
+                        self.targets, self.raw_targets, self.last_frame = [], [], None
                     diagnostics = read_diagnostics(uart)
                     with self.lock:
                         self.diagnostics = diagnostics
@@ -217,6 +221,8 @@ class RadarService:
             config = dict(self.config)
             times = list(self.frame_times)
             state = dict(status='live' if live else 'disconnected',
+                         generation=self.generation,
+                         capture_mono_ms=self.last_frame * 1000 if self.last_frame is not None else 0,
                          age_ms=round(age*1000, 1) if age is not None else None,
                          timestamp=self.frame_timestamp, frame_id=self.frame_id,
                          error=self.error, diagnostics=dict(self.diagnostics))

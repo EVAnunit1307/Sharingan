@@ -13,6 +13,7 @@ Plugins/*/Intermediate/
 Build/*/FileOpenOrder/
 __pycache__/
 *.pyc
+.venv/
 
 # IDE / Visual Studio
 .vs/

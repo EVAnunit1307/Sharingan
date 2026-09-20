@@ -13,6 +13,7 @@ struct FWallhackPersonPose
     FVector Feet = FVector::ZeroVector;
     float Height = 1.75f;
     float Facing = 0.f; // World yaw, +X forward. Compass calibration does not alter this.
+    FLinearColor Tint = FLinearColor(.32f, .7f, .55f, 1.f);
 };
 
 UCLASS()

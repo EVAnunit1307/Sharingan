@@ -7,6 +7,7 @@ from pathlib import Path
 import signal
 import threading
 import time
+import uuid
 
 import cv2
 import numpy as np
@@ -82,6 +83,7 @@ class CameraPipeline:
         self.bridge = None
         self._camera = None
         self._source_epoch = 0
+        self.source_session_id = uuid.uuid4().hex
         blank = np.full((height, width, 3), (24, 22, 18), dtype=np.uint8)
         cv2.putText(blank, "Waiting for fresh camera frames", (25, height // 2),
                     cv2.FONT_HERSHEY_SIMPLEX, .65, (210, 220, 230), 1, cv2.LINE_AA)
@@ -197,6 +199,7 @@ class CameraPipeline:
                     rate = .8 * rate + .2 / max(finished - last_finished, .001)
                 last_finished = finished
                 result = dict(frame_id=seq, captured_at=captured, timestamp=wall_time,
+                              generation=epoch,
                               frame_width=w, frame_height=h, people=people,
                               raw=self.detector.last_raw, infer_ms=round(infer_ms, 1),
                               infer_fps=round(rate, 1),
@@ -225,6 +228,10 @@ class CameraPipeline:
         fresh = bool(r) and age <= self.stale_seconds and not error
         people = r.get("people", []) if fresh else []
         return {"status": "live" if fresh else "waiting" if not r and not error else "stale",
+                "source_session_id": self.source_session_id,
+                "camera_generation": r.get("generation", self._source_epoch),
+                "camera_capture_mono_ms": r.get("captured_at", 0) * 1000,
+                "camera_hfov_deg": self.hfov,
                 "camera_connected": fresh, "error": error,
                 "model": self.detector.cfg["model"], "source": self.source,
                 "rotation": self.rotation, "frame_id": r.get("frame_id", 0),

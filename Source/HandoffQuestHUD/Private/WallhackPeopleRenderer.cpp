@@ -53,6 +53,10 @@ void AWallhackPeopleRenderer::Present(const TArray<FWallhackPersonPose>& People,
             FVector(Person.Height * WorldToMeters / MeshHeight));
         if (!Body->GetComponentTransform().Equals(Pose)) Body->SetWorldTransform(Pose);
         auto* Material = Cast<UMaterialInstanceDynamic>(Body->GetMaterial(0));
-        if (Material) Material->SetScalarParameterValue(TEXT("Opacity"), bPreview ? .12f : Person.Id == SelectedId ? .26f : .16f);
+        if (Material)
+        {
+            Material->SetScalarParameterValue(TEXT("Opacity"), bPreview ? .12f : Person.Id == SelectedId ? .26f : .16f);
+            Material->SetVectorParameterValue(TEXT("Tint"), Person.Tint);
+        }
     }
 }

@@ -24,7 +24,9 @@ void AWallhackHUD::DrawHUD()
     if (!Canvas) return;
 
 #if !PLATFORM_ANDROID && !UE_BUILD_SHIPPING
-    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview")) || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview")))
+    if (FParse::Param(FCommandLine::Get(), TEXT("WallhackTrackingPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackNavigationPreview"))
+        || FParse::Param(FCommandLine::Get(), TEXT("WallhackSensorPeoplePreview")))
     {
         // Render the same texture used on Quest. A stereo layer has no desktop
         // compositor, and the older telemetry preview can cover the 3D dot.
