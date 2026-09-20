@@ -25,6 +25,12 @@
         row.textContent = `C${person.camera_id} · ${matched ? 'RADAR R' + person.radar_id : 'ESTIMATED'} · ${person.right_m.toFixed(2)} m right / ${person.forward_m.toFixed(2)} m forward`;
         get('fusion-people').append(row);
       }
+      for (const radar of frame.radar_targets) {
+        const row = document.createElement('div');
+        row.className = 'person blue';
+        row.textContent = `R${radar.id} · RADAR ONLY · ${radar.right_m.toFixed(2)} m right / ${radar.forward_m.toFixed(2)} m forward`;
+        get('fusion-people').append(row);
+      }
     } catch (error) { clear(); get('fusion-status').textContent = error.message; }
     finally { setTimeout(update, 100); }
   }

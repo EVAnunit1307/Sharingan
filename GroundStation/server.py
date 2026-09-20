@@ -104,9 +104,18 @@ def run_upstream(state, uri, stop):
     while not stop.is_set():
         try:
             with connect(uri, open_timeout=5, close_timeout=1, max_size=1024 * 1024, max_queue=2) as socket:
+                last_received = state.clock()
                 while not stop.is_set():
-                    # A stalled connection cannot prevent shutdown or stale-data cleanup.
-                    raw = socket.recv(timeout=1)
+                    # Poll for shutdown without reconnecting on a brief Wi-Fi pause.
+                    # Snapshot ages still expire contacts at 500/750 ms. A sustained
+                    # stall reconnects even if the socket's ping/pong remains alive.
+                    try:
+                        raw = socket.recv(timeout=1)
+                    except TimeoutError:
+                        if state.clock() - last_received >= 5:
+                            raise TimeoutError("No sensor packets for 5 seconds")
+                        continue
+                    last_received = state.clock()
                     try:
                         state.ingest(json.loads(raw, parse_constant=reject_constant))
                     except (ValueError, TypeError) as error:

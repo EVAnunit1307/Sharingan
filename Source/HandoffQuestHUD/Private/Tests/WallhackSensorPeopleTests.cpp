@@ -47,6 +47,31 @@ bool FWallhackSensorPeopleProtocolTest::RunTest(const FString&)
     TestEqual(TEXT("Camera expires even with repeated traffic"), Stream.GetFrame(100.751).People.Num(), 0);
     Stream.Reset();
     TestEqual(TEXT("Disconnect clears all positions"), Stream.GetFrame(100).People.Num(), 0);
+
+    // Radar-only input must work without a camera frame, and relay traffic must
+    // not renew the radar observation. Camera and radar IDs are separate domains.
+    TSharedPtr<FJsonObject> Root;
+    FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(ContractPacket()), Root);
+    const auto E = Root->GetObjectField(TEXT("spatial_people"));
+    E->SetArrayField(TEXT("people"), {});
+    E->SetField(TEXT("camera_age_ms"), MakeShared<FJsonValueNull>());
+    auto Radar = MakeShared<FJsonObject>();
+    Radar->SetNumberField(TEXT("id"), 1);
+    Radar->SetNumberField(TEXT("right_m"), .25);
+    Radar->SetNumberField(TEXT("forward_m"), 3);
+    Radar->SetNumberField(TEXT("generation"), 1);
+    Radar->SetNumberField(TEXT("frame_id"), 1);
+    Radar->SetNumberField(TEXT("age_ms"), 100);
+    E->SetArrayField(TEXT("radar_targets"), {MakeShared<FJsonValueObject>(Radar)});
+    FString RadarPacket;
+    FJsonSerializer::Serialize(Root.ToSharedRef(), TJsonWriterFactory<>::Create(&RadarPacket));
+    TestTrue(TEXT("Radar-only packet accepts absent camera age"), Stream.Ingest(RadarPacket, 200));
+    TestEqual(TEXT("Fresh radar exists independently"), Stream.GetFrame(200).Radar.Num(), 1);
+    Root->SetNumberField(TEXT("relay_sequence"), 2);
+    RadarPacket.Reset();
+    FJsonSerializer::Serialize(Root.ToSharedRef(), TJsonWriterFactory<>::Create(&RadarPacket));
+    TestTrue(TEXT("Repeated radar packet accepted"), Stream.Ingest(RadarPacket, 200.3));
+    TestEqual(TEXT("Repeated frame cannot extend radar expiry"), Stream.GetFrame(200.401).Radar.Num(), 0);
     return true;
 }
 
@@ -126,7 +151,7 @@ bool FWallhackSensorPeopleRendererTest::RunTest(const FString&)
         Pose.Tint = Green;
         Pose.SourceLabel=TEXT("RADAR");
         Renderer->Present({Pose}, INDEX_NONE, nullptr, true, Units,{1,1,1.7},FQuat::Identity,0,1);
-        if (!TestEqual(TEXT("One native body"), Renderer->GetBodyComponents().Num(), 1)) return false;
+        if (!TestTrue(TEXT("Native body allocated"), Renderer->GetBodyComponents().Num() >= 1)) return false;
         auto* Body = Renderer->GetBodyComponents()[0].Get();
         if (!TestNotNull(TEXT("Human mesh loaded"), Body->GetStaticMesh().Get())) return false;
         TestFalse(TEXT("Fresh silhouette visible"), Body->bHiddenInGame || Renderer->IsHidden());
@@ -146,7 +171,18 @@ bool FWallhackSensorPeopleRendererTest::RunTest(const FString&)
         Material->GetVectorParameterValue(FMaterialParameterInfo(TEXT("Tint")), Tint);
         TestTrue(TEXT("Same body's estimate changes to amber immediately"), Tint.Equals(Amber));
         TestTrue(TEXT("Fallback updates the label without claiming a manual contact"),Renderer->GetTelemetryText()[0].Contains(TEXT("ESTIMATED"))&&!Renderer->GetTelemetryText()[0].Contains(TEXT("MANUAL")));
-        TestEqual(TEXT("Source transition does not duplicate the person"), Renderer->GetBodyComponents().Num(), 1);
+        TestTrue(TEXT("Source transition reuses the same body"), Renderer->GetBodyComponents()[0].Get() == Body);
+        FWallhackPersonPose RadarPose = Pose;
+        RadarPose.bRadarOnly = true; RadarPose.SourceLabel = TEXT("RADAR ONLY");
+        RadarPose.Tint = FLinearColor(.35f,.7f,1,1);
+        RadarPose.Feet.Y += 1;
+        Renderer->Present({Pose,RadarPose}, INDEX_NONE, nullptr, true, Units,{1,1,1.7},FQuat::Identity,0,1.31);
+        TestTrue(TEXT("Camera C1 label stays distinct from radar R1"),Renderer->GetTelemetryText()[0].Contains(TEXT("C1 / ESTIMATED")));
+        TestTrue(TEXT("Same numeric radar ID gets an independent body and source label"),Renderer->GetTelemetryText()[1].Contains(TEXT("R1 / RADAR ONLY")));
+        TestFalse(TEXT("Independent radar body is visible"),Renderer->GetBodyComponents()[1]->bHiddenInGame);
+        Renderer->Present({RadarPose}, INDEX_NONE, nullptr, true, Units,{1,1,1.7},FQuat::Identity,0,1.32);
+        TestTrue(TEXT("A pooled camera slot immediately becomes radar-only"),Renderer->GetTelemetryText()[0].Contains(TEXT("R1 / RADAR ONLY")));
+        TestTrue(TEXT("Old second body is hidden after the source transition"),Renderer->GetBodyComponents()[1]->bHiddenInGame);
         Renderer->Present({}, INDEX_NONE, nullptr, true, Units);
         TestTrue(TEXT("Fresh empty frame hides previous body"), Body->bHiddenInGame);
         Renderer->Present({Pose}, INDEX_NONE, nullptr, false, Units);

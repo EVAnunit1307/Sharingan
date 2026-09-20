@@ -104,17 +104,28 @@ public:
             Test->TestTrue(TEXT("Radar outage uses camera estimate in the same frame"),Views[0].Feet.X>250 && Views[0].Feet.X<400);
             Stage=2; Mode(TEXT("camera_off"));
         }
-        else if (Stage == 2 && Views.IsEmpty())
+        else if (Stage == 2 && Views.Num()==1 && Views[0].bRadarOnly)
         {
-            Test->TestTrue(TEXT("Camera outage removes people"),People->GetStatus().Contains(TEXT("NO FRESH")));
+            Test->TestTrue(TEXT("Camera outage keeps an independent radar silhouette at measured range"),Views[0].Feet.Equals({400,0,0},.1));
+            Test->TestTrue(TEXT("Radar-only contact remains live without camera confirmation"),People->GetStatus().Contains(TEXT("LIVE")));
+            Test->TestEqual(TEXT("Radar silhouette is not also drawn as a map-only dot"),People->GetRadarViews().Num(),0);
             Stage=3; Mode(TEXT("live"));
         }
-        else if (Stage == 3 && Views.Num()==1 && Views[0].bRadar)
+        else if (Stage == 3 && Views.Num()==1 && Views[0].bRadar && !Views[0].bRadarOnly)
         {
             Test->TestTrue(TEXT("Fresh packets recover against the same registration"),Views[0].Feet.Equals({400,0,0},.1));
-            Stage=4; Mode(TEXT("restart"));
+            Stage=4; Mode(TEXT("frozen"));
         }
-        else if (Stage == 4 && Views.IsEmpty() && People->GetStatus().Contains(TEXT("MARK FLOOR")))
+        else if (Stage == 4 && Views.IsEmpty() && People->GetStatus().Contains(TEXT("NO FRESH")))
+        {
+            Test->TestEqual(TEXT("Both sources expire even while relay packets continue"),People->GetRadarViews().Num(),0);
+            Stage=5; Mode(TEXT("live"));
+        }
+        else if (Stage == 5 && Views.Num()==1 && Views[0].bRadar && !Views[0].bRadarOnly)
+        {
+            Stage=6; Mode(TEXT("restart"));
+        }
+        else if (Stage == 6 && Views.IsEmpty() && People->GetStatus().Contains(TEXT("MARK FLOOR")))
         {
             Test->AddInfo(TEXT("Actual Pi bridge -> laptop relay -> Unreal socket -> registration -> rendering passed, including outages and source restart."));
             return true;

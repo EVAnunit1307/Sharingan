@@ -164,9 +164,13 @@ def main():
                 page.locator("#fusion-people .amber").wait_for()
                 page.screenshot(path=str(out / "ground/fusion-fallback.png"), full_page=True)
                 control.write_text("camera_off")
-                page.wait_for_function("document.querySelector('#fusion-people').childElementCount === 0")
+                page.locator("#fusion-people .blue").wait_for()
+                page.wait_for_function("document.querySelectorAll('#fusion-people .green, #fusion-people .amber').length === 0")
+                assert "RADAR ONLY" in page.locator("#fusion-people .blue").inner_text()
+                page.screenshot(path=str(out / "ground/fusion-radar-only.png"), full_page=True)
                 control.write_text("live")
                 page.locator("#fusion-people .green").wait_for()
+                page.wait_for_function("document.querySelectorAll('#fusion-people .blue').length === 0")
                 browser.close()
             result["fusion_browser_source_transitions"] = "passed"
 

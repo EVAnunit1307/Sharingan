@@ -15,7 +15,8 @@ struct FWallhackPersonPose
     float Facing = 0.f; // World yaw, +X forward. Compass calibration does not alter this.
     int32 ColorSlot = INDEX_NONE; // Assigned once; unique among active session people.
     FLinearColor Tint = FLinearColor::Transparent; // Optional sensor-source accent.
-    FString SourceLabel; // Empty for manual poses; RADAR / ESTIMATED for live sensors.
+    FString SourceLabel; // Empty for manual poses; RADAR / ESTIMATED / RADAR ONLY for sensors.
+    bool bRadarOnly = false; // Radar IDs use R, independently of the camera's C identities.
 };
 
 UCLASS()

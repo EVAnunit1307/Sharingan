@@ -44,7 +44,8 @@ or ports using `--host`, `--port` and `--quest-port` when needed.
    level and face the same direction. Verify the configured camera HFOV against
    the actual inference image (`--hfov`, default 62 degrees).
 4. Enable **I verified left / centre / right alignment**, then save. Matching is
-   disabled by default; valid camera estimates can still appear as ESTIMATED.
+   disabled by default; camera estimates appear as ESTIMATED and independent
+   radar returns appear as RADAR ONLY without requiring a camera match.
 
 Configuration persists in `Saved/GroundStation/fusion.json`; use `--config` to
 choose another file. Matching thresholds can also be set there. The laptop
@@ -74,10 +75,16 @@ restart placement, and **B** to cycle minimal, hidden and full HUD visibility.
 
 The app displays at most eight generic 1.65 m standing silhouettes, facing the
 sensor: green **RADAR** for a confirmed association, amber **ESTIMATED** for
-camera range. Their height, posture and facing are display assumptions. Camera
-confidence determines priority, with camera ID as the tie-breaker. Unclassified
-radar targets remain blue map dots; displayed radar-matched people have no
-duplicate dot. The full HUD shows wearer-relative horizontal range and bearing.
+camera range, and blue **RADAR ONLY** for independent radar returns. Either
+sensor can supply a silhouette; there is no camera-and-radar display gate.
+Height, posture and facing are display assumptions, and radar-only bodies do
+not claim a camera-confirmed person. Camera identities use C and radar identities
+use R, so C1 and R1 remain distinct. Camera confidence determines priority, with
+camera ID as the tie-breaker, followed by unmatched radar returns. The body limit
+is eight in total; overflow radar returns remain map dots. Confirmed matches
+produce one body, without a duplicate radar body or dot. Until alignment and a
+match are established, independent readings may represent the same real person.
+The full HUD shows wearer-relative horizontal range and bearing.
 
 Tracking or anchor loss hides world silhouettes. Recenter, app resume/restart,
 source-process restart or reference changes invalidate placement. After any
@@ -132,7 +139,10 @@ That command writes augmented JSONL to stdout and opens no sockets or hardware.
 - Camera expiry is 750 ms; radar expiry is 500 ms. Count Pi observation age,
   laptop buffer/relay residence and Quest residence. Duplicate frames never
   renew expiry. Radar expiry downgrades to a still-fresh camera estimate.
-  Fresh empty camera frames remove absent people immediately.
+  Fresh empty camera frames remove absent camera contacts immediately;
+  independent fresh radar contacts remain. A brief upstream receive timeout
+  keeps the socket open while observations expire normally. A five-second
+  packet stall or a closed connection causes reconnection.
 - Pi capture timestamps are compared only within a Pi session, never against
   laptop/Quest clocks. Network transit time is not clock-synchronized or measured
   by this version. Queues are bounded, but latency and alignment still require
@@ -166,8 +176,9 @@ radar confidence or certainty that a bearing association is correct. See the
 
 ## Validation status and remaining work
 
-On the Windows integration branch: **46 ground-station tests and 44 Pi tests pass** with Python 3.14.6.
-Both suites also pass on the physical Pi with Python 3.13.5.
+On the Windows integration branch: **48 ground-station tests and 44 Pi tests pass** with Python 3.14.6.
+The previous 46-test ground-station suite and the unchanged 44 Pi tests also
+passed on the physical Pi with Python 3.13.5.
 These include real loopback WebSockets, HTTP/config/proxy checks, and actual Pi
 snapshot → bridge packet → fusion matching/fallback. No physical sensors are
 opened by those tests.
@@ -211,7 +222,9 @@ Results and screenshots go to `Saved/PiSensorPullTest/Integration`.
 The full local results and remaining physical acceptance steps are recorded in
 the [integration report](../Docs/quest-ground-station-integration.md). The updated
 Pi passes live camera/radar transport checks; the verified APK is installed on
-Quest and its relay connection was checked. Physical alignment, native live
-people placement, stereo and passthrough still need wearer validation.
+Quest and its relay connection was checked. The wearer confirmed reference
+placement and a visible live ESTIMATED silhouette on the preceding build.
+Physical alignment, both-eye visibility and the new independent-radar mode
+remain pending the next wearer test cycle.
 Sensor mode displays contacts; manual navigation remains a separate
 mode and does not route to the live sensor contacts yet.

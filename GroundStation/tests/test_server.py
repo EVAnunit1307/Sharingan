@@ -145,6 +145,50 @@ class RelayTests(unittest.TestCase):
             stop.set(); pi.shutdown(); downstream.shutdown()
             receiver.join(timeout=3); pi_thread.join(timeout=2); downstream_thread.join(timeout=2)
 
+    def test_brief_receive_timeout_expires_contacts_without_reconnecting(self):
+        stop = threading.Event()
+        calls = 0
+        def receive(timeout):
+            nonlocal calls
+            self.assertEqual(timeout, 1)
+            calls += 1
+            if calls == 1:
+                return json.dumps(packet())
+            if calls == 2:
+                self.now = 1.1
+                raise TimeoutError("temporary Wi-Fi pause")
+            if calls == 3:
+                expired = self.state.snapshot()["spatial_people"]
+                self.assertEqual(expired["people"], [])
+                self.assertEqual(expired["radar_targets"], [])
+                self.assertIsNone(self.state.error)
+                self.now = 1.2
+                return json.dumps(packet(2))
+            self.assertEqual(len(self.state.snapshot()["spatial_people"]["people"]), 1)
+            stop.set()
+            raise TimeoutError()
+        with patch("websockets.sync.client.connect") as connect:
+            connect.return_value.__enter__.return_value.recv.side_effect = receive
+            run_upstream(self.state, "ws://sensor:8765", stop)
+            self.assertEqual(connect.call_count, 1)
+        self.assertEqual(calls, 4)
+        self.assertEqual(self.state.error, "Ground station stopped")
+
+    def test_sustained_receive_stall_clears_samples_and_requests_reconnect(self):
+        stop = threading.Event()
+        self.state.ingest(packet())
+        def receive(timeout):
+            self.now = 5
+            raise TimeoutError()
+        def reconnect_wait(delay):
+            self.assertEqual(delay, 1)
+            self.assertEqual(self.state.error, "No sensor packets for 5 seconds")
+            self.assertIsNone(self.state.packet)
+            stop.set()
+        with patch("websockets.sync.client.connect") as connect, patch.object(stop, "wait", side_effect=reconnect_wait):
+            connect.return_value.__enter__.return_value.recv.side_effect = receive
+            run_upstream(self.state, "ws://sensor:8765", stop)
+
 
 if __name__ == "__main__":
     unittest.main()

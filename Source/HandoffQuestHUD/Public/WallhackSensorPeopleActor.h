@@ -14,6 +14,7 @@ struct FWallhackSensorPersonView
 {
     int32 Id = INDEX_NONE;
     bool bRadar = false;
+    bool bRadarOnly = false;
     FVector Feet = FVector::ZeroVector;
     WallhackSpatialMath::FContactView View;
 };

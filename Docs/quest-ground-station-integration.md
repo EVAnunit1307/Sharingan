@@ -40,36 +40,37 @@ Native live people use a separate validated store, the existing human renderer,
 and shared anchor teardown. Recenter, lifecycle restart/resume, source restart
 or reference changes clear registration. Sensor reconnects clear associations.
 Physical movement requires explicit replacement using A. No cross-session
-reference persistence, inferred posture, radar-only person classification, or
-tracking after camera loss is provided.
+reference persistence, inferred posture or radar-only person classification is
+provided. Independent radar returns now get generic RADAR ONLY silhouettes,
+including during camera loss, until their own observations expire.
 
-## Evidence as of 2026-09-19
+## Evidence as of 2026-09-20
 
 | Validation | Result |
 | --- | --- |
 | Pi regression and Pi-packet-to-fusion contract | 44 tests pass on Windows Python 3.14.6 and the physical Pi's Python 3.13.5. Includes shutdown with a relay still attached. |
-| Laptop matching, replay, HTTP, configuration and real loopback sockets | 46 tests pass on Windows and Pi. |
+| Laptop matching, replay, HTTP, configuration and real loopback sockets | 48 tests pass on Windows, including brief receive pauses and sustained stalls. Previous 46-test suite passed on Pi. |
 | Full Unreal regression, including four sensor tests | 79 tests pass, zero test warnings/failures, UE 5.7.4. |
 | Actual Pi bridge → laptop relay → Unreal socket/actor | Additional `SensorSetup.NativeRelay` test passes with synthetic input and real loopback sockets. |
-| Detector runtime | Real YOLOX ONNX inference on a blank image succeeds; 30.45 ms on this laptop. This is not a Pi benchmark or accuracy evaluation. |
+| Detector runtime | Real YOLOX ONNX inference on a blank image succeeds; 31.13 ms on this laptop. This is not a Pi benchmark or accuracy evaluation. |
 | Browser visual QA | Both Pi and laptop dashboards pass Edge checks: desktop/mobile/Quest viewport, WebSocket, fullscreen, failure/recovery, no JS errors. Screenshots reviewed. |
-| Android build/cook | Full ARM64 ASTC build/cook succeeds (158 s); APK signature v2 and native-library hash verified. 28 package checks pass, including network/scene/anchor permissions and stereo renderer configuration. |
+| Android build/cook | Full ARM64 ASTC build/cook succeeds (79 s on sequential retry); APK signature v2 and native-library hash verified. 28 package checks pass, including network/scene/anchor permissions and stereo renderer configuration. |
 | Live Pi camera/radar transport | Updated service: 40 fresh camera and radar packets over four seconds, maximum sampled radar age 86.4 ms. Metadata accepted by laptop relay; no protocol error. |
 | Quest installation | Installed over USB; pulled APK SHA256 matches the verified candidate. |
-| Native Quest → laptop connection | Sensor-mode GameActivity launched on Quest at `172.20.10.4`; laptop relay reports one connected client over hotspot Wi-Fi. |
-| Live sensors → laptop → physical Quest | Pi update complete; physical reference/position and camera/radar alignment checks pending wearer. |
+| Native Quest → laptop connection | Preceding build connected over hotspot Wi-Fi. New build is installed; launch requested against `10.26.0.247:8765`, but Quest is asleep, with no app process or relay client. |
+| Live sensors → laptop → physical Quest | Wearer confirmed two-point registration and a visible live ESTIMATED silhouette on the preceding build. Alignment while moving, both-eye visibility and independent radar behavior remain pending the next cycle. |
 
 The integration fixed UE 5.7 `TObjectPtr` compilation errors, an uninitialized
 parser variable, and an overstrict float tolerance in the incoming yaw test.
 Sensor silhouettes now use the shared stereo-tested corner labels with the
-actual viewer pose. Labels identify RADAR/ESTIMATED and explicitly assumed body
+actual viewer pose. Labels identify RADAR/ESTIMATED/RADAR ONLY and explicitly assumed body
 height/facing; the duplicate TextRender path was removed. Manual contact colors
 and the existing navigation mode are preserved. Sensor mode is opt-in and does
 not currently provide navigation to live sensor contacts.
 
 The local integration harness uses known camera boxes through the production
 tracker/projection pipeline and encoded LD2450 packets through the real radar
-decoder. It verifies radar fallback, camera removal, frozen-frame expiry,
+decoder. It verifies camera fallback, independent radar during camera loss, frozen-frame expiry,
 recovery and both web dashboards. The native test additionally verifies floor
 registration, rejection of a short forward vector, wearer motion, Hidden mode,
 and registration invalidation on source restart. Synthetic relay output is
@@ -83,6 +84,12 @@ Local evidence (generated, not committed):
   `Native/Report/index.json`, and `pi/` / `ground/` browser screenshots.
 - `Saved/PiSensorPullTest/IntegrationAfterShutdownFix/result.json`: native
   loopback chain passes again after the live-discovered shutdown fix.
+- `Saved/PiSensorPullTest/IndependentSensors/result.json` and `Native/Report/index.json`:
+  both independent sensor paths, match deduplication, simultaneous expiry,
+  recovery and source restart pass through the real native actor. Browser
+  source-transition screenshots include `ground/fusion-radar-only.png`.
+- `Saved/PiSensorPullTest/or-ground-tests.log` and
+  `Saved/NavigationVerification/TestRuns/20260920-001509/Report/index.json`.
 - `Saved/PiSensorPullTest/pi-host-tests.log`, `pi-host-ground-tests.log`,
   `pi-deployment.json`, `live-pi-updated-handoff.json`, and `live-relay-updated.json`.
 - `Saved/NavigationVerification/package-verification.json`, `signing.txt`,
@@ -104,21 +111,44 @@ fix explicitly stops handlers and closes attached connections, with a bounded
 close timeout. A new regression passes on both hosts. The replacement passed
 live camera/radar health checks, and the laptop now accepts its metadata.
 
-The candidate is installed on Quest 3S and its pulled APK hash matches. After
-moving it to the hotspot and unlocking, sensor-mode GameActivity launched and
-connected to `ws://172.20.10.2:8765/`. The relay reports one native client.
-Radar matching remains disabled until the camera offset and parallel/level
-alignment are measured and confirmed. Full-body camera observations can supply
+The candidate is installed on Quest 3S and its pulled APK hash matches. On the
+preceding build, moving it to the hotspot and unlocking allowed sensor-mode
+GameActivity to connect to `ws://172.20.10.2:8765/`, with one native client.
+Radar matching is enabled with the wearer-confirmed camera offset of +0.032 m
+right and 0 m forward; both sensors are level and parallel. Full-body camera observations can supply
 ESTIMATED contacts; clipped people without an associated range remain
-unpositioned. Physical calibration, native live people rendering, stereo and
-Quest performance remain pending.
+unpositioned. The wearer confirmed a visible live silhouette; physical
+position-error measurement, stereo and Quest performance remain pending. The
+offset and matching setting are saved in `Saved/GroundStation/fusion.json`.
+Reference placement must be repeated after this configuration change.
+Independent rendering does not wait for camera/radar matching. Reported mount
+geometry is confirmed; left/centre/right position accuracy is not yet verified.
+
+The independent-sensor update promotes unmatched radar returns from map dots
+to blue, explicitly unclassified RADAR ONLY bodies. Camera and radar identities
+use C/R prefixes, and confirmed matches retain one shared body. Eight bodies
+are allowed in total; additional radar returns stay on the map. Freshness
+remains 750 ms for camera and 500 ms for radar. On the deployment hotspot,
+one-second receive pauses previously caused needless upstream disconnects.
+The relay now tolerates short pauses while observations expire, reconnecting
+after a five-second sustained stall. No stale-data lifetime was extended.
+
+During this update the laptop/Quest changed networks to 10.26.0.247/10.26.0.248.
+The Pi hostname and its previous 172.20.10.3 address were unreachable. The updated
+laptop relay is running; the live Pi check awaits reconnection. The full cook
+initially hit a 127.0.0.1:18777 editor-plugin port conflict with the native test
+process; the sequential retry succeeded. Run the native integration test and
+cook sequentially. Quest is currently asleep: launch was requested with the new
+laptop address but no app process or relay client appeared. Unlock and launch
+again for the next live cycle after the Pi is reachable.
 The previous map-memory APK is retained as
-`Rollback-Navigation-BeforePiSensorPullTest.apk`.
+`Rollback-Navigation-BeforePiSensorPullTest.apk`. The immediately preceding sensor
+build is retained at `Saved/PiSensorPullTest/Rollback-BeforeIndependentSensors.apk`.
 
 Candidate APK SHA256:
-`DD09AD7B50D5AFD8FB429A7DB1388ECCBD65354689D272973568C8FE243EB21D`.
+`040B921C5EE5C54BB8F1085A9217D526E6B3EEF9E38D69481A75ACAE9A849366`.
 Packaged native-library SHA256:
-`D8D770C657A30317CB6AD545CF641115C204C185C7CC2C4EF355671C4E80EE88`.
+`5D0D02C8F60E09D658410955B9AFD519DAE8FE07AFAFCAE283B6EB8B9AD659E8`.
 
 ## Headset acceptance procedure
 
@@ -144,12 +174,14 @@ Then use a live stationary rig:
    during source changes, and no duplicate blue dot for a displayed match.
 6. Interrupt radar, camera, Pi-to-laptop and laptop-to-Quest connections
    separately. Radar loss switches promptly to a valid estimate; camera loss
-   removes people. Expiry continues during repeated packets and stalled links.
-   Clipped boxes without a match stay unpositioned; radar-only returns stay dots.
+   keeps fresh radar returns visible as RADAR ONLY silhouettes. Expiry continues
+   during repeated packets and stalled links. Both sources stale removes all
+   bodies. Clipped boxes without a match stay unpositioned; independent radar
+   returns still supply their own silhouettes.
 7. Lose tracking/anchor localization, recenter, resume the app and move the rig.
    Silhouettes hide during invalid tracking; required recalibration prevents old
    placement reuse. Press A after physical rig movement.
-8. Verify both eyes, passthrough visibility, readable green RADAR/amber ESTIMATED
+8. Verify both eyes, passthrough visibility, readable green RADAR/amber ESTIMATED/blue RADAR ONLY
    labels and eight-person limits. Repeat normal manual placement/navigation
    without `-WallhackSensorPeople` and verify their established controls.
 

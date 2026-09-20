@@ -43,10 +43,10 @@ void AWallhackVRHUDActor::DrawSensorPeopleHUD(UCanvas* Canvas)
     float Row = 585;
     for (const auto& Person : SensorPeople->GetPeopleViews())
     {
-        const auto Color = Person.bRadar ? Green : Amber;
+        const auto Color = Person.bRadarOnly ? Blue : Person.bRadar ? Green : Amber;
         Dot(Person.View, Color, 7);
-        Text(FString::Printf(TEXT("C%d %s / %.1f M / %+.0f DEG"), Person.Id,
-            Person.bRadar ? TEXT("RADAR") : TEXT("ESTIMATED"), Person.View.GroundRangeMeters, Person.View.BearingDegrees),
+        Text(FString::Printf(TEXT("%s%d %s / %.1f M / %+.0f DEG"), Person.bRadarOnly ? TEXT("R") : TEXT("C"), Person.Id,
+            Person.bRadarOnly ? TEXT("RADAR ONLY") : Person.bRadar ? TEXT("RADAR") : TEXT("ESTIMATED"), Person.View.GroundRangeMeters, Person.View.BearingDegrees),
             1160, Row, 18, Color);
         Row += 39;
     }

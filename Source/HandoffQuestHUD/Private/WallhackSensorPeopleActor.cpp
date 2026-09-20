@@ -181,7 +181,7 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
     FTransform Reference;
     if (!ReferencePose(Reference)) { Status = TEXT("SENSOR ANCHOR NOT LOCALIZED"); return; }
     Status = Frame.RegistrationKey.IsEmpty() ? TEXT("GROUND LINK DISCONNECTED")
-        : Frame.People.IsEmpty() ? TEXT("NO FRESH POSITIONED PEOPLE") : TEXT("SENSOR PEOPLE LIVE");
+        : Frame.People.IsEmpty() && Frame.Radar.IsEmpty() ? TEXT("NO FRESH POSITIONED CONTACTS") : TEXT("SENSOR CONTACTS LIVE");
     TArray<FWallhackPersonPose> Poses;
     for (const auto& Person : Frame.People)
     {
@@ -195,17 +195,33 @@ void AWallhackSensorPeopleActor::Tick(float DeltaSeconds)
         Pose.SourceLabel = Person.bRadar ? TEXT("RADAR") : TEXT("ESTIMATED");
         Poses.Add(Pose);
     }
+    // The relay supplies unmatched radar returns separately. They have their own
+    // freshness deadline and do not need a camera detection or alignment match.
+    // A generic body is a display assumption, not a camera-confirmed person.
+    for (const auto& Dot : Frame.Radar)
+    {
+        const FVector Feet = WallhackSensorPeopleMath::ToWorld(Dot.Position, Reference, Scale);
+        FWallhackSensorPersonView View;
+        View.Id = Dot.Id; View.bRadar = true; View.bRadarOnly = true; View.Feet = Feet;
+        if (!WallhackSpatialMath::ProjectContact(Feet, Viewer, Orientation.Rotator().Yaw, Scale, View.View)) continue;
+        if (Poses.Num() >= UWallhackPeopleSubsystem::MaxPeople)
+        {
+            RadarViews.Add(View.View); // Keep overflow on the map without exceeding the body budget.
+            continue;
+        }
+        Views.Add(View);
+        FWallhackPersonPose Pose; Pose.Id = Dot.Id; Pose.bRadarOnly = true;
+        Pose.Feet = Feet / Scale; Pose.Height = 1.65f;
+        Pose.Facing = (Reference.GetLocation() - Feet).Rotation().Yaw;
+        Pose.Tint = FLinearColor(.35f,.7f,1,1);
+        Pose.SourceLabel = TEXT("RADAR ONLY");
+        Poses.Add(Pose);
+    }
     // Reuse the stereo-tested corner labels with the actual viewer pose.
     // Separate TextRender labels would duplicate telemetry and use a different
     // mobile translucency path from the fixed manual-person renderer.
     if (Renderer) Renderer->Present(Poses, INDEX_NONE, nullptr, true, Scale,
         Viewer / Scale, Orientation, 0, FPlatformTime::Seconds());
-    for (const auto& Dot : Frame.Radar)
-    {
-        WallhackSpatialMath::FContactView View;
-        if (WallhackSpatialMath::ProjectContact(WallhackSensorPeopleMath::ToWorld(Dot.Position, Reference, Scale),
-            Viewer, Orientation.Rotator().Yaw, Scale, View)) RadarViews.Add(View);
-    }
 }
 
 void AWallhackSensorPeopleActor::ReleaseReference()
