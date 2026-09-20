@@ -514,8 +514,11 @@ void AWallhackVRHUDActor::DrawOperatorHUD(float DeltaSeconds)
         DrawSpatialHUD(Canvas, Font);
         return;
     }
-    DrawNavigationHUD(Canvas, Font);
-    return;
+    if (!FParse::Param(FCommandLine::Get(), TEXT("WallhackBridge")))
+    {
+        DrawNavigationHUD(Canvas, Font);
+        return;
+    }
 
     const UWallhackTelemetrySubsystem* Telemetry = GetGameInstance() ? GetGameInstance()->GetSubsystem<UWallhackTelemetrySubsystem>() : nullptr;
     FWallhackDisplayFrame Frame = Telemetry ? Telemetry->GetDisplayFrame() : FWallhackDisplayFrame{};

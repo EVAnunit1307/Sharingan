@@ -1,51 +1,22 @@
-# Fusion — combining camera, radar, and IMU into one picture
+# Camera, radar, and ground-station integration
 
-Two scripts live here, one per side of the WiFi link:
+## `wallhack_dashboard.py` (Pi)
 
-## `wallhack_dashboard.py` (runs on the Pi)
+This is a compatibility launcher for the shared [camera dashboard](../CV/README.md),
+with LD2450 radar and the persisted `CV/radar_config.json` mounting settings.
+The camera uses YOLOX nano and per-track confirmation. Start with camera-only
+validation before enabling radar; do not run multiple camera/serial owners.
 
-The Pi-side fusion point. Instead of running `CV/pi_camera_stream.py` and
-`Radar/ld2450_radar.py` as two separate processes, this owns the camera
-**and** the radar serial port itself and serves one dashboard showing both
-side by side, plus a live person-count vs. radar-target-count cross-check —
-useful for sanity-checking that the camera and radar agree on how many
-people are actually in frame.
-
-```
+```sh
 python3 wallhack_dashboard.py
+# Optional handoff (requires websockets in the selected Python environment):
+python3 wallhack_dashboard.py --quest-port 8765
 ```
 
-then open `http://larp-pi.local:8766/` (or `http://<pi-ip>:8766/` if mDNS
-isn't resolving).
-
-**Don't run this alongside `CV/pi_camera_stream.py` or
-`Radar/ld2450_radar.py`** — all three fight over the same camera and
-`/dev/serial0`.
-
-Detection here is upgraded from CV/'s MobileNet-SSD/HOG to **YOLOv8n**
-(ONNX export, 640×640 input, full COCO 80-class), specifically because
-MobileNet-SSD's furniture-vs-person confusion was showing up often enough to
-matter. YOLO inference runs in its own thread, decoupled from the
-capture/encode/stream loop — YOLOv8n on a Pi 4 CPU can take 300ms–1s+ per
-frame, and running it inline was stalling the MJPEG stream for that entire
-window (from the browser it just looked like `/stream` hanging). The
-capture loop now always runs at full camera framerate and draws whatever
-the latest finished detection result was, however many hundred ms old.
-
-Each detected person also gets a **rough monocular position estimate**
-(`estimate_person_position()`) so it can be plotted on the same X/Y scope as
-the radar targets: bearing comes from the box's left/right position in
-frame (reliable), distance comes from assumed average adult height vs. box
-height (a rough guess — nowhere near the radar's precision, this is for a
-sanity-check overlay, not a hard number). `CAMERA_HFOV_DEG` assumes a Pi
-Camera Module v2 (~62° horizontal FOV) — change it to match your camera or
-both the bearing and distance math will be off.
-
-| Endpoint | Purpose |
-|---|---|
-| `/` | Combined dashboard (camera pane + radar scope + cross-check) |
-| `/stream` | Annotated MJPEG camera feed |
-| `/radar.json` | Raw radar target JSON |
+Open `http://larp-pi.local:8766/`. Radar targets remain separate from camera
+people until physical alignment and data association are validated. Equal counts
+are not evidence of identity. See the camera README for the endpoint schema,
+installation, performance checks, and Quest configuration.
 
 ## `imu_viz.py` (runs on the PC — the ground station)
 

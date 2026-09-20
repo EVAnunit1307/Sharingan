@@ -1,72 +1,57 @@
-# Architecture
+# Sensing architecture
 
-## Two machines, three wire protocols
-
-| Link | Protocol | Carries |
-|---|---|---|
-| Flight controller ↔ PC | MSP (MultiWii Serial Protocol) over USB serial, 115200 baud | Attitude, raw IMU, motor readback/override |
-| LD2450 radar ↔ Pi | UART, 256000 baud, fixed 30-byte framed packets | Up to 3 tracked targets' X/Y (mm) + speed (cm/s) |
-| Pi ↔ PC | WiFi — HTTP (MJPEG + JSON) and WebSocket | Camera stream, radar JSON, fused pose/detections |
-
-## Port map
-
-| Port | Host | What's listening |
-|---|---|---|
-| `COM4` (or platform equivalent) | PC | Flight controller, MSP |
-| `/dev/serial0` | Pi | LD2450 radar, raw UART frames |
-| `8765` | Pi | WebSocket bridge (rig pose out, Pi detections back) — used by `Fusion/imu_viz.py` |
-| `8766` | Pi | Camera MJPEG stream — either `CV/pi_camera_stream.py` alone, or `Fusion/wallhack_dashboard.py`'s combined dashboard |
-| `8767` | Pi | Standalone radar web page — `Radar/ld2450_radar.py` only |
-
-Note `8766` is shared between the two Pi-side "modes" described in the top
-level README — `CV/pi_camera_stream.py` and `Fusion/wallhack_dashboard.py`
-both use it, but you only ever run one of them at a time.
-
-## Two ways to run the Pi side
-
-**Split mode:** `CV/pi_camera_stream.py` + `Radar/ld2450_radar.py` as two
-independent processes. Simplest to reason about; camera and radar know
-nothing about each other.
-
-**Fused mode:** `Fusion/wallhack_dashboard.py` alone, owning both the
-camera and the radar serial port, running a better detector (YOLOv8n
-instead of MobileNet-SSD/HOG), and cross-checking the camera's person-count
-against the radar's target-count on one page.
-
-Pick one. They can't run side by side — both modes want exclusive access to
-the camera and to `/dev/serial0`.
-
-## Position estimation: two different techniques, don't confuse them
-
-- **Camera → person position** (`Fusion/wallhack_dashboard.py`,
-  `estimate_person_position()`): monocular, single-frame, geometry-only.
-  Bearing from box position in frame, distance from assumed person height
-  vs. box height. No history, no filtering across frames — a rough overlay,
-  recomputed fresh every frame.
-- **IMU → rig position** (`Fusion/imu_viz.py`): gravity-compensated
-  acceleration integrated over time (velocity, then position), with
-  gyro-gated zero-velocity updates (ZUPT) to fight drift when the rig is
-  actually still. This one *does* accumulate error over time like any
-  dead-reckoning system — call `/reset` on a level, stationary bench
-  whenever the drift gets visible, don't expect it to hold accuracy over a
-  long session unmoored from a reset.
-
-Neither of these is a Kalman filter. If you're looking to properly fuse the
-radar's real range measurements with the camera's rough monocular estimate
-and the IMU's dead-reckoning into one consistent state estimate (instead of
-just plotting all three on the same scope and eyeballing agreement), that's
-the natural next step here and doesn't exist yet.
-
-## Detector ladder (camera side)
-
-Both `CV/pi_camera_stream.py` and `Fusion/wallhack_dashboard.py` degrade
-gracefully if a model file is missing, so cloning this repo onto a fresh Pi
-"just works" at reduced accuracy rather than crashing:
-
-```
-YOLOv8n (Fusion only, best)  →  MobileNet-SSD (CV, if model files present)  →  HOG (CV fallback, always available)
+```text
+IMX219 -> Picamera2 BGR capture (24 fps) -> latest distinct frame
+                                                  |
+                                             YOLOX nano (up to 10 fps)
+                                                  |
+                                        confirmation + timed expiry
+                                                  |
+                             matched-frame annotated MJPEG + detection JSON
+                                                  |
+LD2450 UART -> bounded parser -> confirmed radar targets (separate)
+                                                  |
+PC IMU rig pose -> optional WebSocket bridge -> Quest telemetry HUD
 ```
 
-`models/` is not checked into this repo (see `.gitignore`) — download the
-weights per `Docs/setup.md` before running either script for the best
-result.
+`CV/camera_dashboard.py` is the shared runtime. Camera-only is the default;
+`Fusion/wallhack_dashboard.py` starts it with radar enabled. Inference always
+uses the latest distinct frame, avoids queues, and annotates that exact frame.
+The detector loads relative to its own directory, not the current shell directory.
+The experiment launchers use the same detector implementation.
+
+| Port | Service |
+|---|---|
+| 8766 | Dashboard, `/stream`, `/snapshot.jpg`, `/detections`, `/healthz`, `/radar.json` |
+| 8765 | Optional WebSocket (`--quest-port 8765`) |
+| 8767 | Shared standalone radar page; do not share its UART with combined mode |
+| 8768 | Experimental `sensor-test/live_detect.py` launcher |
+| `/dev/serial0`, 256000 baud | LD2450 radar UART |
+| `COM4`, 115200 baud | PC flight-controller MSP in `imu_viz.py` |
+
+All clocks used for expiry are monotonic. JSON also includes wall-clock capture
+timestamps. Camera results expire after 750 ms, unmatched person tracks after
+350 ms, radar measurements after 500 ms, and incoming rig pose after one second.
+Counts only include observed people; held tracks are separately identified.
+
+Camera bearing uses pinhole geometry and 62° assumed horizontal FOV. Forward
+range estimates assume an unclipped 1.65 m standing person. The camera cannot
+measure range directly or infer a person's height/posture from a box; clipped
+boxes get bearing only. Radar `right_m`/`forward_m` use metres; legacy `x`/`y` use millimetres.
+The radar origin and forward-facing mount are operator configured. The independent
+`/radar` page and `drone_relative_radar_targets` bridge array stay available without
+camera observations or world pose. Physical accuracy and drywall performance are
+unverified; see [the radar procedure](../Radar/README.md).
+The bridge converts available camera estimates to world metres using the incoming
+rig pose. Radar remains separate until alignment and association are calibrated.
+This is not a calibrated multisensor position filter.
+
+The WebSocket sends the existing Unreal `rig` + `detections` schema. It clears
+contacts if the camera or pose is stale. `--stationary-rig` explicitly enables a
+fixed sensor-local bench frame. The Quest app selects telemetry with
+`-WallhackBridge` and accepts `-WallhackBridgeUrl=ws://host:8765/`; normal navigation
+mode is still the default. Room-anchored overlays need rig/headset registration.
+
+The PC IMU utility still owns attitude integration and motor controls. It sends
+metres and clockwise heading to the bridge; its dead-reckoning can drift. The
+camera service does not operate motors or change the flight controller.

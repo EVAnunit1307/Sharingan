@@ -1,85 +1,56 @@
-# Setup
+# Setup and run order
 
-## Raspberry Pi
+1. Connect to the Pi on the same LAN (`larp-pi.local`; current bench address
+   `172.20.10.3`). Use the Pi's actual address if it changes.
+2. Use Raspberry Pi OS packages for `python3-picamera2`, OpenCV, NumPy and
+   pyserial. Create a virtual environment with access to system packages:
 
-1. **Network.** The Pi is addressed as `larp-pi.local` (mDNS) over the
-   `TS565` WiFi network. If you're testing away from that network, clone a
-   hotspot with the same SSID/password from a phone so the Pi joins without
-   reconfiguring it — simplest way to avoid re-flashing WiFi credentials in
-   the field.
-2. **SSH in.** `ssh <your-pi-username>@larp-pi.local`. If `.local` mDNS
-   resolution isn't working from your machine, find the Pi's current IP
-   from your router and SSH to that instead.
-3. **Serial port permissions** (needed for `Radar/ld2450_radar.py` and
-   `Fusion/wallhack_dashboard.py`, both of which read `/dev/serial0`):
-
-   ```
-   sudo usermod -aG dialout <your-pi-username>
+   ```sh
+   python3 -m venv --system-site-packages .venv
+   .venv/bin/pip install -r Sharingan/SensorRig/CV/requirements.txt
    ```
 
-   Log out of the SSH session and back in — group membership only takes
-   effect on a fresh login. After that, the scripts run without `sudo`.
+3. Start camera-only first:
 
-4. **Python dependencies:**
-
-   ```
-   pip install flask opencv-python pyserial numpy
+   ```sh
+   .venv/bin/python Sharingan/SensorRig/CV/pi_camera_stream.py
    ```
 
-   `picamera2` ships pre-installed on Raspberry Pi OS — if it's missing,
-   install it through `apt` (`sudo apt install python3-picamera2`) rather
-   than `pip`, since it depends on system camera libraries pip can't
-   provide.
+   Open `http://larp-pi.local:8766/`. Check front, side, back, walking, edges,
+   empty room and lighting changes. The current mounting uses 180° rotation;
+   use `--rotation 0` if remounted upright. Do not run two camera owners.
 
-5. **(Optional) MobileNet-SSD model files**, for `CV/pi_camera_stream.py`'s
-   better detector tier (skip this and it automatically falls back to HOG):
-   place `MobileNetSSD_deploy.prototxt` and `MobileNetSSD_deploy.caffemodel`
-   under `models/` next to the script.
+4. Stop that process, then enable the radar and optional Quest bridge:
 
-6. **(Optional) YOLOv8n ONNX model**, for `Fusion/wallhack_dashboard.py`'s
-   detector: place `yolov8n.onnx` under `models/` next to the script. Export
-   one yourself with `yolo export model=yolov8n.pt format=onnx` (needs the
-   `ultralytics` package, only on whatever machine you export from — not
-   needed on the Pi itself) or download a pre-exported copy.
-
-7. **Camera orientation.** If the camera is mounted upside down on your
-   rig, flip the rotate flag in whichever script you're running — detection
-   accuracy noticeably suffers on upside-down input since the detectors are
-   trained on upright people, it's not just a cosmetic preview issue.
-
-## PC (ground station)
-
-1. **Find your flight controller's serial port.** `COM4` is the default
-   assumed in `Firmware/motor_test.py` and `Fusion/imu_viz.py` — check
-   Device Manager (Windows) or `ls /dev/tty.*` (macOS) / `ls /dev/ttyACM*`
-   (Linux) and edit the `PORT` constant at the top of whichever script
-   you're running if yours differs.
-
-2. **Python dependencies:**
-
-   ```
-   pip install flask pyserial websockets
+   ```sh
+   .venv/bin/python Sharingan/SensorRig/CV/pi_camera_stream.py \
+     --radar --quest-port 8765
    ```
 
-3. **Point the Pi hostname/IP correctly.** `Fusion/imu_viz.py` assumes
-   `larp-pi.local` for both `BRIDGE_URL` (websocket, port 8765) and
-   `PI_STREAM_URL` (camera MJPEG, port 8766). Edit both constants if your
-   Pi's hostname differs or mDNS isn't resolving on your network — same fix
-   either way, point them at the Pi's IP directly.
+   The UART is `/dev/serial0` at 256000 baud. The Pi user needs serial access
+   (usually membership in `dialout`). Open `/radar` for independent 2D positions.
+   The current upright, forward-facing bench mount uses the radar origin with
+   X inversion after the physical left/right correction. Follow [the drywall trial procedure](../Radar/README.md)
+   before claiming through-wall detection or position accuracy.
 
-4. **Props off** before running `Firmware/motor_test.py` or arming test
-   mode in `Fusion/imu_viz.py` — see the safety notes in
-   [`Firmware/README.md`](../Firmware/README.md).
+5. On the PC, install the `flask`, `pyserial`, and `websockets` dependencies
+   and set the COM port and Pi URLs in `Fusion/imu_viz.py`. Its fresh rig pose
+   enables world-coordinate camera estimates on the bridge. `--stationary-rig`
+   is an explicit fixed-bench alternative, not a moving-rig tracking solution.
 
-## Recommended run order
+6. Open `http://172.20.10.3:8766/quest` in the Quest browser for the combined
+   camera/radar view. Run the page's connection check from the headset. See
+   [the handoff guide](quest_handoff.md) for the schema and verification script.
 
-1. On the Pi: either (`CV/pi_camera_stream.py` + `Radar/ld2450_radar.py`)
-   **or** `Fusion/wallhack_dashboard.py` alone — see
-   [`Docs/architecture.md`](architecture.md) for which mode to pick.
-2. On the PC: `Fusion/imu_viz.py`. Confirm the camera pane and radar scope
-   both populate before doing anything else — that tells you the Pi
-   scripts, the network, and the two port numbers are all correctly lined
-   up.
-3. Only then, if you need bench motor testing: `Firmware/motor_test.py`
-   (with `imu_viz.py`'s motor test-mode left unused, since they share one
-   port).
+7. For the native app, rebuild on the Unreal development machine and launch with
+   `-WallhackBridge -WallhackBridgeUrl=ws://<pi-ip>:8765/`. Test the native HUD
+   and register the rig to the headset frame before room-anchored use.
+   The native client still needs a separate radar-array renderer. This Pi
+   workspace cannot build the Unreal Android project.
+
+Motor bench work is independent. Keep propellers removed and follow
+[`Firmware/README.md`](../Firmware/README.md) before using motor test mode.
+The sensing dashboard does not need motor commands.
+
+See [`CV/README.md`](../CV/README.md) for the measured development results,
+CLI options, tests, endpoint contracts, and current limitations.

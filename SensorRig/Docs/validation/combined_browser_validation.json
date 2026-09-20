@@ -1,0 +1,16 @@
+{
+  "javascript_errors": [],
+  "unique_element_ids": true,
+  "mobile_no_overflow": true,
+  "quest_camera_and_map_visible": true,
+  "quest_controls_at_least_44px": true,
+  "full_screen_enter_exit": true,
+  "websocket_received": true,
+  "camera_failure_preserves_radar": true,
+  "radar_failure_preserves_camera": true,
+  "frozen_frame_ids_clear_both": true,
+  "http_failure_clears_both": true,
+  "reconnect_recovers": true,
+  "corrected_left_right_preserved": true,
+  "headset_tested": false
+}

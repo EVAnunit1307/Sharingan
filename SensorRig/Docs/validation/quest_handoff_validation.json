@@ -1,0 +1,62 @@
+{
+  "ready_for_browser_handoff": true,
+  "checked_at": 1789865578.77563,
+  "base_url": "http://172.20.10.3:8766",
+  "packets": 40,
+  "camera_live_packets": 40,
+  "radar_live_packets": 40,
+  "distinct_camera_frames": 40,
+  "distinct_radar_frames": 40,
+  "maximum_radar_age_ms": 88.1,
+  "manifest": {
+    "bridge": {
+      "clients": 0,
+      "port": 8765,
+      "pose_status": "awaiting rig pose",
+      "status": "listening"
+    },
+    "camera_radar_association": "not_calibrated",
+    "coordinates": {
+      "forward": "+Y",
+      "right": "+X",
+      "units": "metres",
+      "unreal_local_cm": {
+        "X": "100 * forward_m",
+        "Y": "100 * right_m",
+        "Z": "unobserved"
+      }
+    },
+    "dashboard_url": "http://172.20.10.3:8766/",
+    "headset_validation": "pending",
+    "native_radar_rendering": "not_integrated",
+    "quest_url": "http://172.20.10.3:8766/quest",
+    "radar_mount": {
+      "invert_x": true,
+      "max_range_m": 6.0,
+      "min_range_m": 0.1,
+      "mount_level": true,
+      "mounting_confirmed": true,
+      "offset_forward_m": 0.0,
+      "offset_right_m": 0.0,
+      "yaw_deg": 0.0
+    },
+    "radar_reference_origin": "radar",
+    "schema_version": 1,
+    "sensors": {
+      "camera": "live",
+      "radar": "live"
+    },
+    "stale_after_ms": {
+      "camera": 750,
+      "radar": 500,
+      "rig_pose": 1000
+    },
+    "telemetry_url": "http://172.20.10.3:8766/detections",
+    "through_wall_performance": "not_verified",
+    "video_url": "http://172.20.10.3:8766/stream",
+    "websocket_url": "ws://172.20.10.3:8765/"
+  },
+  "headset_tested": false,
+  "native_build_tested": false,
+  "through_wall_tested": false
+}

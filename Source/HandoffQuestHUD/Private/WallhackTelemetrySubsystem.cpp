@@ -12,6 +12,7 @@ void UWallhackTelemetrySubsystem::Initialize(FSubsystemCollectionBase& Collectio
 {
     Super::Initialize(Collection);
     ActiveBridgeUrl = GetDefault<UWallhackHUDSettings>()->BridgeUrl;
+    FParse::Value(FCommandLine::Get(), TEXT("WallhackBridgeUrl="), ActiveBridgeUrl);
     bDesktopPreviewEnabled = PLATFORM_WINDOWS && FParse::Param(FCommandLine::Get(), TEXT("WallhackPreview"));
     if (bDesktopPreviewEnabled)
     {

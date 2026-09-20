@@ -1,0 +1,10 @@
+{
+  "invert_x": true,
+  "max_range_m": 6.0,
+  "min_range_m": 0.1,
+  "mount_level": true,
+  "mounting_confirmed": true,
+  "offset_forward_m": 0.0,
+  "offset_right_m": 0.0,
+  "yaw_deg": 0.0
+}

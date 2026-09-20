@@ -1,0 +1,106 @@
+{
+  "metric": "frame-level person presence, observed boxes only",
+  "limitation": "Development footage used in tuning; no ground-truth bounding boxes or held-out people/rooms.",
+  "config": {
+    "model": "yolox_nano",
+    "t_on": 0.5,
+    "t_off": 0.4,
+    "k": 2,
+    "m": 5,
+    "max_misses": 6,
+    "min_box_frac": 0.0,
+    "hold_seconds": 0.35,
+    "match_iou": 0.2,
+    "instant_threshold": 0.75,
+    "_notes": "YOLOX nano with correct BGR camera input. Strong observations >=0.75 confirm immediately; weaker observations need 2 of 5 distinct frames above 0.50, existing tracks sustain at 0.40. Coasting lasts at most 350ms and is reported separately. Saved room clips are development data with presence-only labels, not a held-out accuracy benchmark."
+  },
+  "label_overrides": {
+    "walking/walking_0017.jpg": false,
+    "walking/walking_0018.jpg": false,
+    "walking/walking_0019.jpg": false,
+    "walking/walking_0030.jpg": false,
+    "walking/walking_0031.jpg": false,
+    "walking/walking_0032.jpg": false,
+    "walking/walking_0033.jpg": false,
+    "walking/walking_0060.jpg": false,
+    "walking/walking_0061.jpg": false,
+    "walking/walking_0062.jpg": false,
+    "walking/walking_0063.jpg": false
+  },
+  "legacy_channel_correction": true,
+  "camera_rotation_deg": 180,
+  "manifest_sha256": "4745c455f2e64052f9957cb9b357c07870ab8e2767e377b451bec202d1c113ad",
+  "scenarios": {
+    "back_turned": {
+      "tp": 75,
+      "fn": 0,
+      "fp": 0,
+      "tn": 0,
+      "held_only_frames": 0
+    },
+    "empty": {
+      "tp": 0,
+      "fn": 0,
+      "fp": 0,
+      "tn": 75,
+      "held_only_frames": 0
+    },
+    "empty_lights_changed": {
+      "tp": 0,
+      "fn": 0,
+      "fp": 0,
+      "tn": 60,
+      "held_only_frames": 0
+    },
+    "facing_mid": {
+      "tp": 60,
+      "fn": 0,
+      "fp": 0,
+      "tn": 0,
+      "held_only_frames": 0
+    },
+    "facing_near": {
+      "tp": 60,
+      "fn": 0,
+      "fp": 0,
+      "tn": 0,
+      "held_only_frames": 0
+    },
+    "partial_edge": {
+      "tp": 60,
+      "fn": 0,
+      "fp": 0,
+      "tn": 0,
+      "held_only_frames": 0
+    },
+    "profile": {
+      "tp": 59,
+      "fn": 1,
+      "fp": 0,
+      "tn": 0,
+      "held_only_frames": 0
+    },
+    "walking": {
+      "tp": 56,
+      "fn": 8,
+      "fp": 0,
+      "tn": 11,
+      "held_only_frames": 3
+    }
+  },
+  "totals": {
+    "tp": 370,
+    "fn": 9,
+    "fp": 0,
+    "tn": 146,
+    "held_only_frames": 3,
+    "recall": 0.9762532981530343,
+    "precision": 1.0
+  },
+  "latency_ms": {
+    "median": 76.27227800003311,
+    "p95": 116.92149420002805
+  },
+  "raw_footage_in_repository": false,
+  "source_report": "Original Pi: HTN2026/sensor-test/reports/camera_evaluation.json"
+}
