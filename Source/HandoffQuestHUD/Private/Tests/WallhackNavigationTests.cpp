@@ -157,7 +157,7 @@ bool FNavTrail::RunTest(const FString&)
 {
     FDisplaySnapshot D;D.bGuidance=true;D.Route.Points={{{0,0,0},false},{{2,0,0},false},{{4,0,0},true}};
     auto G=BuildTrail(D);TestTrue(TEXT("World geometry exists"),G.Vertices.Num()>0);
-    for(auto V:G.Vertices)TestTrue(TEXT("Trail lies 3cm above floor"),FMath::IsNearlyEqual(float(V.Z),.03f,.0001f));
+    for(auto V:G.Vertices)TestTrue(TEXT("Trail and contrast edging stay attached to floor"),V.Z>=.0279&&V.Z<=.0301);
     bool Mint=false,Amber=false;for(auto C:G.Colors){Mint|=C.G>C.R;Amber|=C.R>C.G;}
     TestTrue(TEXT("Observed mint and estimated amber coexist"),Mint&&Amber);
     D.bHidden=true;TestTrue(TEXT("Hidden removes every trail vertex"),BuildTrail(D).Vertices.IsEmpty());
@@ -251,26 +251,52 @@ bool FNavVisibleSelection::RunTest(const FString&)
     TestFalse(TEXT("Cannot silently move marker to far side of object/wall"),SelectStanding(M,{2,0,1},false,{0,0,1.7},Out));
     return true;
 }
-NAVTEST(FNavMinimalArrows,"Render.MinimalArrowOnlyGuidance");
+NAVTEST(FNavMinimalArrows,"Render.ClearArrowOnlyGuidance");
 bool FNavMinimalArrows::RunTest(const FString&)
 {
     FDisplaySnapshot D;D.bGuidance=true;D.Route.Points={{{0,0,0},false},{{3,0,0},false}};
     auto G=BuildTrail(D);
-    TestTrue(TEXT("Sparse arrows provide direction"),G.Vertices.Num()>0);
+    TestTrue(TEXT("Frequent arrows across the three-metre route"),G.Vertices.Num()>=9*16);
     FBox Bounds(ForceInit);
+    int32 Foreground=0,Contrast=0;
     for(int32 I=0;I+3<G.Vertices.Num();I+=4)
     {
         const FVector A=(G.Vertices[I]+G.Vertices[I+1])*.5,B=(G.Vertices[I+2]+G.Vertices[I+3])*.5;
-        TestTrue(TEXT("Only short diagonal wings, no connecting ribbon or shaft"),FVector::Dist(A,B)<.13&&FMath::Abs(B.Y-A.Y)>.09);
-        TestTrue(TEXT("Arrow strokes are thin"),FVector::Dist(G.Vertices[I],G.Vertices[I+1])<.01);
-        TestTrue(TEXT("Arrows use restrained opacity"),G.Colors[I].A<=.31f);
+        TestTrue(TEXT("Only short diagonal wings, no connecting ribbon or shaft"),FVector::Dist(A,B)<.23&&FMath::Abs(B.Y-A.Y)>.16);
+        if(G.Colors[I].G>.5f)
+        {
+            ++Foreground;
+            TestTrue(TEXT("Readable floor strokes exceed two centimetres"),FVector::Dist(G.Vertices[I],G.Vertices[I+1])>.02);
+            TestTrue(TEXT("Near arrows remain prominent in passthrough"),G.Colors[I].A>.8f);
+        }
+        else {++Contrast;TestTrue(TEXT("Dark edging contrasts with light floors"),G.Colors[I].R<.02f&&G.Colors[I].A>.4f);}
         for(int32 J=0;J<4;++J)Bounds+=G.Vertices[I+J];
     }
-    TestTrue(TEXT("Chevrons have a wide shallow profile"),Bounds.GetSize().Y>.20&&Bounds.GetSize().Y<.24);
+    TestTrue(TEXT("Chevrons have a clear wide profile"),Bounds.GetSize().Y>.35&&Bounds.GetSize().Y<.42);
+    TestTrue(TEXT("First marker is within a comfortable downward glance"),Bounds.Min.X<.35);
+    TestEqual(TEXT("Each stroke has contrast edging"),Foreground,Contrast);
     const int32 ObservedVertices=G.Vertices.Num();
     D.Route.Points[0].bEstimated=D.Route.Points[1].bEstimated=true;G=BuildTrail(D);
     TestEqual(TEXT("Estimated sections use the same arrow-only geometry"),G.Vertices.Num(),ObservedVertices);
-    for(auto C:G.Colors)TestTrue(TEXT("Unknown chevrons remain visibly distinct and fainter"),C.R>C.G&&C.A<.2f);
+    for(auto C:G.Colors)if(C.R>.5f)TestTrue(TEXT("Unknown chevrons remain amber and distinct"),C.R>C.G&&C.A<.7f&&C.A>.5f);
+    return true;
+}
+NAVTEST(FNavNearArrows,"Render.ShortAndRemainingRouteVisibility");
+bool FNavNearArrows::RunTest(const FString&)
+{
+    FDisplaySnapshot D;D.bGuidance=true;D.Viewer={2.2,0,1.7};
+    D.Route.Points={{{0,0,0},false},{{3,0,0},false}};
+    auto G=BuildTrail(D);
+    TestTrue(TEXT("Passing the midpoint of a sparse segment cannot erase its remaining arrows"),!G.Vertices.IsEmpty());
+    for(auto V:G.Vertices)TestTrue(TEXT("No arrows behind the viewer or beyond the route endpoint"),V.X>2.2&&V.X<3.02);
+    D.Viewer={0,0,1.7};D.Route.Points.Last().Position={.2,0,0};G=BuildTrail(D);
+    TestTrue(TEXT("Short reachable prefix still has an arrow"),!G.Vertices.IsEmpty());
+    for(auto V:G.Vertices)TestTrue(TEXT("Short prefix does not fabricate a connection to the destination"),V.X>=0&&V.X<=.2);
+    D.State=ERouteState::Arrived;TestTrue(TEXT("Arrival removes walking arrows"),BuildTrail(D).Vertices.IsEmpty());
+    D.bHasTarget=true;D.Target.Standing={.2,0,0};D.Route.bComplete=true;
+    TestTrue(TEXT("Arrival retains the destination ring"),!BuildTrail(D).Vertices.IsEmpty());
+    D.bHidden=true;TestTrue(TEXT("Hidden clears the whole trail"),BuildTrail(D).Vertices.IsEmpty());
+    D.bHidden=false;D.bGuidance=false;TestTrue(TEXT("Tracking loss clears the whole trail"),BuildTrail(D).Vertices.IsEmpty());
     return true;
 }
 #endif

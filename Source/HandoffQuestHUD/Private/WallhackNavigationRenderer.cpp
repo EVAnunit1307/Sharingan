@@ -1,5 +1,6 @@
 #include "WallhackNavigationRenderer.h"
 #include "WallhackNavigationSubsystem.h"
+#include "WallhackNavigationPresentation.h"
 #include "ProceduralMeshComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/WorldSettings.h"
@@ -35,8 +36,8 @@ FTrailGeometry BuildTrail(const FDisplaySnapshot& D)
 {
     FTrailGeometry G;
     if(!D.bGuidance||D.bHidden)return G;
-    const FLinearColor Mint(.32f,.7f,.55f,.30f),Amber(.8f,.48f,.14f,.18f);
-    constexpr float ArrowHalfSpan=.11f,ArrowDepth=.05f,StrokeWidth=.006f;
+    const FLinearColor Mint(.44f,.95f,.73f,.85f),Amber(.95f,.59f,.16f,.62f);
+    constexpr float ArrowHalfSpan=.18f,ArrowDepth=.12f,StrokeWidth=.026f,ArrowSpacing=.30f;
     auto Stroke=[&](FVector A,FVector B,float Width,FLinearColor C)
     {
         const FVector Side=FVector::CrossProduct((B-A).GetSafeNormal(),FVector::UpVector).GetSafeNormal()*Width*.5f;
@@ -45,36 +46,43 @@ FTrailGeometry BuildTrail(const FDisplaySnapshot& D)
         G.Vertices.Append({A-Side,A+Side,B+Side,B-Side});
         G.Indices.Append({N,N+1,N+2,N,N+2,N+3});for(int32 I=0;I<4;++I)G.Colors.Add(C);
     };
+    auto OutlinedStroke=[&](FVector A,FVector B,float Width,FLinearColor Color)
+    {
+        // Dark edging remains readable against light floors. Both layers use
+        // the same through-wall stereo material, with no connecting ribbon.
+        Stroke(A-FVector(0,0,.002),B-FVector(0,0,.002),Width+.018f,FLinearColor(.008,.012,.014,Color.A*.65f));
+        Stroke(A,B,Width,Color);
+    };
     auto Ring=[&](FVector P,float Radius,FLinearColor Color)
     {
         P.Z+=.03f;for(int32 I=0;I<32;++I)
-        {const float A=I*UE_TWO_PI/32,B=(I+1)*UE_TWO_PI/32;Stroke(P+FVector(FMath::Cos(A),FMath::Sin(A),0)*Radius,P+FVector(FMath::Cos(B),FMath::Sin(B),0)*Radius,StrokeWidth,Color);}
+        {const float A=I*UE_TWO_PI/32,B=(I+1)*UE_TWO_PI/32;OutlinedStroke(P+FVector(FMath::Cos(A),FMath::Sin(A),0)*Radius,P+FVector(FMath::Cos(B),FMath::Sin(B),0)*Radius,StrokeWidth,Color);}
     };
-    int32 Closest=0;float Best=FLT_MAX;
-    for(int32 I=0;I<D.Route.Points.Num();++I){float Distance=FVector::DistSquared2D(D.Viewer,D.Route.Points[I].Position);if(Distance<Best){Best=Distance;Closest=I;}}
-    float Along=0,NextArrow=.55f;
-    for(int32 I=Closest+1;I<D.Route.Points.Num();++I)
+    const auto Cursor=WallhackNavPresentation::ProjectRoute(D.Route,D.Viewer);
+    // Short reachable prefixes still get a direction mark. Arrival keeps the
+    // destination ring, without arrows telling the wearer to keep walking.
+    float Along=0,NextArrow=FMath::Min(.30f,Cursor.Remaining*.5f);
+    for(int32 I=Cursor.Segment+1;Cursor.Segment!=INDEX_NONE&&I<D.Route.Points.Num()&&D.State!=ERouteState::Arrived;++I)
     {
-        FVector A=D.Route.Points[I-1].Position,B=D.Route.Points[I].Position;A.Z+=.03f;B.Z+=.03f;
+        FVector A=I==Cursor.Segment+1?Cursor.Position:D.Route.Points[I-1].Position,B=D.Route.Points[I].Position;A.Z+=.03f;B.Z+=.03f;
         const bool Est=D.Route.Points[I-1].bEstimated||D.Route.Points[I].bEstimated;
         const float Length=FVector::Dist(A,B);if(Length<.001f)continue;
-        FLinearColor C=Est?Amber:Mint;C.A*=FMath::Clamp(1.f-(Along-8)/12,.08f,1.f);
-        // Sparse, shallow chevrons follow the planner's curve. No connecting
-        // ribbon or arrow shaft. Amber/ESTIMATED still distinguishes unknowns.
+        FLinearColor C=Est?Amber:Mint;C.A*=FMath::Clamp(1.f-(Along-8)/12,.20f,1.f);
         while(NextArrow<Along+Length)
         {
             if(NextArrow>=Along)
             {
                 const FVector Tip=FMath::Lerp(A,B,(NextArrow-Along)/Length);
                 const FVector Forward=(B-A).GetSafeNormal(),Side=FVector::CrossProduct(Forward,FVector::UpVector);
-                Stroke(Tip-Forward*ArrowDepth+Side*ArrowHalfSpan,Tip,StrokeWidth,C);
-                Stroke(Tip-Forward*ArrowDepth-Side*ArrowHalfSpan,Tip,StrokeWidth,C);
+                const float Depth=FMath::Min(ArrowDepth,NextArrow*.6f);
+                OutlinedStroke(Tip-Forward*Depth+Side*ArrowHalfSpan,Tip,StrokeWidth,C);
+                OutlinedStroke(Tip-Forward*Depth-Side*ArrowHalfSpan,Tip,StrokeWidth,C);
             }
-            NextArrow+=.85f;
+            NextArrow+=ArrowSpacing;
         }
         Along+=Length;
     }
-    if(D.bHasTarget)Ring(D.Target.Standing,.12f,Mint);
+    if(D.bHasTarget)Ring(D.Target.Standing,.24f,D.Route.bComplete?Mint:Amber);
     if(D.bAiming&&D.bAimTracked)
     {
         Stroke(D.AimOrigin,D.AimEnd,.006f,FLinearColor(.65,.72,.69,.3));

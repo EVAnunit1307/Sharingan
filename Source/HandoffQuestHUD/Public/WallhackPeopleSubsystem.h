@@ -13,6 +13,7 @@ struct FWallhackPersonPose
     FVector Feet = FVector::ZeroVector;
     float Height = 1.75f;
     float Facing = 0.f; // World yaw, +X forward. Compass calibration does not alter this.
+    int32 ColorSlot = INDEX_NONE; // Assigned once; unique among active session people.
 };
 
 UCLASS()
@@ -42,6 +43,7 @@ public:
     float GetPlacementFacing() const { return PlacementFacing; }
     FString GetHint() const;
     void RefreshPresentation();
+    void SetNorthReference(float Offset) { NorthReference=Offset; }
     AWallhackPeopleRenderer* GetRenderer() const { return Renderer; }
 private:
     TArray<FWallhackPersonPose> People;
@@ -50,5 +52,7 @@ private:
     float PlacementHeight = 1.75f;
     float PlacementFacing = 0.f;
     bool bEditing = false;
+    float NorthReference=0;
+    double PresentationTime=0;
     UPROPERTY(Transient) TObjectPtr<AWallhackPeopleRenderer> Renderer;
 };

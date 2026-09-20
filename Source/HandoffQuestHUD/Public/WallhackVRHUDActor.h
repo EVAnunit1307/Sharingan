@@ -74,6 +74,9 @@ private:
     void DrawOperatorHUD(float DeltaSeconds = 0.f);
     void DrawSpatialHUD(UCanvas* Canvas, UFont* Font);
     void DrawNavigationHUD(UCanvas* Canvas, UFont* Font);
+    void DrawNavigationMap(UCanvas* Canvas, UFont* Font);
+    void DrawNavigationDirection(UCanvas* Canvas, UFont* Font);
+    void DrawNavigationCompass(UCanvas* Canvas, UFont* Font);
     void BeginNavigationAim();
     void EndNavigationAim();
     void ConfirmNavigation();

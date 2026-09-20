@@ -13,7 +13,7 @@ bool ValidPose(FVector Feet, float Height, float Facing)
 float ClampedHeight(float Height) { return FMath::Clamp(Height, 1.f, 2.3f); }
 }
 
-void UWallhackPeopleSubsystem::Tick(float) { RefreshPresentation(); }
+void UWallhackPeopleSubsystem::Tick(float DeltaTime) { PresentationTime+=FMath::Max(0.f,DeltaTime);RefreshPresentation(); }
 void UWallhackPeopleSubsystem::Deinitialize()
 {
     if (Renderer) Renderer->Destroy();
@@ -38,7 +38,9 @@ int32 UWallhackPeopleSubsystem::AddPerson(FVector Feet, float Height, float Faci
 {
     if (!ValidPose(Feet, Height, Facing) || People.Num() >= MaxPeople) return INDEX_NONE;
     const int32 Id = NextId++;
-    People.Add({Id, Feet, ClampedHeight(Height), float(FRotator::ClampAxis(Facing))});
+    int32 ColorSlot=0;
+    while(People.ContainsByPredicate([&](const FWallhackPersonPose& P){return P.ColorSlot==ColorSlot;}))++ColorSlot;
+    People.Add({Id, Feet, ClampedHeight(Height), float(FRotator::ClampAxis(Facing)), ColorSlot});
     SelectedId = Id;
     PlacementHeight = People.Last().Height;
     PlacementFacing = People.Last().Facing;
@@ -133,5 +135,6 @@ void UWallhackPeopleSubsystem::RefreshPresentation()
     const bool bPreview = bEditing && D.bAiming && D.bPreviewValid && People.Num() < MaxPeople;
     if (!Renderer && bVisible && (People.Num() > 0 || bPreview)) Renderer = GetWorld()->SpawnActor<AWallhackPeopleRenderer>();
     if (Renderer) Renderer->Present(People, bEditing ? SelectedId : D.Target.PersonId,
-        bPreview ? &Preview : nullptr, bVisible, GetWorld()->GetWorldSettings()->WorldToMeters);
+        bPreview ? &Preview : nullptr, bVisible, GetWorld()->GetWorldSettings()->WorldToMeters,
+        D.Viewer,D.Orientation,NorthReference,PresentationTime);
 }

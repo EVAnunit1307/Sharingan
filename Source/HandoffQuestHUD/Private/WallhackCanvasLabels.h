@@ -8,9 +8,7 @@
 // Each character is one batched tile, independent of the scene/material cook.
 namespace WallhackCanvasLabels
 {
-    inline UTexture2D* CreateAtlas()
-    {
-        static constexpr uint8 Glyphs[][7] = {
+    inline constexpr uint8 Glyphs[][7] = {
             {14,17,17,31,17,17,17}, {30,17,17,30,17,17,30}, // A B
             {14,17,16,16,16,17,14}, {30,17,17,17,17,17,30},
             {31,16,16,30,16,16,31}, {31,16,16,30,16,16,16},
@@ -33,6 +31,15 @@ namespace WallhackCanvasLabels
             {1,1,2,4,8,16,16}, {0,4,4,0,4,4,0}, // / :
             {0,4,4,31,4,4,0}, {0,0,0,0,0,0,0} // + space
         };
+    inline int32 GlyphIndex(TCHAR Character)
+    {
+        Character=FChar::ToUpper(Character);
+        if(Character>='A'&&Character<='Z')return Character-'A';
+        if(Character>='0'&&Character<='9')return 26+Character-'0';
+        switch(Character){case '.':return 36;case '-':return 37;case '/':return 38;case ':':return 39;case '+':return 40;default:return 41;}
+    }
+    inline UTexture2D* CreateAtlas()
+    {
         UTexture2D* Atlas = UTexture2D::CreateTransient(128, 32, PF_B8G8R8A8, TEXT("SpatialLabels"));
         if (!Atlas) return nullptr;
         Atlas->Filter = TF_Nearest;
@@ -59,14 +66,7 @@ namespace WallhackCanvasLabels
         float Cursor = bCenter ? X - (Label.Len() * Advance - Pixel) * 0.5f : X;
         for (const TCHAR Character : Label.ToUpper())
         {
-            int32 Index = 41;
-            if (Character >= 'A' && Character <= 'Z') Index = Character - 'A';
-            else if (Character >= '0' && Character <= '9') Index = 26 + Character - '0';
-            else if (Character == '.') Index = 36;
-            else if (Character == '-') Index = 37;
-            else if (Character == '/') Index = 38;
-            else if (Character == ':') Index = 39;
-            else if (Character == '+') Index = 40;
+            const int32 Index = GlyphIndex(Character);
             if (Index != 41)
             {
                 const FVector2D UV0((Index % 16) * 8.f / 128.f, (Index / 16) * 8.f / 32.f);

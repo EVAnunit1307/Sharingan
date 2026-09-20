@@ -14,10 +14,10 @@
 
 namespace
 {
-    const FLinearColor Cyan = WallhackHUDPalette::Accent;
-    const FLinearColor DimCyan = WallhackHUDPalette::Secondary;
+    const FLinearColor OverlayCyan = WallhackHUDPalette::Accent;
+    const FLinearColor OverlayDimCyan = WallhackHUDPalette::Secondary;
     const FLinearColor PanelFill = WallhackHUDPalette::Panel;
-    const FLinearColor Good = WallhackHUDPalette::Accent;
+    const FLinearColor OverlayGood = WallhackHUDPalette::Accent;
     constexpr FLinearColor Warn(1.0f, 0.68f, 0.08f, 1.0f);
     constexpr FLinearColor Bad(1.0f, 0.20f, 0.14f, 1.0f);
 
@@ -54,12 +54,12 @@ namespace
 
     FLinearColor LinkColor(EWallhackLinkState State)
     {
-        return State == EWallhackLinkState::Live ? Good : State == EWallhackLinkState::Connecting ? Warn : Bad;
+        return State == EWallhackLinkState::Live ? OverlayGood : State == EWallhackLinkState::Connecting ? Warn : Bad;
     }
 
     FLinearColor ContactColor(EWallhackContactState State)
     {
-        return State == EWallhackContactState::Nominal ? Good : State == EWallhackContactState::Degraded ? Warn : Bad;
+        return State == EWallhackContactState::Nominal ? OverlayGood : State == EWallhackContactState::Degraded ? Warn : Bad;
     }
 
     FString NetworkLabel(ENetworkConnectionType Type)
@@ -88,9 +88,9 @@ void UWallhackOverlayWidget::NativeConstruct()
     HeaderSlot->SetPosition(FVector2D(0.f, 24.f)); HeaderSlot->SetSize(FVector2D(1500.f, 155.f));
     UVerticalBox* HeaderContent = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass(), TEXT("WallhackHeaderContent"));
     Header->SetContent(HeaderContent);
-    HeadingText = MakeLabel(WidgetTree, TEXT("WallhackHeading"), TEXT("OPS NAV  /  HEADING 000°"), 47, Cyan, ETextJustify::Center);
+    HeadingText = MakeLabel(WidgetTree, TEXT("WallhackHeading"), TEXT("OPS NAV  /  HEADING 000°"), 47, OverlayCyan, ETextJustify::Center);
     HeaderContent->AddChildToVerticalBox(HeadingText)->SetHorizontalAlignment(HAlign_Fill);
-    CompassText = MakeLabel(WidgetTree, TEXT("WallhackCompass"), TEXT("W   ──  NW  ──  N  ──  NE  ──  E"), 25, DimCyan, ETextJustify::Center);
+    CompassText = MakeLabel(WidgetTree, TEXT("WallhackCompass"), TEXT("W   ──  NW  ──  N  ──  NE  ──  E"), 25, OverlayDimCyan, ETextJustify::Center);
     UVerticalBoxSlot* CompassSlot = HeaderContent->AddChildToVerticalBox(CompassText);
     CompassSlot->SetPadding(FMargin(0.f, 9.f, 0.f, 0.f));
     CompassSlot->SetHorizontalAlignment(HAlign_Fill);
@@ -101,15 +101,15 @@ void UWallhackOverlayWidget::NativeConstruct()
     MapSlot->SetPosition(FVector2D(32.f, -32.f)); MapSlot->SetSize(FVector2D(610.f, 455.f));
     MinimapCanvas = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass(), TEXT("WallhackMinimapCanvas"));
     MapPanel->SetContent(MinimapCanvas);
-    UTextBlock* MapTitle = MakeLabel(WidgetTree, TEXT("WallhackMapTitle"), TEXT("TACTICAL MAP  /  RELATIVE TO RIG"), 27, Cyan);
+    UTextBlock* MapTitle = MakeLabel(WidgetTree, TEXT("WallhackMapTitle"), TEXT("TACTICAL MAP  /  RELATIVE TO RIG"), 27, OverlayCyan);
     UCanvasPanelSlot* MapTitleSlot = MinimapCanvas->AddChildToCanvas(MapTitle); MapTitleSlot->SetPosition(FVector2D(10.f, 4.f)); MapTitleSlot->SetSize(FVector2D(570.f, 38.f));
     UTextBlock* MapGrid = MakeLabel(WidgetTree, TEXT("WallhackMapGrid"), TEXT("┌──────────────────────┐\n│          │           │\n│          │           │\n├──────────◆───────────┤\n│          │           │\n│          │           │\n└──────────────────────┘"), 25, FLinearColor(0.17f, 0.52f, 0.63f, 0.78f), ETextJustify::Center);
     UCanvasPanelSlot* MapGridSlot = MinimapCanvas->AddChildToCanvas(MapGrid); MapGridSlot->SetPosition(FVector2D(60.f, 62.f)); MapGridSlot->SetSize(FVector2D(500.f, 260.f));
     RigMarker = MakeLabel(WidgetTree, TEXT("WallhackRigMarker"), TEXT("▲ RIG"), 20, FLinearColor::White, ETextJustify::Center);
     UCanvasPanelSlot* RigSlot = MinimapCanvas->AddChildToCanvas(RigMarker); RigSlot->SetPosition(FVector2D(254.f, 202.f)); RigSlot->SetSize(FVector2D(100.f, 30.f));
-    ContactText = MakeLabel(WidgetTree, TEXT("WallhackContacts"), TEXT("CONTACTS 00  /  AWAITING FRESH DATA"), 21, DimCyan);
+    ContactText = MakeLabel(WidgetTree, TEXT("WallhackContacts"), TEXT("CONTACTS 00  /  AWAITING FRESH DATA"), 21, OverlayDimCyan);
     UCanvasPanelSlot* ContactSlot = MinimapCanvas->AddChildToCanvas(ContactText); ContactSlot->SetPosition(FVector2D(10.f, 355.f)); ContactSlot->SetSize(FVector2D(570.f, 30.f));
-    MapScaleText = MakeLabel(WidgetTree, TEXT("WallhackMapScale"), TEXT("MAP SCALE  /  -- m"), 18, DimCyan);
+    MapScaleText = MakeLabel(WidgetTree, TEXT("WallhackMapScale"), TEXT("MAP SCALE  /  -- m"), 18, OverlayDimCyan);
     UCanvasPanelSlot* ScaleSlot = MinimapCanvas->AddChildToCanvas(MapScaleText); ScaleSlot->SetPosition(FVector2D(10.f, 390.f)); ScaleSlot->SetSize(FVector2D(570.f, 25.f));
 
     UBorder* VideoPanel = MakePanel(WidgetTree, TEXT("WallhackVideo"));
@@ -118,7 +118,7 @@ void UWallhackOverlayWidget::NativeConstruct()
     VideoSlot->SetPosition(FVector2D(-32.f, -32.f)); VideoSlot->SetSize(FVector2D(640.f, 390.f));
     UVerticalBox* VideoContent = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass(), TEXT("WallhackVideoContent"));
     VideoPanel->SetContent(VideoContent);
-    VideoContent->AddChildToVerticalBox(MakeLabel(WidgetTree, TEXT("WallhackVideoTitle"), TEXT("DRONE VIDEO  /  INPUT"), 29, Cyan))->SetHorizontalAlignment(HAlign_Fill);
+    VideoContent->AddChildToVerticalBox(MakeLabel(WidgetTree, TEXT("WallhackVideoTitle"), TEXT("DRONE VIDEO  /  INPUT"), 29, OverlayCyan))->SetHorizontalAlignment(HAlign_Fill);
     UVerticalBoxSlot* VideoViewportSlot = VideoContent->AddChildToVerticalBox(MakeLabel(WidgetTree, TEXT("WallhackVideoViewport"), TEXT("╔══════════════════════════╗\n║                          ║\n║       VIDEO WINDOW       ║\n║                          ║\n╚══════════════════════════╝"), 27, FLinearColor(0.18f, 0.55f, 0.68f, 0.9f), ETextJustify::Center));
     VideoViewportSlot->SetPadding(FMargin(0.f, 22.f, 0.f, 12.f));
     VideoViewportSlot->SetHorizontalAlignment(HAlign_Fill);
@@ -131,13 +131,13 @@ void UWallhackOverlayWidget::NativeConstruct()
     TelemetrySlot->SetPosition(FVector2D(-32.f, 210.f)); TelemetrySlot->SetSize(FVector2D(600.f, 310.f));
     UVerticalBox* TelemetryContent = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass(), TEXT("WallhackTelemetryContent"));
     TelemetryPanel->SetContent(TelemetryContent);
-    TelemetryContent->AddChildToVerticalBox(MakeLabel(WidgetTree, TEXT("WallhackTelemetryTitle"), TEXT("SYSTEM TELEMETRY"), 28, Cyan));
+    TelemetryContent->AddChildToVerticalBox(MakeLabel(WidgetTree, TEXT("WallhackTelemetryTitle"), TEXT("SYSTEM TELEMETRY"), 28, OverlayCyan));
     LinkText = MakeLabel(WidgetTree, TEXT("WallhackLink"), TEXT("GROUND LINK  /  ACQUIRING"), 26, Warn);
     TelemetryContent->AddChildToVerticalBox(LinkText)->SetPadding(FMargin(0.f, 12.f, 0.f, 3.f));
-    PacketAgeText = MakeLabel(WidgetTree, TEXT("WallhackPacketAge"), TEXT("PACKET AGE  /  -- ms"), 21, DimCyan); TelemetryContent->AddChildToVerticalBox(PacketAgeText);
-    RigText = MakeLabel(WidgetTree, TEXT("WallhackRig"), TEXT("RIG  X --  Y --  HDG ---°"), 21, DimCyan); TelemetryContent->AddChildToVerticalBox(RigText);
-    BatteryText = MakeLabel(WidgetTree, TEXT("WallhackBattery"), TEXT("HEADSET BATTERY  /  --%"), 21, DimCyan); TelemetryContent->AddChildToVerticalBox(BatteryText)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
-    NetworkText = MakeLabel(WidgetTree, TEXT("WallhackNetwork"), TEXT("HEADSET NETWORK  /  UNKNOWN"), 21, DimCyan); TelemetryContent->AddChildToVerticalBox(NetworkText);
+    PacketAgeText = MakeLabel(WidgetTree, TEXT("WallhackPacketAge"), TEXT("PACKET AGE  /  -- ms"), 21, OverlayDimCyan); TelemetryContent->AddChildToVerticalBox(PacketAgeText);
+    RigText = MakeLabel(WidgetTree, TEXT("WallhackRig"), TEXT("RIG  X --  Y --  HDG ---°"), 21, OverlayDimCyan); TelemetryContent->AddChildToVerticalBox(RigText);
+    BatteryText = MakeLabel(WidgetTree, TEXT("WallhackBattery"), TEXT("HEADSET BATTERY  /  --%"), 21, OverlayDimCyan); TelemetryContent->AddChildToVerticalBox(BatteryText)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
+    NetworkText = MakeLabel(WidgetTree, TEXT("WallhackNetwork"), TEXT("HEADSET NETWORK  /  UNKNOWN"), 21, OverlayDimCyan); TelemetryContent->AddChildToVerticalBox(NetworkText);
 
     TimeText = MakeLabel(WidgetTree, TEXT("WallhackTime"), TEXT("LOCAL --:--:--"), 26, FLinearColor::White, ETextJustify::Right);
     UCanvasPanelSlot* TimeSlot = Canvas->AddChildToCanvas(TimeText);
@@ -159,7 +159,7 @@ void UWallhackOverlayWidget::NativeTick(const FGeometry& MyGeometry, float InDel
     RigText->SetText(FText::FromString(FString::Printf(TEXT("RIG  X %.2f  Y %.2f  HDG %03.0f°"), Frame.Rig.X, Frame.Rig.Y, Frame.Rig.HeadingDegrees)));
     const int32 Battery = FPlatformMisc::GetBatteryLevel();
     BatteryText->SetText(FText::FromString(Battery >= 0 ? FString::Printf(TEXT("HEADSET BATTERY  /  %d%%"), Battery) : TEXT("HEADSET BATTERY  /  UNAVAILABLE")));
-    BatteryText->SetColorAndOpacity(FSlateColor(Battery >= 0 && Battery < 20 ? Bad : DimCyan));
+    BatteryText->SetColorAndOpacity(FSlateColor(Battery >= 0 && Battery < 20 ? Bad : OverlayDimCyan));
     NetworkText->SetText(FText::FromString(NetworkLabel(FPlatformMisc::GetNetworkConnectionType())));
     UpdateMinimap(Frame);
 }
@@ -175,7 +175,7 @@ void UWallhackOverlayWidget::UpdateMinimap(const FWallhackDisplayFrame& Frame)
     }
     float Radius = 3.f;
     for (const FWallhackContact& Contact : Frame.Contacts) Radius = FMath::Max(Radius, FMath::Max(FMath::Abs(Contact.X - Frame.Rig.X), FMath::Abs(Contact.Y - Frame.Rig.Y)) + 1.f);
-    ContactText->SetText(FText::FromString(FString::Printf(TEXT("CONTACTS %02d  /  LIVE FUSED POSITIONS"), Frame.Contacts.Num()))); ContactText->SetColorAndOpacity(FSlateColor(Good));
+    ContactText->SetText(FText::FromString(FString::Printf(TEXT("CONTACTS %02d  /  LIVE FUSED POSITIONS"), Frame.Contacts.Num()))); ContactText->SetColorAndOpacity(FSlateColor(OverlayGood));
     MapScaleText->SetText(FText::FromString(FString::Printf(TEXT("MAP SCALE  /  ±%.1f m  /  ▲ RIG"), Radius)));
     for (const FWallhackContact& Contact : Frame.Contacts)
     {

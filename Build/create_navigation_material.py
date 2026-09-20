@@ -14,6 +14,8 @@ material.set_editor_property('two_sided', True)
 # This also bypasses Meta's hard-occlusion depth buffer for translucent guidance.
 # Environment depth remains enabled for obstacle observations and pathfinding.
 material.set_editor_property('disable_depth_test', True)
+material.set_editor_property('translucency_pass', unreal.MaterialTranslucencyPass.MTP_BEFORE_DOF)
+material.set_editor_property('enable_mobile_separate_translucency', False)
 vertex = unreal.MaterialEditingLibrary.create_material_expression(material, unreal.MaterialExpressionVertexColor, -200, 0)
 assert unreal.MaterialEditingLibrary.connect_material_property(vertex, '', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
 assert unreal.MaterialEditingLibrary.connect_material_property(vertex, 'A', unreal.MaterialProperty.MP_OPACITY)

@@ -169,6 +169,18 @@ void AWallhackVRHUDActor::BeginPlay()
 {
     Super::BeginPlay();
 
+    // Record resolved settings on the actual device, not only editor defaults.
+    // Mobile forward + multiview is intentional; UE 5.7 defaults to deferred/HDR.
+    auto StereoCVar = [](const TCHAR* Name)
+    {
+        const auto* Value = IConsoleManager::Get().FindConsoleVariable(Name);
+        return Value ? Value->GetInt() : -1;
+    };
+    UE_LOG(LogTemp, Display, TEXT("Wallhack stereo: MobileHDR=%d ShadingPath=%d MultiView=%d MobileAA=%d Alpha=%d HUD=shared-both-eyes"),
+        StereoCVar(TEXT("r.MobileHDR")), StereoCVar(TEXT("r.Mobile.ShadingPath")),
+        StereoCVar(TEXT("vr.MobileMultiView")), StereoCVar(TEXT("r.Mobile.AntiAliasing")),
+        StereoCVar(TEXT("r.Mobile.PropagateAlpha")));
+
     // Cylinder arc is specified as arc length in Unreal units. The previous
     // 422cm/270cm arc at 220cm radius worked out to ~110 deg horizontal by
     // ~63 deg vertical -- wider and taller than the headset's comfortable,
@@ -238,6 +250,7 @@ void AWallhackVRHUDActor::BeginPlay()
     }
     else
     {
+        HUDMappingContext->MapKey(MapRangeAction,EKeys::OculusTouch_Left_Thumbstick_Click);
         NavigationAimAction=NewObject<UInputAction>(this,TEXT("NavigationAim"));
         NavigationConfirmAction=NewObject<UInputAction>(this,TEXT("NavigationConfirm"));
         NavigationCancelAction=NewObject<UInputAction>(this,TEXT("NavigationCancel"));

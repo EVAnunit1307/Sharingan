@@ -4,6 +4,8 @@
 #include "WallhackNavigationRenderer.h"
 #include "WallhackPeopleSubsystem.h"
 #include "WallhackPeopleRenderer.h"
+#include "WallhackPeopleStyle.h"
+#include "WallhackNavigationPresentation.h"
 #include "StaticMeshResources.h"
 #include "Engine/StaticMesh.h"
 #include <limits>
@@ -16,6 +18,7 @@
 #include "EngineUtils.h"
 #include "HAL/PlatformProcess.h"
 #include "HAL/FileManager.h"
+#include "HAL/IConsoleManager.h"
 #include "ImageUtils.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/FileHelper.h"
@@ -287,10 +290,11 @@ bool FNavRenderTest::RunTest(const FString&)
         SaveNavigationImage(Pixels,RT->SizeX,RT->SizeY,Name);return Pixels;
     };
     auto Minimal=ReadHUD(TEXT("navigation-minimal"));
-    int32 CenterInk=0,Details=0;
+    int32 CenterInk=0,Details=0,DirectionInk=0;
     for(int32 Y=0;Y<1152;++Y)for(int32 X=0;X<2048;++X)
-    {if(Minimal[Y*2048+X].A>30){if(X>800&&X<1200&&Y>300&&Y<800)++CenterInk;if(X>1250&&Y>770&&Y<960)++Details;}}
+    {if(Minimal[Y*2048+X].A>30){if(X>800&&X<1200&&Y>300&&Y<800)++CenterInk;if(X>1250&&Y>770&&Y<960)++Details;if(X>820&&X<1220&&Y>830&&Y<980)++DirectionInk;}}
     TestEqual(TEXT("Center is unobstructed"),CenterInk,0);TestTrue(TEXT("Readable target/route metrics rendered"),Details>500);
+    TestTrue(TEXT("Lower-center direction cue is visible without looking at floor"),DirectionInk>700);
     F.SetHUDDensity(EWallhackHUDDensity::Full);ReadHUD(TEXT("navigation-full"));
     F.SetHUDDensity(EWallhackHUDDensity::Hidden);const auto Hidden=ReadHUD(TEXT("navigation-hidden"));
     int32 Alpha=0;for(auto P:Hidden)Alpha+=P.A>0;TestEqual(TEXT("Hidden compositor is fully transparent"),Alpha,0);
@@ -305,13 +309,18 @@ bool FNavRenderTest::RunTest(const FString&)
     for(int32 I=0;I<3;++I){Capture->CaptureScene();FlushRenderingCommands();FAssetCompilingManager::Get().FinishAllCompilation();}
     TArray<FColor> Pixels;RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
     int32 Mint=0,Amber=0;for(auto P:Pixels){Mint+=P.G>P.R*1.15&&P.G>20;Amber+=P.R>P.G*1.15&&P.G>P.B*1.1&&P.R>20;}
-    TestTrue(TEXT("Actual world mesh produces faint mint chevrons on GPU"),Mint>25);
+    TestTrue(TEXT("Actual world mesh produces prominent mint chevrons on GPU"),Mint>100);
     TestTrue(TEXT("Actual world mesh produces amber estimated guidance on GPU"),Amber>10);
     SaveNavigationImage(Pixels,1024,576,TEXT("navigation-floor"));
     Capture->SetWorldLocationAndRotation(FVector(210,70,500),FRotator(-90,0,0));
     Capture->CaptureScene();FlushRenderingCommands();
     RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
-    SaveNavigationImage(Pixels,1024,576,TEXT("navigation-floor-overview"));return true;
+    SaveNavigationImage(Pixels,1024,576,TEXT("navigation-floor-overview"));
+    Capture->SetWorldLocationAndRotation(FVector(0,0,170),FRotator(-70,10,0));
+    Capture->CaptureScene();FlushRenderingCommands();RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
+    Mint=0;for(auto P:Pixels)Mint+=P.G>P.R*1.15&&P.G>20;
+    TestTrue(TEXT("Nearby arrows remain visible when looking down"),Mint>100);
+    SaveNavigationImage(Pixels,1024,576,TEXT("navigation-looking-down"));return true;
 }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FNavThroughWallsTest,"Wallhack.Navigation.Render.TrailVisibleThroughWalls",
     EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter|EAutomationTestFlags::NonNullRHI)
@@ -581,6 +590,7 @@ bool FPeoplePoseTest::RunTest(const FString&)
     const FVector Feet(3,1,.2);const int32 Id=People->AddPerson(Feet,1.75f,0);
     auto* Renderer=People->GetRenderer();if(!TestNotNull(TEXT("Anatomical renderer"),Renderer))return false;
     auto* Body=Renderer->GetBodyComponents()[0].Get();UStaticMesh* Mesh=Body->GetStaticMesh();
+    auto* Outline=Renderer->GetOutlineComponents()[0].Get();
     FAssetCompilingManager::Get().FinishAllCompilation();
     TestTrue(TEXT("Anatomical topology, not a primitive"),Mesh->GetNumVertices(0)>10000);
     TestTrue(TEXT("Quest mesh bounded to 25000 triangles"),Mesh->GetNumTriangles(0)<25000);
@@ -597,6 +607,9 @@ bool FPeoplePoseTest::RunTest(const FString&)
         TestTrue(TEXT("World-space anatomical height matches metres"),FMath::IsNearlyEqual(Bounds.GetSize().Z,Height*Units,.05));
         TestTrue(TEXT("Uniform scale avoids distorted limbs"),Body->GetComponentScale().AllComponentsEqual());
         TestTrue(TEXT("Facing changes the body, not just its label"),Body->GetForwardVector().Equals(FRotator(0,Yaw,0).Vector(),.001));
+        TestTrue(TEXT("Outline shares body height, facing and floor position"),Outline->GetComponentTransform().Equals(Body->GetComponentTransform()));
+        const FBox BoxBounds=Outline->CalcBounds(Outline->GetComponentTransform()).GetBox();
+        TestTrue(TEXT("Outline encloses the human mesh"),BoxBounds.ExpandBy(.05).IsInsideOrOn(Bounds.Min)&&BoxBounds.ExpandBy(.05).IsInsideOrOn(Bounds.Max));
     }
     TestFalse(TEXT("Invalid values cannot poison rendering"),People->UpdatePerson(Id,Feet,std::numeric_limits<float>::quiet_NaN(),0));
     TestEqual(TEXT("Invalid input cannot create a person"),People->AddPerson(Feet,1.7f,std::numeric_limits<float>::infinity()),INDEX_NONE);
@@ -633,6 +646,76 @@ bool FPeopleLifecycleTest::RunTest(const FString&)
     return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FQuestStereoSettingsTest,"Wallhack.Stereo.QuestRendererAndOverlayPass",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FQuestStereoSettingsTest::RunTest(const FString&)
+{
+    for (const auto& Setting : TArray<TPair<FString,int32>>{
+        {TEXT("r.MobileHDR"),0}, {TEXT("r.Mobile.ShadingPath"),0},
+        {TEXT("vr.MobileMultiView"),1}, {TEXT("r.Mobile.AntiAliasing"),3}, {TEXT("r.Mobile.PropagateAlpha"),1}})
+    {
+        const auto* Value=IConsoleManager::Get().FindConsoleVariable(*Setting.Key);
+        if(TestNotNull(*Setting.Key,Value))TestEqual(*Setting.Key,Value->GetInt(),Setting.Value);
+    }
+    for(const TCHAR* Path:{TEXT("/Game/Materials/M_HumanSilhouette"),TEXT("/Game/Materials/M_WallhackTrail"),TEXT("/Game/Materials/M_PersonLabel")})
+    {
+        auto* Material=LoadObject<UMaterial>(nullptr,Path);
+        if(!TestNotNull(Path,Material))continue;
+        TestTrue(TEXT("Overlay renders in the main stereo translucency pass"),Material->TranslucencyPass==MTP_BeforeDOF);
+        TestFalse(TEXT("No mobile separate-translucency render target"),Material->IsMobileSeparateTranslucencyEnabled());
+        TestTrue(TEXT("Through-wall visibility retained"),Material->bDisableDepthTest);
+        TestEqual(TEXT("Opacity retained"),Material->GetBlendMode(),BLEND_Translucent);
+    }
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FPeopleEyeFrustumTest,"Wallhack.Stereo.PeoplePairedEyeFrustums",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter|EAutomationTestFlags::NonNullRHI)
+bool FPeopleEyeFrustumTest::RunTest(const FString&)
+{
+    // Paired perspective captures catch eye-position/culling/billboard mistakes.
+    // They do NOT exercise Android multiview array layers; require Quest evidence too.
+    FNavigationWorld F;auto* People=F.World->GetSubsystem<UWallhackPeopleSubsystem>();
+    const int32 Id=People->AddPerson({3,0,0},1.75f,180);auto* Renderer=People->GetRenderer();
+    if(!TestNotNull(TEXT("People renderer"),Renderer))return false;
+    auto* Camera=F.World->SpawnActor<ASceneCapture2D>();auto* Capture=Camera->GetCaptureComponent2D();
+    Capture->bCaptureEveryFrame=false;Capture->bCaptureOnMovement=false;Capture->CaptureSource=SCS_SceneColorHDR;
+    Capture->PrimitiveRenderMode=ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
+    Capture->ShowOnlyActorComponents(Renderer);Capture->FOVAngle=75;
+    auto* RT=NewObject<UTextureRenderTarget2D>(Camera);RT->RenderTargetFormat=RTF_RGBA16f;
+    RT->ClearColor=FLinearColor::Black;RT->InitAutoFormat(768,768);RT->UpdateResourceImmediate(true);Capture->TextureTarget=RT;
+    auto* Wall=F.World->SpawnActor<AStaticMeshActor>();auto* WallMesh=Wall->GetStaticMeshComponent();
+    WallMesh->SetMobility(EComponentMobility::Movable);WallMesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube.Cube")));
+    WallMesh->SetCastShadow(false);Wall->SetActorLocation({100,0,100});Wall->SetActorScale3D({.02,20,20});
+    Capture->ShowOnlyActorComponents(Wall);FAssetCompilingManager::Get().FinishAllCompilation();
+    for(float IPD:{.058f,.072f})for(float Facing:{90.f,180.f})
+    {
+        const FRotator Head(-10,0,8);const FVector Center(0,0,160);
+        F.SetViewerPose(Center,Head);People->UpdatePerson(Id,{3,0,0},1.75f,Facing);People->Tick(.25f);
+        int32 Red[2]={},White[2]={};
+        for(int32 Eye=0;Eye<2;++Eye)
+        {
+            const FVector EyePosition=Center+Head.RotateVector(FVector(0,(Eye?1:-1)*IPD*50,0));
+            Capture->SetWorldLocationAndRotation(EyePosition,Head);
+            F.World->SendAllEndOfFrameUpdates();
+            for(int32 I=0;I<3;++I){Capture->CaptureScene();FlushRenderingCommands();}
+            TArray<FColor> Pixels;RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
+            const FString Name=FString::Printf(TEXT("person-perspective-%s-ipd%02d-facing%03d"),Eye?TEXT("right"):TEXT("left"),FMath::RoundToInt(IPD*1000),int32(Facing));
+            SaveNavigationImage(Pixels,768,768,*Name);
+            for(const auto P:Pixels)
+            {
+                Red[Eye]+=P.R>P.G*1.5&&P.R>P.B*1.5&&P.R>20;
+                White[Eye]+=P.R>40&&FMath::Abs(int(P.R)-int(P.G))<25&&FMath::Abs(int(P.G)-int(P.B))<25;
+            }
+            TestTrue(*FString::Printf(TEXT("%s: silhouette and outline through wall"),*Name),Red[Eye]>1000);
+            TestTrue(*FString::Printf(TEXT("%s: corner telemetry through wall"),*Name),White[Eye]>70);
+        }
+        TestTrue(TEXT("Neither eye loses the body to culling"),FMath::Min(Red[0],Red[1])>FMath::Max(Red[0],Red[1])*.75);
+        TestTrue(TEXT("Neither eye loses the billboard glyphs"),FMath::Min(White[0],White[1])>FMath::Max(White[0],White[1])*.7);
+    }
+    return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FPeopleRenderTest,"Wallhack.People.Render.AnatomyFacingAndThroughWalls",
     EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter|EAutomationTestFlags::NonNullRHI)
 bool FPeopleRenderTest::RunTest(const FString&)
@@ -647,6 +730,7 @@ bool FPeopleRenderTest::RunTest(const FString&)
     auto* RT=NewObject<UTextureRenderTarget2D>(Camera);RT->RenderTargetFormat=RTF_RGBA16f;RT->ClearColor=FLinearColor::Black;
     RT->InitAutoFormat(768,768);RT->UpdateResourceImmediate(true);Capture->TextureTarget=RT;
     FAssetCompilingManager::Get().FinishAllCompilation();
+    int32 LastWhite=0;
     auto Read=[&](const TCHAR* Name)
     {
         // This synchronous fixture does not run UWorld's normal end-of-frame
@@ -655,10 +739,20 @@ bool FPeopleRenderTest::RunTest(const FString&)
         for(int32 I=0;I<3;++I){Capture->CaptureScene();FlushRenderingCommands();FAssetCompilingManager::Get().FinishAllCompilation();}
         TArray<FColor> Pixels;RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
         SaveNavigationImage(Pixels,768,768,Name);int32 Ink=0;
-        for(const auto P:Pixels)Ink+=P.G>P.R*1.15&&P.G>20;
+        LastWhite=0;
+        for(const auto P:Pixels)
+        {
+            Ink+=P.R>P.G*1.5&&P.R>P.B*1.5&&P.R>20;
+            LastWhite+=P.R>40&&FMath::Abs(int(P.R)-int(P.G))<25&&FMath::Abs(int(P.G)-int(P.B))<25;
+        }
         return Ink;
     };
     auto* Body=Renderer->GetBodyComponents()[0].Get();
+    auto* Outline=Renderer->GetOutlineComponents()[0].Get();
+    auto* Label=Renderer->GetTelemetryComponents()[0].Get();
+    // Measure anatomy independently of the box's perspective-dependent area.
+    Outline->SetVisibility(false);
+    Label->SetVisibility(false);
     auto* BodyMaterial=Body->GetMaterial(0);
     FLinearColor Tint;float Opacity=0;
     BodyMaterial->GetVectorParameterValue(FMaterialParameterInfo(TEXT("Tint")),Tint);
@@ -670,12 +764,164 @@ bool FPeopleRenderTest::RunTest(const FString&)
     TestTrue(TEXT("Profile is visibly narrower than front"),Side>1000&&Side<Front*.8);
     People->UpdatePerson(Id,{2.8,0,0},1.75f,0);TestTrue(TEXT("Back is visible"),Read(TEXT("person-back"))>2000);
     People->UpdatePerson(Id,{2.8,0,0},1.75f,180);
+    Outline->SetVisibility(true);Body->SetVisibility(false);
+    TestTrue(TEXT("Red wireframe is independently visible"),Read(TEXT("person-box-only"))>300);
+    Body->SetVisibility(true);Label->SetVisibility(true);
+    const int32 Boxed=Read(TEXT("person-boxed"));
+    const int32 LabelWhite=LastWhite;
+    TestTrue(TEXT("Corner telemetry produces readable white glyphs on GPU"),LabelWhite>100);
+    TArray<FColor> LabelPixels;auto* LabelTexture=Renderer->GetTelemetryTextures()[0].Get();
+    LabelTexture->GameThread_GetRenderTargetResource()->ReadPixels(LabelPixels);
+    SaveNavigationImage(LabelPixels,LabelTexture->SizeX,LabelTexture->SizeY,TEXT("person-label-texture"));
+    TestEqual(TEXT("Smooth-font label uses one quad instead of hundreds of glyph meshes"),Label->GetProcMeshSection(0)->ProcVertexBuffer.Num(),4);
+    TestTrue(TEXT("Box surrounds the red silhouette"),Boxed>Front);
     auto* Wall=F.World->SpawnActor<AStaticMeshActor>();auto* WallMesh=Wall->GetStaticMeshComponent();
     WallMesh->SetMobility(EComponentMobility::Movable);WallMesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube.Cube")));
     WallMesh->SetCastShadow(false);Wall->SetActorLocation({100,0,87.5});Wall->SetActorScale3D({.02,20,20});
     Capture->ShowOnlyActorComponents(Wall);FAssetCompilingManager::Get().FinishAllCompilation();
-    TestTrue(TEXT("Actual material remains visible through an opaque wall"),Read(TEXT("person-through-wall"))>=Front*.9);
+    TestTrue(TEXT("Silhouette and outline remain visible through an opaque wall"),Read(TEXT("person-through-wall"))>=Boxed*.9);
+    TestTrue(TEXT("Corner telemetry also survives depth occlusion"),LastWhite>=LabelWhite*.9);
     F.Nav->SetHidden(true);TestEqual(TEXT("Hidden produces zero silhouette pixels"),Read(TEXT("person-hidden")),0);
+    TestEqual(TEXT("Hidden also removes world telemetry"),LastWhite,0);
+    F.Nav->SetHidden(false);Wall->SetActorHiddenInGame(true);
+    People->UpdatePerson(Id,{4,-1.5,0},1.75f,180);
+    People->AddPerson({4,0,0},1.65f,180);People->AddPerson({4,1.5,0},1.9f,180);
+    Capture->ShowOnlyActorComponents(Renderer);Capture->SetWorldLocation({0,0,125});Capture->FOVAngle=85;
+    Read(TEXT("people-identity-colors"));
+    TArray<FColor> PalettePixels;RT->GameThread_GetRenderTargetResource()->ReadPixels(PalettePixels);
+    int32 Blue=0,Violet=0;
+    for(const auto P:PalettePixels)
+    {
+        Blue+=P.B>P.R*1.5&&P.B>P.G*1.1&&P.B>25;
+        Violet+=P.B>P.R*1.1&&P.R>P.G*1.2&&P.R>25;
+    }
+    TestTrue(TEXT("Multiple people render distinct blue and violet identities alongside red"),Blue>500&&Violet>500);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FNavMinimapRenderTest,"Wallhack.Navigation.Minimap.ActualHUDRotationAndLifecycle",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter|EAutomationTestFlags::NonNullRHI)
+bool FNavMinimapRenderTest::RunTest(const FString&)
+{
+    FNavigationWorld F;auto* HUD=F.NavigationHUD();
+    auto* People=F.World->GetSubsystem<UWallhackPeopleSubsystem>();
+    People->AddPerson({3,0,0},1.75f,180);People->AddPerson({-3,0,0},1.7f,0);
+    People->AddPerson({0,3,0},1.8f,90);People->AddPerson({6,-2,0},1.65f,270);
+    auto Read=[&](const TCHAR* Name)
+    {
+        HUD->Tick(.25f);F.World->SendAllEndOfFrameUpdates();FlushRenderingCommands();
+        TArray<FColor> Pixels;auto* RT=HUD->GetHUDRenderTarget();
+        RT->GameThread_GetRenderTargetResource()->ReadPixels(Pixels);
+        SaveNavigationImage(Pixels,RT->SizeX,RT->SizeY,Name);return Pixels;
+    };
+    auto RedAt=[](const TArray<FColor>& Pixels,FVector2D P,int32 Radius=8)
+    {
+        int32 Count=0;
+        for(int32 Y=int(P.Y)-Radius;Y<=int(P.Y)+Radius;++Y)for(int32 X=int(P.X)-Radius;X<=int(P.X)+Radius;++X)
+        {
+            if(X<0||X>=2048||Y<0||Y>=1152)continue;
+            const auto C=Pixels[Y*2048+X];Count+=C.R>C.G*1.5&&C.R>C.B*1.5&&C.R>40;
+        }
+        return Count;
+    };
+    WallhackNavPresentation::FLocalMap M;
+    const auto First=Read(TEXT("minimap-heading-north"));
+    auto CompassInk=[](const TArray<FColor>& Pixels)
+    {
+        int32 Count=0;
+        for(int32 Y=173;Y<235;++Y)for(int32 X=610;X<1438;++X)
+        {const auto C=Pixels[Y*2048+X];Count+=C.R>60&&FMath::Abs(int(C.R)-int(C.G))<25&&C.A>20;}
+        return Count;
+    };
+    TestTrue(TEXT("Minimal HUD renders the scrolling compass tape"),CompassInk(First)>500);
+    TestTrue(TEXT("Person ahead is a red dot above self in Minimal"),RedAt(First,M.Project({3,0,0}))>12);
+    TestTrue(TEXT("Heading bar carries the same red identity as the world/map"),RedAt(First,{1024,251})>12);
+    int32 RimInk=0;
+    for(int32 Y=240;Y<288;++Y)for(int32 X=1360;X<1456;++X)
+    {const auto C=First[Y*2048+X];RimInk+=FMath::Max3(C.R,C.G,C.B)>40&&FMath::Max3(C.R,C.G,C.B)-FMath::Min3(C.R,C.G,C.B)>30;}
+    TestTrue(TEXT("Offscreen people retain colored arrows at the heading-bar rim"),RimInk>30);
+    auto RegionInk=[](const TArray<FColor>& Pixels,int32 Left,int32 Top,int32 Right,int32 Bottom)
+    {
+        int32 N=0;for(int32 Y=Top;Y<Bottom;++Y)for(int32 X=Left;X<Right;++X)N+=Pixels[Y*2048+X].A>10;return N;
+    };
+    TestEqual(TEXT("Idle right panel has no persistent controller/debug text"),RegionInk(First,1280,720,1880,1060),0);
+    TestEqual(TEXT("Healthy tracking has no geometry-age/debug footer"),RegionInk(First,260,1020,750,1100),0);
+    F.SetHUDDensity(EWallhackHUDDensity::Full);const auto Full=Read(TEXT("clean-hud-full"));
+    TestEqual(TEXT("Full view keeps technical debug readouts off the visor"),RegionInk(Full,1250,350,1900,700),0);
+    F.SetHUDDensity(EWallhackHUDDensity::Minimal);
+    F.SetViewerPose({0,0,170},FRotator(0,90,0));F.Step(240);
+    const auto East=Read(TEXT("minimap-heading-east"));M.Yaw=90;
+    TestTrue(TEXT("Turning east moves the north contact to the left"),RedAt(East,M.Project({3,0,0}))>12);
+    TestTrue(TEXT("Heading marker moves left with that same contact"),RedAt(East,{624,251})>12);
+    F.SetViewerPose({0,0,170},FRotator(35,90,20));F.Step(240);
+    const auto Tilt=Read(TEXT("minimap-pitch-roll"));
+    TestTrue(TEXT("Pitch and roll do not tip the floor plan"),RedAt(Tilt,M.Project({3,0,0}))>12);
+    TestTrue(TEXT("Looking down does not displace compass contacts"),RedAt(Tilt,{624,251})>12);
+    TestTrue(TEXT("Map range uses a real input binding"),F.Action(TEXT("WallhackMapRangeAction")));
+    TestEqual(TEXT("Range cycles to ten metres"),HUD->GetMapRangeMeters(),10.f);
+    Read(TEXT("minimap-ten-metres"));
+    F.Nav->Suspend();const auto Lost=Read(TEXT("minimap-tracking-lost"));
+    TestEqual(TEXT("Tracking loss hides stale directional tick labels"),CompassInk(Lost),0);
+    int32 Red=0;for(auto C:Lost)Red+=C.R>C.G*1.5&&C.R>C.B*1.5&&C.R>40;
+    TestEqual(TEXT("Tracking loss hides all person dots and direction cues"),Red,0);
+    F.SetHUDDensity(EWallhackHUDDensity::Hidden);const auto Hidden=Read(TEXT("minimap-hidden"));
+    int32 Alpha=0;for(auto C:Hidden)Alpha+=C.A>0;
+    TestEqual(TEXT("Hidden remains completely transparent with populated minimap"),Alpha,0);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FPeopleTelemetryTest,"Wallhack.People.Runtime.CornerTelemetryPoseAndMetricRefresh",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FPeopleTelemetryTest::RunTest(const FString&)
+{
+    FNavigationWorld F;auto* People=F.World->GetSubsystem<UWallhackPeopleSubsystem>();
+    const int32 Id=People->AddPerson({3,0,0},1.75f,0);auto* Renderer=People->GetRenderer();
+    auto* Label=Renderer->GetTelemetryComponents()[0].Get();
+    TestTrue(TEXT("Distance is true viewer-to-feet range"),Renderer->GetTelemetryText()[0].Contains(TEXT("3.4 M")));
+    const auto Initial=Renderer->GetTelemetryText()[0];
+    F.SetViewerPose({50,0,170},FRotator(0,25,0));F.Step(1);People->Tick(.1f);
+    TestEqual(TEXT("Numerical metrics hold between 5 Hz updates"),Renderer->GetTelemetryText()[0],Initial);
+    TestTrue(TEXT("Billboard follows head rotation immediately"),Label->GetComponentQuat().Equals(FRotator(0,25,0).Quaternion(),.001));
+    People->Tick(.11f);
+    TestTrue(TEXT("Distance refreshes after the next metric interval"),Renderer->GetTelemetryText()[0].Contains(TEXT("3.0 M")));
+    People->SetNorthReference(90);People->Tick(.2f);
+    TestTrue(TEXT("Facing shares the calibrated compass reference"),Renderer->GetTelemetryText()[0].Contains(TEXT("FACE 090")));
+    People->UpdatePerson(Id,{3,0,0},2.f,180);
+    TestTrue(TEXT("Height edits immediately update telemetry"),Renderer->GetTelemetryText()[0].Contains(TEXT("H 2.00 M")));
+    TestTrue(TEXT("Facing edit immediately updates telemetry"),Renderer->GetTelemetryText()[0].Contains(TEXT("FACE 270")));
+    TestTrue(TEXT("Label anchors above the resized top box edge"),Label->GetComponentLocation().Z>200);
+    People->AddPerson({2,-1,0},1.6f,0);People->ToggleEditing();People->RemoveSelected();
+    TestTrue(TEXT("Removing a person also hides its pooled label"),Renderer->GetTelemetryComponents()[1]->bHiddenInGame);
+    F.Nav->Suspend();TestTrue(TEXT("Tracking loss immediately hides labels with the actor"),Renderer->IsHidden());
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FPeopleColorIdentityTest,"Wallhack.People.Runtime.StableUniqueColorsAcrossDeletionAndReuse",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FPeopleColorIdentityTest::RunTest(const FString&)
+{
+    FNavigationWorld F;auto* People=F.World->GetSubsystem<UWallhackPeopleSubsystem>();
+    TMap<int32,int32> Initial;
+    for(int32 I=0;I<8;++I){const int32 Id=People->AddPerson({3.,I*.2,0},1.75,180);Initial.Add(Id,People->GetSelected()->ColorSlot);}
+    People->ToggleEditing();People->SelectNext();People->SelectNext(); // Remove ID 2, not the most recent ID.
+    const int32 Removed=People->GetSelected()->Id,FreeSlot=People->GetSelected()->ColorSlot;
+    People->RemoveSelected();Initial.Remove(Removed);
+    const int32 Replacement=People->AddPerson({2,1,0},1.8,90);
+    TestEqual(TEXT("Replacement reuses free color without colliding with surviving IDs"),People->GetSelected()->ColorSlot,FreeSlot);
+    TestTrue(TEXT("Replacement ID is new even though color is reused"),Replacement>8);
+    People->UpdatePerson(Replacement,{2,2,0},2,270);People->SelectNext();
+    TSet<int32> Slots;auto* Renderer=People->GetRenderer();
+    for(int32 I=0;I<People->GetPeople().Num();++I)
+    {
+        const auto& P=People->GetPeople()[I];Slots.Add(P.ColorSlot);
+        if(Initial.Contains(P.Id))TestEqual(TEXT("Selection, movement and pool compaction preserve identity"),P.ColorSlot,Initial[P.Id]);
+        FLinearColor Tint;Renderer->GetBodyComponents()[I]->GetMaterial(0)->GetVectorParameterValue(FMaterialParameterInfo(TEXT("Tint")),Tint);
+        TestTrue(TEXT("Body color follows identity after pool reuse"),Tint.Equals(WallhackPeopleStyle::Color(P),.001));
+        const auto Outline=Renderer->GetOutlineComponents()[I]->GetProcMeshSection(0)->ProcVertexBuffer[0].Color;
+        const auto Expected=WallhackPeopleStyle::Color(P).ToFColor(false);
+        TestTrue(TEXT("Outline color follows the same identity"),Outline.R==Expected.R&&Outline.G==Expected.G&&Outline.B==Expected.B);
+        TestTrue(TEXT("Pooled text uses the current numeric ID"),Renderer->GetTelemetryText()[I].StartsWith(FString::Printf(TEXT("PERSON %02d / MANUAL"),P.Id)));
+    }
+    TestEqual(TEXT("All eight active people retain unique palette slots"),Slots.Num(),8);
     return true;
 }
 #endif

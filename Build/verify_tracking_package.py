@@ -190,6 +190,12 @@ def main() -> int:
                 check("Packaged scene support", bool(values) and all(v.casefold() == "true" for v in values),
                       f"bSceneSupportEnabled={values}", "Recook with scene support enabled.")
             for name, section, key, expected in (
+                *(([
+                    ("Packaged mobile forward renderer", RENDERER, "r.Mobile.ShadingPath", "0"),
+                    ("Packaged mobile HDR disabled", RENDERER, "r.MobileHDR", "false"),
+                    ("Packaged mobile MSAA", RENDERER, "r.Mobile.AntiAliasing", "3"),
+                    ("Packaged mobile multiview", "SystemSettings", "vr.MobileMultiView", "1"),
+                ]) if args.navigation else []),
                 ("Packaged mobile alpha", RENDERER, "r.Mobile.PropagateAlpha", "1"),
                 ("Packaged passthrough alpha", "SystemSettings", "r.PostProcessing.PropagateAlpha", "1"),
                 ("Packaged anchor support", ANCHOR_SETTINGS, "bAnchorSupportEnabled", "true"),
@@ -206,7 +212,9 @@ def main() -> int:
             for name, filename in (
                 *(([("Cooked navigation trail material", "../../../HandoffQuestHUD/Content/Materials/M_WallhackTrail.uasset")]) if args.navigation else []),
                 *(([("Cooked human mesh", "../../../HandoffQuestHUD/Content/People/SM_HumanSilhouette.uasset"),
-                    ("Cooked human material", "../../../HandoffQuestHUD/Content/Materials/M_HumanSilhouette.uasset")]) if args.navigation else []),
+                    ("Cooked human material", "../../../HandoffQuestHUD/Content/Materials/M_HumanSilhouette.uasset"),
+                    ("Cooked person label material", "../../../HandoffQuestHUD/Content/Materials/M_PersonLabel.uasset"),
+                    ("Cooked linear label default", "../../../HandoffQuestHUD/Content/Materials/T_PersonLabelDefault.uasset")]) if args.navigation else []),
                 ("Cooked dot material", "../../../HandoffQuestHUD/Content/Materials/M_WallhackContact.uasset"),
                 ("Cooked sphere mesh", "../../../Engine/Content/BasicShapes/Sphere.uasset"),
             ):
