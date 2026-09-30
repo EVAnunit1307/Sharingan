@@ -66,7 +66,7 @@ def draw_detections(frame, people, raw):
 
 class CameraPipeline:
     def __init__(self, detector, source="picamera2", rotation=180, detect_fps=10,
-                 width=640, height=480, hfov=62, stale_seconds=.75):
+                 width=640, height=480, hfov=62, stale_seconds=.75, mapping=None):
         self.detector, self.source = detector, source
         self.rotation, self.detect_fps = rotation, detect_fps
         self.width, self.height, self.hfov = width, height, hfov
@@ -84,13 +84,15 @@ class CameraPipeline:
         self._camera = None
         self._source_epoch = 0
         self.source_session_id = uuid.uuid4().hex
+        self.mapping = mapping
         blank = np.full((height, width, 3), (24, 22, 18), dtype=np.uint8)
         cv2.putText(blank, "Waiting for fresh camera frames", (25, height // 2),
                     cv2.FONT_HERSHEY_SIMPLEX, .65, (210, 220, 230), 1, cv2.LINE_AA)
         self.blank_jpeg = cv2.imencode('.jpg', blank)[1].tobytes()
 
     def start(self):
-        for target in (self.capture_loop, self.detect_loop):
+        targets = (self.capture_loop, self.detect_loop) if self.detector else (self.capture_loop,)
+        for target in targets:
             worker = threading.Thread(target=target, daemon=True, name=target.__name__)
             worker.start()
             self.workers.append(worker)
@@ -101,12 +103,17 @@ class CameraPipeline:
             self.condition.notify_all()
         for worker in self.workers:
             worker.join(timeout=3)
+        if self.mapping:
+            self.mapping.close()
 
-    def publish_frame(self, frame, captured_at, epoch=0):
+    def publish_frame(self, frame, captured_at, epoch=0, metadata=None):
         with self.condition:
             self.sequence += 1
             self.latest = (self.sequence, captured_at, time.time(), frame, epoch)
             self.condition.notify_all()
+            sequence = self.sequence
+        if self.mapping:
+            self.mapping.submit(frame, sequence, captured_at, epoch, metadata, self.rotation, self.source)
 
     def capture_loop(self):
         while not self.stop_event.is_set():
@@ -131,9 +138,28 @@ class CameraPipeline:
                 self._camera = camera
                 self._source_epoch += 1
                 last = time.monotonic()
+                applied_mapping_settings=-1
                 while not self.stop_event.is_set():
+                    metadata = None
                     if self.source == "picamera2":
-                        frame = camera.capture_array("main")
+                        if self.mapping:
+                            version,controls=self.mapping.camera_controls()
+                            if version!=applied_mapping_settings:
+                                for key in ('ExposureTime','AnalogueGain'):
+                                    if key in controls and key in camera.camera_controls:
+                                        low,high,_=camera.camera_controls[key]
+                                        controls[key]=max(low,min(high,controls[key]))
+                                camera.set_controls(controls)
+                                with self.mapping.lock:self.mapping.applied_controls=dict(controls)
+                                applied_mapping_settings=version
+                            captured_request = camera.capture_request()
+                            try:
+                                frame = captured_request.make_array("main").copy()
+                                metadata = captured_request.get_metadata()
+                            finally:
+                                captured_request.release()
+                        else:
+                            frame = camera.capture_array("main")
                     else:
                         ok, frame = camera.read()
                         if not ok:
@@ -143,7 +169,7 @@ class CameraPipeline:
                         frame = cv2.rotate(frame, cv2.ROTATE_180)
                     self.capture_fps = .9 * self.capture_fps + .1 / max(now - last, .001)
                     last = now
-                    self.publish_frame(frame, now, self._source_epoch)
+                    self.publish_frame(frame, now, self._source_epoch, metadata)
             except Exception as exc:
                 logging.exception("Camera capture failed")
                 with self.condition:
@@ -233,7 +259,7 @@ class CameraPipeline:
                 "camera_capture_mono_ms": r.get("captured_at", 0) * 1000,
                 "camera_hfov_deg": self.hfov,
                 "camera_connected": fresh, "error": error,
-                "model": self.detector.cfg["model"], "source": self.source,
+                "model": self.detector.cfg["model"] if self.detector else "disabled", "source": self.source,
                 "rotation": self.rotation, "frame_id": r.get("frame_id", 0),
                 "timestamp": r.get("timestamp"), "frame_age_ms": round(age * 1000, 1) if r else None,
                 "frame_width": r.get("frame_width", self.width),
@@ -259,6 +285,8 @@ def create_app(pipeline):
     app = Flask(__name__, template_folder=str(HERE), static_folder=str(HERE / 'static'), static_url_path='/assets')
     from radar_web import register_radar_routes
     register_radar_routes(app, pipeline.radar)
+    from mapping_capture import register_mapping_capture
+    register_mapping_capture(app, pipeline.mapping)
 
     @app.after_request
     def no_cache(response):
@@ -356,13 +384,26 @@ def main(argv=None):
     parser.add_argument('--radar-config', default=str(HERE / 'radar_config.json'))
     parser.add_argument('--quest-port', type=int, default=0, help='Optional WebSocket handoff, usually 8765')
     parser.add_argument('--stationary-rig', action='store_true', help='Explicitly use a fixed sensor-local frame for Quest')
+    parser.add_argument('--mapping', action='store_true', help='Enable clean image recording for laptop reconstruction')
+    parser.add_argument('--mapping-only', action='store_true', help='Capture without person inference; implies --mapping')
+    parser.add_argument('--mapping-autostart', action='store_true', help='Start a bounded recording at first camera frame')
+    parser.add_argument('--mapping-root', type=Path, default=HERE.parents[1]/'Saved'/'MappingCapture')
+    parser.add_argument('--mapping-fps', type=float, default=3)
+    parser.add_argument('--mapping-seconds', type=int, default=120)
     args = parser.parse_args(argv)
     if not (0 < args.detect_fps <= 30 and 0 < args.hfov < 180 and args.threads > 0):
         parser.error('Invalid FPS, horizontal FOV, or thread count')
     cv2.setNumThreads(1)
-    detector = PersonDetector(args.config, threads=args.threads)
+    mapping = None
+    if args.mapping or args.mapping_only or args.mapping_autostart:
+        from mapping_capture import MappingCapture
+        try:
+            mapping = MappingCapture(args.mapping_root, args.mapping_fps, args.mapping_seconds, args.mapping_autostart)
+        except ValueError as exc:
+            parser.error(str(exc))
+    detector = None if args.mapping_only else PersonDetector(args.config, threads=args.threads)
     pipeline = CameraPipeline(detector, source=args.source, rotation=args.rotation,
-                              detect_fps=args.detect_fps, hfov=args.hfov)
+                              detect_fps=args.detect_fps, hfov=args.hfov, mapping=mapping)
     if args.radar:
         from radar_service import RadarService
         pipeline.radar = RadarService(args.radar_port, invert_x=args.radar_invert_x, config_path=args.radar_config)

@@ -1,0 +1,2 @@
+# Optional FC inventory and timing logger; not needed for camera-only mapping.
+pyserial>=3.5,<4

@@ -170,6 +170,8 @@ def start_websocket(state, host, port, stop):
 def create_app(state, pi_http, websocket_port=8765, config_path=Path("Saved/GroundStation/fusion.json")):
     app = Flask(__name__, template_folder=str(SENSOR_UI), static_folder=None)
     app.jinja_loader = ChoiceLoader([FileSystemLoader(str(HERE / "templates")), app.jinja_loader])
+    from Mapping.server import register_routes
+    register_routes(app, pi_http, HERE.parent / 'Saved' / 'Mapping')
 
     @app.after_request
     def no_cache(response):

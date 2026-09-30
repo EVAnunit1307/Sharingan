@@ -1,5 +1,12 @@
 # Sensor rig handoff: Raspberry Pi, camera, radar and Meta Quest
 
+> **25 Sep context update:** This document preserves the 19 Sep Pi bench setup.
+> Read [current context](../CONTEXT.md) for reconciled project state and the
+> [room-mapping plan](../Docs/room-mapping.md) for the next milestone. Its older
+> claims that native association/rendering are pending are superseded by the
+> [stationary ground-station implementation](../GroundStation/README.md);
+> physical headset acceptance and moving-drone mapping remain unverified.
+
 Prepared for branch **`sensor-rig-integration`** on **2026-09-19**.
 This is the entry point for operating, rebuilding and extending the sensor station.
 
@@ -400,10 +407,10 @@ required for runtime. Portable summaries are committed under `Docs/validation`.
 | `Radar/ld2450_radar.py` | Radar-only alternative on 8767; stop combined mode first |
 | `Docs/quest_handoff.md` | Detailed Quest contract, physical checks and native next steps |
 
-Next work, in order: measure drywall/empty-room performance; check known physical
-coordinates and sensor height; test `/quest` on the headset; implement the separate
-native radar minimap parser/renderer and expiry tests; register the rig to headset
-space if a room-anchored view is needed. Validate moving-drone behavior separately.
+Current next work is [room mapping](../Docs/room-mapping.md): inventory the existing
+rig, save/display a room, test camera mapping and qualify the FC IMU before selecting
+new hardware. Retain the drywall/empty-room, measured-coordinate and physical
+headset checks as acceptance work; moving-drone behavior is not yet validated.
 
 ## Troubleshooting
 

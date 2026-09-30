@@ -1,0 +1,17 @@
+# Optional Pi boot service for the recorded existing checkout. Verify both paths first.
+[Unit]
+Description=WALLHACK camera mapping capture
+After=network.target
+
+[Service]
+Type=simple
+User=evanl1307
+WorkingDirectory=/home/evanl1307/HTN2026/Sharingan
+ExecStart=/bin/bash /home/evanl1307/HTN2026/Sharingan/Build/start_mapping_pi.sh --mapping-autostart
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

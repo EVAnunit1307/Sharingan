@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800">
+<title>Camera calibration board: 9 by 6 inner corners</title>
+<rect width="1000" height="800" fill="white"/>
+<defs><pattern id="checks" width="160" height="160" patternUnits="userSpaceOnUse"><rect width="160" height="160" fill="white"/><rect width="80" height="80" fill="black"/><rect x="80" y="80" width="80" height="80" fill="black"/></pattern></defs>
+<rect x="80" y="80" width="800" height="560" fill="url(#checks)"/>
+<text x="80" y="700" font-family="sans-serif" font-size="20" fill="black">Lens calibration: 10 × 7 squares / 9 × 6 inner corners</text>
+<text x="80" y="734" font-family="sans-serif" font-size="16" fill="black">Keep the entire board visible. Record different positions, distances and tilts.</text>
+<text x="80" y="764" font-family="sans-serif" font-size="16" fill="black">Displayed square size is arbitrary. This board does not establish room scale.</text>
+</svg>

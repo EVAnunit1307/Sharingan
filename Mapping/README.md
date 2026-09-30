@@ -1,0 +1,320 @@
+# Pick up the drone and record a room
+
+This baseline works **without Quest**. The laptop hosts the app and computes the
+map; the browser renders it. The Pi saves the walk locally. Quest can later add
+room geometry/reference data after coordinate alignment.
+
+| Job | Application / location |
+| --- | --- |
+| Capture clean images | Existing Pi camera process, mapping-only mode |
+| Start/stop, saved walks, 3D viewer | WALLHACK browser page at `http://localhost:8766/map` on the laptop |
+| Reconstruct camera path + sparse points | COLMAP through PyCOLMAP 4.2.0, on the laptop CPU |
+| Pi recordings | `<Pi repo>/Saved/MappingCapture/<session_id>/` |
+| Downloaded images + built maps | `<laptop repo>/Saved/Mapping/<session_id>/` |
+| Optional external inspection | COLMAP for its native saved model; a PLY-capable viewer for `points.ply` |
+
+No cloud deployment, Meta login, Unreal build or new sensor is required. This
+version **builds after a walk**. Optional live localization can estimate the camera
+pose within an existing saved map; it does not build new geometry while moving.
+It does not fuse an IMU, import Quest geometry, generate a validated wall mesh or
+overlay moving-rig people. Monocular reconstruction has unknown
+metric scale; units/orientation in the viewer are explicitly uncalibrated.
+
+The existing FC IMU is a separate connection. A read-only logger is prepared;
+the Pi currently has no confirmed FC data link. See [IMU connection and logging](IMU.md).
+
+The first real checkerboard recording is now saved as `CAMERA CALIBRATION`
+(`20260925T202722Z-b884439e`): 352 images, 40 distinct usable board views.
+Its lens candidate passes basic held-out checks. Reconstruction now supports it
+as an explicit per-recording experiment; it is enabled for `CHAIR LAP`
+(`20260925T203843Z-3fb5185d`). Existing maps remain unchanged. See the calibration
+follow-up in the [experiment ledger](../Docs/mapping-experiments-2026-09-25.md).
+
+To opt another compatible recording into this experiment, copy the reviewed
+candidate JSON to that recording's `camera-calibration.json` before building.
+The mapper checks image dimensions, rotation, source and pixel convention. It
+holds intrinsics fixed, reverifies learned correspondences with the new camera
+model, and saves a calibration snapshot and source hash with each reconstruction.
+Changing the physical lens or mount requires a new calibration; matching metadata
+alone cannot detect those changes. The model page labels the applied lens estimate.
+Map scale and physical shape remain unvalidated. Both standard and learned builds
+support this option, and live localization accepts the resulting OPENCV camera model.
+
+## Current setup — 25 September 2026
+
+**Installed and running on this Mac and `larp-pi.local`.** Open
+`http://127.0.0.1:8766/map`; the camera is live and ready for a new recording.
+The connection-check recording contains 165 images; it is not a room scan.
+All images decoded, and the Pi reported zero dropped frames.
+
+**First room walk:** `20260925T184425Z-78fed556` saved 236 images without drops.
+Standard reconstruction recovered 56 views and 245 sparse points; the optional
+XFeat matcher recovered **224 views and 7,865 points** from the same images.
+**Second walk:** `20260925T185819Z-14c01c84` saved 97 images without drops.
+XFeat recovered **all 97 views and 9,149 points in 34.4 seconds**, up from the
+standard result of 49 views and 1,296 points. These learned models are saved and
+labelled experimental. Their physical shape and metric scale remain unvalidated.
+
+Use **Experimental matching** beside a saved recording to try XFeat on this Mac.
+It runs locally in the installed research environment and preserves prior map
+revisions. It may improve recovery but does not guarantee a faster build.
+New learned builds also reconstruct a second time with a different seed, reject
+structure-less fallback registration, and display a repeatability/coverage warning.
+The check adds processing time and may reveal disconnected fragments. Passing
+means only that two builds agree; physical shape and metric scale remain unvalidated.
+See [research setup and reproduction](RESEARCH.md) and the
+[measured comparison / next improvements](../Docs/mapping-quality-strategy.md).
+Core ML depth is now available as a **live grayscale preview** and a separate
+**AI-inferred surface layer** checked across views. It is not thermal imagery.
+The chair layer contains 55,726 points under the stricter preset; shape and scale
+remain unvalidated and visible smearing remains. Burst/exposure controls are
+deployed as optional capture experiments; auto exposure and standard sampling
+were restored after testing. See the [complete experiment ledger](../Docs/mapping-experiments-2026-09-25.md).
+For now, add light, move sideways slowly around textured furniture and pause
+after each step: median exposure is still 41.6 ms.
+
+The live preview now streams continuously at up to 12 fps, independently of the
+3 fps high-quality mapping recording. The latest frame replaces any waiting
+preview frame. Lower preview JPEG quality reduces traffic without reducing saved
+image quality. A real 70-frame transport check delivered 11.99 fps through the
+laptop (82 ms median frame interval); actual camera-to-screen latency is unmeasured.
+The preview pauses while its browser tab is hidden and resumes when visible.
+
+The Pi starts capture through the user-owned cron entry described below. For this
+session, no more terminal setup is needed. If the laptop app is stopped later,
+restart it with `bash Build/start_mapping_laptop.sh`. The following installation
+instructions are for rebuilding the setup on another checkout.
+
+## One-time setup / reinstall
+
+On the laptop, from this repository:
+
+```sh
+bash Build/start_mapping_laptop.sh
+```
+
+The launcher creates `.venv` if necessary, installs laptop mapping dependencies
+if absent, then serves the page. On Windows, use Python 3.12+ and the equivalent:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -r Mapping/requirements.txt
+.venv\Scripts\python -m Mapping.server
+```
+
+Use `--pi-http http://<actual-pi-address>:8766` if `larp-pi.local` does not resolve.
+For HTTP `.local` addresses, the app selects the IPv4 address at startup, avoiding
+the measured delay trying an IPv6 address the Pi HTTP server does not listen on.
+Restart the laptop app after the Pi moves networks or changes address.
+The default laptop binding is localhost. Add `--host 0.0.0.0` only when other
+devices on the test LAN should open `http://<laptop-ip>:8766/map`.
+The existing `GroundStation.server` also serves `/map`; run one laptop server on
+8766 at a time. The standalone mapping launcher does not start the stationary
+people relay, which is appropriate while carrying the drone.
+
+**The Pi needs the updated capture files.** If using this full checkout, stop
+the known existing camera dashboard, then from the Pi repository root run:
+
+```sh
+bash Build/start_mapping_pi.sh
+```
+
+It uses the recorded sibling `../.venv` first, then `.venv`. Existing Pi camera,
+OpenCV and Flask dependencies are sufficient; do not install PyCOLMAP on the Pi.
+Keep the camera at its current mount/rotation for the first walk. Run only one
+camera process. The launcher uses `--mapping-only`, so inference, radar and Quest
+are not needed. For an existing combined station instead, append `--mapping` to
+its normal command to branch the clean images from its camera owner.
+
+A prepared Pi update bundle contains the two changed capture modules and launch
+files plus a backup-making installer. It is built locally under
+`Saved/MappingSetup/wallhack-mapping-pi.tar.gz`. Copy it to the Pi using your normal
+transfer method; for example, **run on the laptop yourself**:
+
+```sh
+scp Saved/MappingSetup/wallhack-mapping-pi.tar.gz evanl1307@larp-pi.local:~/
+```
+
+Then on the Pi (stop its existing dashboard first):
+
+```sh
+mkdir -p ~/wallhack-mapping-setup
+tar -xzf ~/wallhack-mapping-pi.tar.gz -C ~/wallhack-mapping-setup
+bash ~/wallhack-mapping-setup/install-pi.sh /home/evanl1307/HTN2026/Sharingan
+cd /home/evanl1307/HTN2026/Sharingan
+bash Build/start_mapping_pi.sh
+```
+
+The installer backs up existing versions under `Saved/MappingSetup/`; it does
+not kill processes, change firmware, install packages or enable a service.
+Deployment completed after the operator ran `bash Build/connect_mapping_pi.sh`
+and authenticated in their own terminal. That helper establishes a temporary SSH
+control connection (20-minute idle expiry), without storing a password or
+installing a new key. It can be used again for future setup work if needed.
+The deployed files were backed up under
+`Saved/MappingSetup/20260925T182617Z-2203` on the Pi.
+
+## Each walk
+
+1. Remove the props. Keep the Pi powered continuously while carrying the drone;
+   use the existing bench supply/tether or a verified portable Pi supply.
+2. Start the laptop launcher if needed. The Pi camera starts at boot; do not
+   launch a second camera process while it is already running.
+   Open `http://localhost:8766/map`; wait for **Camera live**.
+3. Press **Start recording**. Carry the camera slowly around a well-lit room for
+   60–120 seconds, translating sideways/forward with overlapping views. Start
+   with an empty room and textured furniture/walls. Return toward the start.
+4. Press **Stop & save**. A recording also stops automatically at 120 seconds.
+   A camera reconnect closes that walk instead of mixing camera generations.
+5. Press **Build 3D map** on the saved walk. This copies the images to the laptop
+   and runs feature matching/reconstruction; it may take several minutes.
+   For walks up to 400 images, if fewer than half connect, it automatically tries
+   matching across the full walk to connect revisited views.
+6. The largest usable reconstructed component opens automatically. Drag to orbit,
+   scroll to zoom, or use **Fit view**. Compare registered cameras against total
+   images; a fragmented/small reconstruction is a failed or partial baseline.
+   Below 80% image coverage, the viewer explicitly labels the result partial.
+   This coverage label does not establish geometric accuracy.
+7. Reopen it later with **View map**, even with the Pi offline. Preserve the
+   original recording for the next estimator/calibration experiment.
+
+Optional experiments in the same page:
+
+- **Add AI surfaces:** estimate relative depth, align it to the sparse map and
+  require agreement from at least three additional views. Use **Show** to switch
+  layers. This remains inferred geometry, not a measured mesh.
+- **Start depth preview:** compare the normal camera to grayscale estimated depth.
+  Bright means nearer; there are no measured metres or temperatures.
+- **Locate camera in this map:** point at the previously scanned area. An orange
+  camera estimate appears when enough landmarks match, then disappears on lost
+  or stale tracking. No new room geometry or flight control is produced.
+- **Capture experiment:** choose sharper-frame selection and optional 20/10 ms
+  exposures between recordings. Check brightness; Standard restores auto exposure.
+  Settings reset to standard at camera restart.
+- For lens calibration, open [the checkerboard](http://127.0.0.1:8766/map-assets/calibration-board.svg)
+  in the running app and capture varied views; instructions are in the experiment
+  ledger. The rough 40 cm chair-seat reference has not been applied as map scale.
+
+Start capture immediately without pressing a browser button:
+
+```sh
+# Pi: begins at the first camera frame, then stops after two minutes.
+bash Build/start_mapping_pi.sh --mapping-autostart
+```
+
+Use `--mapping-seconds 180` for a three-minute maximum or `--mapping-fps 4` for a
+different sample rate. The current default saves 3 clean JPEGs/sec; full-rate
+VIO data and IMU synchronization are a later capture mode. After autostart reaches
+its limit, use **Start recording** for another walk without restarting the Pi.
+
+## Installed: recording after Pi boot
+
+The current Pi uses this entry in **evanl1307's crontab**, with no sudo needed:
+
+```cron
+@reboot /bin/bash /home/evanl1307/HTN2026/Sharingan/Build/run_mapping_pi_background.sh
+```
+
+Cron is active and the same wrapper was successfully launched in the background.
+Reboot execution has not yet been tested. The wrapper acquires an exclusive
+`flock`, starts mapping-only capture with `--mapping-autostart`, and logs to
+`Saved/MappingCapture/service.log`. At each launch it records one two-minute
+session, then stays ready for the browser's **Start recording** button.
+Boot time counts before you pick it up, so check the displayed recording state.
+This is boot startup, not automatic crash recovery. To disable it, remove only
+this mapping entry with `crontab -e`; that does not stop an already-running camera.
+
+### Alternative: system-wide service (not installed)
+
+Use only one startup mechanism. Remove the mapping cron entry and stop its camera
+before switching to this alternative. Inspect `Build/wallhack-mapping.service`
+and adjust its user/paths if they differ. On the Pi:
+
+```sh
+sudo install -m 644 Build/wallhack-mapping.service /etc/systemd/system/wallhack-mapping.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now wallhack-mapping.service
+systemctl status wallhack-mapping.service --no-pager
+```
+
+Each service start records one bounded walk automatically; the process stays
+available for further browser-controlled recordings. Boot time counts before
+you pick it up, so check the camera/recording state. Logs:
+`journalctl -u wallhack-mapping.service -n 50 --no-pager`.
+Disable with `sudo systemctl disable --now wallhack-mapping.service` before
+returning to another camera service. This unit is prepared, **not installed**.
+
+## Files and failure behavior
+
+`manifest.json` identifies the recording; `frames.jsonl` links clean images to
+frame ID, camera generation, sensor timestamp/exposure when available, and host
+monotonic time separately. It does not claim those clocks are synchronized.
+Capture uses a four-frame queue, counts drops, reserves 512 MiB of free disk,
+and never overwrites a previous session. A stale camera preview is hidden.
+An interrupted session is labelled as such; an inconsistent/corrupt archive is
+rejected rather than silently called a successful scan.
+
+Laptop reconstruction writes a new `reconstructions/<revision>/` with the COLMAP
+database, native sparse models, `points.ply` and `scene.json`. The latest successful
+scene is also at the session root. The browser downsamples large point clouds;
+the PLY keeps all recovered points. `reconstruction.json` and `reconstruction.log`
+report progress/errors. A failed rebuild leaves the previous successful map intact.
+Copy important sessions elsewhere: `Saved/` is ignored by Git, not backed up.
+
+If there are no matches/geometry, improve lighting, sharpness, texture and parallax
+before buying hardware. A camera that pans without translating cannot establish
+room depth. Estimated intrinsics are a baseline; calibrating this exact rotated
+image/lens is the next step toward repeatable accuracy. Use the same recordings
+to compare ORB-SLAM3/VIO later; a visually plausible cloud is not a measured map.
+
+## Combining Quest later
+
+Both sources can contribute to the same room, but their raw maps do not already
+share coordinates or scale. Keep their source maps separate, establish corresponding
+static points/planes, solve scale/rotation/translation for the monocular map, then
+validate additional landmarks. Quest can supply a floor/wall prior or an independent
+reference. It cannot provide an unseen room to a drone without someone scanning
+that room first. This import/alignment is not implemented in the baseline.
+
+## Verification on this laptop
+
+- 43 existing Pi tests and 46 existing relay tests pass.
+- 33 mapping tests pass: raw image/timing preservation, archive transfer and path
+  validation, reconnect/time-limit behavior, error recovery, stale preview, and
+  saved-model reload without the Pi. Preview tests cover independent recording
+  rate, slow-disk isolation, skipping old frames, unbuffered relay and IPv4 selection.
+  Component selection rejects models with many registered cameras but no useful
+  3D points, a failure reproduced with the first real recording.
+  New checks cover burst metadata/stop/reconnect behavior, capture settings,
+  robust depth alignment, stale surface revisions and live-pose expiry, plus
+  synthetic lens-calibration recovery. Physical calibration is still pending.
+- Actual CPU reconstruction on a **synthetic** 16-image scene: 16 cameras
+  registered, 1,887 sparse points, one component. This is software verification,
+  not a physical room or drone accuracy result.
+- A second test exercised real HTTP archive transfer, import and the reconstruction
+  subprocess: 15/16 cameras and 559 points. An exact-16 assertion failed on this
+  run, demonstrating that reconstruction quality varies; transfer/build succeeded.
+- Browser checked with the Pi offline, with an isolated labelled synthetic model,
+  and with the actual live Pi preview and enabled **Start recording** button.
+- On the actual Pi, the older checkout's 39 tests pass after deployment. A 60-second
+  setup recording saved 165 decodable 640×480 JPEGs, no drops, and per-frame sensor
+  timestamps/exposure metadata. Stop and archive transfer through the laptop
+  succeeded. Evidence: `Saved/MappingSetup/verification/` on the laptop.
+- The standard first-walk baseline recovered 56/236 cameras and 245 points through
+  the broader-matching fallback. The optional learned pipeline recovered 224/236
+  cameras and 7,865 points. Its second-walk build recovered 97/97 cameras and 9,149
+  points through the actual dashboard API. Useful room coverage, metric accuracy
+  and actual reboot startup remain unverified. Setup recordings and synthetic
+  scenes are separate from these results.
+- After the preview improvement, another 51-frame physical recording passed
+  download, JPEG decoding and increasing sensor timestamps with zero drops.
+
+```sh
+.venv/bin/python -m unittest discover -s Mapping/tests -v
+.venv/bin/python -m unittest discover -s SensorRig/CV/tests -v
+.venv/bin/python -m unittest discover -s GroundStation/tests -v
+```
+
+Backend references: [COLMAP Python API](https://colmap.github.io/pycolmap/index.html),
+[COLMAP CPU workflow](https://colmap.github.io/cli.html), and
+[Picamera2 completed-request source](https://github.com/raspberrypi/picamera2/blob/main/picamera2/request.py).

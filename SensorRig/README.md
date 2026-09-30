@@ -1,5 +1,8 @@
 # SensorRig
 
+For current priorities, read [CONTEXT.md](../CONTEXT.md). The next milestone is
+[room mapping with saved sessions and a live laptop view](../Docs/room-mapping.md).
+
 Start with the [complete sensor/Pi handoff](HANDOFF.md): hardware wiring, boot
 configuration, startup/recovery, data flow, validation and remaining Quest work.
 

@@ -1,5 +1,10 @@
 # Camera/radar → laptop → native Quest people
 
+The [camera mapping baseline](../Mapping/README.md) now adds `/map` and persistent
+`Saved/Mapping/` sessions. It reconstructs after a walk; its standalone launcher
+works without Quest. This runbook describes the existing stationary people
+pipeline, which does not yet consume the new map or a moving drone pose.
+
 The Pi captures camera frames, identifies people and reads radar. The laptop
 matches observations, serves the existing sensor dashboard through read-only
 proxies, and sends a `spatial_people` extension to the native Quest app.

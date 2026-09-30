@@ -1,5 +1,10 @@
 # Sensing architecture
 
+This is the original Pi station architecture. The later
+[laptop association/native Quest path](../../GroundStation/README.md) extends it.
+Read [current context](../../CONTEXT.md) and the
+[proposed room-mapping architecture](../../Docs/room-mapping.md) before new work.
+
 ```text
 IMX219 -> Picamera2 BGR capture (24 fps) -> latest distinct frame
                                                   |

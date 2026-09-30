@@ -1,5 +1,11 @@
 # Camera + radar → Meta Quest handoff
 
+> Historical Pi browser/bridge handoff. For the later implemented stationary
+> native people path, use [GroundStation/README.md](../../GroundStation/README.md).
+> For current priorities and room mapping, read [CONTEXT.md](../../CONTEXT.md).
+> Native tasks marked pending below describe this earlier handoff, not the full
+> current checkout; physical headset acceptance is still pending.
+
 The combined station is running at **http://172.20.10.3:8766/**.
 The headset layout is **http://172.20.10.3:8766/quest**.
 Both show the actual camera image and LD2450 map together. The Quest layout uses
