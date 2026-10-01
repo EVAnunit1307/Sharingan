@@ -1,6 +1,7 @@
 """Bounded clean-image recorder, fed by the existing camera owner. No motor I/O."""
 from datetime import datetime, timezone
 import json
+import math
 from pathlib import Path
 import queue
 import re
@@ -14,6 +15,13 @@ import cv2
 from flask import Response, jsonify, request, send_file
 
 SESSION_ID = re.compile(r"^[0-9]{8}T[0-9]{6}Z-[a-f0-9]{8}$")
+MAX_SAMPLE_FPS = 24
+
+
+def validate_fps(fps):
+    if isinstance(fps, bool) or not isinstance(fps, (int, float)) or not math.isfinite(fps) or not 0 < fps <= MAX_SAMPLE_FPS:
+        raise ValueError(f'Recording rate must be greater than 0 and at most {MAX_SAMPLE_FPS} fps')
+    return float(fps)
 
 
 def write_json(path, value):
@@ -24,8 +32,9 @@ def write_json(path, value):
 
 class MappingCapture:
     def __init__(self, root, fps=3, max_seconds=120, autostart=False, min_free_bytes=512*1024*1024):
-        if not 0 < fps <= 10 or not 5 <= max_seconds <= 600:
-            raise ValueError('Mapping capture requires 0 < fps <= 10 and 5–600 seconds')
+        fps = validate_fps(fps)
+        if not 5 <= max_seconds <= 600:
+            raise ValueError('Mapping capture requires 5–600 seconds')
         self.root = Path(root)
         self.fps, self.max_seconds = fps, max_seconds
         self.min_free_bytes = min_free_bytes
@@ -36,7 +45,7 @@ class MappingCapture:
         self.shutdown = threading.Event()
         self.active = None
         self.last_session = None
-        self.last_sample = -1e9
+        self.next_sample = None
         self.preview = None
         self.preview_sequence = 0
         self.preview_pending = None
@@ -80,6 +89,7 @@ class MappingCapture:
                                started=time.monotonic(), generation=None, stopping=False,
                                candidate=None,window_start=None,candidates_seen=0,last_saved_at=None)
             self.last_session = identifier
+            self.next_sample = None
             self.error = None
             self.autostart = False
             return self.status()
@@ -135,13 +145,22 @@ class MappingCapture:
                     self._request_stop(session, 'camera_reconnected')
                 else:
                     session['generation'] = generation
-            if self.selection=='uniform' and captured_at - self.last_sample < 1/self.fps:
-                return
-            if self.selection=='uniform':self.last_sample = captured_at
             if session and session['stopping']:
                 session = None
             if not session:
                 return
+            if self.selection == 'uniform':
+                period = 1 / self.fps
+                if self.next_sample is None:
+                    self.next_sample = captured_at
+                # Small arrival jitter should not discard alternate frames when
+                # requested rate equals the sensor rate. Never duplicate a frame.
+                if captured_at + min(.002, period * .05) < self.next_sample:
+                    return
+                # Keep a fixed sampling clock: capture jitter must not turn a
+                # requested 12/24 fps into every third/second sensor frame.
+                # Skip missed deadlines; never enqueue duplicates to catch up.
+                self.next_sample += max(1, math.floor((captured_at - self.next_sample) / period) + 1) * period
             meta = metadata or {}
             row = dict(frame_id=sequence, host_capture_mono_ns=round(captured_at*1e9),
                        sensor_timestamp_ns=meta.get('SensorTimestamp'), exposure_us=meta.get('ExposureTime'),
@@ -185,13 +204,16 @@ class MappingCapture:
         session['last_saved_at']=row['host_capture_mono_ns']/1e9
         session['candidate']=None;session['candidates_seen']=0
 
-    def configure(self,selection='uniform',exposure_us=None,gain=8):
+    def configure(self,selection='uniform',exposure_us=None,gain=8,fps=None):
         if selection not in ('uniform','sharpest'):raise ValueError('Choose uniform or sharpest frame selection')
         if exposure_us is not None and (not isinstance(exposure_us,(int,float)) or not 1000<=exposure_us<=40000):
             raise ValueError('Manual exposure must be 1,000–40,000 microseconds')
         if not isinstance(gain,(int,float)) or not 1<=gain<=16:raise ValueError('Gain must be between 1 and 16')
+        if fps is not None: fps = validate_fps(fps)
         with self.lock:
             if self.active:raise ValueError('Stop recording before changing capture settings')
+            if fps is not None: self.fps = fps
+            self.next_sample = None
             self.selection=selection;self.exposure_us=int(exposure_us) if exposure_us is not None else None
             self.requested_gain=float(gain);self.settings_version+=1;self.settings_changed_at=time.monotonic()
             return self.status()
@@ -290,6 +312,7 @@ class MappingCapture:
                         dropped_frames=session['manifest']['dropped_frames'] if session else 0,
                         elapsed_seconds=round(time.monotonic()-session['started'], 1) if session else 0,
                         max_seconds=self.max_seconds, sample_fps=self.fps,
+                        sample_fps_max=MAX_SAMPLE_FPS,
                         preview_fps_limit=self.preview_fps,
                         frame_selection=self.selection,requested_exposure_us=self.exposure_us,requested_gain=self.requested_gain,
                         camera_metadata=dict(self.camera_metadata),applied_controls=dict(self.applied_controls),
@@ -368,7 +391,7 @@ def register_mapping_capture(app, capture):
             if action == 'configure':
                 options=request.get_json(silent=True)
                 if not isinstance(options,dict):raise ValueError('Expected capture settings')
-                return jsonify(capture.configure(options.get('selection','uniform'),options.get('exposure_us'),options.get('gain',8)))
+                return jsonify(capture.configure(options.get('selection','uniform'),options.get('exposure_us'),options.get('gain',8),options.get('fps')))
             return jsonify(error='Unknown action'), 404
         except (ValueError, OSError) as exc:
             return jsonify(error=str(exc)), 409

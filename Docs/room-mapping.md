@@ -1,18 +1,132 @@
 # ADR-001: A saved room map and live sensor overlay
 
-**Status:** Two room walks reconstructed; learned matching improves recovery. Accuracy validation and cleaner capture are next.
+**Status:** Rough operator map confirmed. DA3/semantic 2/5/10-second trials produce local stool/floor patches; the room sweep fails placement checks. Full room mapping remains unvalidated. ORB-SLAM3 trials retained no map. Higher-FPS recording update is prepared locally; IMU fusion is planned.
 
-**Date:** 25 September 2026.
+**Date:** 25 September 2026; use case revisited 1 October 2026.
 
 **Decider:** Evan/team after the existing-hardware experiments.
 
 **Current implementation:** [CONTEXT.md](../CONTEXT.md).
+
+## Confirmed first-version scope — 1 October
+
+**Latest quick-scan result:** the operator comparison now tests timestamp-bounded
+2/5/10-second windows from two recordings. Stool/floor patches are recognizable,
+but their short-window poses change when more views are added. The room sweep
+has insufficient floor support at 2/5 seconds and unstable geometry at 10 seconds.
+Semantic object identities also fail, so the sketch retains generic object regions
+and source images. No reliable full-room scan duration has been established.
+See `Saved/MappingResearch/quick-scan-20261001/operator-comparison.html` and the
+[current runbook](../Mapping/README.md). Work while the Pi is unavailable follows
+the software sequence below.
+
+**Earlier joint depth/pose trial:** DA3 Small predicts depth and camera poses on the Mac
+GPU. A 16-view chair segment produces a recognizable coarse stool/floor cloud;
+an overlapping shifted batch changes the shared camera path by 1.9% of its spread
+after similarity alignment. This is input sensitivity, not measured accuracy.
+Longer coverage has larger image reprojection errors. Inspect
+`Saved/MappingResearch/da3/comparison.html`; exact provenance and reproduction are
+in [Mapping/README.md](../Mapping/README.md). A better room-level capture remains
+necessary for validating performance with our camera.
+The local recorder now supports configurable rates up to 24 fps, defaulting to
+12; deployment and a bounded throughput test await the offline Pi's reconnection.
+
+**Implementation update:** the optional ORB-SLAM3 laptop build and recording replay
+are implemented; [build/replay notes](../Mapping/orb/README.md). Three trials on
+the two calibrated chair recordings briefly initialized but discarded their maps.
+The dashboard now also displays an explicitly separate, repeatability-screened
+offline fragment: 58 camera views and 3,357 visual landmarks. Its coarse display
+does not establish room walls, free space or people placement. Higher-rate capture
+and successful tracking validation remain pending; the Pi still saves 3 fps.
+
+Evan's priority is **a rough room layout with approximate drone/people positions**.
+Fine object detail and a detailed mesh are unnecessary. Use a coarse top-down
+representation of supported room boundaries and large obstacles, a camera/drone
+position and heading, and fresh people observations in the same frame. Show
+unobserved or uncertain regions explicitly. Sparse feature gaps do not establish
+free space. Autonomous navigation is outside this first milestone.
+
+The chair captures test tracking/geometry and should not drive the product toward
+object modelling. The latest retake still gives inconsistent full camera paths
+across builds, so reducing visual detail alone will not make it a usable room map.
+The earlier continuous-tracking experiment selected ORB-SLAM3 on the laptop,
+preserving existing capture/calibration/storage/viewer components. It is
+implemented as the experiment above, not a validated replacement. Its sparse landmarks need
+an additional, validated coarse-geometry stage to represent room boundaries.
+
+Existing recordings save 3 images/second. Use them for initial replay only; obtain
+higher-rate timestamped input before judging continuous tracking under motion.
+Establish scale and sensor registration before placing metric radar observations
+on a monocular map. Camera/IMU fusion remains conditional on connecting and
+calibrating the FC IMU. Stereo/depth with RTAB-Map is the alternative if the
+existing camera cannot support useful room coverage and tracking.
+
+The historical rankings and numerical targets below are proposals, not accepted
+accuracy requirements for this rough-map use case. Judge the next trial by a
+coherent room layout, a stable return to the starting area, and approximate people
+positions verified at known locations; point count and chair surface detail are
+secondary.
 
 **Latest:** [Experiment ledger](mapping-experiments-2026-09-25.md) documents
 separate inferred surfaces, live depth preview, optional localization in a saved
 map, Pi feature benchmarks and deployed capture controls. Continuous map expansion
 and metric validation remain pending; later entries supersede the proposed-only
 status of those experiments below.
+
+## Next software experiments — proposed, not implemented
+
+The immediate gap is maintaining one useful coordinate frame as new views arrive.
+Our current DA3 windows are separate estimates with independent origin, orientation
+and scale. A recognizable surface patch alone cannot place a moving radar contact.
+The next deliverable should be **a replay that grows one coarse map, shows camera
+pose and uncertainty, and withholds contacts whenever registration is unreliable**.
+
+1. **Establish an independent reference while the Pi is unavailable.** Replay the
+   RGB input of a short [TUM RGB-D room sequence](https://cvg.cit.tum.de/data/datasets/rgbd-dataset),
+   reserving its measured depth and motion-capture trajectory for evaluation.
+   Compare 2/5/10-second prefixes, observed coverage, depth/pose error, retained
+   tracking and total processing time. Report any similarity alignment separately;
+   fitting away monocular scale must not be reported as recovered metric scale.
+   This separates model limitations from our footage/calibration problems.
+2. **Test overlapping windows against that reference.** Retain a map frame and
+   align new windows using shared views and supported geometry. Reject poorly
+   constrained fits, particularly near-stationary or rotation-only motion; preserve
+   unknown regions. Use revisit constraints to test drift. This is an experiment,
+   not a claim that independent batches can simply be concatenated.
+   [DA3-Streaming](https://github.com/ByteDance-Seed/Depth-Anything-3/tree/main/da3_streaming)
+   supplies chunk alignment/loop-closure code to study, but its official pipeline
+   is not a complete SLAM system. The checked source uses CUDA-specific calls and
+   `faiss-gpu`; our working DA3 Small MPS runner does not establish streaming Mac
+   compatibility. Start with the existing runner rather than assume a drop-in install.
+3. **Prepare visual-inertial localization for the later IMU.** Evaluate
+   [OpenVINS](https://github.com/rpng/open_vins) on its supported
+   [EuRoC/TUM VI recordings](https://docs.openvins.com/gs-datasets.html) before
+   connecting the FC. It estimates motion from camera tracks plus IMU samples;
+   persistent room-map relocalization and surface mapping remain additional work.
+   Camera/IMU [time, mounting and noise calibration](https://docs.openvins.com/gs-calibration.html)
+   are required for a useful scale/orientation estimate. Our existing
+   `Mapping.pose_bridge` accepts the resulting poses after validation; no live
+   fusion exists yet. ORB-SLAM3's inertial mode is another candidate using our
+   existing build, but the monocular replay failures remain unresolved.
+4. **Reduce observation time through coverage, not a fixed timer.** Select sharp,
+   overlapping views that add floor/wall/doorway evidence. Propose the next useful
+   view and keep an image-linked landmark summary when a metric layout is not yet
+   supported. Stop criteria need benchmark evidence; a 360-degree rotation or a
+   generic language-model room guess does not establish unseen geometry.
+
+Alternatives if these experiments do not meet the use case:
+
+| Software / approach | Gap it addresses | Practical condition |
+| --- | --- | --- |
+| [MASt3R-SLAM](https://github.com/rmurai0610/MASt3R-SLAM) | Learned reconstruction with continuous tracking and map optimization | Official setup uses CUDA and was primarily tested on Ubuntu; consider when an NVIDIA machine is available, not a demonstrated Mac option |
+| [RTAB-Map](https://introlab.github.io/rtabmap/) with stereo/RGB-D | Direct metric depth and a persistent pose graph | Requires suitable depth hardware and payload/power/calibration evaluation |
+| Image-linked landmark graph | A quick operator summary: doorway, obstacle, observed direction, unknown space | Useful intermediate output; it cannot supply metric people placement until localized |
+
+When the Pi returns, deploy the prepared 12 fps capture update and measure actual
+throughput/drops/exposure before a short room sweep. Later collect synchronized
+camera/IMU data and known-location checks for the camera and radar separately.
+Better labels can improve communication after stable geometry is established;
+the current SegFormer candidates must not be treated as verified object identity.
 
 ## Recommendation
 

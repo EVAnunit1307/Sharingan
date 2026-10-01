@@ -1,5 +1,110 @@
 # Pick up the drone and record a room
 
+## Quick-scan operator sketch — 1 October
+
+Open `Saved/MappingResearch/quick-scan-20261001/operator-comparison.html` for the
+2/5/10-second prefix experiment. It uses existing room-sweep and stool recordings,
+DA3 geometry/poses, and local NVIDIA SegFormer B0 ADE20K semantic labels. No Pi,
+live radar, image upload or IMU was used. Small-window source selection follows
+sensor timestamps at stride 2: 3/8/15 images span about 1.3/4.7/9.4 seconds inside
+the requested 2/5/10-second windows. Short trials never consume later images.
+
+The sketch projects confidence-filtered visible surfaces into an inferred floor
+frame. It does not fill an unseen room polygon or label gaps as free space.
+Objects are generic regions because the model confuses labels, including stool,
+chair and toilet. A floor supported by multiple views and a reprojection screen
+are required for provisional camera/contact placement. The room's 2/5-second
+windows have too little floor evidence; its 10-second diagnostic is unstable.
+The stool has usable local surface patches, but short-window camera poses remain
+sensitive to additional input. No minimum duration for an accurate full room has
+been established.
+
+The viewer pairs raw/labelled images with a top-down cell sketch, source-linked
+regions, all duration results, and opt-in **simulated** contact replay. Lost
+tracking hides current camera/contact placement while preserving static geometry.
+Each trial exports `sketch.json` (research), a compact `operator-packet.json`
+(`wallhack.operator_sketch.v1`) and timestamped `pose-replay.jsonl`. These are new
+offline packet examples, not changes to the current live radar/Quest protocol.
+Unstable maps emit withheld packets with no surface cells/landmarks or usable
+poses. All maps have distinct IDs and unknown scale.
+
+Reproduction: `Mapping.da3_trial --duration-seconds 2 --stride 2` (also 5/10),
+then `Mapping.semantic_infer`, then `Mapping.operator_sketch`. All accept `--help`.
+Use the installed `Saved/MappingResearch/quick-scan-20261001/semantic-venv` for
+semantic inference; it reuses the research Torch install and isolates Transformers.
+Model revision/hash: `segformer-model/source.json` within that research directory.
+DA3 generation uses `Saved/MappingResearch/da3/venv`. Source recordings and start
+indices are recorded in each trial's `summary.json`; raw model arrays are retained.
+Local cache entries contain only image/model-keyed predictions. Browser and test
+artifacts are saved in the same research folder.
+
+**IMU remains planned.** `Mapping.pose_bridge` separates map placement from the
+pose producer, so a calibrated visual-inertial estimator can replace recorded
+visual poses. No inertial fusion is implemented yet. See [IMU integration](IMU.md).
+
+## AI geometry trial and recording rate — 1 October
+
+The latest experiment runs **Depth Anything 3 Small** on saved images, estimating
+depth and camera poses jointly. Open `Saved/MappingResearch/da3/comparison.html`
+for three local runs of the chair retake. The short run produces a recognizable
+stool/floor patch; longer coverage has larger correspondence errors. This is
+inferred geometry with unknown scale, not a validated room map. Raw predictions,
+checkpoint hashes, source commit, logs and diagnostics are beside the viewer.
+
+The installed research environment is `Saved/MappingResearch/da3/venv`; it reuses
+PyTorch from `Saved/MappingResearch/venv` and adds torchvision, einops, addict,
+omegaconf, safetensors and imageio. Keep PyCOLMAP out of this process. The runner
+uses the upstream network and processors directly to avoid unused CUDA/export
+dependencies. The repository checkout is pinned at
+`3d835ec1a5802d64a8b8b15f817a1ab54809bfe4`; model revision and hashes are recorded in
+`Saved/MappingResearch/da3/model-source.json`. Reproduce with a **new** output path:
+
+```sh
+Saved/MappingResearch/da3/venv/bin/python -m Mapping.da3_trial \
+  --source Saved/MappingResearch/da3/source --model Saved/MappingResearch/da3/model \
+  --session Saved/Mapping/20261001T053033Z-f37549ec \
+  --start-frame 48 --stride 4 --frames 16 --resolution 392 \
+  --output Saved/MappingResearch/da3/new-trial
+
+Saved/MappingResearch/da3/venv/bin/python -m Mapping.da3_inspect \
+  --trials Saved/MappingResearch/da3/chair-16-c \
+    Saved/MappingResearch/da3/chair-16-shifted Saved/MappingResearch/da3/chair-24-wide \
+  --output Saved/MappingResearch/da3/comparison.html
+```
+
+Metal requires macOS GPU access. `--device cpu` is explicit fallback; it was not
+benchmarked. Batch inference timings exclude loading, image I/O and the viewer.
+The comparison aligns shared camera positions and measures input sensitivity;
+it does not establish physical accuracy. The PLY is confidence-filtered inferred
+depth, not triangulated landmarks or verified free space.
+
+**Recording FPS is prepared locally; the Pi is currently unreachable.** Updated
+camera CLI default: 12 saved fps. The dashboard can request 3, 6, 12 or 24 fps
+between recordings after deploying `SensorRig/CV/camera_dashboard.py` and
+`SensorRig/CV/mapping_capture.py`. The sensor target remains 24 fps; preview stays
+at up to 12 fps. Rate control stays disabled for old Pi software. Check saved
+sensor timestamp intervals and dropped frames in a bounded stationary test before
+using the higher rate for a walk. Higher FPS alone does not shorten exposure.
+
+## Stationary camera check
+
+For an unattended **stationary camera check**, `Mapping.stationary_check` uses
+the existing Pi HTTP camera owner: one recording bounded by the Pi's existing
+maximum of 120 seconds, followed by status-only monitoring (default ten minutes
+total). It saves a small preview sample, imports the clip and checks decoding,
+timestamps, drops and brightness. It leaves exposure/capture settings unchanged.
+The camera must already be live and idle; temperature/power are not measured.
+Use a new output directory for each run. Example:
+
+```sh
+.venv/bin/python -m Mapping.stationary_check --pi-http http://172.20.10.3:8766 \
+  --output Saved/MappingResearch/doorway-check-new --monitor-seconds 600
+```
+
+This runs on the laptop, so it needs that laptop awake and the hotspot available.
+The Pi recording stops independently if the laptop disconnects. Stationary frames
+can check capture reliability but cannot validate motion-based room geometry.
+
 This baseline works **without Quest**. The laptop hosts the app and computes the
 map; the browser renders it. The Pi saves the walk locally. Quest can later add
 room geometry/reference data after coordinate alignment.
@@ -22,6 +127,13 @@ metric scale; units/orientation in the viewer are explicitly uncalibrated.
 
 The existing FC IMU is a separate connection. A read-only logger is prepared;
 the Pi currently has no confirmed FC data link. See [IMU connection and logging](IMU.md).
+
+**1 October: rough-map experiment.** An optional ORB-SLAM3 replay backend is built
+on this Mac. Calibrated recordings have **Test continuous tracking** and **Replay
+tracking** controls. Current 3 fps chair recordings briefly initialized but retained
+no ORB maps. **View coarse partial scan** shows the separately labelled 58-view
+offline reconstruction fragment with saved-camera playback. No full room layout
+or people positions are established. See [reproduction and results](orb/README.md).
 
 The first real checkerboard recording is now saved as `CAMERA CALIBRATION`
 (`20260925T202722Z-b884439e`): 352 images, 40 distinct usable board views.
@@ -73,8 +185,8 @@ were restored after testing. See the [complete experiment ledger](../Docs/mappin
 For now, add light, move sideways slowly around textured furniture and pause
 after each step: median exposure is still 41.6 ms.
 
-The live preview now streams continuously at up to 12 fps, independently of the
-3 fps high-quality mapping recording. The latest frame replaces any waiting
+The live preview streams continuously at up to 12 fps, independently of the
+recording rate (last deployed: 3 fps; local update: 12 fps). The latest frame replaces any waiting
 preview frame. Lower preview JPEG quality reduces traffic without reducing saved
 image quality. A real 70-frame transport check delivered 11.99 fps through the
 laptop (82 ms median frame interval); actual camera-to-screen latency is unmeasured.
@@ -202,9 +314,10 @@ Start capture immediately without pressing a browser button:
 bash Build/start_mapping_pi.sh --mapping-autostart
 ```
 
-Use `--mapping-seconds 180` for a three-minute maximum or `--mapping-fps 4` for a
-different sample rate. The current default saves 3 clean JPEGs/sec; full-rate
-VIO data and IMU synchronization are a later capture mode. After autostart reaches
+Use `--mapping-seconds 180` for a three-minute maximum or `--mapping-fps 6` for a
+different sample rate. Updated code defaults to 12 clean JPEGs/sec, with up to 24
+requested; actual rate depends on camera and disk. This update has not yet been
+deployed to the offline Pi. IMU synchronization remains a later capture mode. After autostart reaches
 its limit, use **Start recording** for another walk without restarting the Pi.
 
 ## Installed: recording after Pi boot

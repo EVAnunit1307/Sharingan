@@ -119,6 +119,49 @@ class CaptureTests(unittest.TestCase):
         self.assertFalse(controls['AeEnable']);self.assertEqual(controls['ExposureTime'],10000)
         self.capture.configure();self.assertEqual(self.capture.camera_controls()[1],{'AeEnable':True})
 
+    def test_rate_change_validated_by_http_and_locked_during_capture(self):
+        for bad in (0, -1, 25, True, '12', float('nan'), float('inf')):
+            self.assertEqual(self.client.post('/mapping/configure',json={'fps':bad}).status_code,409)
+        reply=self.client.post('/mapping/configure',json={'fps':12})
+        self.assertEqual(reply.status_code,200)
+        self.assertEqual(reply.json['sample_fps'],12)
+        self.capture.settings_changed_at-=2
+        sid=self.capture.start()['session_id']
+        self.assertEqual(self.client.post('/mapping/configure',json={'fps':24}).status_code,409)
+        self.assertEqual(self.capture.fps,12)
+        self.capture.stop()
+        self.assertEqual(json.loads((self.root/sid/'manifest.json').read_text())['sample_fps'],12)
+
+    def test_uniform_rate_keeps_sampling_clock_through_jitter_and_gaps(self):
+        self.capture.configure(fps=12);self.capture.settings_changed_at-=2
+        sid=self.capture.start()['session_id']
+        frame=np.full((48,64,3),80,dtype=np.uint8)
+        origin=time.monotonic()
+        # 24 sensor fps, with arrival jitter that previously reduced the saved
+        # rate by waiting a full new interval after every selected frame.
+        for i in range(240):
+            when=origin+i/24+(0 if i%2 else .0007)
+            self.capture.submit(frame,i,when,1,{'SensorTimestamp':round(when*1e9)})
+            self.capture.jobs.join()
+        before=self.capture.status()['frames_saved']
+        self.assertTrue(119<=before<=121,before)
+        self.capture.submit(frame,300,origin+20,1,{'SensorTimestamp':round((origin+20)*1e9)})
+        self.capture.jobs.join()
+        self.assertEqual(self.capture.status()['frames_saved'],before+1)
+        self.capture.stop()
+        rows=[json.loads(line) for line in (self.root/sid/'frames.jsonl').read_text().splitlines()]
+        self.assertEqual(len({r['frame_id'] for r in rows}),len(rows))
+        self.assertTrue(all(b['sensor_timestamp_ns']>a['sensor_timestamp_ns'] for a,b in zip(rows,rows[1:])))
+
+    def test_full_sensor_rate_does_not_discard_alternate_early_arrivals(self):
+        self.capture.configure(fps=24);self.capture.settings_changed_at-=2
+        self.capture.start()
+        frame=np.full((48,64,3),80,dtype=np.uint8);origin=time.monotonic()
+        for i in range(48):
+            self.capture.submit(frame,i,origin+i/24+(0 if i%2 else .0007),1)
+            self.capture.jobs.join()
+        self.assertEqual(self.capture.status()['frames_saved'],48)
+
     def test_reconnect_closes_recording_without_mixing_generations(self):
         session_id=self.capture.start()['session_id']
         self.publish(1,1)

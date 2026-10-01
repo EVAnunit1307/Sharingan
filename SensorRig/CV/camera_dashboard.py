@@ -388,7 +388,8 @@ def main(argv=None):
     parser.add_argument('--mapping-only', action='store_true', help='Capture without person inference; implies --mapping')
     parser.add_argument('--mapping-autostart', action='store_true', help='Start a bounded recording at first camera frame')
     parser.add_argument('--mapping-root', type=Path, default=HERE.parents[1]/'Saved'/'MappingCapture')
-    parser.add_argument('--mapping-fps', type=float, default=3)
+    parser.add_argument('--mapping-fps', type=float, default=12,
+                        help='Saved images per second, up to 24 (default: 12); actual rate depends on camera and disk')
     parser.add_argument('--mapping-seconds', type=int, default=120)
     args = parser.parse_args(argv)
     if not (0 < args.detect_fps <= 30 and 0 < args.hfov < 180 and args.threads > 0):

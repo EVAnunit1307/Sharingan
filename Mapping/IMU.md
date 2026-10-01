@@ -1,5 +1,42 @@
 # Existing flight-controller IMU
 
+## Planned integration with the quick-scan operator sketch — 1 October
+
+Evan confirmed that the IMU **will be available later**. It is a planned input,
+not abandoned because the current experiments use only saved camera images.
+The quick-scan viewer displays `IMU pending`; every real trial has `imu_used=false`.
+
+`Mapping.pose_bridge.PoseSample` is the boundary between pose estimation and
+placing observations in the map. It carries map identity, clock identity,
+measurement timestamp, units, position, camera-to-map rotation, tracking state,
+pose source and whether IMU data were used. A future calibrated visual-inertial
+estimator can provide these poses; the viewer/observation transform need not be
+rewritten. The module does **not** estimate pose from raw IMU values, interpolate
+pose history or synchronize clocks. It rejects placement on lost/stale poses,
+mismatched map/clock/units and invalid rigid transforms.
+
+Integration order after hardware is available:
+
+1. Use the read-only inventory/logger below to identify the FC, actual sensor
+   units, available update rate and timestamp limitations.
+2. Calibrate camera-to-IMU rotation/translation, gyro/accelerometer bias/noise,
+   and the time relationship to camera `SensorTimestamp`. Keep calibration and
+   clock-mapping provenance with the recording. USB receive time alone is not
+   sensor time.
+3. Evaluate a visual-inertial estimator on synchronized saved data. Use inertial
+   gravity/orientation to support map orientation and camera motion; establish
+   metric scale through a validated estimator/calibration. Raw acceleration
+   integration alone is not our room-localization method.
+4. Supply camera poses at observation timestamps through the pose boundary and
+   register the radar mount/units separately. The LD2450's missing elevation and
+   tilted/moving-rig behavior remain separate limitations.
+
+Current semantic floor fitting is only a temporary, inferred reference for the
+top-down sketch. It has no measured gravity vector. The contact replay is synthetic
+with an identity sensor/camera mount and arbitrary units, so passing that replay
+does not validate real IMU/radar fusion. The pose tests cover a future fused pose
+at the interface, not a functioning visual-inertial estimator.
+
 On 25 September Evan clarified that the Pi is **not connected to the flight
 controller**. The reference to RX was not enough to identify the physical wiring;
 his friend handled the hardware. Do not infer an FC data connection from the Pi

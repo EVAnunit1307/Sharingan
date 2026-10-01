@@ -1,6 +1,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
 let busy = false, remoteSessions = [], localSessions = [], activeId = null, jobBusy = false, learnedReady = false, depthReady = false, loadedRevision = null, completedJob = null, sessionsSignature = null;
+let trackingReady=false;
 async function api(path, method = 'GET', payload = {}) {
   const response = await fetch(path, {method, headers: method === 'POST' ? {'Content-Type':'application/json'} : {}, body: method === 'POST' ? JSON.stringify(payload) : undefined, signal: AbortSignal.timeout(10000)});
   const data = await response.json();
@@ -22,7 +23,7 @@ async function build(id, backend = 'standard') {
 function renderSessions() {
   const merged = new Map(remoteSessions.map(s => [s.session_id, {...s, onPi:true}]));
   for (const s of localSessions) merged.set(s.session_id, {...merged.get(s.session_id), ...s, onLaptop:true});
-  const signature=JSON.stringify([[...merged.values()],activeId,jobBusy,learnedReady,depthReady]);
+  const signature=JSON.stringify([[...merged.values()],activeId,jobBusy,learnedReady,depthReady,trackingReady]);
   if(signature===sessionsSignature)return;
   sessionsSignature=signature;
   const area = $('sessions'); area.replaceChildren();
@@ -39,6 +40,9 @@ function renderSessions() {
     if(learnedReady){const stronger=document.createElement('button');stronger.className='secondary';stronger.textContent='Experimental matching';stronger.title='Learned matching with a second build to check stability. May recover more views; shape still needs validation.';stronger.disabled=reconstruct.disabled||s.frames_saved>400;stronger.onclick=()=>build(s.session_id,'xfeat');buttons.append(stronger);}
     if(depthReady&&s.has_model){const depth=document.createElement('button');depth.className='secondary';depth.textContent=s.has_depth?'Rebuild AI surfaces':'Add AI surfaces';depth.title='Experimental depth estimates aligned and checked across views. No measured distances or temperature.';depth.disabled=jobBusy||s.session_id===activeId;depth.onclick=()=>build(s.session_id,'depth');buttons.append(depth);}
     if(s.has_model){const view=document.createElement('button');view.textContent='View map';view.onclick=()=>load(s.session_id);buttons.append(view);}
+    if(trackingReady&&s.has_calibration){const track=document.createElement('button');track.className='secondary';track.textContent='Test continuous tracking';track.disabled=reconstruct.disabled;track.onclick=()=>build(s.session_id,'orb');buttons.append(track);}
+    if(s.has_tracking){const replay=document.createElement('a');replay.textContent='Replay tracking →';replay.href='/map-assets/tracking.html?session='+encodeURIComponent(s.session_id);buttons.append(replay);}
+    if(s.has_partial){const partial=document.createElement('a');partial.textContent='View coarse partial scan →';partial.href='/map-assets/tracking.html?source=partial&session='+encodeURIComponent(s.session_id);buttons.append(partial);}
     row.append(description,buttons);area.append(row);
   }
 }
@@ -69,6 +73,8 @@ async function refresh() {
       $('frames').textContent=s.frames_saved;$('elapsed').textContent=s.elapsed_seconds;$('quality').textContent=s.state;
       $('start').disabled=busy||!s.camera_live||!!activeId||s.settings_settling;$('stop').disabled=busy||!activeId;
       $('apply-capture').disabled=busy||!s.camera_live||!!activeId||!s.frame_selection;
+      $('capture-fps').disabled=$('apply-capture').disabled||!s.sample_fps_max;
+      $('capture-fps-note').textContent=s.sample_fps_max?`Currently ${s.sample_fps} saved fps requested; choose a rate and Apply. Actual throughput is checked after recording.`:'Recording-rate control requires the updated Pi camera software.';
       const exposure=s.camera_metadata?.ExposureTime,gain=s.camera_metadata?.AnalogueGain;
       $('capture-detail').textContent=s.error||`${s.sample_fps} images/sec · stops after ${s.max_seconds} sec${s.dropped_frames?` · ${s.dropped_frames} frames dropped`:''}${exposure?` · ${(exposure/1000).toFixed(1)} ms exposure · ${Number(gain).toFixed(1)}× gain`:''}${s.frame_selection==='sharpest'?' · sharper frame selection':''}${s.settings_settling?' · settling…':''}`;
       if(cameraLive){startPreview();}else{stopPreview();}
@@ -76,15 +82,20 @@ async function refresh() {
       activeId=null;$('connection').textContent='Pi offline';$('connection').classList.remove('live');$('start').disabled=$('stop').disabled=true;
       cameraLive=false;stopPreview();$('quality').textContent='offline';$('frames').textContent=$('elapsed').textContent='—';
       $('apply-capture').disabled=true;
+      $('capture-fps').disabled=true;
+      $('capture-fps-note').textContent='Connect the Pi to apply a recording rate.';
       $('capture-detail').textContent=status.status==='rejected'?status.reason.message:(status.value.error||'Enable mapping on the Pi');
     }
     if(results[1].status==='fulfilled')remoteSessions=results[1].value.sessions;else remoteSessions=[];
     if(results[2].status==='fulfilled'){
       const s=results[2].value;localSessions=s.sessions;learnedReady=!!s.learned_backend_ready;depthReady=!!s.depth_backend_ready;jobBusy=['downloading','running'].includes(s.job.state);
+      trackingReady=!!s.tracking_backend_ready;
       $('backend').textContent=s.backend_ready?'CPU mapper ready':'Mapper not installed';$('backend').classList.toggle('live',s.backend_ready);$('storage').textContent=s.storage;
       $('job').hidden=s.job.state==='idle';$('job').textContent=s.job.phase||'';$('job').classList.toggle('failed',s.job.state==='failed');
       const jobKey=JSON.stringify([s.job.session_id,s.job.revision,s.job.backend]);
-      if(s.job.state==='complete' && jobKey!==completedJob){await load(s.job.session_id,s.job.kind==='depth');completedJob=jobKey;}
+      if(s.job.state==='complete' && jobKey!==completedJob){
+        if(s.job.kind==='tracking')notice('Tracking replay is ready. Choose Replay tracking on the recording below.');
+        else await load(s.job.session_id,s.job.kind==='depth');completedJob=jobKey;}
     }
     renderSessions();
   }finally{refreshing=false;}
@@ -136,7 +147,8 @@ $('fit').onclick=fit;$('top').onclick=()=>{pitch=-1.5;draw();};new ResizeObserve
 $('layer-select').onchange=draw;
 $('apply-capture').onclick=async()=>{const selected=$('capture-profile').value;
   const options={selection:selected==='standard'?'uniform':'sharpest',exposure_us:selected==='motion10'?10000:selected==='motion20'?20000:null,gain:8};
-  try{await api('/map-api/pi/configure','POST',options);notice('Capture settings applied. Check brightness before recording.');await refresh();}catch(error){notice(error.message);}
+  if(!$('capture-fps').disabled)options.fps=Number($('capture-fps').value);
+  try{const result=await api('/map-api/pi/configure','POST',options);notice(`Capture settings applied: ${result.sample_fps} saved fps requested. Check brightness before recording.`);await refresh();}catch(error){notice(error.message);}
 };
 let depthLiveRunning=false,depthLiveBusy=false,depthImageLoading=false,depthExpiryTimer=null;
 async function refreshDepth(){

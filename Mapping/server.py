@@ -91,8 +91,11 @@ class MapJobs:
 
     def start(self, session_id, backend='standard'):
         identifier(session_id)
-        if backend not in ('standard','xfeat','depth'):
+        if backend not in ('standard','xfeat','depth','orb'):
             raise ValueError('Unknown mapping backend')
+        if backend=='orb':
+            from Mapping.orb_replay import available
+            if not available():raise ValueError('Optional tracking replay is not installed')
         if backend=='xfeat':
             from Mapping.learned import available
             if not available():raise ValueError('Optional stronger matcher is not installed')
@@ -100,7 +103,7 @@ class MapJobs:
             from Mapping.depth_build import available
             if not available():raise ValueError('Optional depth model is not installed')
             if not (self.root/session_id/'scene.json').is_file():raise ValueError('Build a sparse map first')
-        if not importlib.util.find_spec('pycolmap'):
+        if backend != 'orb' and not importlib.util.find_spec('pycolmap'):
             raise ValueError('Install laptop mapping dependencies: python -m pip install -r Mapping/requirements.txt')
         with self.lock:
             if self.thread and self.thread.is_alive():
@@ -134,7 +137,8 @@ class MapJobs:
             with self.lock:
                 self.job.update(state='running')
             with (session/'reconstruction.log').open('a') as output:
-                command=([sys.executable,'-m','Mapping.depth_build','--session',str(session)] if backend=='depth' else
+                command=([sys.executable,'-m','Mapping.orb_replay','--session',str(session)] if backend=='orb' else
+                         [sys.executable,'-m','Mapping.depth_build','--session',str(session)] if backend=='depth' else
                          [sys.executable,'-m','Mapping.reconstruct','--session',str(session),'--backend',backend])
                 process = subprocess.run(command,
                                          cwd=HERE.parent, stdout=output, stderr=subprocess.STDOUT)
@@ -156,6 +160,9 @@ class MapJobs:
                 item = json.loads(path.read_text())
                 item['has_model'] = (path.parent/'scene.json').is_file()
                 item['has_depth'] = (path.parent/'depth.json').is_file()
+                item['has_tracking'] = (path.parent/'tracking.json').is_file()
+                item['has_partial'] = (path.parent/'partial.json').is_file()
+                item['has_calibration'] = (path.parent/'camera-calibration.json').is_file()
                 annotation=path.parent/'annotations.json'
                 if annotation.is_file():item['display_label']=json.loads(annotation.read_text()).get('display_label')
                 result.append(item)
@@ -247,8 +254,9 @@ def register_routes(app, pi_http, root):
     def local():
         from Mapping.learned import available
         from Mapping.depth_build import available as depth_available
+        from Mapping.orb_replay import available as tracking_available
         return jsonify(sessions=jobs.sessions(), job=jobs.status(), backend_ready=bool(importlib.util.find_spec('pycolmap')),
-                       learned_backend_ready=available(),depth_backend_ready=depth_available(),
+                       learned_backend_ready=available(),depth_backend_ready=depth_available(),tracking_backend_ready=tracking_available(),
                        storage=str(jobs.root), pi_http=pi_http)
 
     @app.route('/map-api/live-depth/<action>',methods=['GET','POST'])
@@ -297,6 +305,32 @@ def register_routes(app, pi_http, root):
         except ValueError as exc:
             return jsonify(error=str(exc)), 400
         return send_from_directory(jobs.root/session_id, 'scene.json')
+
+    @app.get('/map-api/tracking/<session_id>')
+    def tracking_model(session_id):
+        try:
+            identifier(session_id)
+        except ValueError as exc:
+            return jsonify(error=str(exc)),400
+        return send_from_directory(jobs.root/session_id, 'tracking.json')
+
+    @app.get('/map-api/partial/<session_id>')
+    def partial_model(session_id):
+        try:
+            identifier(session_id)
+        except ValueError as exc:
+            return jsonify(error=str(exc)),400
+        return send_from_directory(jobs.root/session_id, 'partial.json')
+
+    @app.get('/map-api/frame/<session_id>/<name>')
+    def recorded_frame(session_id,name):
+        try:
+            identifier(session_id)
+        except ValueError as exc:
+            return jsonify(error=str(exc)),400
+        if not re.fullmatch(r'[0-9]{9}\.jpg',name):
+            return jsonify(error='Invalid recorded image'),400
+        return send_from_directory(jobs.root/session_id/'images',name)
 
     @app.get('/map-api/depth/<session_id>')
     def depth_model(session_id):
