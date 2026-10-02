@@ -34,6 +34,16 @@ has been sent. Flight performance is evaluated with him after ground validation.
   person detection still needs validation.
 - **Dependency:** IMU connection, timing and calibration are not established.
 
+**Later couch return test, 21:39 UTC:** `20261002T213938Z-e3ead809` retains
+614/658 poses (93.3%) in one map, continuously for 51.4 seconds after 3.7 seconds
+initializing; 1,359 landmarks. All 658 images decode with zero reported queue
+drops. This meets the continuity target for one capture. Candidate later return
+pauses differ by 15.1% of the estimated excursion and 3.9° orientation, but the
+actual return pose is unconfirmed and the pause windows were selected after
+inspection. This is not measured drift. Repeatability remains pending. Brief
+colour streaking at 30.3–31.1 s did not interrupt reported tracking; cause unknown.
+Review: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review.html`.
+
 Evidence: `Saved/MappingResearch/room-walk-20261002/review.html` and
 [current context](../CONTEXT.md). Original recordings remain intact.
 
@@ -48,10 +58,10 @@ validated room-map, localization or people-placement exit conditions below.
 | Stage | Status | Owner | Exit condition | Dependency |
 | --- | --- | --- | --- | --- |
 | 1. Camera quality and calibration | Baseline passed in the well-lit controlled scene | Evan + Codex | A reviewed capture profile, clear short motion clip, trustworthy timing and an applicable lens calibration | Evan positions/moves the camera |
-| 2. Continuous localization | Active: one 17.7-second retained Pi path; loop/repeatability pending | Codex, with Evan's captures | One persistent camera path through an easy loop, reported loss/drift, then repeatable results on three captures | Stage 1; estimator may need replacing |
+| 2. Continuous localization | Active: 51.4 s continuous, 93.3% coverage in one run; return validation/repeatability pending | Codex, with Evan's captures | One persistent camera path through an easy loop, reported loss/drift, then repeatable results on three captures | Stage 1; estimator may need replacing |
 | 3. Rough operator map | Not started for a validated room | Codex + Evan | Recognizable supported floor/wall/doorway/obstacle arrangement across the repeated captures; unknown space remains unknown | Stage 2 and physical reference checks |
 | 4. Person detection alongside capture | Validation pending | Codex + Evan | Recorded person/no-person scenarios reviewed; detection timing, misses, false positives and capture impact measured | Stage 1; map placement also needs Stages 2–3 |
-| 5. Reproducible handoff | Not started | Codex + Evan; interface agreed with Herman | Clean startup/replay exercise, documented configuration, reference recording/results, logs and a versioned checkpoint | Completed ground checks; IMU interface ownership settled |
+| 5. Reproducible handoff | AI demo/code published and rebuilt in a clean environment; full mapping/CV handoff pending | Codex + Evan; interface agreed with Herman | Clean startup/replay exercise, documented configuration, reference recording/results, logs and a versioned checkpoint | Completed ground checks; IMU interface ownership settled |
 
 ### Step 1 — controlled camera baseline
 

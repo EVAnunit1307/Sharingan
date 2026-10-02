@@ -2,6 +2,55 @@
 
 Updated **2 October 2026**. Read this before older handoffs.
 
+## Couch return test: 51.4 seconds of continuous tracking — 2 October, 21:39 UTC
+
+Evan positioned the same couch/floor view and requested 15 seconds to set up.
+Checked settled 20 ms/gain 4 at uniform 12 fps, then explicitly cued GO after
+recording started. A guarded worker stopped after 55 seconds and restored auto
+exposure. Recording `20261002T213938Z-e3ead809`: 658/658 images decode, zero
+reported queue drops, 55.021 s span, 12.0045 median saved fps, maximum timestamp
+gap 208.256 ms. Mean-gray median 40.09, image ORB median 700. Same reviewed lens
+candidate applied after checking source/resolution/rotation; lens/focus unchanged
+was already confirmed. No additional recording started.
+
+The hotspot transfer was slow/timed out. Evan could not bring the Pi closer.
+Preserved partial data and retrieved four resumable byte ranges, then checked
+every ZIP CRC before importing. Complete archive is 34,601,200 bytes, SHA256
+`c4a7608f0aab7caa9246736c7ef5e385c38c0f44a420da19855727f6301211d3`.
+SSH hostname host-key verification succeeded but batch authentication was not
+available; do not imply an active SSH control session. HTTP worked during retrieval,
+but the final five-second status poll timed out. Last confirmed camera state was
+idle with auto exposure restored; do not claim a fresh connectivity check passed.
+
+Default ORB-SLAM3 replay revision `20261002T215421Z-6793fb9a` retains **614/658
+poses (93.31%) in one map**, 1,359 landmarks. Rows 0–43 initialize; rows 44–657
+are continuously tracked, 3.665–55.021 s (**51.356 s**), with no lost interval.
+This meets the single-run 90% continuity target. Three-capture repeatability,
+metric scale, physical drift and flight performance remain unvalidated.
+
+Provisional candidate pauses at 25.5–27.5 s and 53–55 s differ by 0.06637
+arbitrary units, 15.15% of the estimated excursion to the median pose at 38–41 s;
+average orientation differs 3.86 degrees. These windows were selected after
+inspection, not ground-truth markers. Actual hand position and tracker error are
+mixed. **Do not report this as measured drift or convert to centimetres.** Asked
+Evan whether he finished at A with the same camera height/direction; answer is
+pending. The initial and final views differ substantially; the two later pauses
+look more alike. Stored images show transient coloured streaking around
+30.3–31.1 s; cause unknown, input unfiltered, reported tracking stays active.
+
+Results: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review.html`,
+`review-summary.json`, contact sheet, return views and artifact neighbours.
+Native viewer: `/map-assets/tracking.html?source=tracking&session=20261002T213938Z-e3ead809`.
+Browser checks: full images, expected 614/658 and one fragment, no JS errors;
+review has no mobile overflow. Native path screenshot visually inspected.
+Next: interpret return with Evan's clarification, constrain/confirm camera pose
+on the mark, then repeatability. No new DA3 inference was needed for this test.
+
+The earlier team bundle/code/photos/renders were committed and pushed as
+`1316b72` after Evan explicitly approved public publication to
+`EVAnunit1307/Sharingan`. No further publishing confirmation is needed for that
+approved bundle. The unrelated `:memory:.ses` remains untouched.
+
 ## Portable team demo requested — 2 October
 
 Evan liked the AI room-draft screenshot and explicitly requested committing the
