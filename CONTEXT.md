@@ -2,6 +2,15 @@
 
 Updated **2 October 2026**. Read this before older handoffs.
 
+## Approximate return confirmed — 2 October
+
+Evan answered the pending mark-A/same-height-and-direction question with
+“yes give or take a few”. Treat this as an approximate return only: no distance
+or angle units/tolerance were supplied. Exact camera pose remains unmeasured;
+the candidate pause windows remain post-hoc. Updated the local review and public
+tracking summary with the reply. All numerical results and unvalidated flags are
+unchanged. No new recording or inference was started for this clarification.
+
 ## Couch AI follow-up — 2 October
 
 Evan said “go”; proceeded offline, with no new capture. This does not confirm the
@@ -31,7 +40,8 @@ byte-identical JPEGs, cached labels, render, return comparisons and diagnostics.
 The original three estimates are preserved; now 72 selected images and four
 estimates. Full 658-frame recording remains in ignored Saved. The saved experiment
 plan and `ai-followup.json` retain definitions, original indices and fitted paths.
-Current physical work remains the marked-pose clarification and repeatability;
+The later reply confirms an approximate return only. Current physical work remains
+a constrained return pose and repeatability;
 no new Pi connectivity claim or recording was made.
 
 ## Couch return test: 51.4 seconds of continuous tracking — 2 October, 21:39 UTC
@@ -66,7 +76,8 @@ average orientation differs 3.86 degrees. These windows were selected after
 inspection, not ground-truth markers. Actual hand position and tracker error are
 mixed. **Do not report this as measured drift or convert to centimetres.** Asked
 Evan whether he finished at A with the same camera height/direction; answer is
-pending. The initial and final views differ substantially; the two later pauses
+now received: “yes give or take a few”, an approximate return with no measured
+tolerance. The initial and final views differ substantially; the two later pauses
 look more alike. Stored images show transient coloured streaking around
 30.3–31.1 s; cause unknown, input unfiltered, reported tracking stays active.
 
@@ -75,8 +86,7 @@ Results: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review
 Native viewer: `/map-assets/tracking.html?source=tracking&session=20261002T213938Z-e3ead809`.
 Browser checks: full images, expected 614/658 and one fragment, no JS errors;
 review has no mobile overflow. Native path screenshot visually inspected.
-Next: interpret return with Evan's clarification, constrain/confirm camera pose
-on the mark, then repeatability. The later offline DA3 follow-up is described above.
+Next: constrain the camera pose on the mark, then test repeatability. The later offline DA3 follow-up is described above.
 
 The earlier team bundle/code/photos/renders were committed and pushed as
 `1316b72` after Evan explicitly approved public publication to

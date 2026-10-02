@@ -56,7 +56,9 @@ coloured-streak interval; no replacement was chosen after seeing the result. The
 source is visible in the sixth filmstrip image. The two candidate return views
 differ by about 25 image pixels at matched features, so endpoint separation still
 mixes actual camera movement with possible tracking error. The exact physical
-return pose is unconfirmed. No centimetre-level drift is claimed.
+return pose remains unmeasured. Evan subsequently confirmed an approximate return
+(“yes give or take a few”), with no specified distance/angle tolerance. This does
+not identify the exact return frames. No centimetre-level drift is claimed.
 
 ## Included
 

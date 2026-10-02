@@ -22,7 +22,8 @@ connection; later sensor fusion still needs an agreed interface and calibration.
 **Latest couch return test:** `20261002T213938Z-e3ead809` retains 614/658 poses
 (93.3%) in one map, continuously for 51.4 seconds after 3.7 seconds initializing.
 All images decode; zero reported queue drops. This passes the single-run coverage
-target. Actual return pose, physical drift and repeatability still need checking.
+target. Evan confirms an approximate return; exact pose, physical drift and
+repeatability still need checking.
 Review: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review.html`.
 
 `Saved/MappingResearch/capture-quality-20261002/lit-motion-203958Z/review.html`

@@ -13,7 +13,7 @@
   "physical_accuracy_validated": false,
   "units": "arbitrary",
   "return_check": {
-    "status": "provisional; operator mark/pose confirmation pending",
+    "status": "provisional; operator confirms an approximate return, exact pose/tolerance unmeasured",
     "windows": [
       {
         "seconds": [
@@ -165,7 +165,14 @@
     "offset_fraction_of_excursion": 0.1514982312260842,
     "orientation_difference_degrees": 3.8553825515579407,
     "selection": "Post-hoc candidate pause windows from the observed recording. Not independently measured camera poses.",
-    "interpretation": "Estimated pose separation mixes tracker error and real differences in camera position/orientation. Not metric drift or an accuracy validation."
+    "interpretation": "Estimated pose separation mixes tracker error and real differences in camera position/orientation. Not metric drift or an accuracy validation.",
+    "operator_followup": {
+      "reply": "yes give or take a few",
+      "interpreted_as": "Approximate return to tape mark A with broadly similar camera height/direction.",
+      "tolerance": "Unspecified; no distance or angle units were supplied.",
+      "confirmed_physical_ground_truth": false,
+      "window_labels": "The candidate pause windows remain post-hoc selections, not independently labelled return instants."
+    }
   },
   "image_artifact": {
     "approximate_seconds": [

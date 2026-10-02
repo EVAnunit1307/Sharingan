@@ -39,8 +39,8 @@ has been sent. Flight performance is evaluated with him after ground validation.
 initializing; 1,359 landmarks. All 658 images decode with zero reported queue
 drops. This meets the continuity target for one capture. Candidate later return
 pauses differ by 15.1% of the estimated excursion and 3.9° orientation, but the
-actual return pose is unconfirmed and the pause windows were selected after
-inspection. This is not measured drift. Repeatability remains pending. Brief
+operator now confirms only an approximate return (“yes give or take a few”),
+with no measured tolerance; the pause windows were selected after inspection. This is not measured drift. Repeatability remains pending. Brief
 colour streaking at 30.3–31.1 s did not interrupt reported tracking; cause unknown.
 Review: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review.html`.
 
