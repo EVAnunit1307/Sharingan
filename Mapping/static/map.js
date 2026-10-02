@@ -47,18 +47,71 @@ function renderSessions() {
   }
 }
 let refreshing=false;
-let cameraLive=false, streaming=false;
+let cameraLive=false, previewActive=false, previewGeneration=0;
+let previewRequest=null, previewTimer=null, previewExpiryTimer=null, previewUrl=null;
+const PREVIEW_MAX_AGE_MS=1000, PREVIEW_INTERVAL_MS=100;
+function hidePreview(message){
+  $('feed').hidden=true;$('feed').removeAttribute('src');delete $('feed').dataset.frameId;
+  if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}
+  $('camera-empty').hidden=false;$('camera-empty').querySelector('p').textContent=message;
+}
 function stopPreview(){
-  streaming=false;$('feed').removeAttribute('src');$('feed').hidden=true;$('camera-empty').hidden=false;
-  $('camera-empty').querySelector('p').textContent=document.hidden&&cameraLive?'Preview paused while this page is in the background':'Waiting for the drone camera';
+  previewActive=false;previewGeneration++;
+  clearTimeout(previewTimer);clearTimeout(previewExpiryTimer);
+  if(previewRequest)previewRequest.abort();
+  hidePreview(document.hidden&&cameraLive?'Preview paused while this page is in the background':'Waiting for the drone camera');
+}
+async function updatePreview(){
+  if(!previewActive||!cameraLive||document.hidden||previewRequest)return;
+  const generation=previewGeneration, started=performance.now(), controller=new AbortController();
+  previewRequest=controller;
+  const timeout=setTimeout(()=>controller.abort(),1500);
+  let candidateUrl=null;
+  try{
+    const response=await fetch('/map-api/pi/preview.jpg?t='+Date.now(),{cache:'no-store',signal:controller.signal});
+    if(!response.ok||!response.headers.get('Content-Type')?.startsWith('image/jpeg'))throw new Error('Preview unavailable');
+    const ageHeader=response.headers.get('X-Frame-Age-Ms'),frameId=response.headers.get('X-Frame-Id');
+    const sourceAge=Number(ageHeader);
+    if(ageHeader===null||!Number.isFinite(sourceAge)||sourceAge<0||!frameId)throw new Error('Missing preview timing');
+    const blob=await response.blob();
+    if(!blob.size||blob.size>8*1024*1024)throw new Error('Invalid preview size');
+    const bytes=new Uint8Array(await blob.arrayBuffer());
+    if(bytes[0]!==255||bytes[1]!==216||bytes.at(-2)!==255||bytes.at(-1)!==217)throw new Error('Incomplete preview JPEG');
+    // Download and decode away from the displayed image. An incomplete stream
+    // must never replace the last complete frame with a partially drawn JPEG.
+    candidateUrl=URL.createObjectURL(blob);
+    const decoded=new Image();decoded.src=candidateUrl;await decoded.decode();
+    if(generation!==previewGeneration||!previewActive||!cameraLive||document.hidden)return;
+    // Include the whole request/decode duration as a conservative age bound;
+    // receiving a delayed response must not make an old frame appear fresh.
+    const age=sourceAge+performance.now()-started;
+    if(age>=PREVIEW_MAX_AGE_MS)throw new Error('Preview arrived too late');
+    const previous=previewUrl;previewUrl=candidateUrl;candidateUrl=null;
+    $('feed').src=previewUrl;$('feed').dataset.frameId=frameId;
+    $('feed').hidden=false;$('camera-empty').hidden=true;
+    if(previous)URL.revokeObjectURL(previous);
+    clearTimeout(previewExpiryTimer);
+    previewExpiryTimer=setTimeout(()=>{
+      if(generation===previewGeneration)hidePreview('Preview delayed — waiting for a fresh frame');
+    },PREVIEW_MAX_AGE_MS-age);
+  }catch(error){
+    if(generation===previewGeneration&&previewActive){
+      clearTimeout(previewExpiryTimer);hidePreview('Preview delayed — waiting for a fresh frame');
+    }
+  }finally{
+    clearTimeout(timeout);if(candidateUrl)URL.revokeObjectURL(candidateUrl);
+    if(previewRequest===controller)previewRequest=null;
+    // Only one request is in flight, including across tab hide/resume cycles.
+    if(previewActive&&cameraLive&&!document.hidden){
+      clearTimeout(previewTimer);
+      previewTimer=setTimeout(updatePreview,Math.max(0,PREVIEW_INTERVAL_MS-(performance.now()-started)));
+    }
+  }
 }
 function startPreview(){
-  if(document.hidden&&cameraLive){$('camera-empty').querySelector('p').textContent='Preview paused while this page is in the background';return;}
-  if(!cameraLive||streaming)return;
-  streaming=true;$('feed').src='/map-api/pi/stream?t='+Date.now();
-  // An MJPEG response never finishes loading, so do not wait for img.onload
-  // before revealing the frames the browser is already decoding.
-  $('feed').hidden=false;$('camera-empty').hidden=true;
+  if(document.hidden){hidePreview('Preview paused while this page is in the background');return;}
+  if(!cameraLive||previewActive)return;
+  previewActive=true;previewGeneration++;updatePreview();
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPreview();else startPreview();});
 async function refresh() {
@@ -100,8 +153,6 @@ async function refresh() {
     renderSessions();
   }finally{refreshing=false;}
 }
-$('feed').onload=()=>{if(streaming&&cameraLive){$('feed').hidden=false;$('camera-empty').hidden=true;}};
-$('feed').onerror=()=>{stopPreview();};
 
 // Small dependency-free 3D point viewer. The full-resolution cloud remains in the PLY.
 const canvas=$('scene'),ctx=canvas.getContext('2d');
@@ -146,7 +197,7 @@ canvas.onpointerup=canvas.onpointercancel=()=>{drag=null;};canvas.addEventListen
 $('fit').onclick=fit;$('top').onclick=()=>{pitch=-1.5;draw();};new ResizeObserver(draw).observe(canvas);
 $('layer-select').onchange=draw;
 $('apply-capture').onclick=async()=>{const selected=$('capture-profile').value;
-  const options={selection:selected==='standard'?'uniform':'sharpest',exposure_us:selected==='motion10'?10000:selected==='motion20'?20000:null,gain:8};
+  const options={selection:['standard','lit20'].includes(selected)?'uniform':'sharpest',exposure_us:selected==='motion10'?10000:['motion20','lit20'].includes(selected)?20000:null,gain:selected==='lit20'?4:8};
   if(!$('capture-fps').disabled)options.fps=Number($('capture-fps').value);
   try{const result=await api('/map-api/pi/configure','POST',options);notice(`Capture settings applied: ${result.sample_fps} saved fps requested. Check brightness before recording.`);await refresh();}catch(error){notice(error.message);}
 };

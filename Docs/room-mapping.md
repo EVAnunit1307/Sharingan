@@ -1,12 +1,26 @@
 # ADR-001: A saved room map and live sensor overlay
 
-**Status:** Rough operator map confirmed. DA3/semantic 2/5/10-second trials produce local stool/floor patches; the room sweep fails placement checks. Full room mapping remains unvalidated. ORB-SLAM3 trials retained no map. Higher-FPS recording update is prepared locally; IMU fusion is planned.
+**Status:** Rough operator-map scope confirmed; a reliable room map remains unvalidated. The brighter 20 ms Pi pass now retains one 17.7-second camera path after initialization. Loop repeatability and physical accuracy remain pending. A separate AI room draft includes tentative surfaces and labels. The 12 fps recorder passed stationary and sideways timing checks; IMU fusion is planned.
 
 **Date:** 25 September 2026; use case revisited 1 October 2026.
 
 **Decider:** Evan/team after the existing-hardware experiments.
 
 **Current implementation:** [CONTEXT.md](../CONTEXT.md).
+
+**2 October clarification:** Evan also wants a rough AI picture when confidence
+is low. The new `Mapping.ai_room_draft` viewer shows wider-room predictions,
+weak surfaces and tentative semantic labels linked to source images. It remains
+an explicit hypothesis with unknown scale and unverified alignment. Existing
+operator placement checks are unchanged; the draft does not establish drone or
+people positions. See the [current runbook](../Mapping/README.md).
+
+**M5 follow-up completed:** [Mac benchmark and overlapping-window experiment](mac-mapping-2026-10-01.md)
+implements the first reference-data replay and a conservative stitching prototype
+from the next-step sequence below. DA3 Small fits comfortably in the tested
+configuration. The stool fragment extends twice, but continuous room mapping still
+fails the current checks. These results supersede the proposed-only status of
+those two experiments; VIO and upstream CUDA systems remain unimplemented.
 
 ## Confirmed first-version scope — 1 October
 

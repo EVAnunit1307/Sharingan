@@ -1,0 +1,33 @@
+{
+  "kind": "selected_ai_input_only",
+  "source_session": "20261002T185247Z-037db03f",
+  "source_indices": [
+    192,
+    216,
+    240,
+    264,
+    288,
+    312,
+    336,
+    360,
+    384,
+    408,
+    432,
+    456,
+    480,
+    504,
+    528,
+    552,
+    576,
+    600,
+    624,
+    648,
+    672,
+    696,
+    720,
+    744
+  ],
+  "source_row_count": 1437,
+  "is_contiguous_capture": false,
+  "note": "24 byte-identical selected JPEGs. Dense row indices 0..23; original source_row_index and timestamps preserved. Not a continuous-tracker input."
+}

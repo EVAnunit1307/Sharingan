@@ -43,3 +43,10 @@
 *.cs  text
 *.ini text
 *.md  text
+
+# Small, curated mapping demo inputs/renders travel with a normal clone.
+# Keep the project's large Unreal/source assets on LFS above.
+Mapping/examples/room-draft-20261002/**/*.jpg -filter -diff -merge -text
+Mapping/examples/room-draft-20261002/**/*.png -filter -diff -merge -text
+Mapping/examples/room-draft-20261002/index.html linguist-generated=true
+Mapping/examples/room-draft-20261002/index.json linguist-generated=true

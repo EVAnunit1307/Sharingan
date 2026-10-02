@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-02",
+  "hardware": "Apple M5, 24 GiB unified memory",
+  "python": "3.12.14",
+  "isolated_dependency_install": true,
+  "assets_note": "Fresh pinned official source/config downloaded. Reused the identical SHA256-verified local weights after stopping a slow duplicate download; resume/cache verification passed.",
+  "runs": [
+    {
+      "name": "room-sweep",
+      "state": "complete",
+      "device": "mps",
+      "pose_estimation": "camera_decoder",
+      "arrays_equal_to_original": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      },
+      "inference_seconds": 7.332279458001722,
+      "pipeline_seconds": 29.618868958001258,
+      "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+      "checkpoint_sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf",
+      "frame_count": 24
+    },
+    {
+      "name": "lit-sofa",
+      "state": "complete",
+      "device": "mps",
+      "pose_estimation": "camera_decoder",
+      "arrays_equal_to_original": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      },
+      "inference_seconds": 4.5231056659977185,
+      "pipeline_seconds": 12.936192624998512,
+      "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+      "checkpoint_sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf",
+      "frame_count": 24
+    },
+    {
+      "name": "room-sweep-alternate",
+      "state": "complete",
+      "device": "cpu",
+      "pose_estimation": "ray_head",
+      "arrays_equal_to_original": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      },
+      "inference_seconds": 41.125127874998725,
+      "pipeline_seconds": 44.81098233399098,
+      "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+      "checkpoint_sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf",
+      "frame_count": 24
+    }
+  ],
+  "browser": {
+    "three_estimates": true,
+    "all_embedded_images_decode": true,
+    "uncertainty_and_semantic_controls": true,
+    "original_row_numbers_preserved": true,
+    "mobile_overflow": false,
+    "javascript_errors": [],
+    "external_requests": []
+  },
+  "test_commands": [
+    ".venv/bin/python -m unittest discover -s Mapping/tests -p test_*.py",
+    "node Mapping/tests/check_preview.cjs",
+    "node Mapping/tests/check_room_demo.cjs"
+  ],
+  "note": "Exact equality on this Mac is observed here, not guaranteed on different hardware/software. This verifies reproducibility, not physical mapping accuracy."
+}

@@ -34,12 +34,22 @@ def select_indices(rows, start_frame, stride, frames=16, duration_seconds=None):
 
 
 def run(args):
+    pipeline_started = time.perf_counter()
     import torch
     from safetensors.torch import load_file
     sys.path.insert(0, str(args.source.resolve() / 'src'))
     from depth_anything_3.cfg import create_object, load_config
     from depth_anything_3.utils.io.input_processor import InputProcessor
     from depth_anything_3.utils.io.output_processor import OutputProcessor
+    from Mapping.research_profile import MemorySampler
+
+    repeats = getattr(args, 'repeats', 1)
+    ray_pose = bool(getattr(args, 'ray_pose', False))
+    fraction = getattr(args, 'mps_memory_fraction', .6)
+    if not isinstance(repeats, int) or not 1 <= repeats <= 3:
+        raise ValueError('Use 1–3 inference repetitions')
+    if not np.isfinite(fraction) or not .1 <= fraction <= .8:
+        raise ValueError('Use an MPS memory fraction between 0.1 and 0.8')
 
     if args.output.exists():
         raise ValueError('Choose a new output directory; previous trials are immutable')
@@ -53,6 +63,7 @@ def run(args):
     device = args.device
     if device == 'mps' and not torch.backends.mps.is_available():
         raise RuntimeError('Metal unavailable; run with macOS GPU access or explicitly select CPU')
+    if device == 'mps': torch.mps.set_per_process_memory_fraction(float(fraction))
     torch.manual_seed(42)
     torch.set_num_threads(4)
     source_commit = subprocess.check_output(['git', '-C', str(args.source), 'rev-parse', 'HEAD'], text=True).strip()
@@ -64,11 +75,18 @@ def run(args):
                   imu_used=False,
                   source_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
                   checkpoint_sha256=hashlib.sha256((args.model / 'model.safetensors').read_bytes()).hexdigest(),
-                  pose_conditioned=False, scale='unknown', units='arbitrary', validated=False,
+                  pose_conditioned=False, pose_estimation='ray_head' if ray_pose else 'camera_decoder',
+                  scale='unknown', units='arbitrary', validated=False,
                   warning='AI-inferred geometry and camera poses. No measured scale, tracking validation or unseen-room coverage.')
+    if device == 'mps':
+        report.update(mps_recommended_bytes=torch.mps.recommended_max_memory(),
+                      mps_memory_fraction=fraction,
+                      mps_allocator_limit_bytes=int(fraction*torch.mps.recommended_max_memory()))
     def save():
         (args.output / 'summary.json').write_text(json.dumps(report, indent=2, allow_nan=False) + '\n')
     save()
+    memory = MemorySampler(torch, device)
+    memory.start()
     try:
         started = time.perf_counter()
         net = create_object(load_config(str(args.source / 'src/depth_anything_3/configs/da3-small.yaml')))
@@ -102,12 +120,20 @@ def run(args):
         batch = imgs[None].to(device)
         report.update(state='inference', input_shape=list(batch.shape))
         save()
-        if device == 'mps': torch.mps.synchronize()
-        started = time.perf_counter()
-        with torch.inference_mode(), torch.autocast(device_type=device, dtype=torch.float16, enabled=device == 'mps'):
-            raw = net(batch, use_ray_pose=False, ref_view_strategy='saddle_balanced')
-        if device == 'mps': torch.mps.synchronize()
-        report['inference_seconds'] = time.perf_counter() - started
+        timings = []
+        raw = None
+        for _ in range(repeats):
+            del raw
+            if device == 'mps': torch.mps.synchronize()
+            started = time.perf_counter()
+            with torch.inference_mode(), torch.autocast(device_type=device, dtype=torch.float16, enabled=device == 'mps'):
+                raw = net(batch, use_ray_pose=ray_pose, ref_view_strategy='saddle_balanced')
+            if device == 'mps': torch.mps.synchronize()
+            timings.append(time.perf_counter() - started)
+            memory.sample()
+        report['inference_samples_seconds'] = timings
+        report['inference_seconds'] = timings[-1]
+        report['timing_note'] = 'Model-only calls in order within one process; later calls are warm. Pipeline time includes imports, loading, preprocessing, all repetitions and output writes, excluding interpreter startup.'
         pred = OutputProcessor()(raw)
         arrays = dict(depth=pred.depth, confidence=pred.conf, extrinsics=pred.extrinsics,
                       intrinsics=pred.intrinsics, images=pixels)
@@ -121,11 +147,16 @@ def run(args):
         if device == 'mps':
             report['mps_driver_allocated_bytes_after_inference'] = torch.mps.driver_allocated_memory()
         save()
-        print(json.dumps({k:v for k,v in report.items() if k not in ('frames','source_sha256')}, indent=2))
     except Exception as exc:
         report.update(state='failed', error=f'{type(exc).__name__}: {exc}')
         save()
         raise
+    finally:
+        report['memory'] = memory.finish()
+        report['pipeline_seconds'] = time.perf_counter() - pipeline_started
+        save()
+    print(json.dumps({k:v for k,v in report.items() if k not in ('frames','source_sha256')}, indent=2))
+    return report
 
 
 if __name__ == '__main__':
@@ -138,4 +169,7 @@ if __name__ == '__main__':
     parser.add_argument('--duration-seconds', type=float, help='Select a timestamp-bounded prefix instead of --frames')
     parser.add_argument('--resolution', type=int, choices=(280,392,504), default=392)
     parser.add_argument('--device', choices=('mps','cpu'), default='mps')
+    parser.add_argument('--ray-pose', action='store_true', help='Experimental ray-head poses; use --device cpu on the tested Mac because MPS ray fitting failed')
+    parser.add_argument('--repeats', type=int, default=1, help='1–3 model calls to distinguish first-call and warm timings')
+    parser.add_argument('--mps-memory-fraction', type=float, default=.6, help='Bound allocator use to 0.1–0.8 of the Metal recommended working set')
     run(parser.parse_args())

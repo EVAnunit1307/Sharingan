@@ -49,6 +49,8 @@ def diagnostics(data):
     sift=cv2.SIFT_create(nfeatures=800)
     features=[sift.detectAndCompute(cv2.cvtColor(im,cv2.COLOR_RGB2GRAY),None) for im in images]
     matcher=cv2.BFMatcher()
+    thresholds=np.percentile(conf,40,axis=(1,2))
+    inverse_intrinsics=np.linalg.inv(intr)
     results=[]
     for i in range(len(images)-1):
         j=i+1; ka, da=features[i]; kb, db=features[j]
@@ -61,8 +63,8 @@ def diagnostics(data):
         for match in matches:
             u,v=ka[match.queryIdx].pt; x,y=int(round(u)),int(round(v))
             if not (0<=y<depth.shape[1] and 0<=x<depth.shape[2]):continue
-            if conf[i,y,x] < np.percentile(conf[i],40):continue
-            pc=(np.linalg.inv(intr[i])@np.array([u,v,1.]))*depth[i,y,x]
+            if conf[i,y,x] < thresholds[i]:continue
+            pc=(inverse_intrinsics[i]@np.array([u,v,1.]))*depth[i,y,x]
             world=ex[i,:,:3].T@(pc-ex[i,:,3])
             q=ex[j,:,:3]@world+ex[j,:,3]
             if q[2]<=0:continue

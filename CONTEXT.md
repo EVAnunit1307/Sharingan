@@ -1,6 +1,316 @@
 # WALLHACK — current context
 
-Updated **1 October 2026**. Read this before older handoffs.
+Updated **2 October 2026**. Read this before older handoffs.
+
+## Portable team demo requested — 2 October
+
+Evan liked the AI room-draft screenshot and explicitly requested committing the
+code, renders and images so teammates can reproduce them. Packaged
+`Mapping/examples/room-draft-20261002/`: 48 byte-identical selected JPEGs from the
+wide room sweep and brighter sofa/floor recording; one self-contained offline
+viewer with standard room, CPU ray-head alternate and brighter sofa estimates;
+three PNG renders; cached SegFormer labels; original run summaries; model/source
+pins and asset checksums. About 25 MB. No complete recordings, model weights,
+virtual environments or dense prediction caches are included. Small demo images
+override the repository's LFS image rule so they arrive with an ordinary clone.
+
+`Mapping.room_demo verify` checks the committed data. `fetch` retrieves pinned
+official source/model assets under ignored Saved; `run` uses a new output folder,
+recomputes DA3 predictions, verifies processed-RGB identity before attaching cached
+semantic labels and generates the viewer. Mac Metal/CPU are supported; CUDA and
+native Windows are not implemented. The README gives isolated Python 3.12 setup,
+commands and limits. `Mapping/tests/check_room_demo.cjs` checks the offline viewer
+and re-exports screenshots. Original recording row numbers survive packed input
+re-indexing. All three examples then rebuilt in a fresh Python environment and
+reproduced all five prediction arrays exactly on this Mac; this is not promised
+across hardware/versions. Pinned source/config were freshly downloaded; the model
+weights were reused after SHA-256 verification when a redundant download was slow.
+Offline/browser/preview checks pass. Per-run evidence and installed environment
+are in the demo's `results/`. Full mapping suite: 89 tests pass.
+
+The screenshot concerns DA3 Small's own depth/pose hypothesis, separate from the
+successful ORB tracking pass. SegFormer supplies object labels. Alignment, scale,
+room-wide continuity and physical accuracy remain unverified. Recommended next:
+out-and-back drift/repeatability test, better overlapping views, then evaluate
+pose-conditioned DA3 after checking coordinate conventions and lens calibration.
+Larger-model comparison and Herman's calibrated/timestamped IMU integration come
+later. No new Pi capture or hardware command was issued for this packaging turn.
+
+## Brighter 20 ms pass: first retained Pi tracking path — 2 October, 20:40 UTC
+
+Evan added light and objects, then said ready. Checked the live view and asked
+for a downward tilt to include floor. Compared auto / 20 ms / 30 ms at high gain;
+with the added light the high-gain manual views clipped the sunlit floor. Then
+compared 20 ms/gain 4 against 10 ms/gain 8. Selected 20 ms/gain 4 for better
+visible detail (mean gray 58.4 vs 49.8, ~942 vs 888 ORB features in the preview).
+Framing/light changed during setup; these are visual profile-selection checks,
+not an isolated exposure benchmark. Evidence: `capture-quality-20261002/lit-203617Z/`.
+
+Recorded `20261002T204006Z-fb75b05e` at uniform 12 fps, fixed actual exposure
+19,995 us / gain 4. Requested 25-second stop took 27.532 s including HTTP delay.
+331/331 images decode; zero reported queue drops; one camera generation;
+strictly increasing host/sensor timestamps; median 12.004 fps, maximum gap
+124.956 ms. Imported the 21,189,931-byte archive and applied the reviewed,
+same-camera lens candidate with provenance. Original images are preserved.
+Restored auto exposure after recording; Pi is idle. No further capture started.
+
+ORB-SLAM3 revision `20261002T204333Z-8fdcf0d8` retains **213 consecutive poses**
+from row 118 (9.872 s) through row 330 (27.532 s): **17.661 s**, one map, 1,087
+landmarks. All preceding frames initialize; no loss after initialization. Coverage
+is 64.35% of all input frames, below the 90% development target. Prior darker
+pass retained zero poses; image ORB median rose from 208 to 940. Lighting, texture,
+motion and exposure changed together. No metric scale or physical accuracy was
+validated, and repeatability/return-to-start checks remain pending.
+
+Results: `Saved/MappingResearch/capture-quality-20261002/lit-motion-203958Z/review.html`;
+tracking viewer: `/map-assets/tracking.html?source=tracking&session=20261002T204006Z-fb75b05e`.
+Browser checks confirmed the initialization/tracking boundary, last pose, one map,
+full images and mobile layout; the path/landmark screenshot was visually reviewed.
+Saved `tested-profile.json` and added **Well-lit room · 20 ms** (`lit20`) to the
+dashboard: uniform sampling, 20,000 us, gain 4, selected fps (tested at 12).
+Standard still restores auto. The new preset is available after reloading the
+page, and was not applied permanently to the idle Pi.
+
+DA3 dense windows at starts 96/108/120 (24 consecutive views, 504×378) pass
+local screens at 1.85/3.42/2.43 px, 23 supported pairs each. Overlap extension
+fails camera agreement and translation support, retaining only the first 24
+poses. A separate broader AI draft samples rows 120..327, stride 9: 24 images
+over 17.244 s, all in the ORB-tracked segment. It has 23 supported image pairs,
+2.21 px median reprojection, and local semantic labels. Inspect `room-draft.html`
+beside the review. Its learned poses are independent of ORB: fitted full-path
+disagreement is 63.6% of ORB path spread, orientation p90 44.5 degrees; an early
+8-view fit has worse held-out agreement. These are correlated-estimate comparisons,
+not ground truth. **Do not fuse the AI and ORB coordinates as if registered.**
+
+Stage 1 now has a usable baseline for this well-lit scene. Stage 2 is active:
+repeat a short, deliberately translated out-and-back loop with known starting
+position, then repeatability checks. Maintain the same light, stationary objects,
+floor visibility, calibration and 12 fps / 20 ms / gain 4 profile for that test.
+
+## Fuller AI room draft requested and built — 2 October
+
+Evan asked why extra light/texture helps and whether AI can estimate more despite
+low confidence. Explained shorter exposure/motion blur and feature tracking, then
+built `Mapping.ai_room_draft` plus `Mapping/static/ai-room-draft.html`. New viewer:
+`Saved/MappingResearch/ai-room-draft-20261002/room-draft.html` (earlier `draft.html`
+uses internal trial names). It shows two room-sweep hypotheses and the recent sofa
+fragment, with optional weaker estimates (default on), faint amber uncertainty,
+semantic colours, tentative labels, source-frame scrubbing and single-view/orbit
+controls. Every hypothesis has its own arbitrary frame; all geometry is inferred,
+including higher-ranked points. No new capture was started in this turn.
+
+The exporter reads completed trial arrays/optional semantics and writes only a
+new HTML + summary JSON. It does not publish an operator map or pose packet,
+change placement thresholds, align different recordings, assign metre units or
+complete hidden room boundaries. Tests check world/camera projection, retention
+of weak predictions, ineligible-map metadata, unchanged source files, escaping,
+overwrite refusal and malformed predictions. These plus existing DA3 tests pass
+(8 tests). Browser checks pass on all three estimates: lower-confidence toggle,
+semantic colours, source selection, single-view mode, scrub/play controls, no JS
+errors and no mobile overflow. Desktop screenshots were visually inspected.
+
+Wider input: `20261002T185247Z-037db03f`, start 192, stride 24, 24 images through
+row 744 (~16–62 s into the earlier recording, 46.16 s between endpoints), 504×378.
+`room-camera` uses the standard decoder on MPS (1.43 s model call).
+Added optional `--ray-pose` to `Mapping.da3_trial`; the pinned official model has
+that head. `room-rays` failed on MPS torch.linalg.svd with a Metal pipeline/XPC
+error. Explicit CPU retry `room-rays-cpu` succeeded (16.49 s model call), without
+editing upstream code. Both broad trials have zero adjacent pairs with >=8
+supported matches, so no improvement in mapping accuracy was demonstrated.
+The alternate shows a similar warped layout; keeping it visible is intentional
+for this hypothesis viewer. The sofa trial retains its previous 1.79 px/23-pair
+local diagnostic. Per-scene display: 56,448 sampled points, of which about 22,400
+are weak; sampling is for rendering, not extra measured data.
+
+SegFormer labelled both wide inputs (second uses 24 cache hits) and the sofa
+trial locally. Candidates include walls/floor/window/door/seating/cabinets/table;
+identities can be wrong. All raw arrays, semantic outputs, plans, failures and
+manifests are saved. Stage 1 lighting/motion quality remains active; this parallel
+draft does not complete continuous localization or the validated room-map stage.
+
+## Short sideways baseline and tracker checks — 2 October, 19:48 UTC
+
+Latest recording: `20261002T194831Z-200bd8f7`. Evan authorized starting the test
+and moved sideways while recording. Imported 303 readable images over 25.180 s,
+11.994 saved fps, zero reported drops, increasing host/sensor timestamps and a
+maximum gap of 83.383 ms. Sofa and floor are visible; motion occurs around 7–14 s.
+Automatic exposure remains 41.621 ms. The camera is live and idle, with uniform
+selection and 12 fps. Stage 1 is still incomplete: timing passes, but dark
+upholstery hides texture and a clear motion capture profile is not established.
+
+Results: `Saved/MappingResearch/capture-quality-20261002/motion-194831Z/review.html`,
+`review-summary.json`, `contact-sheet.jpg`, `geometry.html` and native replay logs.
+Preview comparison `../194748Z/` tried auto, 30 ms/requested gain 16 and
+20 ms/requested gain 16, then restored auto. Actual gains were 9.48 / 10.67 / 10.67;
+grayscale means 28.4 / 25.2 / 14.7. Framing moved between samples, so this is an
+exploratory visual check, not a controlled quantitative exposure comparison.
+Both manual previews lose shadow detail; 10 ms was not tested.
+
+Evan explicitly confirmed camera and focus unchanged since checkerboard capture.
+Processed source/resolution/rotation match. Copied the existing passing lens
+candidate into this recording with its SHA256, source and application review;
+`Mapping.camera_calibration.load` accepts it. This establishes lens applicability,
+not metric room accuracy or IMU extrinsics. Original candidate/images are intact.
+
+DA3: three preselected overlapping 24-frame windows at starts 108/120/132,
+stride 1, 504×378. All pass local image-consistency checks: 1.79 / 1.33 / 1.58 px,
+23 supported pairs each. The first extension fails shared-camera agreement:
+p90 position discrepancy 7.25% of typical depth despite 0.62% median held-out
+surface discrepancy. Unchanged replay gates retain only the first 24 poses
+(1.918 s); no continuous map. The independent path-fit sensitivity comparison
+is a different diagnostic and is saved separately. Viewer labels now derive
+frame counts/ranges from each trial, with generic recording text and no stale
+link to the older chair reconstruction.
+
+ORB-SLAM3 positive control: first 25 seconds of local TUM fr1_room RGB at original
+timestamps, official TUM1 intrinsics, BGR adapter setting, no depth/GT/IMU input.
+Exported 554/750 poses across three fragments, successfully exercising native
+pose/landmark export; this is not a continuous-tracking pass. Pi replay then
+retained 0/303 poses, all frames initializing (median 427 extracted features).
+Current Pi replay revision `20261002T195226Z-7ede2176`; no estimator thresholds
+were relaxed. Next physical action: more scene light and stationary textured
+objects at varied depths, then another bounded slow pass. Do not repeat long
+walks or describe the local AI fragment as a room map.
+The review and three-selection geometry viewer passed Chrome checks for complete
+images, correct frame labels, working controls, mobile overflow and JS errors;
+both desktop screenshots were visually reviewed. Final Pi status is live/idle.
+
+## Live preview display fixed — 2 October
+
+Evan reported a red strip over a black preview. Pi still JPEGs were complete
+640×480 frames. Multipart samples also contained decodable JPEGs, but the native
+browser MJPEG display reproduced a blank image with natural dimensions 0×0 while
+camera status stayed live. The dashboard revealed the streaming image before
+successful decode. Replaced that display path in `Mapping/static/map.js` with
+single-flight JPEG requests and offscreen decoding before showing a frame.
+It checks JPEG start/end markers, uses frame age plus request/decode time, expires
+displayed frames after at most one second, and cancels/guards tab pause/resume.
+Preview requests are capped at 10 fps; actual delivery varies. Pi capture remains
+12 fps and the HTTP stream endpoint is unchanged. No camera settings/recording
+were changed by the fix.
+
+Live browser verification showed complete 640×480 images with advancing frame IDs
+and no JS errors; the sofa/backpack is fully visible again. Screenshot:
+`/tmp/wallhack-preview-browser-after.png` (temporary). The standalone browser
+regression `Mapping/tests/check_preview.cjs` passed partial-download, full-frame,
+expiry, hidden-tab, late-response, stale-age, truncated-JPEG and recovery cases.
+JavaScript syntax and diff checks passed. Existing open preview pages need a
+reload to pick up the updated script. Continue Stage 1 lighting/angle work below.
+
+## Active work: staged mapping/CV handoff — 2 October
+
+Evan authorized working through the mapping/CV milestones in steps, starting now.
+He clarified that Herman handles flight and the IMU connection; our scope is
+mapping and CV. The active checklist and exit conditions are in
+[Docs/mapping-cv-handoff.md](Docs/mapping-cv-handoff.md). Deadline is unspecified.
+Stage 1 is camera quality, followed by continuous localization, a repeatable
+rough room map, concurrent person detection, and a reproducible software handoff.
+The actual raw-IMU versus fused-pose interface and estimator ownership still need
+agreement; no messages have been sent to Herman.
+
+The first positioned view showed a sofa/backpack and red wall, with no floor.
+A stationary preview comparison of auto
+exposure versus 20 ms/gain 8 and 20 ms/requested gain 16 is complete:
+`Saved/MappingResearch/capture-quality-20261002/192639Z/`. Actual analogue gains
+were 9.48 / 8 / 10.67; grayscale means 57.2 / 28.2 / 35.1. Both 20 ms settings
+lose shadow detail. Auto exposure (41.621 ms), uniform selection and 12 fps were
+restored. No recording was started during that initial comparison. The later
+sideways capture and lens-applicability confirmation are documented above;
+lighting remains unresolved. Do not claim static sharpness establishes motion
+performance or focus.
+
+## New room walk processed — 2 October
+
+Walk `20261002T185247Z-037db03f` reached the 120-second limit and stopped. Imported
+all 1,437 images to the Mac; every image decoded, no reported recorder drops,
+increasing sensor/host timestamps, 11.994 saved fps over 119.936 seconds. Maximum
+saved-frame gap was 208.455 ms; zero queue drops does not imply perfectly uniform
+capture. Median exposure remained 41.621 ms. Footage includes blurred turns,
+large blank walls, kitchen/sofa/table views and a stationary doorway ending.
+
+Results: `Saved/MappingResearch/room-walk-20261002/review.html`, linked to
+`dense-geometry.html`, `quick-scan.html`, `geometry.html` and the contact sheet.
+All inference uses the local DA3 Small MPS runner; no images were uploaded.
+The 2/5/10-second excerpts start at row 240 (~20 s), using strides 2/3/6 and
+12/20/20 images. All fail image consistency. The 10-second semantic result has
+an inferred floor patch from three views, but its 73.69 px reprojection error
+and poor correspondence support withhold camera/contact placement. Its top-down
+outline is explicitly an unstable diagnostic, not a room map.
+
+Broad replay: 21 windows, 16 images each, stride 6, starts 120..1080 by 48;
+**0/21 accepted** with the unchanged gates. Retrospective dense trials at starts
+276/336/576 use 24 consecutive images at 504×378. Start 336 (~28 s) passes local
+screening (5.65 px, 19 supported pairs) and produces a recognizable sofa/table/
+wall fragment over 1.917 s. Tried extensions at 348 and 360: 348 passes its local
+screen but disagrees across shared surfaces/poses (camera p90 18.22% of typical
+depth, orientation p90 11.23°); the chain retains only the first 24 poses. No
+continuous room layout, measured scale or validated localization was established.
+Selection plans, raw outputs and JSON diagnostics are preserved; these are
+exploratory selections without ground truth. Browser checks passed for all four
+pages, duration controls, disabled unsupported placement and mobile overflow;
+screenshots were visually reviewed. Next useful capture: a short 10–15 second
+sideways pass keeping sofa/table and floor visible, after checking shorter
+exposure brightness. The current Pi settings were not changed after the walk.
+
+## Pi recording update deployed and checked — 2 October
+
+Evan is in a larger, better-lit, less-cluttered room, preparing a handheld room
+walk. Pi HTTP and the laptop dashboard are live. Evan renewed SSH with
+`Build/connect_mapping_pi.sh`; its temporary control socket is available again.
+Compared both remote camera modules before deployment: differences were exactly
+the prepared FPS update. Installed `camera_dashboard.py` and `mapping_capture.py`,
+with remote originals backed up under
+`Saved/MappingSetup/fps12-20261002T184842Z-6244c3`. Restarted the idle camera in
+mapping-only mode without autostart; boot configuration is unchanged.
+
+Stationary check `20261002T184919Z-f26bfe3c` saved **152 images over 12.586 s**, at
+11.997 fps, zero reported drops, zero decode failures, increasing sensor/host
+timestamps, maximum saved-frame gap 83.356 ms. The nominal ten-second test took
+longer to stop because of HTTP request latency. Results and deployment evidence:
+`Saved/MappingSetup/fps12-20261002/`; imported clip: `Saved/Mapping/`.
+Pi health before update: throttled `0x0`, 35.1°C, about 30 GB free. Auto exposure
+remains 41.621 ms; higher recording FPS does not remove motion blur. Current view
+is mostly a blank wall; aim across floor, doorway and furniture for the walk.
+Camera is live and **idle**, configured for 12 fps, with a 120-second recording
+limit. No room walk was started. Next: Start recording, slow 45–60 second single
+room loop, Stop & save, then compare full/short windows on the Mac. IMU remains
+unintegrated. Older notes that FPS is local-only are superseded by this check.
+
+## M5 benchmark and window replay completed — 1 October
+
+Evan chose to continue on his M5/24 GB Mac. He also has a GTX 1650 laptop, and
+friends may have RTX 50-series GPUs; their exact models/VRAM and availability are
+unconfirmed. No messages were sent to them. No Pi access is needed for this work.
+
+Open `Saved/MappingResearch/mac-m5-20261001/comparison.html`. Local M5/24 GiB was
+verified; Metal reports a 19 GiB recommended working set. With an 11.4 GiB allocator
+cap, DA3 Small warm calls took 0.084 s (8×280), 0.317 s (16×392), 0.514 s (24×392),
+0.966 s (24×504). Sampled Metal driver peaks were 1.35/2.17/2.20/3.17 GiB including
+caches. Whole processes including three calls/loading/exports took 3.67/3.07/3.82/
+5.74 s. These are not live FPS, maximum capacity or upstream CUDA compatibility.
+
+Downloaded official TUM Freiburg 1 room reference data and prepared 137 RGB-only
+inputs spanning 45.34 s. Ground-truth poses/depth are separate, used only after
+inference. Across 16 short windows, separately similarity-aligned trajectory RMSE
+has median 5.49 cm (range 2.47–10.71 cm); mean window depth AbsRel is 10.24% using
+the same fitted scale. This does not establish independent metric scale,
+continuous room tracking or Pi/drone accuracy. All 23 model windows completed.
+
+New `Mapping.window_replay` aligns shared-image inferred surfaces with RANSAC,
+checks held-out shared views and camera agreement, and preserves one map frame.
+Stool: 3/4 windows accepted, 32 poses spanning 20.72 s; next window rejected for
+camera-position disagreement. Public TUM room and our room each retain one seed;
+neither extends reliably. Initialization can wait for a supported window; after
+a retained map loses alignment, growth stops. All gates are provisional. No loop
+closure, global optimization or IMU fusion is implemented.
+
+All **80 mapping tests passed**; desktop/mobile browser checks passed with no JS
+errors or overflow. Browser review caught/fixed reference bookkeeping after late
+initialization and clipped camera-path framing. Details and reproduction:
+[Mac experiment](Docs/mac-mapping-2026-10-01.md). Final viewer uses `chair-replay`,
+`tum-replay-v3`, `room-replay-v2`; earlier exports are retained diagnostics.
+Data/weights/generated HTML remain under ignored `Saved/`. Unrelated `:memory:.ses`
+is untouched.
 
 ## Next software direction and repository checkpoint — 1 October
 

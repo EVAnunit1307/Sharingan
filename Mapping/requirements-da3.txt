@@ -1,0 +1,14 @@
+# Tested with Python 3.12.14 on Apple Silicon. Isolated demo environment.
+# Direct model/input/output imports; no editable DA3/CUDA renderer install.
+torch==2.14.0
+torchvision==0.29.1
+numpy==2.5.3
+opencv-python-headless==5.0.0.93
+pillow==12.3.0
+omegaconf==2.3.1
+safetensors==0.8.0
+einops==0.8.2
+kornia==0.8.3
+addict==2.4.0
+imageio==2.38.0
+tqdm==4.70.1

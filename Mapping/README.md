@@ -1,5 +1,103 @@
 # Pick up the drone and record a room
 
+## Teammate demo: open or rebuild the room draft
+
+The [committed example](examples/room-draft-20261002/README.md) contains an offline
+interactive viewer, three PNG renders, 48 original selected images and pinned
+reproduction instructions. It includes both wide-room hypotheses and the brighter
+sofa/floor pass. Start with `python3 -m Mapping.room_demo verify`, or open the
+example's `index.html` directly. No Pi is needed to view or rebuild these AI drafts.
+The views have unverified alignment and arbitrary scale; they are not navigation maps.
+
+## Active mapping/CV handoff plan
+
+Follow [the staged plan](../Docs/mapping-cv-handoff.md): camera quality,
+continuous localization, a repeatable rough map, concurrent person detection,
+then software handoff. Stage 1 has a well-lit controlled baseline; Stage 2 loop
+and repeatability checks are active. Herman handles flight and the IMU
+connection; later sensor fusion still needs an agreed interface and calibration.
+
+## First retained Pi tracking pass — 2 October
+
+`Saved/MappingResearch/capture-quality-20261002/lit-motion-203958Z/review.html`
+shows the brighter sofa/floor pass and links to its camera path and AI draft.
+331 readable frames at 12 fps, fixed 20 ms / 4× gain; ORB retains 213 consecutive
+poses in one map for 17.7 seconds after a 9.9-second initialization. All-frame
+coverage is 64.4%; repeatability, physical accuracy and metric scale are pending.
+
+The capture dropdown now offers **Well-lit room · 20 ms**: uniform selection,
+20,000 us, gain 4. Select **12 fps** to reproduce this test, reload the page to
+pick up the new option, and apply while idle. Check floor/furniture brightness
+first; it is a profile tested in this lighting, not a universal default.
+**Standard capture** restores auto exposure, which was restored after the test.
+The AI scene draft uses independent predicted poses; it is not registered to the
+ORB trajectory and does not establish contact placement.
+
+## AI room draft — 2 October
+
+Evan requested a fuller tentative picture even when estimates are uncertain.
+Open `Saved/MappingResearch/ai-room-draft-20261002/room-draft.html` for two
+wider-room hypotheses and the latest sofa close-up. The viewer includes weaker
+depth estimates in faint amber, optional semantic colours, tentative object
+labels and source-image inspection. Each hypothesis keeps its own frame. Model
+confidence ranks are not calibrated probabilities of correctness.
+
+`Mapping.ai_room_draft` reads completed predictions and optional semantic labels,
+then writes only a new HTML viewer and JSON manifest. It does not write operator
+maps, pose packets or source trials. Existing tracking/placement gates are
+unchanged. A model may invent or distort visible geometry; unseen room boundaries
+remain unknown. This is an additional operator-context experiment, not a passed
+continuous-localization or room-map stage.
+
+```sh
+.venv/bin/python -m Mapping.ai_room_draft \
+  --trials Saved/MappingResearch/ai-room-draft-20261002/room-camera \
+    Saved/MappingResearch/ai-room-draft-20261002/room-rays-cpu \
+    Saved/MappingResearch/capture-quality-20261002/motion-194831Z/dense-0108 \
+  --labels 'Room sweep' 'Room sweep · alternate estimate' 'Sofa close-up' \
+  --output Saved/MappingResearch/ai-room-draft-20261002/new-draft.html
+```
+
+The wider trials use 24 images at rows 192..744, stride 24, of recording
+`20261002T185247Z-037db03f` (46.16 s between endpoints), at 504×378.
+Both have zero adjacent pairs with enough image matches; their alignment is
+unverified. The alternate `Mapping.da3_trial --ray-pose` uses the official ray
+head. Its MPS SVD call failed in Metal; `--device cpu --ray-pose` completed
+(16.49 s model call, versus 1.43 s for camera-decoder MPS). This one comparison
+does not establish an accuracy or speed improvement. Failure and successful-run
+logs are preserved; no upstream model code was edited. Object labels use the
+existing local SegFormer model/cache. All image inference stays on the Mac.
+
+Checks: `python -m unittest Mapping.tests.test_ai_room_draft Mapping.tests.test_da3`;
+browser checks cover uncertainty filtering, source selection, semantic overlays,
+single-view inspection, playback and mobile layout.
+
+## New room walk — 2 October
+
+`Saved/MappingResearch/room-walk-20261002/review.html` shows the new 12 fps room
+recording, short-window results and one recovered local 3D fragment. All 1,437
+saved images decoded; 0/21 broad replay windows passed screening. Denser 24-view
+input recovered a 1.92-second sofa/table/wall fragment, but the next overlapping
+window disagreed, so continuous mapping remains unvalidated. The 10-second
+top-down sketch is labelled unstable and withholds camera/contact placement.
+Original images, raw predictions, selection plans and diagnostics are retained.
+
+## M5 capacity and overlapping-window experiment — 1 October
+
+Open `Saved/MappingResearch/mac-m5-20261001/comparison.html`. The M5/24 GB Mac
+completed four bounded DA3 Small profiles and 23 window batches. A warm 24-image
+call at 504×378 took about 0.97 s with a sampled 3.17 GiB Metal driver peak;
+model-call timing excludes the rest of the pipeline. The stool fragment grows
+through three accepted windows (32 poses); room-wide continuity is unresolved.
+
+New tools: `Mapping.reference_benchmark` imports public TUM RGB separately from
+reference poses/depth and evaluates predictions after inference;
+`Mapping.window_replay` screens overlapping windows before extending a map;
+`Mapping.mac_report` renders the experiment. `Mapping.da3_trial` now records
+resource/timing data, supports `--repeats 1–3`, and caps the MPS allocator by
+default. These are local experiments, not upstream DA3-Streaming or live SLAM.
+See [measurements, limitations and reproduction](../Docs/mac-mapping-2026-10-01.md).
+
 ## Quick-scan operator sketch — 1 October
 
 Open `Saved/MappingResearch/quick-scan-20261001/operator-comparison.html` for the
@@ -72,19 +170,20 @@ Saved/MappingResearch/da3/venv/bin/python -m Mapping.da3_inspect \
   --output Saved/MappingResearch/da3/comparison.html
 ```
 
-Metal requires macOS GPU access. `--device cpu` is explicit fallback; it was not
-benchmarked. Batch inference timings exclude loading, image I/O and the viewer.
+Metal requires macOS GPU access. `--device cpu` is explicit fallback; the ray-head
+experiment above exercises it. Batch inference timings exclude loading, image I/O and the viewer.
 The comparison aligns shared camera positions and measures input sensitivity;
 it does not establish physical accuracy. The PLY is confidence-filtered inferred
 depth, not triangulated landmarks or verified free space.
 
-**Recording FPS is prepared locally; the Pi is currently unreachable.** Updated
-camera CLI default: 12 saved fps. The dashboard can request 3, 6, 12 or 24 fps
-between recordings after deploying `SensorRig/CV/camera_dashboard.py` and
-`SensorRig/CV/mapping_capture.py`. The sensor target remains 24 fps; preview stays
-at up to 12 fps. Rate control stays disabled for old Pi software. Check saved
-sensor timestamp intervals and dropped frames in a bounded stationary test before
-using the higher rate for a walk. Higher FPS alone does not shorten exposure.
+**Recording FPS was deployed and checked on 2 October.** Camera CLI default:
+12 saved fps. The dashboard can request 3, 6, 12 or 24 fps between recordings.
+The 12 fps stationary check saved 152 decodable images over 12.586 seconds,
+measured 11.997 fps, with zero reported drops and increasing sensor timestamps.
+Evidence: `Saved/MappingSetup/fps12-20261002/stationary-12fps.json`.
+The sensor target remains 24 fps; preview stays at up to 12 fps. Rate control
+stays disabled for old Pi software. Higher FPS alone does not shorten exposure:
+the check still used 41.621 ms auto exposure. 24 saved fps has not been verified.
 
 ## Stationary camera check
 
@@ -185,12 +284,24 @@ were restored after testing. See the [complete experiment ledger](../Docs/mappin
 For now, add light, move sideways slowly around textured furniture and pause
 after each step: median exposure is still 41.6 ms.
 
-The live preview streams continuously at up to 12 fps, independently of the
-recording rate (last deployed: 3 fps; local update: 12 fps). The latest frame replaces any waiting
-preview frame. Lower preview JPEG quality reduces traffic without reducing saved
-image quality. A real 70-frame transport check delivered 11.99 fps through the
-laptop (82 ms median frame interval); actual camera-to-screen latency is unmeasured.
-The preview pauses while its browser tab is hidden and resumes when visible.
+The dashboard preview requests complete JPEG frames, independently of the 12 fps
+recording rate. It downloads and decodes each frame before showing it, with one
+request in flight and a maximum request rate of 10 fps; network/decode time can
+lower that rate. This replaced the browser's MJPEG display on 2 October after it
+showed a partial strip/blank image despite complete Pi JPEGs. The stream endpoint
+remains available for other clients. Its earlier 11.99 fps transport measurement
+does not measure the new browser preview or camera-to-screen latency.
+Lower preview JPEG quality reduces traffic without reducing saved-image quality.
+Missing, truncated or delayed frames are withheld. Displayed frames expire within
+one second using upstream age plus the full request/decode duration as a
+conservative bound. Preview pauses in a hidden tab, aborts the current request,
+and resumes when visible. A late response cannot restore a paused image.
+
+Browser regression: `Mapping/tests/check_preview.cjs` uses Playwright with a local
+test server and generated JPEGs; no Pi is needed. Run with Playwright installed,
+or set `PLAYWRIGHT_MODULE` to its module path and `CHROME_BIN` to a browser binary.
+It covers partial downloads, complete image contents, expiry, background tabs,
+late responses, stale metadata, truncated JPEGs and recovery.
 
 The Pi starts capture through the user-owned cron entry described below. For this
 session, no more terminal setup is needed. If the laptop app is stopped later,
@@ -316,8 +427,8 @@ bash Build/start_mapping_pi.sh --mapping-autostart
 
 Use `--mapping-seconds 180` for a three-minute maximum or `--mapping-fps 6` for a
 different sample rate. Updated code defaults to 12 clean JPEGs/sec, with up to 24
-requested; actual rate depends on camera and disk. This update has not yet been
-deployed to the offline Pi. IMU synchronization remains a later capture mode. After autostart reaches
+requested; actual rate depends on camera and disk. The 12 fps update was deployed
+and checked on 2 October. IMU synchronization remains a later capture mode. After autostart reaches
 its limit, use **Start recording** for another walk without restarting the Pi.
 
 ## Installed: recording after Pi boot

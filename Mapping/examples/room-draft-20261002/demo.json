@@ -1,0 +1,93 @@
+{
+  "schema": "wallhack.room_demo.v1",
+  "model": {
+    "repo": "depth-anything/DA3-SMALL",
+    "revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+    "files": {
+      "config.json": {
+        "bytes": 1202,
+        "sha256": "a486e29e82b7ab4a7d4cefc1ea4526cfe2ae438a572c8ca98917cfbcde7447d2"
+      },
+      "model.safetensors": {
+        "bytes": 137248940,
+        "sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf"
+      }
+    }
+  },
+  "source_repository": "https://github.com/ByteDance-Seed/Depth-Anything-3.git",
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "scenes": {
+    "room-sweep": {
+      "session": "inputs/20261002T185247Z-037db03f",
+      "labels": "labels/room-sweep",
+      "processed_rgb_sha256": "e6f2fbe26804c4ed3490d7dceebce4604025f479fcb870b90c845cb7804e839c",
+      "display_label": "Room sweep",
+      "source_indices": [
+        192,
+        216,
+        240,
+        264,
+        288,
+        312,
+        336,
+        360,
+        384,
+        408,
+        432,
+        456,
+        480,
+        504,
+        528,
+        552,
+        576,
+        600,
+        624,
+        648,
+        672,
+        696,
+        720,
+        744
+      ],
+      "selected_span_seconds": 46.181951
+    },
+    "lit-sofa": {
+      "session": "inputs/20261002T204006Z-fb75b05e",
+      "labels": "labels/lit-sofa",
+      "processed_rgb_sha256": "f1ca33382a8477a73e13ca75014902bf602f53d24fa32600c84aa1dfa7cae891",
+      "display_label": "Brighter sofa and floor pass",
+      "source_indices": [
+        120,
+        129,
+        138,
+        147,
+        156,
+        165,
+        174,
+        183,
+        192,
+        201,
+        210,
+        219,
+        228,
+        237,
+        246,
+        255,
+        264,
+        273,
+        282,
+        291,
+        300,
+        309,
+        318,
+        327
+      ],
+      "selected_span_seconds": 17.243995
+    }
+  },
+  "resolution": 504,
+  "frames": 24,
+  "torch_seed": 42,
+  "ref_view_strategy": "saddle_balanced",
+  "source_license": "Apache-2.0",
+  "inputs_note": "Evan authorized sharing these selected room images and derived renders with the project team on 2026-10-02. These are real home images, not synthetic or public benchmark data."
+}
