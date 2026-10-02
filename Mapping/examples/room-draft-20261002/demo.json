@@ -82,6 +82,39 @@
         327
       ],
       "selected_span_seconds": 17.243995
+    },
+    "couch-return": {
+      "session": "inputs/20261002T213938Z-e3ead809",
+      "labels": "labels/couch-return",
+      "processed_rgb_sha256": "3ce602742791f046ebf50d93094d51d8841e014e13ce61f464eeb648e23b8bf0",
+      "display_label": "Couch out-and-back \u00b7 second pass",
+      "source_indices": [
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "selected_span_seconds": 28.989006
     }
   },
   "resolution": 504,

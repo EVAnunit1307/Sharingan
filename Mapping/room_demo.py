@@ -134,7 +134,7 @@ def main():
     run.add_argument('--assets', type=Path, default=ASSETS)
     run.add_argument('--source', type=Path, help='Existing clean pinned DA3 source checkout')
     run.add_argument('--model', type=Path, help='Existing pinned checkpoint folder')
-    run.add_argument('--scene', choices=('room-sweep', 'lit-sofa'), default='room-sweep')
+    run.add_argument('--scene', choices=('room-sweep', 'lit-sofa', 'couch-return'), default='room-sweep')
     run.add_argument('--device', choices=('mps', 'cpu'), default='cpu')
     run.add_argument('--ray-pose', action='store_true')
     run.add_argument('--output', type=Path, required=True)
@@ -146,7 +146,7 @@ def main():
     elif args.command == 'run':
         reproduce(args, config)
     else:
-        print('Verified both 24-image selections, cached labels, provenance and saved renders.')
+        print(f"Verified {len(config['scenes'])} 24-image selections, cached labels, provenance and saved renders.")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,45 @@
+{
+  "session_id": "20261002T213938Z-e3ead809",
+  "selection": {
+    "start_frame": 294,
+    "stride": 15,
+    "frames": 24,
+    "indices": [
+      294,
+      309,
+      324,
+      339,
+      354,
+      369,
+      384,
+      399,
+      414,
+      429,
+      444,
+      459,
+      474,
+      489,
+      504,
+      519,
+      534,
+      549,
+      564,
+      579,
+      594,
+      609,
+      624,
+      639
+    ],
+    "reason": "Fixed uniform sampling of the second out-and-back pass, selected before inference; all rows have retained ORB poses."
+  },
+  "artifact_policy": "Keep all selected images, including row 369 in the known coloured-streak interval. No post-result frame substitution.",
+  "model": "depth-anything/DA3-SMALL",
+  "resolution": 504,
+  "device": "mps",
+  "checks": [
+    "Image-pair reprojection diagnostics",
+    "Sim3 camera-path agreement against ORB, not ground truth",
+    "Return-view feature displacements, not physical drift"
+  ],
+  "physical_return_confirmation": "pending; go is authorization to analyze only"
+}

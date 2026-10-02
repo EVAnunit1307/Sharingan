@@ -17,27 +17,53 @@ labels. ORB-SLAM3 separately tracks the camera; it did not create this room clou
 
 | Viewer selection | Original input | Span between selected endpoints | Pose estimate |
 | --- | --- | --- | --- |
-| Room sweep | `20261002T185247Z-037db03f`, rows 192…744, stride 24 | 46.16 s | DA3 camera decoder, MPS |
-| Room sweep · alternate estimate | Same 24 images | 46.16 s | DA3 ray head, CPU |
+| Room sweep | `20261002T185247Z-037db03f`, rows 192…744, stride 24 | 46.18 s | DA3 camera decoder, MPS |
+| Room sweep · alternate estimate | Same 24 images | 46.18 s | DA3 ray head, CPU |
 | Brighter sofa and floor pass | `20261002T204006Z-fb75b05e`, rows 120…327, stride 9 | 17.24 s | DA3 camera decoder, MPS |
+| Couch out-and-back · second pass | `20261002T213938Z-e3ead809`, rows 294…639, stride 15 | 28.99 s | DA3 camera decoder, MPS |
 
 The first two have **no adjacent pairs with enough verified image matches** in
 our local diagnostic. The brighter pass has 23 supported adjacent pairs and
 2.21 px median reprojection error, but its camera estimates disagree with ORB.
 Recognizable furniture does not establish correct room dimensions or placement.
-All three remain unverified, with arbitrary units and independent coordinates.
+All four remain unverified, with arbitrary units and independent coordinates.
 Faint amber means weaker model rank; it is not a calibrated probability.
 
 The separate dense ORB run retained 213/331 poses, with 17.7 s of uninterrupted
 tracking after 9.9 s initializing. That was the brighter pass, not the wide sweep.
 These 24-image subsets are **not suitable for reproducing continuous ORB tracking**;
-that requires the full 331-frame recording and reviewed calibration, held locally.
+that requires each full recording and reviewed calibration, held locally.
+
+### Latest couch return result
+
+![Couch second-pass draft](renders/couch-return.png)
+
+The full 55-second couch recording retained **614/658 ORB poses (93.3%) in one
+map**, continuously for 51.4 seconds after initialization. The 24-image AI subset
+above has 22/23 adjacent pairs supported by the local image check, with 2.28 px
+median pair reprojection error at 504-pixel width. DA3 inference took 1.45 s;
+the measured Python pipeline took 5.13 s. These are one-run measurements.
+
+Seats and floor are recognizable, but overlapping edges remain. After a similarity
+fit using all 24 camera positions, AI/ORB position disagreement is 18.0% of ORB's
+RMS position spread. Fitting only the first eight and checking the later sixteen
+gives 61.0%. Neither estimator is ground truth, and the motion is nearly linear.
+This supports an exploratory view, not verified room geometry or localization.
+See [full checks and definitions](results/couch-return-agreement.json).
+
+The input selection was fixed before inference. It retains row 369 from the brief
+coloured-streak interval; no replacement was chosen after seeing the result. The
+source is visible in the sixth filmstrip image. The two candidate return views
+differ by about 25 image pixels at matched features, so endpoint separation still
+mixes actual camera movement with possible tracking error. The exact physical
+return pose is unconfirmed. No centimetre-level drift is claimed.
 
 ## Included
 
-- 48 original, byte-identical 640×480 JPEGs in two input sets. Original timestamps,
+- 72 original, byte-identical 640×480 JPEGs in three input sets. Original timestamps,
   frame IDs and source row indices are retained; no images were re-encoded.
-- One offline viewer with all three saved estimates, plus PNG screenshots.
+- One offline viewer with all four saved estimates, plus PNG screenshots and
+  return-view comparisons.
 - Cached semantic label predictions, verified against the processed image bytes.
 - Source/model revisions, hashes, original run summaries, and SHA-256 checksums.
 
@@ -74,6 +100,10 @@ Saved/MappingResearch/team-demo-venv/bin/python -m Mapping.room_demo run \
 Saved/MappingResearch/team-demo-venv/bin/python -m Mapping.room_demo run \
   --scene lit-sofa --device mps \
   --output Saved/MappingResearch/recreated-lit-sofa
+
+Saved/MappingResearch/team-demo-venv/bin/python -m Mapping.room_demo run \
+  --scene couch-return --device mps \
+  --output Saved/MappingResearch/recreated-couch-return
 ```
 
 Open the `index.html` in each output directory. Choose a **new output directory**
@@ -87,10 +117,11 @@ frame order, 504×378 preprocessing, seed, checkpoint and reference-view strateg
 GPU/CPU floating-point results can differ: the bundled viewer preserves the
 original result exactly; rebuilding is not promised to be byte-identical.
 
-Verified on 2 October in a fresh Python environment: all three examples rebuilt,
+Verified on 2 October in the isolated reproduction environment: all four examples rebuilt,
 and their depth, confidence, camera, intrinsics and image arrays matched the
-original runs exactly on this Mac. The source checkout was freshly downloaded;
-the checkpoint was reused after SHA-256 verification. See
+original runs exactly on this Mac. The original three runs used freshly downloaded
+source; the new couch run reused those verified pinned assets.
+The checkpoint was reused after SHA-256 verification. See
 [validation details](results/validation.json) and the
 [installed environment](results/environment-mac-py312.txt). Timings varied between
 runs and include first-use overhead; this was a reproduction test, not a speed
@@ -117,7 +148,7 @@ PLAYWRIGHT_MODULE="$PWD/Saved/MappingResearch/demo-browser/node_modules/playwrig
   node Mapping/tests/check_room_demo.cjs Saved/MappingResearch/new-demo-renders
 ```
 
-`CHROME_BIN` can select an existing Chrome binary. The script exports all three
+`CHROME_BIN` can select an existing Chrome binary. The script exports all four
 PNG screenshots, exercises filters/source controls, checks mobile overflow and
 ensures the viewer makes no network requests. Font/browser differences may
 change screenshot pixels without changing the underlying geometry.

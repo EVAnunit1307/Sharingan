@@ -1,0 +1,33 @@
+{
+  "kind": "selected_ai_input_only",
+  "source_session": "20261002T213938Z-e3ead809",
+  "source_indices": [
+    294,
+    309,
+    324,
+    339,
+    354,
+    369,
+    384,
+    399,
+    414,
+    429,
+    444,
+    459,
+    474,
+    489,
+    504,
+    519,
+    534,
+    549,
+    564,
+    579,
+    594,
+    609,
+    624,
+    639
+  ],
+  "source_row_count": 658,
+  "is_contiguous_capture": false,
+  "note": "24 byte-identical selected JPEGs. Original source_row_index/timestamps retained. Includes streaked row 369 by the pre-inference plan. Not a continuous-tracker input."
+}

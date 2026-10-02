@@ -3,9 +3,9 @@
 ## Teammate demo: open or rebuild the room draft
 
 The [committed example](examples/room-draft-20261002/README.md) contains an offline
-interactive viewer, three PNG renders, 48 original selected images and pinned
-reproduction instructions. It includes both wide-room hypotheses and the brighter
-sofa/floor pass. Start with `python3 -m Mapping.room_demo verify`, or open the
+interactive viewer, four PNG renders, 72 original selected images and pinned
+reproduction instructions. It includes both wide-room hypotheses, the brighter
+sofa/floor pass and the couch return test. Start with `python3 -m Mapping.room_demo verify`, or open the
 example's `index.html` directly. No Pi is needed to view or rebuild these AI drafts.
 The views have unverified alignment and arbitrary scale; they are not navigation maps.
 

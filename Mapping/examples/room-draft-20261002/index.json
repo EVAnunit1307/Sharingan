@@ -3730,6 +3730,1560 @@
       "warning": "Tentative visible-scene hypothesis. Shape and camera alignment may be wrong. Unseen room boundaries remain unknown.",
       "confidence_note": "Faint amber points include the lower 40% of depth confidence or farthest 1% of depth; rankings are not calibrated accuracy probabilities. All displayed geometry also depends on uncertain camera poses.",
       "display_label": "Brighter sofa and floor pass"
+    },
+    {
+      "name": "second-pass-da3",
+      "session_id": "20261002T213938Z-e3ead809",
+      "kind": "ai_room_hypothesis",
+      "validated": false,
+      "live": false,
+      "units": "arbitrary",
+      "metric_scale_available": false,
+      "pose_estimation": "camera_decoder",
+      "mapping_eligible": false,
+      "source_trial": "Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/second-pass-da3",
+      "prediction_sha256": "abcb916db5e90a3c13c3e84f541c5d09bdcd49938f09e7fbca00af0a60ceb6cd",
+      "camera_rotations": [
+        [
+          [
+            0.9999998211860657,
+            0.0003865000035148114,
+            0.000385499995900318
+          ],
+          [
+            -0.00038640000275336206,
+            0.9999998807907104,
+            -0.00036440000985749066
+          ],
+          [
+            -0.0003856999974232167,
+            0.000364200008334592,
+            0.9999998807907104
+          ]
+        ],
+        [
+          [
+            0.9991766810417175,
+            0.02988330088555813,
+            -0.027440600097179413
+          ],
+          [
+            -0.029661599546670914,
+            0.9995242953300476,
+            0.008450999855995178
+          ],
+          [
+            0.02768010087311268,
+            -0.007630200125277042,
+            0.9995877146720886
+          ]
+        ],
+        [
+          [
+            0.9987006187438965,
+            0.04549330100417137,
+            -0.02296599932014942
+          ],
+          [
+            -0.04532010108232498,
+            0.9989404082298279,
+            0.008008000440895557
+          ],
+          [
+            0.023305999115109444,
+            -0.006956799887120724,
+            0.9997041821479797
+          ]
+        ],
+        [
+          [
+            0.9972221851348877,
+            0.06846830248832703,
+            -0.029323099181056023
+          ],
+          [
+            -0.06833229959011078,
+            0.9976468086242676,
+            0.005616600159555674
+          ],
+          [
+            0.02963859960436821,
+            -0.0035973000340163708,
+            0.9995542168617249
+          ]
+        ],
+        [
+          [
+            0.9963815808296204,
+            0.08181250095367432,
+            -0.023029599338769913
+          ],
+          [
+            -0.08181790262460709,
+            0.9966471195220947,
+            0.0007082999800331891
+          ],
+          [
+            0.02301030047237873,
+            0.001178500009700656,
+            0.9997345209121704
+          ]
+        ],
+        [
+          [
+            0.9387332797050476,
+            0.24090319871902466,
+            -0.24646590650081635
+          ],
+          [
+            -0.2518537938594818,
+            0.9676722288131714,
+            -0.013422899879515171
+          ],
+          [
+            0.2352645993232727,
+            0.07467389851808548,
+            0.9690585136413574
+          ]
+        ],
+        [
+          [
+            0.9986709952354431,
+            0.0429111011326313,
+            0.028547100722789764
+          ],
+          [
+            -0.0417557992041111,
+            0.9983304738998413,
+            -0.03990690037608147
+          ],
+          [
+            -0.030211899429559708,
+            0.0386619009077549,
+            0.9987955093383789
+          ]
+        ],
+        [
+          [
+            0.9961097240447998,
+            0.05644889920949936,
+            0.06766770035028458
+          ],
+          [
+            -0.0548521988093853,
+            0.9981756806373596,
+            -0.025227900594472885
+          ],
+          [
+            -0.06896840035915375,
+            0.021418100222945213,
+            0.9973888993263245
+          ]
+        ],
+        [
+          [
+            0.9955980181694031,
+            0.06282959878444672,
+            0.06954959779977798
+          ],
+          [
+            -0.06132330000400543,
+            0.9978392124176025,
+            -0.023587899282574654
+          ],
+          [
+            -0.07088129967451096,
+            0.01921899989247322,
+            0.9972996115684509
+          ]
+        ],
+        [
+          [
+            0.9940145015716553,
+            0.05291840061545372,
+            0.0955761969089508
+          ],
+          [
+            -0.05124960094690323,
+            0.9984889030456543,
+            -0.01983340084552765
+          ],
+          [
+            -0.09648130089044571,
+            0.014816399663686752,
+            0.9952244758605957
+          ]
+        ],
+        [
+          [
+            0.9913567900657654,
+            0.03483549878001213,
+            0.1264842003583908
+          ],
+          [
+            -0.03344390168786049,
+            0.9993546009063721,
+            -0.013110100291669369
+          ],
+          [
+            -0.12685930728912354,
+            0.00876659993082285,
+            0.9918820261955261
+          ]
+        ],
+        [
+          [
+            0.9869055151939392,
+            0.060924600809812546,
+            0.14935080707073212
+          ],
+          [
+            -0.0582600012421608,
+            0.9980555772781372,
+            -0.0221560001373291
+          ],
+          [
+            -0.15041020512580872,
+            0.013164700008928776,
+            0.98853600025177
+          ]
+        ],
+        [
+          [
+            0.9886525869369507,
+            0.05915530025959015,
+            0.13808180391788483
+          ],
+          [
+            -0.0564459003508091,
+            0.9981300234794617,
+            -0.0234593003988266
+          ],
+          [
+            -0.13921129703521729,
+            0.015398900024592876,
+            0.9901428818702698
+          ]
+        ],
+        [
+          [
+            0.9889516234397888,
+            0.09579060226678848,
+            0.1131317988038063
+          ],
+          [
+            -0.0936724990606308,
+            0.9953160285949707,
+            -0.023904599249362946
+          ],
+          [
+            -0.11489170044660568,
+            0.013043100014328957,
+            0.9932923913002014
+          ]
+        ],
+        [
+          [
+            0.9925544857978821,
+            0.07499390095472336,
+            0.0959767997264862
+          ],
+          [
+            -0.07247120141983032,
+            0.9969338178634644,
+            -0.029510699212551117
+          ],
+          [
+            -0.09789569675922394,
+            0.02233549952507019,
+            0.9949460029602051
+          ]
+        ],
+        [
+          [
+            0.994049072265625,
+            0.06408079713582993,
+            0.08809079974889755
+          ],
+          [
+            -0.06217379868030548,
+            0.9977713227272034,
+            -0.024227099493145943
+          ],
+          [
+            -0.08944699913263321,
+            0.018605999648571014,
+            0.9958177804946899
+          ]
+        ],
+        [
+          [
+            0.995192289352417,
+            0.0905739963054657,
+            0.03726449981331825
+          ],
+          [
+            -0.08987099677324295,
+            0.9957500100135803,
+            -0.020130999386310577
+          ],
+          [
+            -0.03892949968576431,
+            0.016685299575328827,
+            0.9991027116775513
+          ]
+        ],
+        [
+          [
+            0.9975913763046265,
+            0.06679920107126236,
+            0.01869090087711811
+          ],
+          [
+            -0.0670337975025177,
+            0.997675895690918,
+            0.012219900265336037
+          ],
+          [
+            -0.01783120073378086,
+            -0.013443299569189548,
+            0.9997506141662598
+          ]
+        ],
+        [
+          [
+            0.9936944842338562,
+            0.11203079670667648,
+            0.0045182001776993275
+          ],
+          [
+            -0.1120665967464447,
+            0.9936633110046387,
+            0.008627600036561489
+          ],
+          [
+            -0.0035230000503361225,
+            -0.009079599753022194,
+            0.9999526143074036
+          ]
+        ],
+        [
+          [
+            0.9974442720413208,
+            0.07063580304384232,
+            -0.010739600285887718
+          ],
+          [
+            -0.07018180191516876,
+            0.9968100786209106,
+            0.03800249844789505
+          ],
+          [
+            0.013389600440859795,
+            -0.037151601165533066,
+            0.9992200136184692
+          ]
+        ],
+        [
+          [
+            0.9977207183837891,
+            0.05758430063724518,
+            -0.03517869859933853
+          ],
+          [
+            -0.05587510019540787,
+            0.9972938895225525,
+            0.04777909815311432
+          ],
+          [
+            0.03783490136265755,
+            -0.04570459946990013,
+            0.9982383251190186
+          ]
+        ],
+        [
+          [
+            0.9984704852104187,
+            0.03957119956612587,
+            -0.038610100746154785
+          ],
+          [
+            -0.03769670054316521,
+            0.9981297254562378,
+            0.04812590032815933
+          ],
+          [
+            0.040442198514938354,
+            -0.04659679904580116,
+            0.9980946779251099
+          ]
+        ],
+        [
+          [
+            0.9995126724243164,
+            0.020339300855994225,
+            -0.02368069998919964
+          ],
+          [
+            -0.01873530074954033,
+            0.9976376891136169,
+            0.06609109789133072
+          ],
+          [
+            0.02496900036931038,
+            -0.0656151995062828,
+            0.9975324869155884
+          ]
+        ],
+        [
+          [
+            0.9997243881225586,
+            0.02198229916393757,
+            0.008236500434577465
+          ],
+          [
+            -0.022366000339388847,
+            0.9985073208808899,
+            0.049828000366687775
+          ],
+          [
+            -0.007128899917006493,
+            -0.04999849945306778,
+            0.9987239241600037
+          ]
+        ]
+      ],
+      "labels": [
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.38134080792810954,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.24383240950701268,
+            "weak_label": false
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.15015852019820275,
+            "weak_label": true
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.12672692533803645,
+            "weak_label": false
+          },
+          {
+            "label": "sofa",
+            "category": "object",
+            "image_fraction": 0.033425715965398506,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.03316326530612245,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.01913265306122449,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.34552154195011336,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.19531053162005543,
+            "weak_label": true
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.16856156042663978,
+            "weak_label": false
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.15500860838162425,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.03489543965734442,
+            "weak_label": true
+          },
+          {
+            "label": "sofa",
+            "category": "object",
+            "image_fraction": 0.03437578735197783,
+            "weak_label": true
+          },
+          {
+            "label": "armchair",
+            "category": "object",
+            "image_fraction": 0.03041278239690938,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.026659737969261778,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.338225413622239,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.32985848660451833,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.17312820189804318,
+            "weak_label": false
+          },
+          {
+            "label": "sofa",
+            "category": "object",
+            "image_fraction": 0.039472579155118835,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.029987612328882172,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.026628243890148652,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.025604686318972034,
+            "weak_label": true
+          },
+          {
+            "label": "armchair",
+            "category": "object",
+            "image_fraction": 0.023568069202989837,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.3798395901570505,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.3048941798941799,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.20675338036449148,
+            "weak_label": false
+          },
+          {
+            "label": "sofa",
+            "category": "object",
+            "image_fraction": 0.029982363315696647,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.02824493995128916,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.027546821197614847,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.008309187872679936,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4100476610397245,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.3345143613000756,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.18018287561938356,
+            "weak_label": false
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.03654362979759805,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.011374611573024272,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.010419291173259427,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.7851054001847653,
+            "weak_label": false
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.5245496346686823,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.32116612076929535,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.06695641219450743,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.053912614428487445,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.01585726883345931,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.01379965566473503,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.47682035777273873,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.4606848912404468,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.03213970773494583,
+            "weak_label": false
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.016019988242210466,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.009374737549340723,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.46084761064919794,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.32084068195179305,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.15902935248173344,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.039052658100277145,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.013080540858318637,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4779803896867389,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.277205635340556,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.1487832787435962,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.061754640127656,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.022161333669270176,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4677658100277148,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.31254199210548417,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.1366318132191148,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.06966490299823633,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.47854203409758966,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.20284286554127823,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.2019190392206265,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.09757390610565214,
+            "weak_label": false
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.008687116822037457,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.45767720668514317,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.3448864113546653,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.09196796002351558,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.08424141261442848,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4511159402032418,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.3069622910892752,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.14197005962878978,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.08697089947089948,
+            "weak_label": false
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4880532459897539,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.20614449483497102,
+            "weak_label": true
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.20411312673217435,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.07232090367011001,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.43490173847316704,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.28786113210716385,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.1603626018308558,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.10062883177962544,
+            "weak_label": false
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.4154436465944402,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.30212270093222476,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.180671033845637,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.0948076761568825,
+            "weak_label": false
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.3726221970269589,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.33782123960695387,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.1554862685815067,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.08420466952212984,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.027546821197614847,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.011868018812463257,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.3939436885865457,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.3030360292265054,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.23489858906525574,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.04599185353153607,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.014744478038128832,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.4189132443100697,
+            "weak_label": false
+          },
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.34088141429411273,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.19745737801293356,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.012676366843033509,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.010697488872092046,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.45294259679180315,
+            "weak_label": false
+          },
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.33179537246997565,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.18483350130175527,
+            "weak_label": false
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.012797094146300496,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.37451709078693207,
+            "weak_label": false
+          },
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.35263920382968,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.23294070714705636,
+            "weak_label": false
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.014461031326110691,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.008566389518770472,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.33112874779541446,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.30344545225497604,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.26029856386999245,
+            "weak_label": false
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.030003359368438735,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.023573318216175358,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.022376543209876542,
+            "weak_label": true
+          },
+          {
+            "label": "armchair",
+            "category": "object",
+            "image_fraction": 0.010120097421684723,
+            "weak_label": true
+          }
+        ],
+        [
+          {
+            "label": "floor",
+            "category": "floor",
+            "image_fraction": 0.32814205929285295,
+            "weak_label": false
+          },
+          {
+            "label": "seat",
+            "category": "object",
+            "image_fraction": 0.32158079281095153,
+            "weak_label": false
+          },
+          {
+            "label": "wall",
+            "category": "wall",
+            "image_fraction": 0.22615898211136307,
+            "weak_label": false
+          },
+          {
+            "label": "sofa",
+            "category": "object",
+            "image_fraction": 0.03827580414882002,
+            "weak_label": true
+          },
+          {
+            "label": "bag",
+            "category": "object",
+            "image_fraction": 0.03191924918115394,
+            "weak_label": true
+          },
+          {
+            "label": "table",
+            "category": "object",
+            "image_fraction": 0.02194087511547829,
+            "weak_label": true
+          },
+          {
+            "label": "chair",
+            "category": "object",
+            "image_fraction": 0.020513143529016543,
+            "weak_label": true
+          }
+        ]
+      ],
+      "semantics_available": true,
+      "indices": [
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "seconds": [
+        0.0,
+        1.249526,
+        2.499059,
+        3.748579,
+        4.998105,
+        6.24763,
+        7.497157,
+        8.746684,
+        9.996209,
+        11.245735,
+        12.578564,
+        13.828089,
+        15.077614,
+        16.32714,
+        17.576667,
+        18.826192,
+        20.07572,
+        21.325247,
+        22.574774,
+        23.907599,
+        25.157126,
+        26.406652,
+        27.656178,
+        28.989006
+      ],
+      "camera_timestamps_ns": [
+        10703544197000,
+        10704793723000,
+        10706043256000,
+        10707292776000,
+        10708542302000,
+        10709791827000,
+        10711041354000,
+        10712290881000,
+        10713540406000,
+        10714789932000,
+        10716122761000,
+        10717372286000,
+        10718621811000,
+        10719871337000,
+        10721120864000,
+        10722370389000,
+        10723619917000,
+        10724869444000,
+        10726118971000,
+        10727451796000,
+        10728701323000,
+        10729950849000,
+        10731200375000,
+        10732533203000
+      ],
+      "diagnostics": {
+        "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+        "image_width": 504,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "mutual_ratio_matches": 128,
+            "evaluated": 52,
+            "median_pixels": 2.2937054916168007,
+            "p90_pixels": 3.4365253158689644
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "mutual_ratio_matches": 127,
+            "evaluated": 55,
+            "median_pixels": 1.458170526299474,
+            "p90_pixels": 1.959249073139674
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "mutual_ratio_matches": 131,
+            "evaluated": 59,
+            "median_pixels": 3.593157240648844,
+            "p90_pixels": 4.083557868097184
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "mutual_ratio_matches": 124,
+            "evaluated": 56,
+            "median_pixels": 3.204485308378338,
+            "p90_pixels": 4.7511380388941
+          },
+          {
+            "pair": [
+              4,
+              5
+            ],
+            "mutual_ratio_matches": 22,
+            "evaluated": 7,
+            "median_pixels": 33.05136996531161,
+            "p90_pixels": 36.70109138500909
+          },
+          {
+            "pair": [
+              5,
+              6
+            ],
+            "mutual_ratio_matches": 22,
+            "evaluated": 21,
+            "median_pixels": 40.64977755338306,
+            "p90_pixels": 49.25761816626942
+          },
+          {
+            "pair": [
+              6,
+              7
+            ],
+            "mutual_ratio_matches": 113,
+            "evaluated": 31,
+            "median_pixels": 1.814214545614039,
+            "p90_pixels": 3.3669394316549917
+          },
+          {
+            "pair": [
+              7,
+              8
+            ],
+            "mutual_ratio_matches": 118,
+            "evaluated": 39,
+            "median_pixels": 2.509155124191093,
+            "p90_pixels": 3.938315293163908
+          },
+          {
+            "pair": [
+              8,
+              9
+            ],
+            "mutual_ratio_matches": 110,
+            "evaluated": 37,
+            "median_pixels": 1.0057022734711838,
+            "p90_pixels": 1.7064448697366787
+          },
+          {
+            "pair": [
+              9,
+              10
+            ],
+            "mutual_ratio_matches": 77,
+            "evaluated": 34,
+            "median_pixels": 4.342191886562306,
+            "p90_pixels": 5.551475613854868
+          },
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "mutual_ratio_matches": 94,
+            "evaluated": 48,
+            "median_pixels": 1.8669338406070257,
+            "p90_pixels": 2.7490328130862243
+          },
+          {
+            "pair": [
+              11,
+              12
+            ],
+            "mutual_ratio_matches": 107,
+            "evaluated": 48,
+            "median_pixels": 3.78650515721026,
+            "p90_pixels": 5.748542516102164
+          },
+          {
+            "pair": [
+              12,
+              13
+            ],
+            "mutual_ratio_matches": 131,
+            "evaluated": 33,
+            "median_pixels": 4.13544665081596,
+            "p90_pixels": 5.836001429994601
+          },
+          {
+            "pair": [
+              13,
+              14
+            ],
+            "mutual_ratio_matches": 129,
+            "evaluated": 33,
+            "median_pixels": 1.5982775611860789,
+            "p90_pixels": 2.1640461867666065
+          },
+          {
+            "pair": [
+              14,
+              15
+            ],
+            "mutual_ratio_matches": 99,
+            "evaluated": 32,
+            "median_pixels": 3.3672383710921214,
+            "p90_pixels": 5.125730366798791
+          },
+          {
+            "pair": [
+              15,
+              16
+            ],
+            "mutual_ratio_matches": 92,
+            "evaluated": 31,
+            "median_pixels": 4.347753503171778,
+            "p90_pixels": 6.015166402369624
+          },
+          {
+            "pair": [
+              16,
+              17
+            ],
+            "mutual_ratio_matches": 76,
+            "evaluated": 36,
+            "median_pixels": 1.7170834307620924,
+            "p90_pixels": 2.8344953693762354
+          },
+          {
+            "pair": [
+              17,
+              18
+            ],
+            "mutual_ratio_matches": 84,
+            "evaluated": 48,
+            "median_pixels": 1.9651749425575484,
+            "p90_pixels": 3.097881801828117
+          },
+          {
+            "pair": [
+              18,
+              19
+            ],
+            "mutual_ratio_matches": 94,
+            "evaluated": 38,
+            "median_pixels": 2.271764538501362,
+            "p90_pixels": 3.4667507330548633
+          },
+          {
+            "pair": [
+              19,
+              20
+            ],
+            "mutual_ratio_matches": 96,
+            "evaluated": 47,
+            "median_pixels": 2.1571475821301487,
+            "p90_pixels": 3.1831824653046077
+          },
+          {
+            "pair": [
+              20,
+              21
+            ],
+            "mutual_ratio_matches": 117,
+            "evaluated": 62,
+            "median_pixels": 2.801376596832143,
+            "p90_pixels": 4.7282502907956525
+          },
+          {
+            "pair": [
+              21,
+              22
+            ],
+            "mutual_ratio_matches": 129,
+            "evaluated": 58,
+            "median_pixels": 1.4549920696225422,
+            "p90_pixels": 3.4127556942199324
+          },
+          {
+            "pair": [
+              22,
+              23
+            ],
+            "mutual_ratio_matches": 134,
+            "evaluated": 77,
+            "median_pixels": 1.033614322357509,
+            "p90_pixels": 2.2680188841132463
+          }
+        ],
+        "pairs_with_at_least_8_matches": 22,
+        "median_of_pair_medians_pixels": 2.2827350150590813,
+        "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+      },
+      "inference_seconds": 1.4529819169983966,
+      "weak_display_points": 23075,
+      "display_points": 56448,
+      "display_sampling_stride": 9,
+      "warning": "Tentative visible-scene hypothesis. Shape and camera alignment may be wrong. Unseen room boundaries remain unknown.",
+      "confidence_note": "Faint amber points include the lower 40% of depth confidence or farthest 1% of depth; rankings are not calibrated accuracy probabilities. All displayed geometry also depends on uncertain camera poses.",
+      "display_label": "Couch out-and-back \u00b7 second pass"
     }
   ]
 }

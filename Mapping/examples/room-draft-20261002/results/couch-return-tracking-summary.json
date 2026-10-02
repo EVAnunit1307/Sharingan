@@ -1,0 +1,200 @@
+{
+  "session_id": "20261002T213938Z-e3ead809",
+  "revision": "20261002T215421Z-6793fb9a",
+  "frames": 658,
+  "retained_poses": 614,
+  "coverage": 0.9331306990881459,
+  "map_count": 1,
+  "landmarks": 1359,
+  "initialization_seconds": 3.665272,
+  "continuous_seconds": 51.355525,
+  "continuity_target_met_for_this_run": true,
+  "repeatability_passed": false,
+  "physical_accuracy_validated": false,
+  "units": "arbitrary",
+  "return_check": {
+    "status": "provisional; operator mark/pose confirmation pending",
+    "windows": [
+      {
+        "seconds": [
+          25.5,
+          27.5
+        ],
+        "indices": [
+          306,
+          307,
+          308,
+          309,
+          310,
+          311,
+          312,
+          313,
+          314,
+          315,
+          316,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329
+        ],
+        "position_median": [
+          -0.314316645265,
+          -0.0306713730097,
+          0.03638690523805
+        ],
+        "position_spread_p90": 0.005421634644743732,
+        "quaternion_average": [
+          0.02208986918780387,
+          0.0004221348608275162,
+          -0.0070004915382486,
+          0.999731390224218
+        ]
+      },
+      {
+        "seconds": [
+          38,
+          41
+        ],
+        "indices": [
+          455,
+          456,
+          457,
+          458,
+          459,
+          460,
+          461,
+          462,
+          463,
+          464,
+          465,
+          466,
+          467,
+          468,
+          469,
+          470,
+          471,
+          472,
+          473,
+          474,
+          475,
+          476,
+          477,
+          478,
+          479,
+          480,
+          481,
+          482,
+          483,
+          484,
+          485,
+          486,
+          487,
+          488,
+          489,
+          490
+        ],
+        "position_median": [
+          0.120770022273,
+          -0.004827674711125,
+          -0.008084243629125
+        ],
+        "position_spread_p90": 0.020446146145111924,
+        "quaternion_average": [
+          -0.0004972445907019365,
+          0.038461893504278165,
+          0.0014323521896614322,
+          -0.9992589173297818
+        ]
+      },
+      {
+        "seconds": [
+          53,
+          55
+        ],
+        "indices": [
+          633,
+          634,
+          635,
+          636,
+          637,
+          638,
+          639,
+          640,
+          641,
+          642,
+          643,
+          644,
+          645,
+          646,
+          647,
+          648,
+          649,
+          650,
+          651,
+          652,
+          653,
+          654,
+          655,
+          656
+        ],
+        "position_median": [
+          -0.2657901346685,
+          -0.00749996770173,
+          -0.0025200758827849997
+        ],
+        "position_spread_p90": 0.023653852026592457,
+        "quaternion_average": [
+          0.04652180700518819,
+          -0.019607015598464006,
+          -0.018505943354330447,
+          0.9985533618554691
+        ]
+      }
+    ],
+    "return_offset_arbitrary": 0.06637386107915873,
+    "excursion_arbitrary": 0.43811640929396417,
+    "offset_fraction_of_excursion": 0.1514982312260842,
+    "orientation_difference_degrees": 3.8553825515579407,
+    "selection": "Post-hoc candidate pause windows from the observed recording. Not independently measured camera poses.",
+    "interpretation": "Estimated pose separation mixes tracker error and real differences in camera position/orientation. Not metric drift or an accuracy validation."
+  },
+  "image_artifact": {
+    "approximate_seconds": [
+      30.3,
+      31.1
+    ],
+    "kind": "transient coloured streaking in stored camera images",
+    "cause": "unknown",
+    "tracking_interrupted": false
+  },
+  "capture": {
+    "session_id": "20261002T213938Z-e3ead809",
+    "status": "complete",
+    "frames": 658,
+    "metadata_rows": 658,
+    "dropped_frames": 0,
+    "decode_failures": [],
+    "host_timestamps_increasing": true,
+    "sensor_timestamps_increasing": true,
+    "duration_seconds": 55.020797,
+    "saved_fps": 12.004513697150129,
+    "maximum_frame_gap_seconds": 0.208256,
+    "exposure_us_median": 19995.0,
+    "grayscale_mean_median": 40.0866552734375,
+    "grayscale_std_median": 24.18577120505084,
+    "orb_features_median": 700.0,
+    "stop_reason": "operator",
+    "note": "Image quality and recorder timing; separate tracking replay needed. The physical 0.5 m motion and return positions are approximate operator actions, not measured ground truth.",
+    "archive_bytes": 34601200,
+    "archive_sha256": "c4a7608f0aab7caa9246736c7ef5e385c38c0f44a420da19855727f6301211d3"
+  }
+}

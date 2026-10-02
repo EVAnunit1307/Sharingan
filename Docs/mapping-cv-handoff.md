@@ -44,6 +44,18 @@ inspection. This is not measured drift. Repeatability remains pending. Brief
 colour streaking at 30.3–31.1 s did not interrupt reported tracking; cause unknown.
 Review: `Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/review.html`.
 
+The offline AI follow-up uses a preselected second-pass subset, 24 views over
+28.99 s (rows 294…639, stride 15), retaining the streaked row 369. DA3 Small runs
+in 1.45 s model time / 5.13 s pipeline time on the M5. The local correspondence
+check supports 22/23 adjacent pairs at 2.28 px median pair reprojection. The
+AI/ORB position disagreement after an all-view similarity fit is 18.0% of ORB's
+RMS position spread; fitting only the first eight and evaluating the last sixteen
+gives 61.0%. Neither trajectory is ground truth. Seats/floor are recognizable,
+with duplicated edges; geometry is still unverified. The portable demo now has a
+`couch-return` selection, raw selected inputs, render and the full diagnostics.
+Next software experiment: known-pose DA3 conditioning, after checking pose
+conventions and undistortion. It is not implemented or validated yet.
+
 Evidence: `Saved/MappingResearch/room-walk-20261002/review.html` and
 [current context](../CONTEXT.md). Original recordings remain intact.
 

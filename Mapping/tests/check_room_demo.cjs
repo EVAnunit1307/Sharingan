@@ -17,14 +17,14 @@ async function main() {
     page.on('pageerror',e=>errors.push(e.message));
     page.on('request',r=>{if(/^https?:/.test(r.url())) external.push(r.url());});
     await page.goto(pathToFileURL(path.resolve(__dirname,'../examples/room-draft-20261002/index.html')).href);
-    assert.equal(await page.locator('#trial option').count(),3);
+    assert.equal(await page.locator('#trial option').count(),4);
     await page.evaluate(async()=>{
       for(const t of DATA.trials) for(const src of [...t.images,...t.overlays]) {
         const image=new Image(); image.src=src; await image.decode();
         if(!image.naturalWidth||!image.naturalHeight) throw new Error('Invalid bundled image');
       }
     });
-    const names = ['room-sweep','room-sweep-alternate','lit-sofa'];
+    const names = ['room-sweep','room-sweep-alternate','lit-sofa','couch-return'];
     for (let i=0; i<names.length; i++) {
       await page.selectOption('#trial',String(i));
       await page.waitForFunction(()=>{const im=document.querySelector('#image');return im.complete&&im.naturalWidth>0;});
@@ -51,7 +51,7 @@ async function main() {
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     assert.deepEqual(errors,[]);
     assert.deepEqual(external,[],'The bundled viewer must open fully offline');
-    console.log('PASS: 3 estimates, all images, uncertainty/labels/single-view/scrub controls, mobile layout, offline loading');
+    console.log('PASS: 4 estimates, all images, uncertainty/labels/single-view/scrub controls, mobile layout, offline loading');
   } finally { await browser.close(); }
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

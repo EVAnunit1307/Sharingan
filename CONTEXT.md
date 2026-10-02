@@ -2,6 +2,38 @@
 
 Updated **2 October 2026**. Read this before older handoffs.
 
+## Couch AI follow-up — 2 October
+
+Evan said “go”; proceeded offline, with no new capture. This does not confirm the
+exact physical return pose. Fixed selection before inference: couch session
+`20261002T213938Z-e3ead809`, rows 294…639 at stride 15, 24 views over 28.989 s.
+Kept streaked row 369. DA3 Small camera-decoder/MPS: 1.453 s model time, 5.128 s
+pipeline; sampled Metal driver peak 3.403 GB. SegFormer supplies optional labels.
+The seats/floor are recognizable, with overlapping edges. Opened the standalone
+`Saved/MappingResearch/capture-quality-20261002/couch-loop-2137Z/second-pass-draft.html`.
+
+22/23 adjacent pairs have sufficient matches; median pair reprojection 2.283 px
+at width 504. AI/ORB camera-position agreement after all-24-view Sim3 fit has
+RMSE 18.04% of ORB RMS center spread. First-eight fit / later-sixteen evaluation
+is 61.04%. Nearly linear motion (98.75% first PCA axis) weakly constrains alignment
+rotation; relative orientation changes instead compare each estimator against its
+first camera, median 3.08°, P90 5.58°. Neither estimate is ground truth. No map or
+pose packet is published from this draft. Known-pose DA3 conditioning is a next
+experiment only; wrapper still uses predicted poses and raw distorted images.
+
+Fixed candidate return rows 318/645: 118 mutual SIFT ratio matches, 98 dominant
+homography inliers at a 3 px RANSAC threshold. Median raw displacement 24.59 px;
+median XY (-4.75,+22.06) px, homography residual 0.926 px. Image framing changed;
+these checks cannot separate physical return error from tracker drift.
+
+Extended the approved public teammate bundle with `--scene couch-return`, 24 new
+byte-identical JPEGs, cached labels, render, return comparisons and diagnostics.
+The original three estimates are preserved; now 72 selected images and four
+estimates. Full 658-frame recording remains in ignored Saved. The saved experiment
+plan and `ai-followup.json` retain definitions, original indices and fitted paths.
+Current physical work remains the marked-pose clarification and repeatability;
+no new Pi connectivity claim or recording was made.
+
 ## Couch return test: 51.4 seconds of continuous tracking — 2 October, 21:39 UTC
 
 Evan positioned the same couch/floor view and requested 15 seconds to set up.
@@ -44,7 +76,7 @@ Native viewer: `/map-assets/tracking.html?source=tracking&session=20261002T21393
 Browser checks: full images, expected 614/658 and one fragment, no JS errors;
 review has no mobile overflow. Native path screenshot visually inspected.
 Next: interpret return with Evan's clarification, constrain/confirm camera pose
-on the mark, then repeatability. No new DA3 inference was needed for this test.
+on the mark, then repeatability. The later offline DA3 follow-up is described above.
 
 The earlier team bundle/code/photos/renders were committed and pushed as
 `1316b72` after Evan explicitly approved public publication to
