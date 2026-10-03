@@ -50,3 +50,7 @@ Mapping/examples/room-draft-20261002/**/*.jpg -filter -diff -merge -text
 Mapping/examples/room-draft-20261002/**/*.png -filter -diff -merge -text
 Mapping/examples/room-draft-20261002/index.html linguist-generated=true
 Mapping/examples/room-draft-20261002/index.json linguist-generated=true
+Mapping/examples/pose-depth-20261003/**/*.jpg -filter -diff -merge -text
+Mapping/examples/pose-depth-20261003/**/*.png -filter -diff -merge -text
+Mapping/examples/pose-depth-20261003/index.html linguist-generated=true
+Mapping/examples/pose-depth-20261003/index.json linguist-generated=true

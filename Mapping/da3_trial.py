@@ -46,6 +46,16 @@ def run(args):
     repeats = getattr(args, 'repeats', 1)
     ray_pose = bool(getattr(args, 'ray_pose', False))
     fraction = getattr(args, 'mps_memory_fraction', .6)
+    variant = getattr(args, 'variant', 'small')
+    undistort = bool(getattr(args, 'undistort', False))
+    center_principal = bool(getattr(args, 'center_principal', False))
+    pose_tracking = getattr(args, 'pose_tracking', None)
+    if variant not in ('small', 'base'):
+        raise ValueError('Use the small or base any-view model')
+    if pose_tracking is not None and not undistort:
+        raise ValueError('Pose conditioning requires reviewed lens undistortion')
+    if center_principal and not undistort:
+        raise ValueError('Centering requires reviewed lens undistortion')
     if not isinstance(repeats, int) or not 1 <= repeats <= 3:
         raise ValueError('Use 1–3 inference repetitions')
     if not np.isfinite(fraction) or not .1 <= fraction <= .8:
@@ -67,7 +77,7 @@ def run(args):
     torch.manual_seed(42)
     torch.set_num_threads(4)
     source_commit = subprocess.check_output(['git', '-C', str(args.source), 'rev-parse', 'HEAD'], text=True).strip()
-    report = dict(state='loading', model='depth-anything/DA3-SMALL', source_commit=source_commit,
+    report = dict(state='loading', model=f'depth-anything/DA3-{variant.upper()}', source_commit=source_commit,
                   device=device, torch=torch.__version__, session_id=args.session.name,
                   indices=indices, frames=[rows[i] for i in indices], resolution=args.resolution,
                   requested_window_seconds=duration,
@@ -75,7 +85,10 @@ def run(args):
                   imu_used=False,
                   source_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
                   checkpoint_sha256=hashlib.sha256((args.model / 'model.safetensors').read_bytes()).hexdigest(),
-                  pose_conditioned=False, pose_estimation='ray_head' if ray_pose else 'camera_decoder',
+                  pose_conditioned=pose_tracking is not None,
+                  pose_estimation='supplied_orb_poses' if pose_tracking is not None else ('ray_head' if ray_pose else 'camera_decoder'),
+                  undistorted=undistort,
+                  center_principal=center_principal,
                   scale='unknown', units='arbitrary', validated=False,
                   warning='AI-inferred geometry and camera poses. No measured scale, tracking validation or unseen-room coverage.')
     if device == 'mps':
@@ -89,7 +102,7 @@ def run(args):
     memory.start()
     try:
         started = time.perf_counter()
-        net = create_object(load_config(str(args.source / 'src/depth_anything_3/configs/da3-small.yaml')))
+        net = create_object(load_config(str(args.source / f'src/depth_anything_3/configs/da3-{variant}.yaml')))
         weights = load_file(str(args.model / 'model.safetensors'))
         # The released checkpoint is wrapped in the API's `model` member.
         if not all(k.startswith('model.') for k in weights):
@@ -113,8 +126,25 @@ def run(args):
         del weights
         net.eval().to(device)
         report['model_load_seconds'] = time.perf_counter() - started
-        imgs, _, _ = InputProcessor()([str(p) for p in paths], process_res=args.resolution,
-                                     process_res_method='upper_bound_resize', sequential=True)
+        inputs, input_ex, input_k = [str(p) for p in paths], None, None
+        if undistort:
+            from Mapping.pose_depth import prepare
+            inputs, input_ex, input_k, report['camera_inputs'] = prepare(
+                args.session, rows, indices, paths, pose_tracking, center_principal)
+        imgs, processed_ex, processed_k = InputProcessor()(inputs, extrinsics=input_ex,
+            intrinsics=input_k, process_res=args.resolution,
+            process_res_method='upper_bound_resize', sequential=True)
+        network_ex = network_k = None
+        if pose_tracking is not None:
+            from Mapping.pose_depth import normalize_extrinsics
+            normalized, divisor = normalize_extrinsics(processed_ex.numpy())
+            network_ex = torch.from_numpy(normalized)[None].to(device)
+            network_k = processed_k[None].to(device)
+            report['camera_inputs']['normalization_divisor'] = divisor
+        if processed_k is not None:
+            np.savez_compressed(args.output / 'camera-inputs.npz',
+                intrinsics=processed_k.numpy(), **({'extrinsics': processed_ex.numpy()}
+                if processed_ex is not None else {}))
         pixels = imgs.permute(0, 2, 3, 1).numpy()
         pixels = np.rint(np.clip(pixels * [0.229, 0.224, 0.225] + [0.485, 0.456, 0.406], 0, 1) * 255).astype(np.uint8)
         batch = imgs[None].to(device)
@@ -127,7 +157,8 @@ def run(args):
             if device == 'mps': torch.mps.synchronize()
             started = time.perf_counter()
             with torch.inference_mode(), torch.autocast(device_type=device, dtype=torch.float16, enabled=device == 'mps'):
-                raw = net(batch, use_ray_pose=ray_pose, ref_view_strategy='saddle_balanced')
+                raw = net(batch, extrinsics=network_ex, intrinsics=network_k,
+                    use_ray_pose=ray_pose, ref_view_strategy='saddle_balanced')
             if device == 'mps': torch.mps.synchronize()
             timings.append(time.perf_counter() - started)
             memory.sample()
@@ -140,9 +171,15 @@ def run(args):
         if any(v is None or not np.isfinite(v).all() for v in arrays.values()):
             raise ValueError('Missing or non-finite model output')
         if (pred.depth <= 0).any(): raise ValueError('Nonpositive predicted depth')
+        if pose_tracking is not None:
+            from Mapping.pose_depth import anchor_depth
+            np.savez_compressed(args.output / 'prediction-model.npz', **arrays)
+            arrays, report['pose_alignment'] = anchor_depth(arrays,
+                processed_ex.numpy(), processed_k.numpy())
         np.savez_compressed(args.output / 'prediction.npz', **arrays)
         report.update(state='complete', shapes={k:list(v.shape) for k,v in arrays.items()},
                       predicted_depth_percentiles=np.percentile(pred.depth,[1,50,99]).tolist(),
+                      exported_depth_percentiles=np.percentile(arrays['depth'],[1,50,99]).tolist(),
                       confidence_percentiles=np.percentile(pred.conf,[10,50,90]).tolist())
         if device == 'mps':
             report['mps_driver_allocated_bytes_after_inference'] = torch.mps.driver_allocated_memory()
@@ -170,6 +207,10 @@ if __name__ == '__main__':
     parser.add_argument('--resolution', type=int, choices=(280,392,504), default=392)
     parser.add_argument('--device', choices=('mps','cpu'), default='mps')
     parser.add_argument('--ray-pose', action='store_true', help='Experimental ray-head poses; use --device cpu on the tested Mac because MPS ray fitting failed')
+    parser.add_argument('--variant', choices=('small','base'), default='small')
+    parser.add_argument('--undistort', action='store_true', help='Apply the recording-reviewed lens calibration before inference')
+    parser.add_argument('--center-principal', action='store_true', help='Crop the corrected view to a centered principal point compatible with DA3 camera encoding')
+    parser.add_argument('--pose-tracking', type=Path, help='Use retained poses from this recording; requires --undistort. Exported camera agreement is imposed, not validation.')
     parser.add_argument('--repeats', type=int, default=1, help='1–3 model calls to distinguish first-call and warm timings')
     parser.add_argument('--mps-memory-fraction', type=float, default=.6, help='Bound allocator use to 0.1–0.8 of the Metal recommended working set')
     run(parser.parse_args())

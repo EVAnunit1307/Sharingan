@@ -1,0 +1,1452 @@
+{
+  "method": "Identical mutual SIFT ratio .75 matches, no confidence filtering. Evaluate identical positive-depth correspondences across models; report invalid counts. Bilinear depth sampling.",
+  "units": "pixels at processed resolution / symmetric relative depth difference",
+  "processed_rgb_sha256": "fba9021f6365221753c26eae1288dc583a9d94c4c5300512e8ee1b9abf87f9e5",
+  "note": "Same-input consistency only, not ground truth. Supplied ORB poses impose camera agreement. Revisit pairs are fixed image pairs, not exact physical returns. Repeated textures, occlusion and moving objects can affect matches.",
+  "results": [
+    {
+      "trial": "small-free",
+      "model": "depth-anything/DA3-SMALL",
+      "pose_conditioned": false,
+      "inference_seconds": [
+        1.2028037080017384,
+        0.9572464170050807
+      ],
+      "memory": {
+        "sampled_mps_driver_peak_bytes": 3403399168,
+        "sampled_mps_tensor_peak_bytes": 1275201280,
+        "process_peak_rss_bytes": 1098432512,
+        "sample_interval_seconds": 0.01,
+        "samples": 301,
+        "sampling_error": null,
+        "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+      },
+      "groups": {
+        "adjacent": {
+          "supported_pairs": 20,
+          "median_pair_pixels": 4.619902084600101,
+          "median_pair_depth_difference": 0.007191692937954115
+        },
+        "revisit": {
+          "supported_pairs": 3,
+          "median_pair_pixels": 14.567767197576334,
+          "median_pair_depth_difference": 0.014627947612243467
+        }
+      },
+      "pairs": [
+        {
+          "pair": [
+            0,
+            1
+          ],
+          "kind": "adjacent",
+          "matches": 49,
+          "evaluated": 49,
+          "invalid_projections": 0,
+          "median_pixels": 13.081847144849338,
+          "p90_pixels": 14.79699918177975,
+          "median_symmetric_depth_difference": 0.008383072262175379
+        },
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "kind": "adjacent",
+          "matches": 60,
+          "evaluated": 60,
+          "invalid_projections": 0,
+          "median_pixels": 15.023604825782776,
+          "p90_pixels": 16.508482238745692,
+          "median_symmetric_depth_difference": 0.004341795130349799
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "kind": "adjacent",
+          "matches": 67,
+          "evaluated": 67,
+          "invalid_projections": 0,
+          "median_pixels": 4.782895088343816,
+          "p90_pixels": 5.75125019660916,
+          "median_symmetric_depth_difference": 0.004328796659998765
+        },
+        {
+          "pair": [
+            3,
+            4
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 11.029932568906927,
+          "p90_pixels": 12.277582139354113,
+          "median_symmetric_depth_difference": 0.012742893889385529
+        },
+        {
+          "pair": [
+            4,
+            5
+          ],
+          "kind": "adjacent",
+          "matches": 0,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            5,
+            6
+          ],
+          "kind": "adjacent",
+          "matches": 1,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            6,
+            7
+          ],
+          "kind": "adjacent",
+          "matches": 2,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            7,
+            8
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 2.6990805676073464,
+          "p90_pixels": 23.631058585987656,
+          "median_symmetric_depth_difference": 0.0031900770045842058
+        },
+        {
+          "pair": [
+            8,
+            9
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 2.2819941528157544,
+          "p90_pixels": 6.672594283764595,
+          "median_symmetric_depth_difference": 0.007506786532041605
+        },
+        {
+          "pair": [
+            9,
+            10
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 1.7481993717790805,
+          "p90_pixels": 17.336698438551416,
+          "median_symmetric_depth_difference": 0.013942502534774297
+        },
+        {
+          "pair": [
+            10,
+            11
+          ],
+          "kind": "adjacent",
+          "matches": 16,
+          "evaluated": 16,
+          "invalid_projections": 0,
+          "median_pixels": 7.977931359246408,
+          "p90_pixels": 10.725258581821201,
+          "median_symmetric_depth_difference": 0.008754467216339065
+        },
+        {
+          "pair": [
+            11,
+            12
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 3.7396739794216662,
+          "p90_pixels": 5.632769988718507,
+          "median_symmetric_depth_difference": 0.011391225592329563
+        },
+        {
+          "pair": [
+            12,
+            13
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 7.421051419582902,
+          "p90_pixels": 9.27366442873282,
+          "median_symmetric_depth_difference": 0.009323466106169465
+        },
+        {
+          "pair": [
+            13,
+            14
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 2.4084186651730106,
+          "p90_pixels": 5.595209522514247,
+          "median_symmetric_depth_difference": 0.002042104695113634
+        },
+        {
+          "pair": [
+            14,
+            15
+          ],
+          "kind": "adjacent",
+          "matches": 8,
+          "evaluated": 8,
+          "invalid_projections": 0,
+          "median_pixels": 4.456909080856386,
+          "p90_pixels": 10.191863344051697,
+          "median_symmetric_depth_difference": 0.01567764493356211
+        },
+        {
+          "pair": [
+            15,
+            16
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 4.118753876427979,
+          "p90_pixels": 10.44888019850209,
+          "median_symmetric_depth_difference": 0.005708625617314637
+        },
+        {
+          "pair": [
+            16,
+            17
+          ],
+          "kind": "adjacent",
+          "matches": 23,
+          "evaluated": 23,
+          "invalid_projections": 0,
+          "median_pixels": 10.201105175330754,
+          "p90_pixels": 12.649817435048957,
+          "median_symmetric_depth_difference": 0.006876599343866625
+        },
+        {
+          "pair": [
+            17,
+            18
+          ],
+          "kind": "adjacent",
+          "matches": 18,
+          "evaluated": 18,
+          "invalid_projections": 0,
+          "median_pixels": 2.584000210662221,
+          "p90_pixels": 7.909729092615092,
+          "median_symmetric_depth_difference": 0.0032409526833973514
+        },
+        {
+          "pair": [
+            18,
+            19
+          ],
+          "kind": "adjacent",
+          "matches": 20,
+          "evaluated": 20,
+          "invalid_projections": 0,
+          "median_pixels": 4.433568047146753,
+          "p90_pixels": 5.648792888463078,
+          "median_symmetric_depth_difference": 0.006036523464449545
+        },
+        {
+          "pair": [
+            19,
+            20
+          ],
+          "kind": "adjacent",
+          "matches": 33,
+          "evaluated": 33,
+          "invalid_projections": 0,
+          "median_pixels": 8.777687116958132,
+          "p90_pixels": 11.880885407713357,
+          "median_symmetric_depth_difference": 0.009347548495218074
+        },
+        {
+          "pair": [
+            20,
+            21
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 4.31911230287381,
+          "p90_pixels": 6.718267214186641,
+          "median_symmetric_depth_difference": 0.006039521836967
+        },
+        {
+          "pair": [
+            21,
+            22
+          ],
+          "kind": "adjacent",
+          "matches": 57,
+          "evaluated": 57,
+          "invalid_projections": 0,
+          "median_pixels": 4.938868252894856,
+          "p90_pixels": 6.823866876765292,
+          "median_symmetric_depth_difference": 0.003455209121616753
+        },
+        {
+          "pair": [
+            22,
+            23
+          ],
+          "kind": "adjacent",
+          "matches": 75,
+          "evaluated": 75,
+          "invalid_projections": 0,
+          "median_pixels": 7.336526207433346,
+          "p90_pixels": 9.082551372529938,
+          "median_symmetric_depth_difference": 0.008802866970582891
+        },
+        {
+          "pair": [
+            0,
+            23
+          ],
+          "kind": "revisit",
+          "matches": 37,
+          "evaluated": 37,
+          "invalid_projections": 0,
+          "median_pixels": 14.567767197576334,
+          "p90_pixels": 16.53274053691894,
+          "median_symmetric_depth_difference": 0.012150846960429262
+        },
+        {
+          "pair": [
+            1,
+            22
+          ],
+          "kind": "revisit",
+          "matches": 50,
+          "evaluated": 50,
+          "invalid_projections": 0,
+          "median_pixels": 25.517714261107734,
+          "p90_pixels": 28.164630131940203,
+          "median_symmetric_depth_difference": 0.01616286399557989
+        },
+        {
+          "pair": [
+            2,
+            21
+          ],
+          "kind": "revisit",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 11.138233487863394,
+          "p90_pixels": 12.044534766950841,
+          "median_symmetric_depth_difference": 0.014627947612243467
+        }
+      ]
+    },
+    {
+      "trial": "small-orb",
+      "model": "depth-anything/DA3-SMALL",
+      "pose_conditioned": true,
+      "inference_seconds": [
+        1.068424666998908,
+        0.9373323329928098
+      ],
+      "memory": {
+        "sampled_mps_driver_peak_bytes": 3403415552,
+        "sampled_mps_tensor_peak_bytes": 1317970176,
+        "process_peak_rss_bytes": 1206910976,
+        "sample_interval_seconds": 0.01,
+        "samples": 434,
+        "sampling_error": null,
+        "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+      },
+      "groups": {
+        "adjacent": {
+          "supported_pairs": 20,
+          "median_pair_pixels": 10.27957741585158,
+          "median_pair_depth_difference": 0.004349463775250334
+        },
+        "revisit": {
+          "supported_pairs": 3,
+          "median_pair_pixels": 14.400827566751788,
+          "median_pair_depth_difference": 0.0069001042709649855
+        }
+      },
+      "pairs": [
+        {
+          "pair": [
+            0,
+            1
+          ],
+          "kind": "adjacent",
+          "matches": 49,
+          "evaluated": 49,
+          "invalid_projections": 0,
+          "median_pixels": 63.920443781971784,
+          "p90_pixels": 65.16896615619731,
+          "median_symmetric_depth_difference": 0.0030878871309951554
+        },
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "kind": "adjacent",
+          "matches": 60,
+          "evaluated": 60,
+          "invalid_projections": 0,
+          "median_pixels": 0.7403120023556494,
+          "p90_pixels": 1.352254833771197,
+          "median_symmetric_depth_difference": 0.004099136675523628
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "kind": "adjacent",
+          "matches": 67,
+          "evaluated": 67,
+          "invalid_projections": 0,
+          "median_pixels": 1.9633602486035666,
+          "p90_pixels": 2.735300890264629,
+          "median_symmetric_depth_difference": 0.0027248546036873445
+        },
+        {
+          "pair": [
+            3,
+            4
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 64.06227433681823,
+          "p90_pixels": 65.67804570269216,
+          "median_symmetric_depth_difference": 0.007232508687615887
+        },
+        {
+          "pair": [
+            4,
+            5
+          ],
+          "kind": "adjacent",
+          "matches": 0,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            5,
+            6
+          ],
+          "kind": "adjacent",
+          "matches": 1,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            6,
+            7
+          ],
+          "kind": "adjacent",
+          "matches": 2,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            7,
+            8
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 14.93160586997704,
+          "p90_pixels": 17.251712642027346,
+          "median_symmetric_depth_difference": 0.0068197734923770735
+        },
+        {
+          "pair": [
+            8,
+            9
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 4.446701915341002,
+          "p90_pixels": 12.241497203099076,
+          "median_symmetric_depth_difference": 0.0037898847265663118
+        },
+        {
+          "pair": [
+            9,
+            10
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 21.128566940298494,
+          "p90_pixels": 32.67576029158765,
+          "median_symmetric_depth_difference": 0.006040391526331923
+        },
+        {
+          "pair": [
+            10,
+            11
+          ],
+          "kind": "adjacent",
+          "matches": 16,
+          "evaluated": 16,
+          "invalid_projections": 0,
+          "median_pixels": 4.8140142659816085,
+          "p90_pixels": 6.760305215973488,
+          "median_symmetric_depth_difference": 0.008099967977843472
+        },
+        {
+          "pair": [
+            11,
+            12
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 19.421571227764318,
+          "p90_pixels": 21.259210209217834,
+          "median_symmetric_depth_difference": 0.003123595868785776
+        },
+        {
+          "pair": [
+            12,
+            13
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 0.9868333632128405,
+          "p90_pixels": 4.099418972206586,
+          "median_symmetric_depth_difference": 0.002020525294291372
+        },
+        {
+          "pair": [
+            13,
+            14
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 6.874194261919291,
+          "p90_pixels": 7.889781673041005,
+          "median_symmetric_depth_difference": 0.007353785692688085
+        },
+        {
+          "pair": [
+            14,
+            15
+          ],
+          "kind": "adjacent",
+          "matches": 8,
+          "evaluated": 8,
+          "invalid_projections": 0,
+          "median_pixels": 14.005570298853984,
+          "p90_pixels": 22.561461147962607,
+          "median_symmetric_depth_difference": 0.01032143474888273
+        },
+        {
+          "pair": [
+            15,
+            16
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 18.38300745586615,
+          "p90_pixels": 30.532760390160238,
+          "median_symmetric_depth_difference": 0.004459464194197411
+        },
+        {
+          "pair": [
+            16,
+            17
+          ],
+          "kind": "adjacent",
+          "matches": 23,
+          "evaluated": 23,
+          "invalid_projections": 0,
+          "median_pixels": 11.062157630258989,
+          "p90_pixels": 14.731798354301871,
+          "median_symmetric_depth_difference": 0.004388563741204902
+        },
+        {
+          "pair": [
+            17,
+            18
+          ],
+          "kind": "adjacent",
+          "matches": 18,
+          "evaluated": 18,
+          "invalid_projections": 0,
+          "median_pixels": 6.646105687558311,
+          "p90_pixels": 14.45253406527369,
+          "median_symmetric_depth_difference": 0.0023945514174449163
+        },
+        {
+          "pair": [
+            18,
+            19
+          ],
+          "kind": "adjacent",
+          "matches": 20,
+          "evaluated": 20,
+          "invalid_projections": 0,
+          "median_pixels": 14.737623687622309,
+          "p90_pixels": 16.675427599460942,
+          "median_symmetric_depth_difference": 0.0055181924683067535
+        },
+        {
+          "pair": [
+            19,
+            20
+          ],
+          "kind": "adjacent",
+          "matches": 33,
+          "evaluated": 33,
+          "invalid_projections": 0,
+          "median_pixels": 10.646179310567804,
+          "p90_pixels": 12.126207141586304,
+          "median_symmetric_depth_difference": 0.0052333490997796845
+        },
+        {
+          "pair": [
+            20,
+            21
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 9.912975521135357,
+          "p90_pixels": 11.659947952928482,
+          "median_symmetric_depth_difference": 0.0028598672440275246
+        },
+        {
+          "pair": [
+            21,
+            22
+          ],
+          "kind": "adjacent",
+          "matches": 57,
+          "evaluated": 57,
+          "invalid_projections": 0,
+          "median_pixels": 3.786139193035942,
+          "p90_pixels": 4.71380473049222,
+          "median_symmetric_depth_difference": 0.004310363809295767
+        },
+        {
+          "pair": [
+            22,
+            23
+          ],
+          "kind": "adjacent",
+          "matches": 75,
+          "evaluated": 75,
+          "invalid_projections": 0,
+          "median_pixels": 2.351854249145366,
+          "p90_pixels": 3.222001998107949,
+          "median_symmetric_depth_difference": 0.0023784317746022147
+        },
+        {
+          "pair": [
+            0,
+            23
+          ],
+          "kind": "revisit",
+          "matches": 37,
+          "evaluated": 37,
+          "invalid_projections": 0,
+          "median_pixels": 48.46390704186536,
+          "p90_pixels": 50.20889804098339,
+          "median_symmetric_depth_difference": 0.004016127475454122
+        },
+        {
+          "pair": [
+            1,
+            22
+          ],
+          "kind": "revisit",
+          "matches": 50,
+          "evaluated": 50,
+          "invalid_projections": 0,
+          "median_pixels": 10.848562848707395,
+          "p90_pixels": 11.981217582502026,
+          "median_symmetric_depth_difference": 0.007483144091965571
+        },
+        {
+          "pair": [
+            2,
+            21
+          ],
+          "kind": "revisit",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 14.400827566751788,
+          "p90_pixels": 15.844864592393193,
+          "median_symmetric_depth_difference": 0.0069001042709649855
+        }
+      ]
+    },
+    {
+      "trial": "base-free",
+      "model": "depth-anything/DA3-BASE",
+      "pose_conditioned": false,
+      "inference_seconds": [
+        2.4658049160061637,
+        2.3532656660099747
+      ],
+      "memory": {
+        "sampled_mps_driver_peak_bytes": 6886752256,
+        "sampled_mps_tensor_peak_bytes": 2905737728,
+        "process_peak_rss_bytes": 1965998080,
+        "sample_interval_seconds": 0.01,
+        "samples": 527,
+        "sampling_error": null,
+        "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+      },
+      "groups": {
+        "adjacent": {
+          "supported_pairs": 20,
+          "median_pair_pixels": 5.899021094710475,
+          "median_pair_depth_difference": 0.0039775816809048525
+        },
+        "revisit": {
+          "supported_pairs": 3,
+          "median_pair_pixels": 11.747794093128304,
+          "median_pair_depth_difference": 0.005344557237809995
+        }
+      },
+      "pairs": [
+        {
+          "pair": [
+            0,
+            1
+          ],
+          "kind": "adjacent",
+          "matches": 49,
+          "evaluated": 49,
+          "invalid_projections": 0,
+          "median_pixels": 5.096553023220638,
+          "p90_pixels": 6.417032815417883,
+          "median_symmetric_depth_difference": 0.005499905593124316
+        },
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "kind": "adjacent",
+          "matches": 60,
+          "evaluated": 60,
+          "invalid_projections": 0,
+          "median_pixels": 6.9284218410664495,
+          "p90_pixels": 8.268971047541493,
+          "median_symmetric_depth_difference": 0.004172375113085049
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "kind": "adjacent",
+          "matches": 67,
+          "evaluated": 67,
+          "invalid_projections": 0,
+          "median_pixels": 6.071599301757779,
+          "p90_pixels": 7.227118483201348,
+          "median_symmetric_depth_difference": 0.003427770428654064
+        },
+        {
+          "pair": [
+            3,
+            4
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 12.75632995664451,
+          "p90_pixels": 13.831332542399304,
+          "median_symmetric_depth_difference": 0.007832482485284965
+        },
+        {
+          "pair": [
+            4,
+            5
+          ],
+          "kind": "adjacent",
+          "matches": 0,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            5,
+            6
+          ],
+          "kind": "adjacent",
+          "matches": 1,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            6,
+            7
+          ],
+          "kind": "adjacent",
+          "matches": 2,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            7,
+            8
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 3.585929040540835,
+          "p90_pixels": 23.412730000409432,
+          "median_symmetric_depth_difference": 0.00615028435409301
+        },
+        {
+          "pair": [
+            8,
+            9
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 6.62586276431303,
+          "p90_pixels": 9.46118221442071,
+          "median_symmetric_depth_difference": 0.0011677747134621812
+        },
+        {
+          "pair": [
+            9,
+            10
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 8.41192994983334,
+          "p90_pixels": 17.683225589035715,
+          "median_symmetric_depth_difference": 0.007529907785907213
+        },
+        {
+          "pair": [
+            10,
+            11
+          ],
+          "kind": "adjacent",
+          "matches": 16,
+          "evaluated": 16,
+          "invalid_projections": 0,
+          "median_pixels": 9.64600102260162,
+          "p90_pixels": 10.461817222627163,
+          "median_symmetric_depth_difference": 0.0033255578181871984
+        },
+        {
+          "pair": [
+            11,
+            12
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 5.507425398767875,
+          "p90_pixels": 8.249483548185134,
+          "median_symmetric_depth_difference": 0.005766499912085636
+        },
+        {
+          "pair": [
+            12,
+            13
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 3.555997844705982,
+          "p90_pixels": 4.973651910181979,
+          "median_symmetric_depth_difference": 0.008306416576018086
+        },
+        {
+          "pair": [
+            13,
+            14
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 1.4061954306456177,
+          "p90_pixels": 3.3650941737293816,
+          "median_symmetric_depth_difference": 0.00222906770122102
+        },
+        {
+          "pair": [
+            14,
+            15
+          ],
+          "kind": "adjacent",
+          "matches": 8,
+          "evaluated": 8,
+          "invalid_projections": 0,
+          "median_pixels": 4.0150227093857715,
+          "p90_pixels": 16.724886688357067,
+          "median_symmetric_depth_difference": 0.005554451563383855
+        },
+        {
+          "pair": [
+            15,
+            16
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 4.848635441382726,
+          "p90_pixels": 6.931503956667042,
+          "median_symmetric_depth_difference": 0.0073713604046845085
+        },
+        {
+          "pair": [
+            16,
+            17
+          ],
+          "kind": "adjacent",
+          "matches": 23,
+          "evaluated": 23,
+          "invalid_projections": 0,
+          "median_pixels": 4.72219482538757,
+          "p90_pixels": 6.432064609327506,
+          "median_symmetric_depth_difference": 0.0022300430018232452
+        },
+        {
+          "pair": [
+            17,
+            18
+          ],
+          "kind": "adjacent",
+          "matches": 18,
+          "evaluated": 18,
+          "invalid_projections": 0,
+          "median_pixels": 7.785605838907205,
+          "p90_pixels": 9.62904711414307,
+          "median_symmetric_depth_difference": 0.00676509110893188
+        },
+        {
+          "pair": [
+            18,
+            19
+          ],
+          "kind": "adjacent",
+          "matches": 20,
+          "evaluated": 20,
+          "invalid_projections": 0,
+          "median_pixels": 5.726442887663172,
+          "p90_pixels": 6.847255210322979,
+          "median_symmetric_depth_difference": 0.0027715169259141977
+        },
+        {
+          "pair": [
+            19,
+            20
+          ],
+          "kind": "adjacent",
+          "matches": 33,
+          "evaluated": 33,
+          "invalid_projections": 0,
+          "median_pixels": 7.986969754405213,
+          "p90_pixels": 13.533865218135727,
+          "median_symmetric_depth_difference": 0.002834202092519469
+        },
+        {
+          "pair": [
+            20,
+            21
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 16.10722618199531,
+          "p90_pixels": 18.830250077774753,
+          "median_symmetric_depth_difference": 0.0027523143806146093
+        },
+        {
+          "pair": [
+            21,
+            22
+          ],
+          "kind": "adjacent",
+          "matches": 57,
+          "evaluated": 57,
+          "invalid_projections": 0,
+          "median_pixels": 13.369995237739833,
+          "p90_pixels": 16.746931793312463,
+          "median_symmetric_depth_difference": 0.003782788248724655
+        },
+        {
+          "pair": [
+            22,
+            23
+          ],
+          "kind": "adjacent",
+          "matches": 75,
+          "evaluated": 75,
+          "invalid_projections": 0,
+          "median_pixels": 5.631049026467066,
+          "p90_pixels": 6.9566042529291545,
+          "median_symmetric_depth_difference": 0.0021657311327166803
+        },
+        {
+          "pair": [
+            0,
+            23
+          ],
+          "kind": "revisit",
+          "matches": 37,
+          "evaluated": 37,
+          "invalid_projections": 0,
+          "median_pixels": 3.3373242748156513,
+          "p90_pixels": 3.9289317339271927,
+          "median_symmetric_depth_difference": 0.008910106569823613
+        },
+        {
+          "pair": [
+            1,
+            22
+          ],
+          "kind": "revisit",
+          "matches": 50,
+          "evaluated": 50,
+          "invalid_projections": 0,
+          "median_pixels": 11.747794093128304,
+          "p90_pixels": 13.19213051665737,
+          "median_symmetric_depth_difference": 0.005344557237809995
+        },
+        {
+          "pair": [
+            2,
+            21
+          ],
+          "kind": "revisit",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 20.833872404590696,
+          "p90_pixels": 23.565870458765048,
+          "median_symmetric_depth_difference": 0.005221695691844122
+        }
+      ]
+    },
+    {
+      "trial": "base-orb",
+      "model": "depth-anything/DA3-BASE",
+      "pose_conditioned": true,
+      "inference_seconds": [
+        2.473310708999634,
+        2.316063457998098
+      ],
+      "memory": {
+        "sampled_mps_driver_peak_bytes": 6886768640,
+        "sampled_mps_tensor_peak_bytes": 2904830976,
+        "process_peak_rss_bytes": 1965998080,
+        "sample_interval_seconds": 0.01,
+        "samples": 671,
+        "sampling_error": null,
+        "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+      },
+      "groups": {
+        "adjacent": {
+          "supported_pairs": 20,
+          "median_pair_pixels": 5.686417556254983,
+          "median_pair_depth_difference": 0.004774237069867862
+        },
+        "revisit": {
+          "supported_pairs": 3,
+          "median_pair_pixels": 9.362926416462669,
+          "median_pair_depth_difference": 0.006441519606210283
+        }
+      },
+      "pairs": [
+        {
+          "pair": [
+            0,
+            1
+          ],
+          "kind": "adjacent",
+          "matches": 49,
+          "evaluated": 49,
+          "invalid_projections": 0,
+          "median_pixels": 66.6184912342578,
+          "p90_pixels": 68.59673845042519,
+          "median_symmetric_depth_difference": 0.007646215417885485
+        },
+        {
+          "pair": [
+            1,
+            2
+          ],
+          "kind": "adjacent",
+          "matches": 60,
+          "evaluated": 60,
+          "invalid_projections": 0,
+          "median_pixels": 0.848484567856852,
+          "p90_pixels": 2.051707976003639,
+          "median_symmetric_depth_difference": 0.0042759678406653935
+        },
+        {
+          "pair": [
+            2,
+            3
+          ],
+          "kind": "adjacent",
+          "matches": 67,
+          "evaluated": 67,
+          "invalid_projections": 0,
+          "median_pixels": 0.7377511594077168,
+          "p90_pixels": 1.6174455662930591,
+          "median_symmetric_depth_difference": 0.003845082059080858
+        },
+        {
+          "pair": [
+            3,
+            4
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 65.2023487361092,
+          "p90_pixels": 66.76048829787514,
+          "median_symmetric_depth_difference": 0.0080182464311833
+        },
+        {
+          "pair": [
+            4,
+            5
+          ],
+          "kind": "adjacent",
+          "matches": 0,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            5,
+            6
+          ],
+          "kind": "adjacent",
+          "matches": 1,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            6,
+            7
+          ],
+          "kind": "adjacent",
+          "matches": 2,
+          "evaluated": 0,
+          "reason": "fewer than 8 mutual ratio matches"
+        },
+        {
+          "pair": [
+            7,
+            8
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 21.18746192385065,
+          "p90_pixels": 24.421100946550972,
+          "median_symmetric_depth_difference": 0.004005988481257964
+        },
+        {
+          "pair": [
+            8,
+            9
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 3.3780225605524596,
+          "p90_pixels": 6.358709348256694,
+          "median_symmetric_depth_difference": 0.004668642064955008
+        },
+        {
+          "pair": [
+            9,
+            10
+          ],
+          "kind": "adjacent",
+          "matches": 11,
+          "evaluated": 11,
+          "invalid_projections": 0,
+          "median_pixels": 12.465515147712273,
+          "p90_pixels": 21.00472466865504,
+          "median_symmetric_depth_difference": 0.002594425021995952
+        },
+        {
+          "pair": [
+            10,
+            11
+          ],
+          "kind": "adjacent",
+          "matches": 16,
+          "evaluated": 16,
+          "invalid_projections": 0,
+          "median_pixels": 10.811713537534093,
+          "p90_pixels": 12.353446211571601,
+          "median_symmetric_depth_difference": 0.003512347855097878
+        },
+        {
+          "pair": [
+            11,
+            12
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 15.958265563448398,
+          "p90_pixels": 18.74666913027869,
+          "median_symmetric_depth_difference": 0.005473182243890091
+        },
+        {
+          "pair": [
+            12,
+            13
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 2.372558801223559,
+          "p90_pixels": 4.62123430826784,
+          "median_symmetric_depth_difference": 0.005169969127308883
+        },
+        {
+          "pair": [
+            13,
+            14
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 10.36582486347711,
+          "p90_pixels": 11.478320101343805,
+          "median_symmetric_depth_difference": 0.006859841525513704
+        },
+        {
+          "pair": [
+            14,
+            15
+          ],
+          "kind": "adjacent",
+          "matches": 8,
+          "evaluated": 8,
+          "invalid_projections": 0,
+          "median_pixels": 5.9534292060796155,
+          "p90_pixels": 19.79259287952107,
+          "median_symmetric_depth_difference": 0.007132443926260876
+        },
+        {
+          "pair": [
+            15,
+            16
+          ],
+          "kind": "adjacent",
+          "matches": 10,
+          "evaluated": 10,
+          "invalid_projections": 0,
+          "median_pixels": 7.9872122028551225,
+          "p90_pixels": 14.132013263010556,
+          "median_symmetric_depth_difference": 0.004335120251443482
+        },
+        {
+          "pair": [
+            16,
+            17
+          ],
+          "kind": "adjacent",
+          "matches": 23,
+          "evaluated": 23,
+          "invalid_projections": 0,
+          "median_pixels": 3.1851339976427613,
+          "p90_pixels": 8.089923084231668,
+          "median_symmetric_depth_difference": 0.005598815625197572
+        },
+        {
+          "pair": [
+            17,
+            18
+          ],
+          "kind": "adjacent",
+          "matches": 18,
+          "evaluated": 18,
+          "invalid_projections": 0,
+          "median_pixels": 1.0658628286066585,
+          "p90_pixels": 7.071165595132149,
+          "median_symmetric_depth_difference": 0.003539800266060918
+        },
+        {
+          "pair": [
+            18,
+            19
+          ],
+          "kind": "adjacent",
+          "matches": 20,
+          "evaluated": 20,
+          "invalid_projections": 0,
+          "median_pixels": 10.069171885941724,
+          "p90_pixels": 11.141177783793779,
+          "median_symmetric_depth_difference": 0.007237551483378882
+        },
+        {
+          "pair": [
+            19,
+            20
+          ],
+          "kind": "adjacent",
+          "matches": 33,
+          "evaluated": 33,
+          "invalid_projections": 0,
+          "median_pixels": 5.235237634230451,
+          "p90_pixels": 6.949633543224584,
+          "median_symmetric_depth_difference": 0.0017440173520032103
+        },
+        {
+          "pair": [
+            20,
+            21
+          ],
+          "kind": "adjacent",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 5.419405906430351,
+          "p90_pixels": 6.9662597671111,
+          "median_symmetric_depth_difference": 0.004885427036486906
+        },
+        {
+          "pair": [
+            21,
+            22
+          ],
+          "kind": "adjacent",
+          "matches": 57,
+          "evaluated": 57,
+          "invalid_projections": 0,
+          "median_pixels": 2.4298714413628044,
+          "p90_pixels": 3.323924548364597,
+          "median_symmetric_depth_difference": 0.004879832074780716
+        },
+        {
+          "pair": [
+            22,
+            23
+          ],
+          "kind": "adjacent",
+          "matches": 75,
+          "evaluated": 75,
+          "invalid_projections": 0,
+          "median_pixels": 1.3458275892125409,
+          "p90_pixels": 2.310219660685685,
+          "median_symmetric_depth_difference": 0.002475986722355248
+        },
+        {
+          "pair": [
+            0,
+            23
+          ],
+          "kind": "revisit",
+          "matches": 37,
+          "evaluated": 37,
+          "invalid_projections": 0,
+          "median_pixels": 56.908376868555095,
+          "p90_pixels": 59.096231589734316,
+          "median_symmetric_depth_difference": 0.007004178565297749
+        },
+        {
+          "pair": [
+            1,
+            22
+          ],
+          "kind": "revisit",
+          "matches": 50,
+          "evaluated": 50,
+          "invalid_projections": 0,
+          "median_pixels": 6.088166033033882,
+          "p90_pixels": 7.389588141196028,
+          "median_symmetric_depth_difference": 0.006441519606210283
+        },
+        {
+          "pair": [
+            2,
+            21
+          ],
+          "kind": "revisit",
+          "matches": 30,
+          "evaluated": 30,
+          "invalid_projections": 0,
+          "median_pixels": 9.362926416462669,
+          "p90_pixels": 11.316978887875099,
+          "median_symmetric_depth_difference": 0.003203067619442807
+        }
+      ]
+    }
+  ]
+}

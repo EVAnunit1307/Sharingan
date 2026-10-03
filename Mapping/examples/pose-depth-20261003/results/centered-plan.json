@@ -1,0 +1,12 @@
+{
+  "reason": "Official pose encoder uses focal length only, decoder fixes principal point at W/2,H/2. Original reviewed K is off-center. Correct this mismatch before concluding about conditioning.",
+  "selection": "Same 24 source rows; centerPrincipalPoint alpha0 with 1% focal margin, explicit W/2,H/2, all remapped pixels must be valid. Field of view narrows; compare only within this four-run group.",
+  "variants": [
+    "small-free",
+    "small-orb",
+    "base-free",
+    "base-orb"
+  ],
+  "resolution": 504,
+  "repeats": 2
+}

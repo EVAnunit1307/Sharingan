@@ -1,0 +1,39 @@
+{
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "source_repository": "https://github.com/ByteDance-Seed/Depth-Anything-3.git",
+  "models": {
+    "small": {
+      "repo": "depth-anything/DA3-SMALL",
+      "revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+      "files": {
+        "config.json": {
+          "bytes": 1202,
+          "sha256": "a486e29e82b7ab4a7d4cefc1ea4526cfe2ae438a572c8ca98917cfbcde7447d2"
+        },
+        "model.safetensors": {
+          "bytes": 137248940,
+          "sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf"
+        }
+      }
+    },
+    "base": {
+      "repo": "depth-anything/DA3-BASE",
+      "revision": "f4a6c9b3c95e41c82048423d3493a81ec3fa810e",
+      "files": {
+        "model.safetensors": {
+          "bytes": 541518028,
+          "sha256": "e01067dc1659613083d9145a9a2547ccdbe6ccbbf83c4fe7b3e8a4e2bdae78b5"
+        },
+        "config.json": {
+          "bytes": 1205,
+          "sha256": "5e34115ebc17bd2d8d43033c5f72e9446ac8833fd61d3fa160b7e67e0bb5b7b5"
+        }
+      }
+    }
+  },
+  "session": "inputs/20261002T213938Z-e3ead809",
+  "processed_rgb_sha256": "425994417215b2e33f36aba51730f7c5be61c3f1b31326b36e678a5b3ef01349",
+  "resolution": 504,
+  "frames": 24,
+  "centered_processed_rgb_sha256": "fba9021f6365221753c26eae1288dc583a9d94c4c5300512e8ee1b9abf87f9e5"
+}

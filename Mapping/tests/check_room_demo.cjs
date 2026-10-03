@@ -16,7 +16,8 @@ async function main() {
     const errors = [], external = [];
     page.on('pageerror',e=>errors.push(e.message));
     page.on('request',r=>{if(/^https?:/.test(r.url())) external.push(r.url());});
-    await page.goto(pathToFileURL(path.resolve(__dirname,'../examples/room-draft-20261002/index.html')).href);
+    const viewer = process.env.VIEWER_FILE || path.resolve(__dirname,'../examples/room-draft-20261002/index.html');
+    await page.goto(pathToFileURL(path.resolve(viewer)).href);
     assert.equal(await page.locator('#trial option').count(),4);
     await page.evaluate(async()=>{
       for(const t of DATA.trials) for(const src of [...t.images,...t.overlays]) {
@@ -24,9 +25,12 @@ async function main() {
         if(!image.naturalWidth||!image.naturalHeight) throw new Error('Invalid bundled image');
       }
     });
-    const names = ['room-sweep','room-sweep-alternate','lit-sofa','couch-return'];
+    const names = process.env.VIEWER_FILE ? await page.evaluate(()=>DATA.trials.map(t=>t.name))
+      : ['room-sweep','room-sweep-alternate','lit-sofa','couch-return'];
     for (let i=0; i<names.length; i++) {
       await page.selectOption('#trial',String(i));
+      if(await page.evaluate(i=>DATA.trials[i].pose_conditioned,i))
+        assert.match(await page.locator('#provenance').textContent(),/imposed, not independent validation/);
       await page.waitForFunction(()=>{const im=document.querySelector('#image');return im.complete&&im.naturalWidth>0;});
       assert.equal(await page.locator('#views').textContent(),'24');
       const points=Number((await page.locator('#shown').textContent()).replaceAll(',',''));

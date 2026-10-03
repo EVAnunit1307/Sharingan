@@ -53,8 +53,15 @@ RMS position spread; fitting only the first eight and evaluating the last sixtee
 gives 61.0%. Neither trajectory is ground truth. Seats/floor are recognizable,
 with duplicated edges; geometry is still unverified. The portable demo now has a
 `couch-return` selection, raw selected inputs, render and the full diagnostics.
-Next software experiment: known-pose DA3 conditioning, after checking pose
-conventions and undistortion. It is not implemented or validated yet.
+The 3 October [conditioning and heavier-model experiment](../Mapping/examples/pose-depth-20261003/README.md)
+implements that bridge and compares Small/Base on identical images. Base improves
+the first wider-view image check (1.74 vs 3.15 px), but ORB guidance does not.
+DA3's camera encoder omits principal-point offset; a second centered-crop test
+corrects that input mismatch. Base guidance modestly improves its own check
+(5.69 vs 5.90 px adjacent; 9.36 vs 11.75 px revisit), while Small guidance does not.
+The strong crop reduces coverage, and the groups are not directly comparable.
+The bridge remains experimental. Next: calibration/pose consistency and preserving
+field of view; no guided map, physical accuracy or IMU fusion has been validated.
 
 Evidence: `Saved/MappingResearch/room-walk-20261002/review.html` and
 [current context](../CONTEXT.md). Original recordings remain intact.

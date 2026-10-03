@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-03",
+  "hardware": "M5 / 24 GB",
+  "original_four_reproductions": "reproduction.json",
+  "centered_base_guided": {
+    "arrays_equal": {
+      "depth": true,
+      "confidence": true,
+      "extrinsics": true,
+      "intrinsics": true,
+      "images": true
+    },
+    "inference_seconds": [
+      2.607273083005566,
+      2.3068170839978848
+    ]
+  },
+  "browser": {
+    "original_and_centered_viewers_pass": true,
+    "all_embedded_images_decode": true,
+    "controls": true,
+    "zero_external_requests": true,
+    "zero_javascript_errors": true,
+    "mobile_overflow": false
+  },
+  "note": "Reproduction is exact on this Mac, not guaranteed across hardware. No physical accuracy established.",
+  "mapping_tests_passed": 96,
+  "tests_command": ".venv/bin/python -m unittest discover -s Mapping/tests -p 'test_*.py'"
+}

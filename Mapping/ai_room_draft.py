@@ -97,6 +97,11 @@ def build_trial(path, max_points=60000):
     origin = report['frames'][0]['sensor_timestamp_ns']
     check = diagnostics(dict(depth=depth, confidence=confidence, extrinsics=ex, intrinsics=intr, images=images))
     return dict(name=path.name, session_id=report['session_id'], kind='ai_room_hypothesis',
+        model=report.get('model', 'depth-anything/DA3-SMALL'),
+        pose_conditioned=report.get('pose_conditioned', False),
+        undistorted=report.get('undistorted', False),
+        center_principal=report.get('center_principal', False),
+        pose_alignment=report.get('pose_alignment'),
         validated=False, live=False, units='arbitrary', metric_scale_available=False,
         pose_estimation=report.get('pose_estimation', 'camera_decoder'),
         mapping_eligible=False, source_trial=str(path.resolve()),

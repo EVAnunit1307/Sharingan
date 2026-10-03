@@ -1,0 +1,62 @@
+[
+  {
+    "name": "small-free-undistorted",
+    "arrays_equal": {
+      "depth": true,
+      "confidence": true,
+      "extrinsics": true,
+      "intrinsics": true,
+      "images": true
+    },
+    "inference_seconds": [
+      1.2845007080031792,
+      1.0018437909893692
+    ],
+    "pipeline_seconds": 5.296611332989414
+  },
+  {
+    "name": "small-orb-undistorted",
+    "arrays_equal": {
+      "depth": true,
+      "confidence": true,
+      "extrinsics": true,
+      "intrinsics": true,
+      "images": true
+    },
+    "inference_seconds": [
+      1.1239904169924557,
+      0.9785467089968733
+    ],
+    "pipeline_seconds": 6.361274250011775
+  },
+  {
+    "name": "base-free-undistorted",
+    "arrays_equal": {
+      "depth": true,
+      "confidence": true,
+      "extrinsics": true,
+      "intrinsics": true,
+      "images": true
+    },
+    "inference_seconds": [
+      2.552144750006846,
+      2.402669666989823
+    ],
+    "pipeline_seconds": 7.904905292001786
+  },
+  {
+    "name": "base-orb-undistorted",
+    "arrays_equal": {
+      "depth": true,
+      "confidence": true,
+      "extrinsics": true,
+      "intrinsics": true,
+      "images": true
+    },
+    "inference_seconds": [
+      2.4867777089966694,
+      2.318109625004581
+    ],
+    "pipeline_seconds": 9.38965808400826
+  }
+]

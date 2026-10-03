@@ -1,5 +1,14 @@
 # Pick up the drone and record a room
 
+## Latest offline model comparison — 3 October
+
+The [Small/Base and pose-conditioning experiment](examples/pose-depth-20261003/README.md)
+includes both fixed-image comparisons, source frames, selected tracked poses,
+renders and reproduction commands. Base runs on the M5 and improves the first
+wider-view image check. Correcting DA3's centered-camera assumption requires a
+substantial crop with this lens calibration; guidance gives mixed results.
+No production mapping default changed. Neither run establishes physical accuracy.
+
 ## Teammate demo: open or rebuild the room draft
 
 The [committed example](examples/room-draft-20261002/README.md) contains an offline

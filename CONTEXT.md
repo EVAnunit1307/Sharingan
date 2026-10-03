@@ -1,6 +1,48 @@
 # WALLHACK — current context
 
-Updated **2 October 2026**. Read this before older handoffs.
+Updated **3 October 2026**. Read this before older handoffs.
+
+## Offline pose-guided depth and heavier model — 3 October
+
+Evan is disconnected from the Pi and authorized trying pose-guided depth and a
+heavier model. Implemented `Mapping.pose_depth` camera preparation, `da3_trial`
+Small/Base/undistortion/pose arguments, paired `pose_depth_compare`, and the
+reproducible `pose_depth_demo`. No Pi connection, recording, map publication or
+production default change. Source/model assets remain in ignored Saved.
+
+Base official checkpoint: revision `f4a6c9b3c95e41c82048423d3493a81ec3fa810e`,
+541,518,028 bytes, SHA256 `e01067dc1659613083d9145a9a2547ccdbe6ccbbf83c4fe7b3e8a4e2bdae78b5`.
+Same DA3 source and Small checkpoint as prior runs. Fixed couch rows 294…639,
+stride 15, 24 images, resolution 504, two sequential model calls, MPS cap 0.6.
+Retained coloured-streak row. Raw predicted depth/cameras remain saved separately
+from supplied-camera exports; camera agreement is imposed, not validation.
+
+First group undistorted to original K. Paired image errors Small free/guided,
+Base free/guided: 3.154 / 3.646 / 1.736 / 3.530 px adjacent; 2.990 / 5.158 /
+1.931 / 2.544 px on fixed revisits. All 23 adjacent and three revisit pairs have
+enough identical matches. The four cases rebuilt from packaged selected data
+with exactly equal output arrays in the isolated team environment. Reproduction
+second calls ~1.00 / 0.98 / 2.40 / 2.32 s; first experiment had variable cold/cache
+timings. Highest sampled Metal driver allocation ~6.41 GiB. Not live FPS.
+
+Found upstream camera encoder uses only fx/fy, omitting principal point; decoder
+assumes W/2,H/2. Reviewed K has a large offset, so ran a separate centered group.
+OpenCV alpha=0, exact centered principal point, 1% focal margin; fx/fy ~1,469 vs
+~793 originally. All pixels in bounds but substantial crop. Same source selection.
+Centered Small free/guided, Base free/guided: 4.620 / 10.280 / 5.899 / 5.686 px
+adjacent; 14.568 / 14.401 / 11.748 / 9.363 px revisits. Only 20/23 adjacent pairs
+have enough matches, all three revisits supported. Do not compare crop groups
+as if pixels/coverage were unchanged. Heavier model is feasible; guidance is
+mixed and does not establish a reliable mapped room. Next investigate calibration,
+pose consistency and field-of-view-preserving rectification before model escalation.
+
+Local results: `Saved/MappingResearch/pose-depth-20261003/`, viewer.html and
+centered-viewer.html, immutable original trials, plans and comparison JSONs.
+Team bundle: `Mapping/examples/pose-depth-20261003/` with both viewers, raw selected
+images, selected/rebased tracking poses, calibration, labels, source/model pins,
+all outcomes and renders. Demo runner defaults to centered inputs;
+`--original-principal` reproduces the initial diagnostic. Geometry remains arbitrary
+scale, unverified, and ineligible for operator-map or position publication.
 
 ## Approximate return confirmed — 2 October
 
