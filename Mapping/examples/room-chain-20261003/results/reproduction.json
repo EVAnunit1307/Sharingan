@@ -1,0 +1,43 @@
+{
+  "kind": "isolated_packaged_input_reproduction",
+  "environment": "Saved/MappingResearch/team-demo-venv",
+  "variant": "large",
+  "scene": "couch",
+  "windows": [
+    {
+      "window": 0,
+      "all_arrays_exact": true,
+      "arrays": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      }
+    },
+    {
+      "window": 1,
+      "all_arrays_exact": true,
+      "arrays": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      }
+    },
+    {
+      "window": 2,
+      "all_arrays_exact": true,
+      "arrays": {
+        "depth": true,
+        "confidence": true,
+        "extrinsics": true,
+        "intrinsics": true,
+        "images": true
+      }
+    }
+  ],
+  "accepted_windows": 2,
+  "ground_truth_accuracy": false
+}

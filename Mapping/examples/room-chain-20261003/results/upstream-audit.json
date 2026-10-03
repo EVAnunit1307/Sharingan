@@ -1,0 +1,252 @@
+[
+  {
+    "repo": "facebookresearch/scenescript",
+    "revision": "516472d0e62ebbf866f1125cd98c85dec315c100",
+    "files": [
+      {
+        "file": "README.md",
+        "url": "https://raw.githubusercontent.com/facebookresearch/scenescript/516472d0e62ebbf866f1125cd98c85dec315c100/README.md",
+        "sha256": "69bdf2c4eb2bf6079dec98d76404d93e53bccd575429662eee40fb17d0450f8d",
+        "compatibility_lines": [
+          {
+            "line": 19,
+            "text": "* This can take quite a while, up to 30 minutes due to compiling the [torchsparse library](https://github.com/mit-han-lab/torchsparse)."
+          },
+          {
+            "line": 20,
+            "text": "* Due to relying on [torchsparse v2.1](https://github.com/mit-han-lab/torchsparse/tree/v2.1.0), this codebase requires CUDA to be available on the machine. See this [Github issue](https://github.com/mit-han-lab/torchsparse/issues/280) for more info."
+          },
+          {
+            "line": 21,
+            "text": "* This codebase has been tested with _linux only_."
+          },
+          {
+            "line": 24,
+            "text": "We provide two trained models that operate on semi-dense point clouds obtained via [Project Aria Machine Perception Services](https://facebookresearch.github.io/projectaria_tools/docs/data_formats/mps/slam/mps_pointcloud):"
+          },
+          {
+            "line": 36,
+            "text": "The provided SceneScript models operate on semi-dense point clouds obtained via [Project Aria Machine Perception Services](https://facebookresearch.github.io/projectaria_tools/docs/data_formats/mps/slam/mps_pointcloud). To obtain a few examples from [ASE](https://www.projectaria.com/datasets/ase/) (synthetic) and [Aria Everyday Activities](https://www.projectaria.com/datasets/aea/) (real-world), run the following commands:"
+          }
+        ]
+      },
+      {
+        "file": "environment.yaml",
+        "url": "https://raw.githubusercontent.com/facebookresearch/scenescript/516472d0e62ebbf866f1125cd98c85dec315c100/environment.yaml",
+        "sha256": "c92aa563099f3dfbc750716909c41d20d05d5049e4a60116dbee54531eb79496",
+        "compatibility_lines": [
+          {
+            "line": 3,
+            "text": "  - nvidia/label/cuda-12.1.0"
+          },
+          {
+            "line": 13,
+            "text": "  - cuda"
+          },
+          {
+            "line": 15,
+            "text": "  - pytorch-cuda=12.1"
+          },
+          {
+            "line": 23,
+            "text": "    - git+https://github.com/mit-han-lab/torchsparse.git"
+          }
+        ]
+      },
+      {
+        "file": "inference.ipynb",
+        "url": "https://raw.githubusercontent.com/facebookresearch/scenescript/516472d0e62ebbf866f1125cd98c85dec315c100/inference.ipynb",
+        "sha256": "b2af6dfe084fb8daedaad9089583973d108c58fac283db026096e1206ddf59a0",
+        "compatibility_lines": [
+          {
+            "line": 318,
+            "text": "    \"model_wrapper = SceneScriptWrapper.load_from_checkpoint(ckpt_path).cuda()\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "repo": "MIT-SPARK/VGGT-SLAM",
+    "revision": "35327ac28b7d193df9ccc39ba6346052bb6f1207",
+    "files": [
+      {
+        "file": "README.md",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/README.md",
+        "sha256": "3cc8069121fabc2b5e13e0997e2e927fac558fa3d8032b2599dbadc486672454",
+        "compatibility_lines": [
+          {
+            "line": 152,
+            "text": "* August 2025: SL(4) optimization is integrated into the official GTSAM repo"
+          }
+        ]
+      },
+      {
+        "file": "requirements.txt",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/requirements.txt",
+        "sha256": "19527fb57122aee8bd3f737b183ee8f14f10f26a996a1e417b824c26668737db",
+        "compatibility_lines": [
+          {
+            "line": 23,
+            "text": "gtsam-develop"
+          }
+        ]
+      },
+      {
+        "file": "main.py",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/main.py",
+        "sha256": "85a5146f1fc93c3536e37acb4b077cdb7d7d952bf17c06b92ab944f126d56225",
+        "compatibility_lines": [
+          {
+            "line": 44,
+            "text": "    device = \"cuda\" if torch.cuda.is_available() else \"cpu\""
+          },
+          {
+            "line": 67,
+            "text": "        clip_model = clip_model.cuda()"
+          }
+        ]
+      },
+      {
+        "file": "main_realtime.py",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/main_realtime.py",
+        "sha256": "d4de3928f7ed3d09515cd8481e7fc2c6e69b494c94b5c57d5a29c8e2074484ea",
+        "compatibility_lines": [
+          {
+            "line": 150,
+            "text": "    device = \"cuda\" if torch.cuda.is_available() else \"cpu\""
+          },
+          {
+            "line": 177,
+            "text": "        clip_model = clip_model.cuda()"
+          }
+        ]
+      },
+      {
+        "file": "setup.sh",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/setup.sh",
+        "sha256": "ccb2d154d82f4c8fc527ec7a95c6ea73db84fe1484c2e8d013700c9b1c30d94e",
+        "compatibility_lines": []
+      },
+      {
+        "file": "vggt_slam/solver.py",
+        "url": "https://raw.githubusercontent.com/MIT-SPARK/VGGT-SLAM/35327ac28b7d193df9ccc39ba6346052bb6f1207/vggt_slam/solver.py",
+        "sha256": "29e5034b03bd717c95eada7fbe645a46fa968eadb5384eaebea137a5b14cd712",
+        "compatibility_lines": [
+          {
+            "line": 1,
+            "text": "import numpy as np"
+          },
+          {
+            "line": 2,
+            "text": "import cv2"
+          },
+          {
+            "line": 3,
+            "text": "import gtsam"
+          },
+          {
+            "line": 4,
+            "text": "import matplotlib.pyplot as plt"
+          },
+          {
+            "line": 5,
+            "text": "import torch"
+          },
+          {
+            "line": 6,
+            "text": "import time"
+          },
+          {
+            "line": 7,
+            "text": "import open3d as o3d"
+          },
+          {
+            "line": 8,
+            "text": "from termcolor import colored"
+          },
+          {
+            "line": 9,
+            "text": "from scipy.linalg import rq"
+          },
+          {
+            "line": 11,
+            "text": "from vggt.utils.geometry import closed_form_inverse_se3, unproject_depth_map_to_point_map"
+          },
+          {
+            "line": 12,
+            "text": "from vggt.utils.pose_enc import pose_encoding_to_extri_intri"
+          },
+          {
+            "line": 13,
+            "text": "from vggt.utils.load_fn import load_and_preprocess_images"
+          },
+          {
+            "line": 15,
+            "text": "from vggt_slam.slam_utils import compute_image_embeddings, Accumulator"
+          },
+          {
+            "line": 16,
+            "text": "from vggt_slam.loop_closure import ImageRetrieval"
+          },
+          {
+            "line": 17,
+            "text": "from vggt_slam.frame_overlap import FrameTracker"
+          },
+          {
+            "line": 18,
+            "text": "from vggt_slam.map import GraphMap"
+          },
+          {
+            "line": 19,
+            "text": "from vggt_slam.submap import Submap"
+          },
+          {
+            "line": 20,
+            "text": "from vggt_slam.graph import PoseGraph"
+          },
+          {
+            "line": 21,
+            "text": "from vggt_slam.scale_solver import estimate_scale_pairwise"
+          },
+          {
+            "line": 22,
+            "text": "from vggt_slam.viewer import Viewer"
+          },
+          {
+            "line": 301,
+            "text": "        device = \"cuda\" if torch.cuda.is_available() else \"cpu\""
+          },
+          {
+            "line": 304,
+            "text": "            images = load_and_preprocess_images(image_names).to(device)"
+          },
+          {
+            "line": 309,
+            "text": "        dtype = torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "repo": "ByteDance-Seed/Depth-Anything-3",
+    "revision": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+    "files": [
+      {
+        "file": "da3_streaming/da3_streaming.py",
+        "sha256": "12ab85f3a5c08952b81866778c3488bc742c97a22ceb3a2d9447b486f5c735f0",
+        "compatibility_lines": [
+          {
+            "line": 142,
+            "text": "        self.device = \"cuda\" if torch.cuda.is_available() else \"cpu\""
+          },
+          {
+            "line": 144,
+            "text": "            torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16"
+          }
+        ]
+      }
+    ]
+  }
+]

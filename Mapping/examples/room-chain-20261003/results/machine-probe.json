@@ -1,0 +1,15 @@
+{
+  "system": "Darwin",
+  "arch": "arm64",
+  "torch": "2.14.0",
+  "cuda_available": false,
+  "mps_built": true,
+  "packages": {
+    "torchsparse": false,
+    "gtsam": false,
+    "pypose": false,
+    "matplotlib": false,
+    "triton": false
+  },
+  "da3_streaming_cuda_capability_probe": "AssertionError: Torch not compiled with CUDA enabled"
+}

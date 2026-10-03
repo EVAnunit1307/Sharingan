@@ -1,0 +1,153 @@
+{
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "source_repository": "https://github.com/ByteDance-Seed/Depth-Anything-3.git",
+  "models": {
+    "small": {
+      "repo": "depth-anything/DA3-SMALL",
+      "revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+      "files": {
+        "config.json": {
+          "bytes": 1202,
+          "sha256": "a486e29e82b7ab4a7d4cefc1ea4526cfe2ae438a572c8ca98917cfbcde7447d2"
+        },
+        "model.safetensors": {
+          "bytes": 137248940,
+          "sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf"
+        }
+      }
+    },
+    "base": {
+      "repo": "depth-anything/DA3-BASE",
+      "revision": "f4a6c9b3c95e41c82048423d3493a81ec3fa810e",
+      "files": {
+        "model.safetensors": {
+          "bytes": 541518028,
+          "sha256": "e01067dc1659613083d9145a9a2547ccdbe6ccbbf83c4fe7b3e8a4e2bdae78b5"
+        },
+        "config.json": {
+          "bytes": 1205,
+          "sha256": "5e34115ebc17bd2d8d43033c5f72e9446ac8833fd61d3fa160b7e67e0bb5b7b5"
+        }
+      }
+    },
+    "large": {
+      "repo": "depth-anything/DA3-LARGE",
+      "revision": "c54c26b16ec04d218e8d584ecf4bce082a9fcc20",
+      "license": "CC-BY-NC-4.0",
+      "files": {
+        "model.safetensors": {
+          "bytes": 1643843860,
+          "sha256": "eaf2ae06df55889ad23eb245c82e2dd2a30c0cbf7e3d873a118fa5ed27a3e421"
+        },
+        "config.json": {
+          "bytes": 1213,
+          "sha256": "744dcaf53859490ed92fc6cb98d68d3daf624b8c54533aaf604bdb53f06321f5"
+        }
+      }
+    }
+  },
+  "resolution": 504,
+  "frames": 24,
+  "scenes": {
+    "couch": {
+      "session": "inputs/20261002T213938Z-e3ead809",
+      "undistort": true,
+      "indices": [
+        54,
+        69,
+        84,
+        99,
+        114,
+        129,
+        144,
+        159,
+        174,
+        189,
+        204,
+        219,
+        234,
+        249,
+        264,
+        279,
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "windows": [
+        {
+          "start": 0,
+          "labels": "labels/couch-0",
+          "processed_rgb_sha256": "575cbb33837045bb9e057ea39118517a3e5c5c0e7647cd3885014df6332d0508"
+        },
+        {
+          "start": 8,
+          "labels": "labels/couch-1",
+          "processed_rgb_sha256": "a1b8e45f2813abfc408bc5ea7e2c70bdc6df57f54fdd3750619851f1c3e5ed2a"
+        },
+        {
+          "start": 16,
+          "labels": "labels/couch-2",
+          "processed_rgb_sha256": "425994417215b2e33f36aba51730f7c5be61c3f1b31326b36e678a5b3ef01349"
+        }
+      ]
+    },
+    "room": {
+      "session": "inputs/20261002T185247Z-037db03f",
+      "undistort": false,
+      "indices": [
+        192,
+        216,
+        240,
+        264,
+        288,
+        312,
+        336,
+        360,
+        384,
+        408,
+        432,
+        456,
+        480,
+        504,
+        528,
+        552,
+        576,
+        600,
+        624,
+        648,
+        672,
+        696,
+        720,
+        744
+      ],
+      "windows": [
+        {
+          "start": 0,
+          "labels": "labels/room-0",
+          "processed_rgb_sha256": "e6f2fbe26804c4ed3490d7dceebce4604025f479fcb870b90c845cb7804e839c"
+        }
+      ]
+    }
+  }
+}

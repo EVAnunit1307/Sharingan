@@ -1,0 +1,1966 @@
+{
+  "base": {
+    "kind": "experimental_window_replay",
+    "source_session": "20261002T213938Z-e3ead809",
+    "units": "arbitrary",
+    "imu_used": false,
+    "live": false,
+    "steps": [
+      {
+        "name": "base-couch-54",
+        "indices": [
+          54,
+          69,
+          84,
+          99,
+          114,
+          129,
+          144,
+          159,
+          174,
+          189,
+          204,
+          219,
+          234,
+          249,
+          264,
+          279,
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 60,
+                "evaluated": 41,
+                "median_pixels": 2.3399760173529183,
+                "p90_pixels": 2.9336109769751464
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 49,
+                "evaluated": 42,
+                "median_pixels": 5.22802438334401,
+                "p90_pixels": 7.334998089787534
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 54,
+                "evaluated": 48,
+                "median_pixels": 1.5380082595500895,
+                "p90_pixels": 3.4722971554607454
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 67,
+                "evaluated": 59,
+                "median_pixels": 2.3987839108374667,
+                "p90_pixels": 3.145937693656287
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 76,
+                "evaluated": 69,
+                "median_pixels": 2.669440539840447,
+                "p90_pixels": 3.7348565187424234
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 75,
+                "evaluated": 60,
+                "median_pixels": 2.935492518047509,
+                "p90_pixels": 3.816322379582294
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 75,
+                "evaluated": 66,
+                "median_pixels": 3.7752948894625837,
+                "p90_pixels": 4.858031929026891
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 77,
+                "evaluated": 65,
+                "median_pixels": 2.1664898338571885,
+                "p90_pixels": 3.005007625424869
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 84,
+                "evaluated": 63,
+                "median_pixels": 1.1639410417201965,
+                "p90_pixels": 2.595827761169314
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 104,
+                "evaluated": 73,
+                "median_pixels": 1.8912691984533743,
+                "p90_pixels": 3.1485294740518484
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 99,
+                "evaluated": 79,
+                "median_pixels": 1.9934320048661351,
+                "p90_pixels": 2.614987662007368
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 112,
+                "evaluated": 72,
+                "median_pixels": 2.7457000384304475,
+                "p90_pixels": 3.9314313703065884
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 70,
+                "median_pixels": 3.398548161668172,
+                "p90_pixels": 4.369385111287387
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 87,
+                "median_pixels": 0.7764672771017298,
+                "p90_pixels": 1.4254505792373522
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 120,
+                "evaluated": 84,
+                "median_pixels": 3.931833169378347,
+                "p90_pixels": 4.492829813541995
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 110,
+                "evaluated": 87,
+                "median_pixels": 2.8959216254740414,
+                "p90_pixels": 4.1973917300953385
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 106,
+                "median_pixels": 2.873759338405453,
+                "p90_pixels": 3.5615241520938996
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 108,
+                "median_pixels": 2.2646689904252124,
+                "p90_pixels": 3.044956255325661
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 109,
+                "median_pixels": 4.496035214601955,
+                "p90_pixels": 5.639828146072156
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 98,
+                "median_pixels": 2.7896998802456796,
+                "p90_pixels": 3.544039179097985
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 15,
+                "median_pixels": 34.2420126153289,
+                "p90_pixels": 43.15010346418314
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 15,
+                "median_pixels": 43.68508636322519,
+                "p90_pixels": 45.485102570602415
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 90,
+                "median_pixels": 2.2928591904886364,
+                "p90_pixels": 3.5979131233767645
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 2.7457000384304475,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 28.780755,
+        "state": "seed",
+        "reasons": [],
+        "alignment": null,
+        "retained_poses": 24
+      },
+      {
+        "name": "base-couch-174",
+        "indices": [
+          174,
+          189,
+          204,
+          219,
+          234,
+          249,
+          264,
+          279,
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399,
+          414,
+          429,
+          444,
+          459,
+          474,
+          489,
+          504,
+          519
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 84,
+                "evaluated": 65,
+                "median_pixels": 2.0089056318809018,
+                "p90_pixels": 3.0000664506326395
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 104,
+                "evaluated": 77,
+                "median_pixels": 1.7746671227925566,
+                "p90_pixels": 2.581079450405978
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 99,
+                "evaluated": 80,
+                "median_pixels": 3.14007835015725,
+                "p90_pixels": 4.317390525946939
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 112,
+                "evaluated": 84,
+                "median_pixels": 5.908999318684322,
+                "p90_pixels": 7.443418168905939
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 90,
+                "median_pixels": 2.2568336707740553,
+                "p90_pixels": 2.8970504187133126
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 96,
+                "median_pixels": 3.4044571735347366,
+                "p90_pixels": 4.04154689867995
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 120,
+                "evaluated": 98,
+                "median_pixels": 3.069734183639867,
+                "p90_pixels": 3.658147651216656
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 110,
+                "evaluated": 85,
+                "median_pixels": 2.3191519984357956,
+                "p90_pixels": 3.5239105724217183
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 100,
+                "median_pixels": 1.8577950699604018,
+                "p90_pixels": 2.613179842412844
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 105,
+                "median_pixels": 2.5834256266494076,
+                "p90_pixels": 3.6168069811747596
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 101,
+                "median_pixels": 2.7430276226987265,
+                "p90_pixels": 3.4561810649201727
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 92,
+                "median_pixels": 4.096975793952556,
+                "p90_pixels": 4.9032108583804925
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 14,
+                "median_pixels": 22.67411905949347,
+                "p90_pixels": 26.384988534233997
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 16,
+                "median_pixels": 27.09351636412014,
+                "p90_pixels": 32.21035010019663
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 76,
+                "median_pixels": 2.057893235829122,
+                "p90_pixels": 3.896752786024023
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 61,
+                "median_pixels": 0.6912862187548325,
+                "p90_pixels": 1.207756932896506
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 92,
+                "evaluated": 66,
+                "median_pixels": 1.4859068389763324,
+                "p90_pixels": 2.6239992704534787
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 66,
+                "evaluated": 57,
+                "median_pixels": 0.9157748032938815,
+                "p90_pixels": 1.8541783231472218
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 63,
+                "median_pixels": 3.392439202128443,
+                "p90_pixels": 3.915105282670622
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 61,
+                "median_pixels": 1.122904324163782,
+                "p90_pixels": 1.7875503025262534
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 102,
+                "evaluated": 68,
+                "median_pixels": 1.5615427025690585,
+                "p90_pixels": 2.4755528620439975
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 122,
+                "evaluated": 67,
+                "median_pixels": 1.5887632060670769,
+                "p90_pixels": 2.088304418337797
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 82,
+                "evaluated": 56,
+                "median_pixels": 3.423142273455656,
+                "p90_pixels": 4.559796264843458
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 2.3191519984357956,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 38.860263,
+        "state": "withheld",
+        "reasons": [
+          "shared camera positions disagree"
+        ],
+        "alignment": {
+          "shared_views": 16,
+          "fit_views": [
+            174,
+            204,
+            234,
+            264,
+            294,
+            324,
+            354,
+            384
+          ],
+          "validation_views": [
+            189,
+            219,
+            249,
+            279,
+            309,
+            339,
+            369,
+            399
+          ],
+          "fit_points": 5898,
+          "validation_points": 5832,
+          "fit_inlier_fraction": 0.9979654120040692,
+          "validation_median_fraction_of_depth": 0.007287542063286579,
+          "validation_p90_fraction_of_depth": 0.023415518070141278,
+          "camera_p90_fraction_of_depth": 0.031183796861587544,
+          "orientation_p90_degrees": 1.4035996773458121,
+          "overlap_baseline_fraction_of_depth": 0.09727230668067932,
+          "relative_scale": 1.0093180499966998,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        },
+        "retained_poses": 24
+      },
+      {
+        "name": "base-504",
+        "indices": [
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399,
+          414,
+          429,
+          444,
+          459,
+          474,
+          489,
+          504,
+          519,
+          534,
+          549,
+          564,
+          579,
+          594,
+          609,
+          624,
+          639
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 93,
+                "median_pixels": 1.0574369450492098,
+                "p90_pixels": 1.8700040574217127
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 99,
+                "median_pixels": 2.4443342903580656,
+                "p90_pixels": 3.2468988325878194
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 94,
+                "median_pixels": 2.681336062726405,
+                "p90_pixels": 3.3245086432786386
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 84,
+                "median_pixels": 4.0188446776811135,
+                "p90_pixels": 4.792061238278792
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 12,
+                "median_pixels": 24.238237939308906,
+                "p90_pixels": 28.425696589447192
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 16,
+                "median_pixels": 29.79320629054432,
+                "p90_pixels": 34.78790001116747
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 69,
+                "median_pixels": 2.6685399255796303,
+                "p90_pixels": 4.516629097362413
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 51,
+                "median_pixels": 0.7691498780923881,
+                "p90_pixels": 1.2421001746525544
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 92,
+                "evaluated": 65,
+                "median_pixels": 1.5799802509339516,
+                "p90_pixels": 2.7573725705807246
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 66,
+                "evaluated": 57,
+                "median_pixels": 0.8127094213638629,
+                "p90_pixels": 1.9203458024322482
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 59,
+                "median_pixels": 3.0593964209638793,
+                "p90_pixels": 3.5077963723693872
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 57,
+                "median_pixels": 1.3770696228786394,
+                "p90_pixels": 1.847163049317207
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 102,
+                "evaluated": 62,
+                "median_pixels": 1.2125513282435612,
+                "p90_pixels": 1.9143805769084663
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 122,
+                "evaluated": 62,
+                "median_pixels": 1.7517710756757903,
+                "p90_pixels": 2.2487203901818624
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 82,
+                "evaluated": 49,
+                "median_pixels": 3.2726034421957575,
+                "p90_pixels": 4.304835126739748
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 65,
+                "evaluated": 43,
+                "median_pixels": 1.6209108755586248,
+                "p90_pixels": 2.767092255317744
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 63,
+                "evaluated": 52,
+                "median_pixels": 1.5180869659068614,
+                "p90_pixels": 2.3802641954613084
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 68,
+                "evaluated": 56,
+                "median_pixels": 1.199045293979959,
+                "p90_pixels": 2.0865041913286166
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 71,
+                "median_pixels": 1.1937438686525013,
+                "p90_pixels": 2.315616501830804
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 71,
+                "median_pixels": 3.4610656825499793,
+                "p90_pixels": 5.13248733775023
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 96,
+                "evaluated": 72,
+                "median_pixels": 1.7753278459350554,
+                "p90_pixels": 2.7354918977455114
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 113,
+                "evaluated": 91,
+                "median_pixels": 0.9971569801277268,
+                "p90_pixels": 1.8543410799164988
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 98,
+                "median_pixels": 1.4138126547755299,
+                "p90_pixels": 1.784584235903719
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 1.6209108755586248,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 49.023077,
+        "state": "blocked",
+        "reasons": [
+          "An earlier window failed; no relocalization is implemented"
+        ],
+        "alignment": null,
+        "retained_poses": 24
+      }
+    ],
+    "seed_poses": 24,
+    "accepted_windows": 1,
+    "reference": null,
+    "warning": "Offline stitching with heuristic rejection. No loop closure, global optimization, floor orientation, metric scale or real contact placement.",
+    "pair_checks_even_if_replay_blocked": [
+      {
+        "first": "base-couch-54",
+        "second": "base-couch-174",
+        "check": {
+          "shared_views": 16,
+          "fit_views": [
+            174,
+            204,
+            234,
+            264,
+            294,
+            324,
+            354,
+            384
+          ],
+          "validation_views": [
+            189,
+            219,
+            249,
+            279,
+            309,
+            339,
+            369,
+            399
+          ],
+          "fit_points": 5898,
+          "validation_points": 5832,
+          "fit_inlier_fraction": 0.9979654120040692,
+          "validation_median_fraction_of_depth": 0.007287542063286579,
+          "validation_p90_fraction_of_depth": 0.023415518070141278,
+          "camera_p90_fraction_of_depth": 0.031183796861587544,
+          "orientation_p90_degrees": 1.4035996773458121,
+          "overlap_baseline_fraction_of_depth": 0.09727230668067932,
+          "relative_scale": 1.0093180499966998,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        }
+      },
+      {
+        "first": "base-couch-174",
+        "second": "base-504",
+        "check": {
+          "shared_views": 16,
+          "fit_views": [
+            294,
+            324,
+            354,
+            384,
+            414,
+            444,
+            474,
+            504
+          ],
+          "validation_views": [
+            309,
+            339,
+            369,
+            399,
+            429,
+            459,
+            489,
+            519
+          ],
+          "fit_points": 6972,
+          "validation_points": 6945,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.001426610679729767,
+          "validation_p90_fraction_of_depth": 0.00386367491095268,
+          "camera_p90_fraction_of_depth": 0.013851351042624086,
+          "orientation_p90_degrees": 0.39707225742610963,
+          "overlap_baseline_fraction_of_depth": 0.18920104205608368,
+          "relative_scale": 1.0052954638416256,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        }
+      }
+    ]
+  },
+  "large": {
+    "kind": "experimental_window_replay",
+    "source_session": "20261002T213938Z-e3ead809",
+    "units": "arbitrary",
+    "imu_used": false,
+    "live": false,
+    "steps": [
+      {
+        "name": "large-couch-54",
+        "indices": [
+          54,
+          69,
+          84,
+          99,
+          114,
+          129,
+          144,
+          159,
+          174,
+          189,
+          204,
+          219,
+          234,
+          249,
+          264,
+          279,
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 60,
+                "evaluated": 56,
+                "median_pixels": 1.14916100342271,
+                "p90_pixels": 2.460800318734182
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 49,
+                "evaluated": 48,
+                "median_pixels": 4.526082977445487,
+                "p90_pixels": 5.982267083232415
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 54,
+                "evaluated": 50,
+                "median_pixels": 2.3865289820536235,
+                "p90_pixels": 4.263569603558022
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 67,
+                "evaluated": 62,
+                "median_pixels": 0.8227384559094928,
+                "p90_pixels": 1.8786367221444613
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 76,
+                "evaluated": 74,
+                "median_pixels": 0.7537817170254347,
+                "p90_pixels": 1.3444207647303887
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 75,
+                "evaluated": 71,
+                "median_pixels": 0.6130564931419301,
+                "p90_pixels": 1.155502017281756
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 75,
+                "evaluated": 72,
+                "median_pixels": 1.1371978114422847,
+                "p90_pixels": 2.3068980150803515
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 77,
+                "evaluated": 67,
+                "median_pixels": 0.44571555933704404,
+                "p90_pixels": 1.0461349925680639
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 84,
+                "evaluated": 72,
+                "median_pixels": 0.7940766517770159,
+                "p90_pixels": 1.549304594084995
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 104,
+                "evaluated": 82,
+                "median_pixels": 0.6422750823260838,
+                "p90_pixels": 1.3629523058005582
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 99,
+                "evaluated": 83,
+                "median_pixels": 0.7709343786338249,
+                "p90_pixels": 1.4881453932774122
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 112,
+                "evaluated": 89,
+                "median_pixels": 0.7594947617366411,
+                "p90_pixels": 1.4131621084330126
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 99,
+                "median_pixels": 1.0905232004478977,
+                "p90_pixels": 1.7521483169266523
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 107,
+                "median_pixels": 0.7159096698239333,
+                "p90_pixels": 1.3136924455193637
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 120,
+                "evaluated": 102,
+                "median_pixels": 1.8444399278703645,
+                "p90_pixels": 3.661635149225434
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 110,
+                "evaluated": 83,
+                "median_pixels": 1.55033704532072,
+                "p90_pixels": 2.4320812020968736
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 103,
+                "median_pixels": 0.7509436427449847,
+                "p90_pixels": 1.9389055490265752
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 103,
+                "median_pixels": 0.780426506054907,
+                "p90_pixels": 1.5818881105752136
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 109,
+                "median_pixels": 0.556225446457252,
+                "p90_pixels": 1.293518331872047
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 96,
+                "median_pixels": 1.4880305178354658,
+                "p90_pixels": 2.313415873765157
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 17,
+                "median_pixels": 4.432074176561057,
+                "p90_pixels": 4.839462873265625
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 16,
+                "median_pixels": 4.305229548716191,
+                "p90_pixels": 5.875321674551163
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 98,
+                "median_pixels": 1.0716965744307805,
+                "p90_pixels": 1.726450869083276
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 0.8227384559094928,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 28.780755,
+        "state": "seed",
+        "reasons": [],
+        "alignment": null,
+        "retained_poses": 24
+      },
+      {
+        "name": "large-couch-174",
+        "indices": [
+          174,
+          189,
+          204,
+          219,
+          234,
+          249,
+          264,
+          279,
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399,
+          414,
+          429,
+          444,
+          459,
+          474,
+          489,
+          504,
+          519
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 84,
+                "evaluated": 72,
+                "median_pixels": 1.1854662103256315,
+                "p90_pixels": 1.8074575375551467
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 104,
+                "evaluated": 81,
+                "median_pixels": 0.7489725343760607,
+                "p90_pixels": 1.5338581443327644
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 99,
+                "evaluated": 84,
+                "median_pixels": 0.8168526669853442,
+                "p90_pixels": 1.5597062394452053
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 112,
+                "evaluated": 92,
+                "median_pixels": 0.501453974016061,
+                "p90_pixels": 1.0386610742857576
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 103,
+                "median_pixels": 1.1040706821222943,
+                "p90_pixels": 1.8028948611623559
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 126,
+                "evaluated": 107,
+                "median_pixels": 0.7600745789903524,
+                "p90_pixels": 1.477321637727398
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 120,
+                "evaluated": 100,
+                "median_pixels": 0.6549213098870685,
+                "p90_pixels": 1.239732603528304
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 110,
+                "evaluated": 88,
+                "median_pixels": 1.2563592309685125,
+                "p90_pixels": 2.300717008536948
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 104,
+                "median_pixels": 0.8582400079725367,
+                "p90_pixels": 1.6981402874719664
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 102,
+                "median_pixels": 0.8591764420376277,
+                "p90_pixels": 1.6707189176586967
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 109,
+                "median_pixels": 1.0258922986882908,
+                "p90_pixels": 2.3206051729061437
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 87,
+                "median_pixels": 1.7956221060755588,
+                "p90_pixels": 3.009153020610827
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 18,
+                "median_pixels": 4.653213049545363,
+                "p90_pixels": 5.5079384623445415
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 16,
+                "median_pixels": 4.878372398501909,
+                "p90_pixels": 6.6375267003807865
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 96,
+                "median_pixels": 0.8750706461722257,
+                "p90_pixels": 1.5356068001766796
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 77,
+                "median_pixels": 0.7966337881351988,
+                "p90_pixels": 1.637721718106449
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 92,
+                "evaluated": 76,
+                "median_pixels": 0.6547020001307587,
+                "p90_pixels": 1.3265420027966273
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 66,
+                "evaluated": 61,
+                "median_pixels": 1.175871893583547,
+                "p90_pixels": 2.367162065343509
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 71,
+                "median_pixels": 0.9067505427089106,
+                "p90_pixels": 1.4450069439924034
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 69,
+                "median_pixels": 0.9035633028692808,
+                "p90_pixels": 1.589959787915145
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 102,
+                "evaluated": 79,
+                "median_pixels": 0.500361530289158,
+                "p90_pixels": 0.966195928575828
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 122,
+                "evaluated": 98,
+                "median_pixels": 1.6022012616029606,
+                "p90_pixels": 2.0428348958655076
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 82,
+                "evaluated": 65,
+                "median_pixels": 1.4006748907752042,
+                "p90_pixels": 2.194371970628355
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 0.9035633028692808,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 38.860263,
+        "state": "merged",
+        "reasons": [],
+        "alignment": {
+          "shared_views": 16,
+          "fit_views": [
+            174,
+            204,
+            234,
+            264,
+            294,
+            324,
+            354,
+            384
+          ],
+          "validation_views": [
+            189,
+            219,
+            249,
+            279,
+            309,
+            339,
+            369,
+            399
+          ],
+          "fit_points": 7019,
+          "validation_points": 6801,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.002034022628775696,
+          "validation_p90_fraction_of_depth": 0.004251497021507343,
+          "camera_p90_fraction_of_depth": 0.006218260878110438,
+          "orientation_p90_degrees": 0.3082372241576139,
+          "overlap_baseline_fraction_of_depth": 0.09462419897317886,
+          "relative_scale": 1.0193909033607687,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        },
+        "retained_poses": 32
+      },
+      {
+        "name": "large-504",
+        "indices": [
+          294,
+          309,
+          324,
+          339,
+          354,
+          369,
+          384,
+          399,
+          414,
+          429,
+          444,
+          459,
+          474,
+          489,
+          504,
+          519,
+          534,
+          549,
+          564,
+          579,
+          594,
+          609,
+          624,
+          639
+        ],
+        "local": {
+          "accepted": true,
+          "diagnostics": {
+            "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+            "image_width": 504,
+            "pairs": [
+              {
+                "pair": [
+                  0,
+                  1
+                ],
+                "mutual_ratio_matches": 121,
+                "evaluated": 104,
+                "median_pixels": 0.8565014346641369,
+                "p90_pixels": 1.531284856879101
+              },
+              {
+                "pair": [
+                  1,
+                  2
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 108,
+                "median_pixels": 1.7095290904461473,
+                "p90_pixels": 2.255144570783271
+              },
+              {
+                "pair": [
+                  2,
+                  3
+                ],
+                "mutual_ratio_matches": 124,
+                "evaluated": 109,
+                "median_pixels": 0.454730531796933,
+                "p90_pixels": 0.9320966280410764
+              },
+              {
+                "pair": [
+                  3,
+                  4
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 97,
+                "median_pixels": 1.0785103836692085,
+                "p90_pixels": 1.7467256113019312
+              },
+              {
+                "pair": [
+                  4,
+                  5
+                ],
+                "mutual_ratio_matches": 19,
+                "evaluated": 18,
+                "median_pixels": 7.571275147486052,
+                "p90_pixels": 8.08188263826206
+              },
+              {
+                "pair": [
+                  5,
+                  6
+                ],
+                "mutual_ratio_matches": 16,
+                "evaluated": 16,
+                "median_pixels": 5.1100059544136895,
+                "p90_pixels": 6.673665643754256
+              },
+              {
+                "pair": [
+                  6,
+                  7
+                ],
+                "mutual_ratio_matches": 107,
+                "evaluated": 97,
+                "median_pixels": 0.8508429533292073,
+                "p90_pixels": 1.605908357713694
+              },
+              {
+                "pair": [
+                  7,
+                  8
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 76,
+                "median_pixels": 0.8610216012491498,
+                "p90_pixels": 1.5984355525414013
+              },
+              {
+                "pair": [
+                  8,
+                  9
+                ],
+                "mutual_ratio_matches": 92,
+                "evaluated": 70,
+                "median_pixels": 1.312309304352185,
+                "p90_pixels": 2.1184644473161236
+              },
+              {
+                "pair": [
+                  9,
+                  10
+                ],
+                "mutual_ratio_matches": 66,
+                "evaluated": 58,
+                "median_pixels": 1.449039746608169,
+                "p90_pixels": 2.767340734958142
+              },
+              {
+                "pair": [
+                  10,
+                  11
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 73,
+                "median_pixels": 0.7881586282968379,
+                "p90_pixels": 1.474646147996439
+              },
+              {
+                "pair": [
+                  11,
+                  12
+                ],
+                "mutual_ratio_matches": 78,
+                "evaluated": 70,
+                "median_pixels": 0.65493024728555,
+                "p90_pixels": 1.273280191768086
+              },
+              {
+                "pair": [
+                  12,
+                  13
+                ],
+                "mutual_ratio_matches": 102,
+                "evaluated": 76,
+                "median_pixels": 1.5987231352834042,
+                "p90_pixels": 2.9622356231750446
+              },
+              {
+                "pair": [
+                  13,
+                  14
+                ],
+                "mutual_ratio_matches": 122,
+                "evaluated": 87,
+                "median_pixels": 1.9005023401923193,
+                "p90_pixels": 2.918327369284929
+              },
+              {
+                "pair": [
+                  14,
+                  15
+                ],
+                "mutual_ratio_matches": 82,
+                "evaluated": 65,
+                "median_pixels": 0.7709885661090919,
+                "p90_pixels": 2.2308225711707
+              },
+              {
+                "pair": [
+                  15,
+                  16
+                ],
+                "mutual_ratio_matches": 65,
+                "evaluated": 57,
+                "median_pixels": 0.7055185494844366,
+                "p90_pixels": 1.6129962266634565
+              },
+              {
+                "pair": [
+                  16,
+                  17
+                ],
+                "mutual_ratio_matches": 63,
+                "evaluated": 55,
+                "median_pixels": 0.608829487436944,
+                "p90_pixels": 1.2714856221726174
+              },
+              {
+                "pair": [
+                  17,
+                  18
+                ],
+                "mutual_ratio_matches": 68,
+                "evaluated": 59,
+                "median_pixels": 0.7751173419330549,
+                "p90_pixels": 1.4451456511132625
+              },
+              {
+                "pair": [
+                  18,
+                  19
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 75,
+                "median_pixels": 0.7200137841941304,
+                "p90_pixels": 1.733234821515366
+              },
+              {
+                "pair": [
+                  19,
+                  20
+                ],
+                "mutual_ratio_matches": 90,
+                "evaluated": 74,
+                "median_pixels": 0.6951765518332471,
+                "p90_pixels": 2.050953085478142
+              },
+              {
+                "pair": [
+                  20,
+                  21
+                ],
+                "mutual_ratio_matches": 96,
+                "evaluated": 78,
+                "median_pixels": 1.9078851031771538,
+                "p90_pixels": 2.8201665657422055
+              },
+              {
+                "pair": [
+                  21,
+                  22
+                ],
+                "mutual_ratio_matches": 113,
+                "evaluated": 101,
+                "median_pixels": 0.8413112566316976,
+                "p90_pixels": 1.7185815804794287
+              },
+              {
+                "pair": [
+                  22,
+                  23
+                ],
+                "mutual_ratio_matches": 115,
+                "evaluated": 95,
+                "median_pixels": 1.9197339080858908,
+                "p90_pixels": 2.3900020810820166
+              }
+            ],
+            "pairs_with_at_least_8_matches": 23,
+            "median_of_pair_medians_pixels": 0.8565014346641369,
+            "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+          },
+          "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+        },
+        "observation_end_seconds": 49.023077,
+        "state": "withheld",
+        "reasons": [
+          "shared camera positions disagree"
+        ],
+        "alignment": {
+          "shared_views": 16,
+          "fit_views": [
+            294,
+            324,
+            354,
+            384,
+            414,
+            444,
+            474,
+            504
+          ],
+          "validation_views": [
+            309,
+            339,
+            369,
+            399,
+            429,
+            459,
+            489,
+            519
+          ],
+          "fit_points": 6312,
+          "validation_points": 6506,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.004713256007537301,
+          "validation_p90_fraction_of_depth": 0.008844356153179037,
+          "camera_p90_fraction_of_depth": 0.03073398507833812,
+          "orientation_p90_degrees": 0.8278196530704334,
+          "overlap_baseline_fraction_of_depth": 0.20310308039188385,
+          "relative_scale": 1.0799084177495475,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        },
+        "retained_poses": 32
+      }
+    ],
+    "seed_poses": 24,
+    "accepted_windows": 2,
+    "reference": null,
+    "warning": "Offline stitching with heuristic rejection. No loop closure, global optimization, floor orientation, metric scale or real contact placement.",
+    "pair_checks_even_if_replay_blocked": [
+      {
+        "first": "large-couch-54",
+        "second": "large-couch-174",
+        "check": {
+          "shared_views": 16,
+          "fit_views": [
+            174,
+            204,
+            234,
+            264,
+            294,
+            324,
+            354,
+            384
+          ],
+          "validation_views": [
+            189,
+            219,
+            249,
+            279,
+            309,
+            339,
+            369,
+            399
+          ],
+          "fit_points": 7019,
+          "validation_points": 6801,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.002034022628775696,
+          "validation_p90_fraction_of_depth": 0.004251497021507343,
+          "camera_p90_fraction_of_depth": 0.006218260878110438,
+          "orientation_p90_degrees": 0.3082372241576139,
+          "overlap_baseline_fraction_of_depth": 0.09462419897317886,
+          "relative_scale": 1.0193909033607687,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        }
+      },
+      {
+        "first": "large-couch-174",
+        "second": "large-504",
+        "check": {
+          "shared_views": 16,
+          "fit_views": [
+            294,
+            324,
+            354,
+            384,
+            414,
+            444,
+            474,
+            504
+          ],
+          "validation_views": [
+            309,
+            339,
+            369,
+            399,
+            429,
+            459,
+            489,
+            519
+          ],
+          "fit_points": 6312,
+          "validation_points": 6506,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.004713256007537301,
+          "validation_p90_fraction_of_depth": 0.008844356153179037,
+          "camera_p90_fraction_of_depth": 0.03073398507833812,
+          "orientation_p90_degrees": 0.8278196530704334,
+          "overlap_baseline_fraction_of_depth": 0.20310308039188385,
+          "relative_scale": 1.0799084177495475,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        }
+      }
+    ]
+  }
+}

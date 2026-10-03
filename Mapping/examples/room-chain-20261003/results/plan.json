@@ -1,0 +1,16 @@
+{
+  "purpose": "Compare identical Base/Large overlapping couch windows, then depth/semantic layout/completion on couch and room sweep. No tuning to measured room ground truth, no IMU or live maps.",
+  "windows": [
+    54,
+    174,
+    294
+  ],
+  "stride": 15,
+  "frames": 24,
+  "resolution": 504,
+  "repeats": 2,
+  "cached_last_window": "Saved/MappingResearch/large-after-unload-20261003/{base,large}-504",
+  "stitching_checks": "Unmodified Mapping.window_replay screens; do not loosen to force merges",
+  "source": "Saved/MappingResearch/da3/source",
+  "license_large": "CC BY-NC 4.0"
+}

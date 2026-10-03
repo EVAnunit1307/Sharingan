@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "session_id": "20261002T185247Z-037db03f",
+  "source": "drone_camera",
+  "status": "complete",
+  "camera": {
+    "width": 640,
+    "height": 480,
+    "rotation": 180,
+    "source": "picamera2",
+    "intrinsics": "not_calibrated"
+  },
+  "frames_saved": 24,
+  "kind": "selected_ai_input_only",
+  "units": "arbitrary",
+  "source_frames_saved": 1437,
+  "frame_selection": "Fixed sparse indices in demo.json; not a continuous capture"
+}

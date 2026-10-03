@@ -1,0 +1,43 @@
+{
+  "kind": "payload_budget_calculation",
+  "hardware_radio_tested": false,
+  "recording": {
+    "session": "20261002T213938Z-e3ead809",
+    "jpeg_frames": 658,
+    "jpeg_bytes": 34378526,
+    "seconds": 55.020797,
+    "jpeg_payload_bps": 4998622.757136724,
+    "note": "Actual saved JPEG volume divided by capture duration. Not measured live stream bandwidth; H264 was not encoded or benchmarked."
+  },
+  "layout_packets": [
+    {
+      "name": "base-504",
+      "json_bytes": 4858,
+      "zlib_bytes": 1780,
+      "once_per_second_payload_bps": 38864,
+      "payload_only_seconds_at_57600_bps": 0.6747222222222222
+    },
+    {
+      "name": "large-504",
+      "json_bytes": 4299,
+      "zlib_bytes": 1623,
+      "once_per_second_payload_bps": 34392,
+      "payload_only_seconds_at_57600_bps": 0.5970833333333333
+    },
+    {
+      "name": "room-camera",
+      "json_bytes": 3833,
+      "zlib_bytes": 1433,
+      "once_per_second_payload_bps": 30664,
+      "payload_only_seconds_at_57600_bps": 0.5323611111111111
+    },
+    {
+      "name": "large-room-wide",
+      "json_bytes": 3429,
+      "zlib_bytes": 1335,
+      "once_per_second_payload_bps": 27432,
+      "payload_only_seconds_at_57600_bps": 0.47625
+    }
+  ],
+  "limitation": "Packets were built on the Mac, not the Pi. Moving them to a low-rate drone downlink first requires onboard mapping. Video needed for ground-based mapping needs a separate suitable link. No radio overhead/loss/latency measurements."
+}

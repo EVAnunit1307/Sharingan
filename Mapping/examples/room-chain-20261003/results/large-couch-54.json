@@ -1,0 +1,420 @@
+{
+  "state": "complete",
+  "model": "depth-anything/DA3-LARGE",
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "device": "mps",
+  "torch": "2.14.0",
+  "session_id": "20261002T213938Z-e3ead809",
+  "indices": [
+    54,
+    69,
+    84,
+    99,
+    114,
+    129,
+    144,
+    159,
+    174,
+    189,
+    204,
+    219,
+    234,
+    249,
+    264,
+    279,
+    294,
+    309,
+    324,
+    339,
+    354,
+    369,
+    384,
+    399
+  ],
+  "frames": [
+    {
+      "frame_id": 246046,
+      "host_capture_mono_ns": 10683518537662,
+      "sensor_timestamp_ns": 10683510126000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 32.8,
+      "image": "images/000246046.jpg"
+    },
+    {
+      "frame_id": 246077,
+      "host_capture_mono_ns": 10684808272206,
+      "sensor_timestamp_ns": 10684801306000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 17.74,
+      "image": "images/000246077.jpg"
+    },
+    {
+      "frame_id": 246107,
+      "host_capture_mono_ns": 10686057810459,
+      "sensor_timestamp_ns": 10686050832000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 78.76,
+      "image": "images/000246107.jpg"
+    },
+    {
+      "frame_id": 246137,
+      "host_capture_mono_ns": 10687307318989,
+      "sensor_timestamp_ns": 10687300358000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 35.66,
+      "image": "images/000246137.jpg"
+    },
+    {
+      "frame_id": 246167,
+      "host_capture_mono_ns": 10688556838204,
+      "sensor_timestamp_ns": 10688549885000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 35.0,
+      "image": "images/000246167.jpg"
+    },
+    {
+      "frame_id": 246197,
+      "host_capture_mono_ns": 10689806394938,
+      "sensor_timestamp_ns": 10689799411000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 40.97,
+      "image": "images/000246197.jpg"
+    },
+    {
+      "frame_id": 246227,
+      "host_capture_mono_ns": 10691055897598,
+      "sensor_timestamp_ns": 10691048937000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 42.21,
+      "image": "images/000246227.jpg"
+    },
+    {
+      "frame_id": 246257,
+      "host_capture_mono_ns": 10692305377461,
+      "sensor_timestamp_ns": 10692298462000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 37.91,
+      "image": "images/000246257.jpg"
+    },
+    {
+      "frame_id": 246287,
+      "host_capture_mono_ns": 10693554922917,
+      "sensor_timestamp_ns": 10693547988000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 42.05,
+      "image": "images/000246287.jpg"
+    },
+    {
+      "frame_id": 246317,
+      "host_capture_mono_ns": 10694804540558,
+      "sensor_timestamp_ns": 10694797514000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 47.53,
+      "image": "images/000246317.jpg"
+    },
+    {
+      "frame_id": 246347,
+      "host_capture_mono_ns": 10696053946624,
+      "sensor_timestamp_ns": 10696047041000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 46.96,
+      "image": "images/000246347.jpg"
+    },
+    {
+      "frame_id": 246377,
+      "host_capture_mono_ns": 10697303550154,
+      "sensor_timestamp_ns": 10697296567000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 55.59,
+      "image": "images/000246377.jpg"
+    },
+    {
+      "frame_id": 246407,
+      "host_capture_mono_ns": 10698552961664,
+      "sensor_timestamp_ns": 10698546092000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 55.28,
+      "image": "images/000246407.jpg"
+    },
+    {
+      "frame_id": 246437,
+      "host_capture_mono_ns": 10699802543176,
+      "sensor_timestamp_ns": 10699795619000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 55.82,
+      "image": "images/000246437.jpg"
+    },
+    {
+      "frame_id": 246467,
+      "host_capture_mono_ns": 10701052025982,
+      "sensor_timestamp_ns": 10701045144000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 59.31,
+      "image": "images/000246467.jpg"
+    },
+    {
+      "frame_id": 246497,
+      "host_capture_mono_ns": 10702301693050,
+      "sensor_timestamp_ns": 10702294670000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 54.51,
+      "image": "images/000246497.jpg"
+    },
+    {
+      "frame_id": 246527,
+      "host_capture_mono_ns": 10703551129726,
+      "sensor_timestamp_ns": 10703544197000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 60.86,
+      "image": "images/000246527.jpg"
+    },
+    {
+      "frame_id": 246557,
+      "host_capture_mono_ns": 10704800644311,
+      "sensor_timestamp_ns": 10704793723000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 64.81,
+      "image": "images/000246557.jpg"
+    },
+    {
+      "frame_id": 246587,
+      "host_capture_mono_ns": 10706050130080,
+      "sensor_timestamp_ns": 10706043256000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 59.39,
+      "image": "images/000246587.jpg"
+    },
+    {
+      "frame_id": 246617,
+      "host_capture_mono_ns": 10707299748517,
+      "sensor_timestamp_ns": 10707292776000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 62.38,
+      "image": "images/000246617.jpg"
+    },
+    {
+      "frame_id": 246647,
+      "host_capture_mono_ns": 10708549194953,
+      "sensor_timestamp_ns": 10708542302000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 49.45,
+      "image": "images/000246647.jpg"
+    },
+    {
+      "frame_id": 246676,
+      "host_capture_mono_ns": 10709798749834,
+      "sensor_timestamp_ns": 10709791827000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 40.78,
+      "image": "images/000246676.jpg"
+    },
+    {
+      "frame_id": 246706,
+      "host_capture_mono_ns": 10711048296826,
+      "sensor_timestamp_ns": 10711041354000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 65.84,
+      "image": "images/000246706.jpg"
+    },
+    {
+      "frame_id": 246736,
+      "host_capture_mono_ns": 10712297807891,
+      "sensor_timestamp_ns": 10712290881000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 61.57,
+      "image": "images/000246736.jpg"
+    }
+  ],
+  "resolution": 504,
+  "requested_window_seconds": null,
+  "selected_span_seconds": 28.780755,
+  "imu_used": false,
+  "source_sha256": {
+    "000246046.jpg": "d287e2a175b599108d8dcb446ddd678d7fb7b023fdb7dc9720f91724a38b61ac",
+    "000246077.jpg": "37d3b467796a5bdfc68c676db29b1ffe3350d126585d3f86d5c7ce1298babd2a",
+    "000246107.jpg": "a196c24e5eda301ec668a82f381ae3dfc367bf1c7fb9a08f646e57a6e3ea750b",
+    "000246137.jpg": "fca2a61c77cb7d0eeb105f86d191194aafea4814c46797124cbeb60edef6b525",
+    "000246167.jpg": "26be1d965ab3299f459bbb7066a4d63d856a7f73ee82ce292588f83ec0605887",
+    "000246197.jpg": "bbf0d3577a80104e2e7c1c93eaeb6e1e252ea631253e170ad9904bb9885f38ef",
+    "000246227.jpg": "7b1770a07b55c7bab615a82bb1e3d8fa02c3bb8ebc419ab9aa9ca6574b7c1443",
+    "000246257.jpg": "2cb030f854b56685860b3fd2036ad76d10c4111486d8bd7b91e1332467414709",
+    "000246287.jpg": "e2830edf3917a6e10089cfa2e1d243b6f4840a6a33debe429fa16f96c93337f4",
+    "000246317.jpg": "434150edaa9485c37b8924ac29115c7dd296a252d5902e39aea22cab48e8dae3",
+    "000246347.jpg": "d6f77024b673ead1659d889c8e24c1588b84d1929644a61db1ccf8128ee59599",
+    "000246377.jpg": "f8d0d3c1c5f0d74f051b293a22d104fceae62a470bcd3496ed959c419c8cef04",
+    "000246407.jpg": "61079a84b89e4192149408b1c897db3871cdb9a550df8c4a3420ea778823b20d",
+    "000246437.jpg": "b587a7194b40b8775467535d5be19e319d5f3c4cb7bda3737fb2248ebbd95f13",
+    "000246467.jpg": "5b99c675e7ac3a5bc6cd35e0104577faeab904ecf06a30315eba0b3639de4adf",
+    "000246497.jpg": "815cb4cfc263d02635892263a3539798fe5b59dd706aea129b150014beaa924c",
+    "000246527.jpg": "d85de1ce84e459616503f21f74b3f3cbfe9e1c0c228a8ddf5a593ced610943f5",
+    "000246557.jpg": "869016c15053fbfe7333b5493849e28c6b261a5cb50d9ac9c5138960a8ae8dd6",
+    "000246587.jpg": "f11a13b2f88a4721adbc49b9c2b31f09350c5d842982abc23d12821229a43fa6",
+    "000246617.jpg": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+    "000246647.jpg": "c2b8943ef75f91cbc095282de9d9fe23c5c4a3bcaad0361652396d968f2f5278",
+    "000246676.jpg": "8f3f0de05f8525f36ec610d530424014d9e35e9ca5fdadb2967eb2693fe46f79",
+    "000246706.jpg": "04014531f565bf4af81a846ed0658a7f5103cfc2d717841ea4f739bef10c175a",
+    "000246736.jpg": "4c740648f0e7007932c62dac25e35614be226a1fb9fea87827f9cc502bac9e38"
+  },
+  "checkpoint_sha256": "eaf2ae06df55889ad23eb245c82e2dd2a30c0cbf7e3d873a118fa5ed27a3e421",
+  "pose_conditioned": false,
+  "pose_estimation": "camera_decoder",
+  "undistorted": true,
+  "center_principal": false,
+  "scale": "unknown",
+  "units": "arbitrary",
+  "validated": false,
+  "warning": "AI-inferred geometry and camera poses. No measured scale, tracking validation or unseen-room coverage.",
+  "mps_recommended_bytes": 20401094656,
+  "mps_memory_fraction": 0.6,
+  "mps_allocator_limit_bytes": 12240656793,
+  "restored_tied_parameters": {
+    "head.scratch.output_conv2_aux.1.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.1.2.bias": "head.scratch.output_conv2_aux.0.2.bias",
+    "head.scratch.output_conv2_aux.2.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.2.2.bias": "head.scratch.output_conv2_aux.0.2.bias",
+    "head.scratch.output_conv2_aux.3.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.3.2.bias": "head.scratch.output_conv2_aux.0.2.bias"
+  },
+  "model_load_seconds": 0.7876681250054389,
+  "camera_inputs": {
+    "calibration_sha256": "41443a453c6c2f9c7e8876183e73f51ddc0394644709409cbd8c8efbea96f0e9",
+    "undistortion": "OpenCV remap, original K",
+    "center_principal": false,
+    "output_intrinsics": [
+      [
+        793.3775024414062,
+        0.0,
+        299.10552978515625
+      ],
+      [
+        0.0,
+        793.3281860351562,
+        349.7120666503906
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "principal_point_note": "Original principal offset is retained. DA3 cannot encode this offset; this is a diagnostic baseline, not a corrected conditioning input.",
+    "valid_undistorted_fraction": 1.0,
+    "intrinsics_resize": "Official DA3 InputProcessor scales K with the same resize as the pixels",
+    "undistorted_rgb_sha256": "45dd2386abea56a268c53fe8c92cb76e4a150cace1a3467516b86de008e216ff"
+  },
+  "input_shape": [
+    1,
+    24,
+    3,
+    378,
+    504
+  ],
+  "inference_samples_seconds": [
+    7.406436874996871,
+    7.338559916999657
+  ],
+  "inference_seconds": 7.338559916999657,
+  "timing_note": "Model-only calls in order within one process; later calls are warm. Pipeline time includes imports, loading, preprocessing, all repetitions and output writes, excluding interpreter startup.",
+  "shapes": {
+    "depth": [
+      24,
+      378,
+      504
+    ],
+    "confidence": [
+      24,
+      378,
+      504
+    ],
+    "extrinsics": [
+      24,
+      3,
+      4
+    ],
+    "intrinsics": [
+      24,
+      3,
+      3
+    ],
+    "images": [
+      24,
+      378,
+      504,
+      3
+    ]
+  },
+  "predicted_depth_percentiles": [
+    0.8013219237327576,
+    0.9856935441493988,
+    1.1516815733909607
+  ],
+  "exported_depth_percentiles": [
+    0.8013219237327576,
+    0.9856935441493988,
+    1.1516815733909607
+  ],
+  "confidence_percentiles": [
+    4.575541591644288,
+    7.218348503112793,
+    9.73084230422974
+  ],
+  "mps_driver_allocated_bytes_after_inference": 10850369536,
+  "memory": {
+    "sampled_mps_driver_peak_bytes": 10850385920,
+    "sampled_mps_tensor_peak_bytes": 5490374400,
+    "process_peak_rss_bytes": 5276237824,
+    "sample_interval_seconds": 0.01,
+    "samples": 1371,
+    "sampling_error": null,
+    "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+  },
+  "pipeline_seconds": 18.82271658400714
+}

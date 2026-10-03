@@ -1,0 +1,5380 @@
+{
+  "schema": "wallhack.room_completion_comparison.v1",
+  "trials": [
+    {
+      "name": "base-504",
+      "label": "Couch \u00b7 Base",
+      "model": "depth-anything/DA3-BASE",
+      "session": "20261002T213938Z-e3ead809",
+      "indices": [
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "source_trial": "Saved/MappingResearch/large-after-unload-20261003/base-504",
+      "prediction_sha256": "8611840d09f2ddc0c995c0682fe967b4c95b08940cbf6d7793a74d6d253533b0",
+      "semantic_model_sha256": "6ae39addd01de6b1b8bde2cf677d43a5cd733424b8d186de3f95d1c51fee23f9",
+      "units": "arbitrary",
+      "metric_scale_available": false,
+      "live": false,
+      "imu_used": false,
+      "mapping_eligible": false,
+      "floor": {
+        "available": true,
+        "inlier_fraction": 0.8988870173008202,
+        "support_views": 24,
+        "points": 63523,
+        "median_residual_arbitrary": 0.0020484172126287396,
+        "tolerance_arbitrary": 0.024203336238861086,
+        "extent_ratio": 0.40409328001128714,
+        "source": "semantic floor pixels + RANSAC; no IMU gravity",
+        "validated": false,
+        "support_quality": "broader",
+        "reason": "Supported inferred floor patch"
+      },
+      "local_consistency_passed": true,
+      "diagnostics": {
+        "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+        "image_width": 504,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "mutual_ratio_matches": 121,
+            "evaluated": 93,
+            "median_pixels": 1.0574369450492098,
+            "p90_pixels": 1.8700040574217127
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "mutual_ratio_matches": 124,
+            "evaluated": 99,
+            "median_pixels": 2.4443342903580656,
+            "p90_pixels": 3.2468988325878194
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "mutual_ratio_matches": 124,
+            "evaluated": 94,
+            "median_pixels": 2.681336062726405,
+            "p90_pixels": 3.3245086432786386
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "mutual_ratio_matches": 115,
+            "evaluated": 84,
+            "median_pixels": 4.0188446776811135,
+            "p90_pixels": 4.792061238278792
+          },
+          {
+            "pair": [
+              4,
+              5
+            ],
+            "mutual_ratio_matches": 19,
+            "evaluated": 12,
+            "median_pixels": 24.238237939308906,
+            "p90_pixels": 28.425696589447192
+          },
+          {
+            "pair": [
+              5,
+              6
+            ],
+            "mutual_ratio_matches": 16,
+            "evaluated": 16,
+            "median_pixels": 29.79320629054432,
+            "p90_pixels": 34.78790001116747
+          },
+          {
+            "pair": [
+              6,
+              7
+            ],
+            "mutual_ratio_matches": 107,
+            "evaluated": 69,
+            "median_pixels": 2.6685399255796303,
+            "p90_pixels": 4.516629097362413
+          },
+          {
+            "pair": [
+              7,
+              8
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 51,
+            "median_pixels": 0.7691498780923881,
+            "p90_pixels": 1.2421001746525544
+          },
+          {
+            "pair": [
+              8,
+              9
+            ],
+            "mutual_ratio_matches": 92,
+            "evaluated": 65,
+            "median_pixels": 1.5799802509339516,
+            "p90_pixels": 2.7573725705807246
+          },
+          {
+            "pair": [
+              9,
+              10
+            ],
+            "mutual_ratio_matches": 66,
+            "evaluated": 57,
+            "median_pixels": 0.8127094213638629,
+            "p90_pixels": 1.9203458024322482
+          },
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "mutual_ratio_matches": 78,
+            "evaluated": 59,
+            "median_pixels": 3.0593964209638793,
+            "p90_pixels": 3.5077963723693872
+          },
+          {
+            "pair": [
+              11,
+              12
+            ],
+            "mutual_ratio_matches": 78,
+            "evaluated": 57,
+            "median_pixels": 1.3770696228786394,
+            "p90_pixels": 1.847163049317207
+          },
+          {
+            "pair": [
+              12,
+              13
+            ],
+            "mutual_ratio_matches": 102,
+            "evaluated": 62,
+            "median_pixels": 1.2125513282435612,
+            "p90_pixels": 1.9143805769084663
+          },
+          {
+            "pair": [
+              13,
+              14
+            ],
+            "mutual_ratio_matches": 122,
+            "evaluated": 62,
+            "median_pixels": 1.7517710756757903,
+            "p90_pixels": 2.2487203901818624
+          },
+          {
+            "pair": [
+              14,
+              15
+            ],
+            "mutual_ratio_matches": 82,
+            "evaluated": 49,
+            "median_pixels": 3.2726034421957575,
+            "p90_pixels": 4.304835126739748
+          },
+          {
+            "pair": [
+              15,
+              16
+            ],
+            "mutual_ratio_matches": 65,
+            "evaluated": 43,
+            "median_pixels": 1.6209108755586248,
+            "p90_pixels": 2.767092255317744
+          },
+          {
+            "pair": [
+              16,
+              17
+            ],
+            "mutual_ratio_matches": 63,
+            "evaluated": 52,
+            "median_pixels": 1.5180869659068614,
+            "p90_pixels": 2.3802641954613084
+          },
+          {
+            "pair": [
+              17,
+              18
+            ],
+            "mutual_ratio_matches": 68,
+            "evaluated": 56,
+            "median_pixels": 1.199045293979959,
+            "p90_pixels": 2.0865041913286166
+          },
+          {
+            "pair": [
+              18,
+              19
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 71,
+            "median_pixels": 1.1937438686525013,
+            "p90_pixels": 2.315616501830804
+          },
+          {
+            "pair": [
+              19,
+              20
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 71,
+            "median_pixels": 3.4610656825499793,
+            "p90_pixels": 5.13248733775023
+          },
+          {
+            "pair": [
+              20,
+              21
+            ],
+            "mutual_ratio_matches": 96,
+            "evaluated": 72,
+            "median_pixels": 1.7753278459350554,
+            "p90_pixels": 2.7354918977455114
+          },
+          {
+            "pair": [
+              21,
+              22
+            ],
+            "mutual_ratio_matches": 113,
+            "evaluated": 91,
+            "median_pixels": 0.9971569801277268,
+            "p90_pixels": 1.8543410799164988
+          },
+          {
+            "pair": [
+              22,
+              23
+            ],
+            "mutual_ratio_matches": 115,
+            "evaluated": 98,
+            "median_pixels": 1.4138126547755299,
+            "p90_pixels": 1.784584235903719
+          }
+        ],
+        "pairs_with_at_least_8_matches": 23,
+        "median_of_pair_medians_pixels": 1.6209108755586248,
+        "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+      },
+      "floor_cells": [
+        [
+          -10,
+          21
+        ],
+        [
+          -10,
+          22
+        ],
+        [
+          -10,
+          23
+        ],
+        [
+          -10,
+          25
+        ],
+        [
+          -10,
+          26
+        ],
+        [
+          -9,
+          18
+        ],
+        [
+          -9,
+          19
+        ],
+        [
+          -9,
+          20
+        ],
+        [
+          -9,
+          21
+        ],
+        [
+          -9,
+          22
+        ],
+        [
+          -9,
+          23
+        ],
+        [
+          -9,
+          24
+        ],
+        [
+          -8,
+          18
+        ],
+        [
+          -8,
+          19
+        ],
+        [
+          -8,
+          20
+        ],
+        [
+          -8,
+          21
+        ],
+        [
+          -8,
+          22
+        ],
+        [
+          -8,
+          23
+        ],
+        [
+          -8,
+          24
+        ],
+        [
+          -7,
+          18
+        ],
+        [
+          -7,
+          19
+        ],
+        [
+          -7,
+          20
+        ],
+        [
+          -7,
+          21
+        ],
+        [
+          -7,
+          22
+        ],
+        [
+          -7,
+          23
+        ],
+        [
+          -6,
+          18
+        ],
+        [
+          -6,
+          19
+        ],
+        [
+          -6,
+          20
+        ],
+        [
+          -6,
+          21
+        ],
+        [
+          -6,
+          22
+        ],
+        [
+          -6,
+          23
+        ],
+        [
+          -5,
+          17
+        ],
+        [
+          -5,
+          18
+        ],
+        [
+          -5,
+          19
+        ],
+        [
+          -5,
+          20
+        ],
+        [
+          -5,
+          21
+        ],
+        [
+          -5,
+          22
+        ],
+        [
+          -5,
+          23
+        ],
+        [
+          -4,
+          15
+        ],
+        [
+          -4,
+          16
+        ],
+        [
+          -4,
+          17
+        ],
+        [
+          -4,
+          18
+        ],
+        [
+          -4,
+          19
+        ],
+        [
+          -4,
+          20
+        ],
+        [
+          -4,
+          21
+        ],
+        [
+          -4,
+          22
+        ],
+        [
+          -3,
+          15
+        ],
+        [
+          -3,
+          16
+        ],
+        [
+          -3,
+          17
+        ],
+        [
+          -3,
+          18
+        ],
+        [
+          -3,
+          19
+        ],
+        [
+          -3,
+          20
+        ],
+        [
+          -3,
+          21
+        ],
+        [
+          -2,
+          15
+        ],
+        [
+          -2,
+          16
+        ],
+        [
+          -2,
+          17
+        ],
+        [
+          -2,
+          18
+        ],
+        [
+          -2,
+          19
+        ],
+        [
+          -2,
+          20
+        ],
+        [
+          -2,
+          21
+        ],
+        [
+          -2,
+          22
+        ],
+        [
+          -2,
+          23
+        ],
+        [
+          -2,
+          24
+        ],
+        [
+          -2,
+          25
+        ],
+        [
+          -1,
+          15
+        ],
+        [
+          -1,
+          16
+        ],
+        [
+          -1,
+          17
+        ],
+        [
+          -1,
+          18
+        ],
+        [
+          -1,
+          19
+        ],
+        [
+          -1,
+          20
+        ],
+        [
+          -1,
+          21
+        ],
+        [
+          -1,
+          22
+        ],
+        [
+          -1,
+          23
+        ],
+        [
+          -1,
+          24
+        ],
+        [
+          -1,
+          25
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          20
+        ],
+        [
+          0,
+          21
+        ],
+        [
+          0,
+          22
+        ],
+        [
+          0,
+          23
+        ],
+        [
+          0,
+          24
+        ],
+        [
+          0,
+          25
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          1,
+          23
+        ],
+        [
+          1,
+          24
+        ],
+        [
+          1,
+          25
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          2,
+          16
+        ],
+        [
+          2,
+          17
+        ],
+        [
+          2,
+          18
+        ],
+        [
+          2,
+          19
+        ],
+        [
+          2,
+          20
+        ],
+        [
+          2,
+          21
+        ],
+        [
+          2,
+          22
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          3,
+          15
+        ],
+        [
+          3,
+          16
+        ],
+        [
+          3,
+          17
+        ],
+        [
+          3,
+          18
+        ],
+        [
+          3,
+          19
+        ],
+        [
+          3,
+          20
+        ],
+        [
+          3,
+          21
+        ],
+        [
+          3,
+          22
+        ],
+        [
+          3,
+          23
+        ],
+        [
+          3,
+          24
+        ],
+        [
+          3,
+          25
+        ],
+        [
+          4,
+          15
+        ],
+        [
+          4,
+          16
+        ],
+        [
+          4,
+          17
+        ],
+        [
+          4,
+          18
+        ],
+        [
+          4,
+          19
+        ],
+        [
+          4,
+          20
+        ],
+        [
+          4,
+          21
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          4,
+          23
+        ],
+        [
+          4,
+          24
+        ],
+        [
+          4,
+          25
+        ],
+        [
+          5,
+          15
+        ],
+        [
+          5,
+          16
+        ],
+        [
+          5,
+          17
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          5,
+          19
+        ],
+        [
+          5,
+          20
+        ],
+        [
+          5,
+          21
+        ],
+        [
+          5,
+          22
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          5,
+          24
+        ],
+        [
+          5,
+          25
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          6,
+          16
+        ],
+        [
+          6,
+          17
+        ],
+        [
+          6,
+          18
+        ],
+        [
+          6,
+          19
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          6,
+          21
+        ],
+        [
+          6,
+          22
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          6,
+          24
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          7,
+          16
+        ],
+        [
+          7,
+          17
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          19
+        ],
+        [
+          7,
+          20
+        ],
+        [
+          7,
+          21
+        ],
+        [
+          7,
+          22
+        ],
+        [
+          7,
+          23
+        ],
+        [
+          7,
+          24
+        ],
+        [
+          7,
+          25
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          8,
+          16
+        ],
+        [
+          8,
+          17
+        ],
+        [
+          8,
+          18
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          20
+        ],
+        [
+          8,
+          21
+        ],
+        [
+          8,
+          22
+        ],
+        [
+          8,
+          23
+        ],
+        [
+          8,
+          24
+        ],
+        [
+          8,
+          25
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          9,
+          16
+        ],
+        [
+          9,
+          17
+        ],
+        [
+          9,
+          18
+        ],
+        [
+          9,
+          19
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          9,
+          21
+        ],
+        [
+          9,
+          22
+        ],
+        [
+          9,
+          23
+        ],
+        [
+          9,
+          24
+        ],
+        [
+          9,
+          25
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          16
+        ],
+        [
+          10,
+          17
+        ],
+        [
+          10,
+          18
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          21
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          10,
+          23
+        ],
+        [
+          10,
+          25
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          11,
+          18
+        ],
+        [
+          11,
+          19
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          11,
+          22
+        ],
+        [
+          11,
+          23
+        ],
+        [
+          11,
+          24
+        ],
+        [
+          11,
+          25
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          12,
+          16
+        ],
+        [
+          12,
+          17
+        ],
+        [
+          12,
+          18
+        ],
+        [
+          12,
+          19
+        ],
+        [
+          12,
+          20
+        ],
+        [
+          12,
+          21
+        ],
+        [
+          12,
+          22
+        ],
+        [
+          12,
+          23
+        ],
+        [
+          12,
+          25
+        ],
+        [
+          13,
+          15
+        ],
+        [
+          13,
+          16
+        ],
+        [
+          13,
+          17
+        ],
+        [
+          13,
+          18
+        ],
+        [
+          13,
+          19
+        ],
+        [
+          13,
+          20
+        ],
+        [
+          13,
+          21
+        ],
+        [
+          13,
+          22
+        ],
+        [
+          13,
+          23
+        ],
+        [
+          13,
+          25
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          16
+        ],
+        [
+          14,
+          17
+        ],
+        [
+          14,
+          18
+        ],
+        [
+          14,
+          19
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          14,
+          21
+        ],
+        [
+          14,
+          22
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          15,
+          17
+        ],
+        [
+          15,
+          19
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          16,
+          15
+        ],
+        [
+          16,
+          16
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          17,
+          15
+        ],
+        [
+          17,
+          16
+        ],
+        [
+          17,
+          17
+        ],
+        [
+          17,
+          21
+        ],
+        [
+          18,
+          15
+        ],
+        [
+          18,
+          16
+        ],
+        [
+          18,
+          17
+        ],
+        [
+          18,
+          20
+        ],
+        [
+          19,
+          15
+        ],
+        [
+          19,
+          20
+        ]
+      ],
+      "filled_cells": [
+        [
+          -10,
+          24
+        ],
+        [
+          -4,
+          23
+        ],
+        [
+          15,
+          18
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          18
+        ],
+        [
+          16,
+          19
+        ],
+        [
+          17,
+          18
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          18,
+          18
+        ],
+        [
+          18,
+          19
+        ],
+        [
+          19,
+          16
+        ],
+        [
+          19,
+          17
+        ],
+        [
+          19,
+          18
+        ],
+        [
+          19,
+          19
+        ]
+      ],
+      "walls": [
+        {
+          "id": "wall-0",
+          "a": [
+            0.07523776955119557,
+            0.85621777815428
+          ],
+          "b": [
+            0.4839585792914519,
+            0.881510293868947
+          ],
+          "height": 0.2824758729202904,
+          "fit_views": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22
+          ],
+          "fit_points": 2547,
+          "heldout_points_within_tolerance": 2919,
+          "heldout_median_residual": 0.0074654336346659245,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-1",
+          "a": [
+            -0.047496438996046136,
+            0.9896807420689039
+          ],
+          "b": [
+            0.3608485990241096,
+            0.9606457614768902
+          ],
+          "height": 0.3899295610562054,
+          "fit_views": [
+            0,
+            2,
+            4,
+            18,
+            20,
+            22
+          ],
+          "fit_points": 1659,
+          "heldout_points_within_tolerance": 2000,
+          "heldout_median_residual": 0.002074800643475154,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-2",
+          "a": [
+            0.02241058638458604,
+            0.7113503526225198
+          ],
+          "b": [
+            0.5879631950158941,
+            0.6832449943872977
+          ],
+          "height": 0.17343074060131133,
+          "fit_views": [
+            2,
+            4,
+            6,
+            10,
+            12,
+            20,
+            22
+          ],
+          "fit_points": 719,
+          "heldout_points_within_tolerance": 1159,
+          "heldout_median_residual": 0.004861625651655058,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-3",
+          "a": [
+            -0.02779900831282922,
+            0.9241823558006922
+          ],
+          "b": [
+            0.4153480819986459,
+            0.905721358963355
+          ],
+          "height": 0.301765394316797,
+          "fit_views": [
+            2,
+            4,
+            8,
+            10,
+            12,
+            14
+          ],
+          "fit_points": 465,
+          "heldout_points_within_tolerance": 749,
+          "heldout_median_residual": 0.0098069470163537,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        }
+      ],
+      "objects": [
+        {
+          "minimum": [
+            -0.20330802440643314,
+            0.6776934146881104
+          ],
+          "maximum": [
+            0.6099240732192994,
+            0.9826554512977601
+          ],
+          "cells": 144,
+          "label": "Object region",
+          "state": "view_supported_estimate"
+        },
+        {
+          "minimum": [
+            -0.20330802440643314,
+            0.8810014390945435
+          ],
+          "maximum": [
+            -0.10165401220321657,
+            0.9487707805633546
+          ],
+          "cells": 6,
+          "label": "Object region",
+          "state": "view_supported_estimate"
+        }
+      ],
+      "envelope": {
+        "corners": [
+          [
+            0.5013465881347656,
+            0.9687431454658508
+          ],
+          [
+            -0.18692807853221893,
+            0.9687104821205139
+          ],
+          [
+            -0.18690817058086395,
+            0.54898601770401
+          ],
+          [
+            0.5013664960861206,
+            0.5490186810493469
+          ]
+        ],
+        "height": 0.29434497392833303,
+        "state": "unsupported_envelope",
+        "measured_boundary": false,
+        "assumption": "Rectangle around the middle 96% of visible points. Unseen room extent and wall height are unconstrained; this can cut through the real room."
+      },
+      "camera_path": [
+        [
+          5.25898486617787e-18,
+          2.6661830671264863e-17,
+          0.6202145565071927
+        ],
+        [
+          -0.029108299606462305,
+          -0.00567967858800198,
+          0.6242153770033376
+        ],
+        [
+          -0.010233980114566067,
+          -0.008782161758645756,
+          0.6238441434229541
+        ],
+        [
+          0.0037539395409269412,
+          -0.008180507618455547,
+          0.618960566607517
+        ],
+        [
+          0.04020127009952903,
+          -0.013592732087015722,
+          0.6187916871691459
+        ],
+        [
+          0.035301447741666284,
+          0.0019176260703344483,
+          0.589444939085475
+        ],
+        [
+          0.14313548874986093,
+          -0.05373104464397365,
+          0.6230162667461931
+        ],
+        [
+          0.19622626655095607,
+          -0.04904349676475139,
+          0.6237329505620611
+        ],
+        [
+          0.2385555373132924,
+          -0.054220486570636585,
+          0.6321521007088481
+        ],
+        [
+          0.28333461378751945,
+          -0.05787026921037668,
+          0.6218673113986206
+        ],
+        [
+          0.3558112915671864,
+          -0.059803094171807535,
+          0.6255287722546161
+        ],
+        [
+          0.40058904458096356,
+          -0.06051930011248427,
+          0.6237670999750365
+        ],
+        [
+          0.4400257519138017,
+          -0.05539888433941776,
+          0.61524637351646
+        ],
+        [
+          0.4563929727890469,
+          -0.0564729376187344,
+          0.6209542582886437
+        ],
+        [
+          0.4259737479841496,
+          -0.05298431227988965,
+          0.6223619465937908
+        ],
+        [
+          0.3696769153155352,
+          -0.05798494077788897,
+          0.6282116539869113
+        ],
+        [
+          0.30392456557076447,
+          -0.05318227269978928,
+          0.6256045461860955
+        ],
+        [
+          0.2369673194564502,
+          -0.05830706715346038,
+          0.6336340029195123
+        ],
+        [
+          0.19184580660041392,
+          -0.05901946701048468,
+          0.6290538545808246
+        ],
+        [
+          0.14449206257549488,
+          -0.06415807803727319,
+          0.6372144618817996
+        ],
+        [
+          0.07739037870020674,
+          -0.060316458779074864,
+          0.6363989871589213
+        ],
+        [
+          0.022878898161902125,
+          -0.05525002229566012,
+          0.6374176837510573
+        ],
+        [
+          0.010195024263389982,
+          -0.05923192942045085,
+          0.6392407219224872
+        ],
+        [
+          0.02637763425777056,
+          -0.05669941653654827,
+          0.6310158379434387
+        ]
+      ],
+      "floor_holdout": {
+        "fit_views": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20,
+          22
+        ],
+        "check_views": [
+          1,
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17,
+          19,
+          21,
+          23
+        ],
+        "median_fraction_of_depth": 0.0027623491631659745,
+        "fraction_within_2_5_percent_depth": 0.8542168674698796,
+        "note": "Views withheld from plane fitting only; shared DA3 inference and semantics, no ground truth."
+      },
+      "completion_holdout": {
+        "added_cells": 23,
+        "supported_by_other_views": 7,
+        "overlapping_other_view_object_or_wall": 5,
+        "unsupported_by_other_views": 16,
+        "note": "A projected object can stand above floor. These are ambiguity flags, not physical accuracy or collision labels."
+      },
+      "selected_span_seconds": 28.989006,
+      "inference_seconds": 2.3719970829988597,
+      "cell_size": 0.03388467073440552,
+      "warning": "Exploratory layout. All depth and positions are estimates. Completion never establishes free space, unseen people, or measured room dimensions.",
+      "map_from_da3": {
+        "rotation": [
+          [
+            0.9999255707991412,
+            -0.011607680217834553,
+            -0.003756943168586364
+          ],
+          [
+            -0.0032524902856998377,
+            -0.5504023558592965,
+            0.8348932075250567
+          ],
+          [
+            -0.011759003739812464,
+            -0.8348188476696585,
+            -0.5503991437189473
+          ]
+        ],
+        "origin": [
+          -0.13585133834171798,
+          0.4921182205072112,
+          0.3881767056225796
+        ]
+      },
+      "state": "provisional_structure",
+      "postprocess_seconds": 0.932138208008837,
+      "packet_bytes": 4858,
+      "packet_payload_seconds": {
+        "9600": 4.048333333333333,
+        "57600": 0.6747222222222222,
+        "115200": 0.3373611111111111,
+        "1000000": 0.038864
+      }
+    },
+    {
+      "name": "large-504",
+      "label": "Couch \u00b7 Large",
+      "model": "depth-anything/DA3-LARGE",
+      "session": "20261002T213938Z-e3ead809",
+      "indices": [
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "source_trial": "Saved/MappingResearch/large-after-unload-20261003/large-504",
+      "prediction_sha256": "a7e0440fb0f7d0d8308ec87a19a07cbec9f21f1dffeb5dd1b38f133773ea5adf",
+      "semantic_model_sha256": "6ae39addd01de6b1b8bde2cf677d43a5cd733424b8d186de3f95d1c51fee23f9",
+      "units": "arbitrary",
+      "metric_scale_available": false,
+      "live": false,
+      "imu_used": false,
+      "mapping_eligible": false,
+      "floor": {
+        "available": true,
+        "inlier_fraction": 0.8874756912622661,
+        "support_views": 24,
+        "points": 44737,
+        "median_residual_arbitrary": 0.002663879907862432,
+        "tolerance_arbitrary": 0.023930816352367403,
+        "extent_ratio": 0.22157477298949765,
+        "source": "semantic floor pixels + RANSAC; no IMU gravity",
+        "validated": false,
+        "support_quality": "broader",
+        "reason": "Supported inferred floor patch"
+      },
+      "local_consistency_passed": true,
+      "diagnostics": {
+        "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+        "image_width": 504,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "mutual_ratio_matches": 121,
+            "evaluated": 104,
+            "median_pixels": 0.8565014346641369,
+            "p90_pixels": 1.531284856879101
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "mutual_ratio_matches": 124,
+            "evaluated": 108,
+            "median_pixels": 1.7095290904461473,
+            "p90_pixels": 2.255144570783271
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "mutual_ratio_matches": 124,
+            "evaluated": 109,
+            "median_pixels": 0.454730531796933,
+            "p90_pixels": 0.9320966280410764
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "mutual_ratio_matches": 115,
+            "evaluated": 97,
+            "median_pixels": 1.0785103836692085,
+            "p90_pixels": 1.7467256113019312
+          },
+          {
+            "pair": [
+              4,
+              5
+            ],
+            "mutual_ratio_matches": 19,
+            "evaluated": 18,
+            "median_pixels": 7.571275147486052,
+            "p90_pixels": 8.08188263826206
+          },
+          {
+            "pair": [
+              5,
+              6
+            ],
+            "mutual_ratio_matches": 16,
+            "evaluated": 16,
+            "median_pixels": 5.1100059544136895,
+            "p90_pixels": 6.673665643754256
+          },
+          {
+            "pair": [
+              6,
+              7
+            ],
+            "mutual_ratio_matches": 107,
+            "evaluated": 97,
+            "median_pixels": 0.8508429533292073,
+            "p90_pixels": 1.605908357713694
+          },
+          {
+            "pair": [
+              7,
+              8
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 76,
+            "median_pixels": 0.8610216012491498,
+            "p90_pixels": 1.5984355525414013
+          },
+          {
+            "pair": [
+              8,
+              9
+            ],
+            "mutual_ratio_matches": 92,
+            "evaluated": 70,
+            "median_pixels": 1.312309304352185,
+            "p90_pixels": 2.1184644473161236
+          },
+          {
+            "pair": [
+              9,
+              10
+            ],
+            "mutual_ratio_matches": 66,
+            "evaluated": 58,
+            "median_pixels": 1.449039746608169,
+            "p90_pixels": 2.767340734958142
+          },
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "mutual_ratio_matches": 78,
+            "evaluated": 73,
+            "median_pixels": 0.7881586282968379,
+            "p90_pixels": 1.474646147996439
+          },
+          {
+            "pair": [
+              11,
+              12
+            ],
+            "mutual_ratio_matches": 78,
+            "evaluated": 70,
+            "median_pixels": 0.65493024728555,
+            "p90_pixels": 1.273280191768086
+          },
+          {
+            "pair": [
+              12,
+              13
+            ],
+            "mutual_ratio_matches": 102,
+            "evaluated": 76,
+            "median_pixels": 1.5987231352834042,
+            "p90_pixels": 2.9622356231750446
+          },
+          {
+            "pair": [
+              13,
+              14
+            ],
+            "mutual_ratio_matches": 122,
+            "evaluated": 87,
+            "median_pixels": 1.9005023401923193,
+            "p90_pixels": 2.918327369284929
+          },
+          {
+            "pair": [
+              14,
+              15
+            ],
+            "mutual_ratio_matches": 82,
+            "evaluated": 65,
+            "median_pixels": 0.7709885661090919,
+            "p90_pixels": 2.2308225711707
+          },
+          {
+            "pair": [
+              15,
+              16
+            ],
+            "mutual_ratio_matches": 65,
+            "evaluated": 57,
+            "median_pixels": 0.7055185494844366,
+            "p90_pixels": 1.6129962266634565
+          },
+          {
+            "pair": [
+              16,
+              17
+            ],
+            "mutual_ratio_matches": 63,
+            "evaluated": 55,
+            "median_pixels": 0.608829487436944,
+            "p90_pixels": 1.2714856221726174
+          },
+          {
+            "pair": [
+              17,
+              18
+            ],
+            "mutual_ratio_matches": 68,
+            "evaluated": 59,
+            "median_pixels": 0.7751173419330549,
+            "p90_pixels": 1.4451456511132625
+          },
+          {
+            "pair": [
+              18,
+              19
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 75,
+            "median_pixels": 0.7200137841941304,
+            "p90_pixels": 1.733234821515366
+          },
+          {
+            "pair": [
+              19,
+              20
+            ],
+            "mutual_ratio_matches": 90,
+            "evaluated": 74,
+            "median_pixels": 0.6951765518332471,
+            "p90_pixels": 2.050953085478142
+          },
+          {
+            "pair": [
+              20,
+              21
+            ],
+            "mutual_ratio_matches": 96,
+            "evaluated": 78,
+            "median_pixels": 1.9078851031771538,
+            "p90_pixels": 2.8201665657422055
+          },
+          {
+            "pair": [
+              21,
+              22
+            ],
+            "mutual_ratio_matches": 113,
+            "evaluated": 101,
+            "median_pixels": 0.8413112566316976,
+            "p90_pixels": 1.7185815804794287
+          },
+          {
+            "pair": [
+              22,
+              23
+            ],
+            "mutual_ratio_matches": 115,
+            "evaluated": 95,
+            "median_pixels": 1.9197339080858908,
+            "p90_pixels": 2.3900020810820166
+          }
+        ],
+        "pairs_with_at_least_8_matches": 23,
+        "median_of_pair_medians_pixels": 0.8565014346641369,
+        "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+      },
+      "floor_cells": [
+        [
+          -10,
+          18
+        ],
+        [
+          -10,
+          19
+        ],
+        [
+          -10,
+          20
+        ],
+        [
+          -9,
+          16
+        ],
+        [
+          -9,
+          17
+        ],
+        [
+          -9,
+          18
+        ],
+        [
+          -9,
+          19
+        ],
+        [
+          -9,
+          20
+        ],
+        [
+          -8,
+          17
+        ],
+        [
+          -8,
+          18
+        ],
+        [
+          -8,
+          19
+        ],
+        [
+          -7,
+          16
+        ],
+        [
+          -7,
+          17
+        ],
+        [
+          -7,
+          18
+        ],
+        [
+          -7,
+          19
+        ],
+        [
+          -7,
+          20
+        ],
+        [
+          -6,
+          16
+        ],
+        [
+          -6,
+          17
+        ],
+        [
+          -6,
+          18
+        ],
+        [
+          -6,
+          19
+        ],
+        [
+          -6,
+          20
+        ],
+        [
+          -5,
+          15
+        ],
+        [
+          -5,
+          16
+        ],
+        [
+          -5,
+          17
+        ],
+        [
+          -5,
+          18
+        ],
+        [
+          -5,
+          19
+        ],
+        [
+          -5,
+          20
+        ],
+        [
+          -4,
+          14
+        ],
+        [
+          -4,
+          15
+        ],
+        [
+          -4,
+          16
+        ],
+        [
+          -4,
+          17
+        ],
+        [
+          -4,
+          18
+        ],
+        [
+          -4,
+          19
+        ],
+        [
+          -4,
+          20
+        ],
+        [
+          -4,
+          21
+        ],
+        [
+          -3,
+          14
+        ],
+        [
+          -3,
+          15
+        ],
+        [
+          -3,
+          16
+        ],
+        [
+          -3,
+          17
+        ],
+        [
+          -3,
+          18
+        ],
+        [
+          -3,
+          19
+        ],
+        [
+          -2,
+          14
+        ],
+        [
+          -2,
+          15
+        ],
+        [
+          -2,
+          16
+        ],
+        [
+          -2,
+          17
+        ],
+        [
+          -2,
+          18
+        ],
+        [
+          -2,
+          19
+        ],
+        [
+          -2,
+          20
+        ],
+        [
+          -1,
+          14
+        ],
+        [
+          -1,
+          15
+        ],
+        [
+          -1,
+          16
+        ],
+        [
+          -1,
+          17
+        ],
+        [
+          -1,
+          18
+        ],
+        [
+          -1,
+          19
+        ],
+        [
+          -1,
+          20
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          0,
+          18
+        ],
+        [
+          0,
+          19
+        ],
+        [
+          0,
+          20
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          2,
+          14
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          2,
+          16
+        ],
+        [
+          2,
+          17
+        ],
+        [
+          2,
+          18
+        ],
+        [
+          2,
+          19
+        ],
+        [
+          2,
+          20
+        ],
+        [
+          3,
+          14
+        ],
+        [
+          3,
+          15
+        ],
+        [
+          3,
+          16
+        ],
+        [
+          3,
+          17
+        ],
+        [
+          3,
+          18
+        ],
+        [
+          3,
+          19
+        ],
+        [
+          3,
+          20
+        ],
+        [
+          4,
+          14
+        ],
+        [
+          4,
+          15
+        ],
+        [
+          4,
+          16
+        ],
+        [
+          4,
+          17
+        ],
+        [
+          4,
+          18
+        ],
+        [
+          4,
+          19
+        ],
+        [
+          4,
+          20
+        ],
+        [
+          5,
+          14
+        ],
+        [
+          5,
+          15
+        ],
+        [
+          5,
+          16
+        ],
+        [
+          5,
+          17
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          5,
+          19
+        ],
+        [
+          5,
+          20
+        ],
+        [
+          6,
+          14
+        ],
+        [
+          6,
+          15
+        ],
+        [
+          6,
+          16
+        ],
+        [
+          6,
+          17
+        ],
+        [
+          6,
+          18
+        ],
+        [
+          6,
+          19
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          14
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          7,
+          16
+        ],
+        [
+          7,
+          17
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          19
+        ],
+        [
+          7,
+          20
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          15
+        ],
+        [
+          8,
+          16
+        ],
+        [
+          8,
+          17
+        ],
+        [
+          8,
+          18
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          20
+        ],
+        [
+          8,
+          21
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          9,
+          15
+        ],
+        [
+          9,
+          16
+        ],
+        [
+          9,
+          17
+        ],
+        [
+          9,
+          18
+        ],
+        [
+          9,
+          19
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          9,
+          21
+        ],
+        [
+          10,
+          14
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          16
+        ],
+        [
+          10,
+          17
+        ],
+        [
+          10,
+          18
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          21
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          11,
+          14
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          11,
+          17
+        ],
+        [
+          11,
+          18
+        ],
+        [
+          11,
+          19
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          11,
+          22
+        ],
+        [
+          12,
+          14
+        ],
+        [
+          12,
+          15
+        ],
+        [
+          12,
+          16
+        ],
+        [
+          12,
+          17
+        ],
+        [
+          12,
+          18
+        ],
+        [
+          12,
+          19
+        ],
+        [
+          13,
+          14
+        ],
+        [
+          13,
+          15
+        ],
+        [
+          13,
+          16
+        ],
+        [
+          13,
+          17
+        ],
+        [
+          13,
+          18
+        ],
+        [
+          13,
+          19
+        ],
+        [
+          14,
+          14
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          16
+        ],
+        [
+          14,
+          17
+        ],
+        [
+          14,
+          18
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          15,
+          14
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          15,
+          17
+        ],
+        [
+          15,
+          18
+        ],
+        [
+          15,
+          19
+        ],
+        [
+          16,
+          13
+        ],
+        [
+          16,
+          14
+        ],
+        [
+          16,
+          15
+        ],
+        [
+          16,
+          16
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          18
+        ],
+        [
+          16,
+          19
+        ],
+        [
+          17,
+          13
+        ],
+        [
+          17,
+          14
+        ],
+        [
+          17,
+          15
+        ],
+        [
+          17,
+          16
+        ],
+        [
+          17,
+          17
+        ],
+        [
+          17,
+          18
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          18,
+          13
+        ],
+        [
+          18,
+          14
+        ],
+        [
+          18,
+          15
+        ],
+        [
+          18,
+          16
+        ],
+        [
+          18,
+          17
+        ],
+        [
+          18,
+          18
+        ],
+        [
+          18,
+          19
+        ],
+        [
+          18,
+          20
+        ],
+        [
+          19,
+          13
+        ],
+        [
+          19,
+          14
+        ],
+        [
+          19,
+          15
+        ],
+        [
+          19,
+          16
+        ],
+        [
+          19,
+          17
+        ],
+        [
+          19,
+          18
+        ],
+        [
+          19,
+          19
+        ],
+        [
+          19,
+          20
+        ],
+        [
+          20,
+          14
+        ],
+        [
+          20,
+          15
+        ],
+        [
+          20,
+          16
+        ],
+        [
+          20,
+          17
+        ],
+        [
+          20,
+          18
+        ],
+        [
+          21,
+          14
+        ],
+        [
+          21,
+          15
+        ],
+        [
+          21,
+          16
+        ],
+        [
+          21,
+          17
+        ],
+        [
+          21,
+          18
+        ],
+        [
+          22,
+          17
+        ],
+        [
+          22,
+          18
+        ]
+      ],
+      "filled_cells": [
+        [
+          -8,
+          16
+        ],
+        [
+          -8,
+          20
+        ]
+      ],
+      "walls": [
+        {
+          "id": "wall-0",
+          "a": [
+            0.6022753314485678,
+            0.8689187502424229
+          ],
+          "b": [
+            0.09843220262057778,
+            0.8221796301862295
+          ],
+          "height": 0.27367177962873207,
+          "fit_views": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22
+          ],
+          "fit_points": 3462,
+          "heldout_points_within_tolerance": 3722,
+          "heldout_median_residual": 0.00819555562958799,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-1",
+          "a": [
+            -0.13139630895515295,
+            1.0018987778245756
+          ],
+          "b": [
+            0.44642135594255683,
+            0.9806225480581265
+          ],
+          "height": 0.38969728447954166,
+          "fit_views": [
+            0,
+            2,
+            18,
+            20,
+            22
+          ],
+          "fit_points": 1063,
+          "heldout_points_within_tolerance": 830,
+          "heldout_median_residual": 0.003753091388378045,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-2",
+          "a": [
+            0.7078235018572117,
+            0.6383642664362505
+          ],
+          "b": [
+            0.026779887585422546,
+            0.6634916639535094
+          ],
+          "height": 0.2150333737732901,
+          "fit_views": [
+            2,
+            4,
+            10,
+            12,
+            14,
+            20,
+            22
+          ],
+          "fit_points": 773,
+          "heldout_points_within_tolerance": 1200,
+          "heldout_median_residual": 0.00897158557543834,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-3",
+          "a": [
+            0.1773297743841196,
+            0.9147289704258456
+          ],
+          "b": [
+            0.5366263577114695,
+            0.8199654796098456
+          ],
+          "height": 0.29350327311163,
+          "fit_views": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            18,
+            22
+          ],
+          "fit_points": 673,
+          "heldout_points_within_tolerance": 1946,
+          "heldout_median_residual": 0.013024872812712682,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        }
+      ],
+      "objects": [
+        {
+          "minimum": [
+            -0.23452200025320058,
+            0.6030565720796586
+          ],
+          "maximum": [
+            0.6700628578662873,
+            0.9380880010128023
+          ],
+          "cells": 195,
+          "label": "Object region",
+          "state": "view_supported_estimate"
+        }
+      ],
+      "envelope": {
+        "corners": [
+          [
+            -0.18237334489822388,
+            0.9129154086112976
+          ],
+          [
+            -0.18240106105804443,
+            0.49838098883628845
+          ],
+          [
+            0.6277084350585938,
+            0.4983268082141876
+          ],
+          [
+            0.6277361512184143,
+            0.9128612875938416
+          ]
+        ],
+        "height": 0.2871697962284088,
+        "state": "unsupported_envelope",
+        "measured_boundary": false,
+        "assumption": "Rectangle around the middle 96% of visible points. Unseen room extent and wall height are unconstrained; this can cut through the real room."
+      },
+      "camera_path": [
+        [
+          3.7444577118593074e-17,
+          5.0990689009883313e-17,
+          0.6509841135172834
+        ],
+        [
+          -0.02863902632498807,
+          -0.004640087398265871,
+          0.6543019064460117
+        ],
+        [
+          -0.018615277632104386,
+          -0.007135680162048923,
+          0.6559291710584298
+        ],
+        [
+          -0.006276026597671391,
+          -0.010895056511866789,
+          0.6512226707001821
+        ],
+        [
+          0.042186402589360135,
+          -0.009401463559227234,
+          0.6474015788798092
+        ],
+        [
+          0.0752406040594904,
+          0.00260293252218497,
+          0.6441593022100688
+        ],
+        [
+          0.1457160747199513,
+          -0.04287420706711457,
+          0.6561729033037159
+        ],
+        [
+          0.2023985060015749,
+          -0.05510907892914293,
+          0.6650517540208142
+        ],
+        [
+          0.2443607741728239,
+          -0.06066724191642244,
+          0.6785387220907038
+        ],
+        [
+          0.28780561649369335,
+          -0.05447373464546522,
+          0.6573512543027163
+        ],
+        [
+          0.3683149760995783,
+          -0.06104464144874454,
+          0.6635276576727778
+        ],
+        [
+          0.4169243054910956,
+          -0.0581916041522022,
+          0.6569298367191758
+        ],
+        [
+          0.45605156622434956,
+          -0.05899983240836737,
+          0.6519565848245267
+        ],
+        [
+          0.4695327392403212,
+          -0.05868947581011387,
+          0.657636808108109
+        ],
+        [
+          0.443275587241324,
+          -0.05598792932008653,
+          0.6606675856702393
+        ],
+        [
+          0.3782213178488674,
+          -0.0543548822559369,
+          0.6656116020840657
+        ],
+        [
+          0.30419019537376457,
+          -0.05436147704830434,
+          0.6641525543296467
+        ],
+        [
+          0.2429748517600845,
+          -0.06249045109550946,
+          0.6752326198547203
+        ],
+        [
+          0.19487302425432096,
+          -0.06257274686572549,
+          0.6690887004086542
+        ],
+        [
+          0.14558590238353,
+          -0.0677765995764796,
+          0.6747284442023349
+        ],
+        [
+          0.07438527158704554,
+          -0.062299952270571696,
+          0.6776175076386267
+        ],
+        [
+          0.02509425004562452,
+          -0.06442445939906516,
+          0.6729701189430447
+        ],
+        [
+          0.01318226757537785,
+          -0.06399088765566618,
+          0.6751779797513119
+        ],
+        [
+          0.024929310282383984,
+          -0.06432583752564594,
+          0.6671966999393498
+        ]
+      ],
+      "floor_holdout": {
+        "fit_views": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20,
+          22
+        ],
+        "check_views": [
+          1,
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17,
+          19,
+          21,
+          23
+        ],
+        "median_fraction_of_depth": 0.003743024457109135,
+        "fraction_within_2_5_percent_depth": 0.8743614237654193,
+        "note": "Views withheld from plane fitting only; shared DA3 inference and semantics, no ground truth."
+      },
+      "completion_holdout": {
+        "added_cells": 2,
+        "supported_by_other_views": 1,
+        "overlapping_other_view_object_or_wall": 0,
+        "unsupported_by_other_views": 1,
+        "note": "A projected object can stand above floor. These are ambiguity flags, not physical accuracy or collision labels."
+      },
+      "selected_span_seconds": 28.989006,
+      "inference_seconds": 7.48698758300452,
+      "cell_size": 0.03350314289331437,
+      "warning": "Exploratory layout. All depth and positions are estimates. Completion never establishes free space, unseen people, or measured room dimensions.",
+      "map_from_da3": {
+        "rotation": [
+          [
+            0.9970043980505084,
+            -0.06018614242854461,
+            -0.0485783751016255
+          ],
+          [
+            0.003977357208281067,
+            -0.5873482825681996,
+            0.809324518097545
+          ],
+          [
+            -0.0772425459030256,
+            -0.8070933175437378,
+            -0.585349439120481
+          ]
+        ],
+        "origin": [
+          -0.4170816840290461,
+          0.5245142899243673,
+          0.45517618831243445
+        ]
+      },
+      "state": "provisional_structure",
+      "postprocess_seconds": 0.8916040839976631,
+      "packet_bytes": 4299,
+      "packet_payload_seconds": {
+        "9600": 3.5825,
+        "57600": 0.5970833333333333,
+        "115200": 0.29854166666666665,
+        "1000000": 0.034392
+      }
+    },
+    {
+      "name": "room-camera",
+      "label": "Room sweep \u00b7 Small",
+      "model": "depth-anything/DA3-SMALL",
+      "session": "20261002T185247Z-037db03f",
+      "indices": [
+        192,
+        216,
+        240,
+        264,
+        288,
+        312,
+        336,
+        360,
+        384,
+        408,
+        432,
+        456,
+        480,
+        504,
+        528,
+        552,
+        576,
+        600,
+        624,
+        648,
+        672,
+        696,
+        720,
+        744
+      ],
+      "source_trial": "Saved/MappingResearch/ai-room-draft-20261002/room-camera",
+      "prediction_sha256": "778b37103663782a9cff9e4534d5cd63d42da07206e5bc07270c816859fd7f0a",
+      "semantic_model_sha256": "6ae39addd01de6b1b8bde2cf677d43a5cd733424b8d186de3f95d1c51fee23f9",
+      "units": "arbitrary",
+      "metric_scale_available": false,
+      "live": false,
+      "imu_used": false,
+      "mapping_eligible": false,
+      "floor": {
+        "available": true,
+        "inlier_fraction": 0.9660678642714571,
+        "support_views": 3,
+        "points": 3507,
+        "median_residual_arbitrary": 0.003944338438189164,
+        "tolerance_arbitrary": 0.01501126140356064,
+        "extent_ratio": 0.8123326883362153,
+        "source": "semantic floor pixels + RANSAC; no IMU gravity",
+        "validated": false,
+        "support_quality": "broader",
+        "reason": "Supported inferred floor patch"
+      },
+      "local_consistency_passed": false,
+      "diagnostics": {
+        "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+        "image_width": 504,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              4,
+              5
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              5,
+              6
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              6,
+              7
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              7,
+              8
+            ],
+            "mutual_ratio_matches": 2,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              8,
+              9
+            ],
+            "mutual_ratio_matches": 1,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              9,
+              10
+            ],
+            "mutual_ratio_matches": 3,
+            "evaluated": 3,
+            "median_pixels": 1520.6082209333217,
+            "p90_pixels": 2090.7758563796356
+          },
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              11,
+              12
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              12,
+              13
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              15,
+              16
+            ],
+            "mutual_ratio_matches": 1,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              16,
+              17
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              17,
+              18
+            ],
+            "mutual_ratio_matches": 2,
+            "evaluated": 2,
+            "median_pixels": 50739.85038028158,
+            "p90_pixels": 79391.41927840348
+          },
+          {
+            "pair": [
+              22,
+              23
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          }
+        ],
+        "pairs_with_at_least_8_matches": 0,
+        "median_of_pair_medians_pixels": null,
+        "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+      },
+      "floor_cells": [
+        [
+          -66,
+          5
+        ],
+        [
+          -62,
+          -8
+        ],
+        [
+          -62,
+          -7
+        ],
+        [
+          -62,
+          -6
+        ],
+        [
+          -61,
+          -9
+        ],
+        [
+          -61,
+          -8
+        ],
+        [
+          -60,
+          -8
+        ],
+        [
+          -60,
+          -7
+        ],
+        [
+          -60,
+          -6
+        ],
+        [
+          -60,
+          -5
+        ],
+        [
+          -60,
+          -4
+        ],
+        [
+          -59,
+          -9
+        ],
+        [
+          -59,
+          -8
+        ],
+        [
+          -59,
+          -7
+        ],
+        [
+          -59,
+          -6
+        ],
+        [
+          -59,
+          -5
+        ],
+        [
+          -59,
+          -4
+        ],
+        [
+          -59,
+          -3
+        ],
+        [
+          -59,
+          -2
+        ],
+        [
+          -58,
+          -9
+        ],
+        [
+          -58,
+          -8
+        ],
+        [
+          -58,
+          -7
+        ],
+        [
+          -58,
+          -6
+        ],
+        [
+          -58,
+          -5
+        ],
+        [
+          -58,
+          -4
+        ],
+        [
+          -58,
+          -3
+        ],
+        [
+          -58,
+          1
+        ],
+        [
+          -57,
+          -9
+        ],
+        [
+          -57,
+          -8
+        ],
+        [
+          -57,
+          -7
+        ],
+        [
+          -57,
+          -6
+        ],
+        [
+          -57,
+          -5
+        ],
+        [
+          -57,
+          -2
+        ],
+        [
+          -57,
+          1
+        ],
+        [
+          -57,
+          2
+        ],
+        [
+          -56,
+          -9
+        ],
+        [
+          -56,
+          -8
+        ],
+        [
+          -56,
+          -7
+        ],
+        [
+          -56,
+          -4
+        ],
+        [
+          -56,
+          -3
+        ],
+        [
+          -56,
+          -2
+        ],
+        [
+          -56,
+          1
+        ],
+        [
+          -56,
+          2
+        ],
+        [
+          -56,
+          3
+        ],
+        [
+          -55,
+          -9
+        ],
+        [
+          -55,
+          -8
+        ],
+        [
+          -55,
+          -7
+        ],
+        [
+          -55,
+          -6
+        ],
+        [
+          -55,
+          -5
+        ],
+        [
+          -55,
+          -4
+        ],
+        [
+          -55,
+          -3
+        ],
+        [
+          -55,
+          -2
+        ],
+        [
+          -55,
+          0
+        ],
+        [
+          -55,
+          1
+        ],
+        [
+          -55,
+          2
+        ],
+        [
+          -54,
+          -9
+        ],
+        [
+          -54,
+          -8
+        ],
+        [
+          -54,
+          -7
+        ],
+        [
+          -54,
+          -6
+        ],
+        [
+          -54,
+          -5
+        ],
+        [
+          -54,
+          -4
+        ],
+        [
+          -54,
+          -3
+        ],
+        [
+          -54,
+          -2
+        ],
+        [
+          -54,
+          -1
+        ],
+        [
+          -54,
+          0
+        ],
+        [
+          -54,
+          1
+        ],
+        [
+          -54,
+          2
+        ],
+        [
+          -54,
+          3
+        ],
+        [
+          -53,
+          -9
+        ],
+        [
+          -53,
+          -8
+        ],
+        [
+          -53,
+          -7
+        ],
+        [
+          -53,
+          -6
+        ],
+        [
+          -53,
+          -5
+        ],
+        [
+          -53,
+          -4
+        ],
+        [
+          -53,
+          -3
+        ],
+        [
+          -53,
+          -2
+        ],
+        [
+          -53,
+          -1
+        ],
+        [
+          -53,
+          0
+        ],
+        [
+          -53,
+          1
+        ],
+        [
+          -53,
+          2
+        ],
+        [
+          -52,
+          -9
+        ],
+        [
+          -52,
+          -8
+        ],
+        [
+          -52,
+          -7
+        ],
+        [
+          -52,
+          -6
+        ],
+        [
+          -52,
+          -5
+        ],
+        [
+          -52,
+          -4
+        ],
+        [
+          -52,
+          -3
+        ],
+        [
+          -52,
+          -2
+        ],
+        [
+          -52,
+          -1
+        ],
+        [
+          -52,
+          0
+        ],
+        [
+          -52,
+          1
+        ],
+        [
+          -52,
+          2
+        ],
+        [
+          -51,
+          -9
+        ],
+        [
+          -51,
+          -8
+        ],
+        [
+          -51,
+          -7
+        ],
+        [
+          -51,
+          -6
+        ],
+        [
+          -51,
+          -5
+        ],
+        [
+          -51,
+          -4
+        ],
+        [
+          -51,
+          -3
+        ],
+        [
+          -51,
+          -2
+        ],
+        [
+          -51,
+          -1
+        ],
+        [
+          -51,
+          0
+        ],
+        [
+          -51,
+          1
+        ],
+        [
+          -51,
+          2
+        ],
+        [
+          -50,
+          -9
+        ],
+        [
+          -50,
+          -8
+        ],
+        [
+          -50,
+          -7
+        ],
+        [
+          -50,
+          -6
+        ],
+        [
+          -50,
+          -5
+        ],
+        [
+          -50,
+          -4
+        ],
+        [
+          -50,
+          -3
+        ],
+        [
+          -50,
+          -2
+        ],
+        [
+          -50,
+          -1
+        ],
+        [
+          -50,
+          0
+        ],
+        [
+          -50,
+          1
+        ],
+        [
+          -50,
+          2
+        ],
+        [
+          -49,
+          -9
+        ],
+        [
+          -49,
+          -8
+        ],
+        [
+          -49,
+          -7
+        ],
+        [
+          -49,
+          -6
+        ],
+        [
+          -49,
+          -5
+        ],
+        [
+          -49,
+          -4
+        ],
+        [
+          -49,
+          -3
+        ],
+        [
+          -49,
+          -2
+        ],
+        [
+          -49,
+          -1
+        ],
+        [
+          -49,
+          0
+        ],
+        [
+          -49,
+          1
+        ],
+        [
+          -49,
+          2
+        ],
+        [
+          -48,
+          -9
+        ],
+        [
+          -48,
+          -8
+        ],
+        [
+          -48,
+          -7
+        ],
+        [
+          -48,
+          -6
+        ],
+        [
+          -48,
+          -2
+        ],
+        [
+          -48,
+          -1
+        ],
+        [
+          -48,
+          0
+        ],
+        [
+          -48,
+          1
+        ],
+        [
+          -48,
+          2
+        ]
+      ],
+      "filled_cells": [
+        [
+          -61,
+          -7
+        ],
+        [
+          -61,
+          -6
+        ],
+        [
+          -60,
+          -9
+        ],
+        [
+          -58,
+          -2
+        ],
+        [
+          -58,
+          -1
+        ],
+        [
+          -58,
+          0
+        ],
+        [
+          -57,
+          -4
+        ],
+        [
+          -57,
+          -3
+        ],
+        [
+          -57,
+          -1
+        ],
+        [
+          -57,
+          0
+        ],
+        [
+          -56,
+          -6
+        ],
+        [
+          -56,
+          -5
+        ],
+        [
+          -56,
+          -1
+        ],
+        [
+          -56,
+          0
+        ],
+        [
+          -55,
+          -1
+        ],
+        [
+          -55,
+          3
+        ],
+        [
+          -48,
+          -5
+        ],
+        [
+          -48,
+          -4
+        ],
+        [
+          -48,
+          -3
+        ]
+      ],
+      "walls": [
+        {
+          "id": "wall-0",
+          "a": [
+            -0.418452983271388,
+            -0.6031868936482948
+          ],
+          "b": [
+            -1.4073115364070832,
+            -0.08193205260666026
+          ],
+          "height": 0.6604333945159914,
+          "fit_views": [
+            4,
+            8,
+            10,
+            12,
+            18,
+            22
+          ],
+          "fit_points": 9183,
+          "heldout_points_within_tolerance": 3000,
+          "heldout_median_residual": 0.007674530105412944,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-1",
+          "a": [
+            -0.028984481486324765,
+            0.5171395560978922
+          ],
+          "b": [
+            -0.34944156930857356,
+            0.5791725254300228
+          ],
+          "height": 0.6293930546677191,
+          "fit_views": [
+            0,
+            6,
+            10,
+            12,
+            20
+          ],
+          "fit_points": 8151,
+          "heldout_points_within_tolerance": 177,
+          "heldout_median_residual": 0.00995538382464204,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-2",
+          "a": [
+            -0.29250783836208183,
+            -0.5764262561954199
+          ],
+          "b": [
+            -1.4321241348832832,
+            -0.14732639100807618
+          ],
+          "height": 0.7255597703950151,
+          "fit_views": [
+            4,
+            8,
+            10,
+            18,
+            22
+          ],
+          "fit_points": 5380,
+          "heldout_points_within_tolerance": 5493,
+          "heldout_median_residual": 0.009625400314681988,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-3",
+          "a": [
+            -1.4296872062277861,
+            0.9524614480018365
+          ],
+          "b": [
+            -1.0685722883320756,
+            0.9417758756227996
+          ],
+          "height": 0.6219632976327603,
+          "fit_views": [
+            16,
+            20
+          ],
+          "fit_points": 4657,
+          "heldout_points_within_tolerance": 1,
+          "heldout_median_residual": 5.157688297182349e-05,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        }
+      ],
+      "objects": [],
+      "envelope": {
+        "corners": [
+          [
+            -1.5984270572662354,
+            1.0097336769104004
+          ],
+          [
+            -1.762639045715332,
+            -0.43217673897743225
+          ],
+          [
+            0.01653081178665161,
+            -0.6347975730895996
+          ],
+          [
+            0.1807428002357483,
+            0.8071128129959106
+          ]
+        ],
+        "height": 0.8213050942149698,
+        "state": "unsupported_envelope",
+        "measured_boundary": false,
+        "assumption": "Rectangle around the middle 96% of visible points. Unseen room extent and wall height are unconstrained; this can cut through the real room."
+      },
+      "camera_path": [
+        [
+          4.5689059846858956e-17,
+          3.427724365396204e-17,
+          0.3943811100329661
+        ],
+        [
+          0.1776828191898925,
+          -0.11858876270867276,
+          0.43145005710508666
+        ],
+        [
+          -0.19651412468505616,
+          0.14016079529017283,
+          0.45753338859130255
+        ],
+        [
+          0.28852175239091815,
+          -0.20690329419968112,
+          0.4917170527845344
+        ],
+        [
+          0.1996599766458755,
+          -0.22148293615809017,
+          0.4432777980588651
+        ],
+        [
+          -0.10913336889068108,
+          0.010057279415775942,
+          0.3628421443839153
+        ],
+        [
+          -0.25315452354499507,
+          0.19921791450831194,
+          0.3329026671754868
+        ],
+        [
+          -0.12619046077169646,
+          -0.12744287347642297,
+          0.3742276433614531
+        ],
+        [
+          -0.25104130764736127,
+          -0.08615819509084967,
+          0.375891206924908
+        ],
+        [
+          -0.3450647678742721,
+          0.09764556586188408,
+          0.3667363525845292
+        ],
+        [
+          -0.5390635864376608,
+          -0.22864863867231747,
+          0.3702671939644487
+        ],
+        [
+          -0.45193323473928954,
+          -0.14274211345863688,
+          0.3998539398753538
+        ],
+        [
+          -0.5769259233098989,
+          -0.22321864998389845,
+          0.3759421417074701
+        ],
+        [
+          -0.4605699738744246,
+          0.17235391545148826,
+          0.362013202761857
+        ],
+        [
+          -0.9281272374293728,
+          -0.11701828632371457,
+          0.4181404223083728
+        ],
+        [
+          -1.065305865096763,
+          -0.11509882863698354,
+          0.4184166660335695
+        ],
+        [
+          -1.2751776999067501,
+          0.3517681110117717,
+          0.3218317447698457
+        ],
+        [
+          -0.7806093070576126,
+          0.2799064572784368,
+          0.31458561119138606
+        ],
+        [
+          -1.2051213077171923,
+          0.18511284071751283,
+          0.39686644076273603
+        ],
+        [
+          -0.3696424465146337,
+          0.39857250455931115,
+          0.3501564749656164
+        ],
+        [
+          -0.6061702384118016,
+          0.3747068033690845,
+          0.3508396970265329
+        ],
+        [
+          -0.7203611803731323,
+          0.07159861309993314,
+          0.4162345748950312
+        ],
+        [
+          -0.2281003404411747,
+          -0.0005210194598281665,
+          0.47323759289092776
+        ],
+        [
+          -0.25212364425285716,
+          0.24133329689357194,
+          0.424363576496183
+        ]
+      ],
+      "floor_holdout": {
+        "fit_views": [
+          8,
+          10,
+          18
+        ],
+        "check_views": [
+          1,
+          7
+        ],
+        "median_fraction_of_depth": 0.019284168494813687,
+        "fraction_within_2_5_percent_depth": 0.7591283863368669,
+        "note": "Views withheld from plane fitting only; shared DA3 inference and semantics, no ground truth."
+      },
+      "completion_holdout": {
+        "added_cells": 0,
+        "supported_by_other_views": 0,
+        "overlapping_other_view_object_or_wall": 0,
+        "unsupported_by_other_views": 0,
+        "note": "A projected object can stand above floor. These are ambiguity flags, not physical accuracy or collision labels."
+      },
+      "selected_span_seconds": 46.181951,
+      "inference_seconds": 1.4263515830098186,
+      "cell_size": 0.021015765964984896,
+      "warning": "Exploratory layout. All depth and positions are estimates. Completion never establishes free space, unseen people, or measured room dimensions.",
+      "map_from_da3": {
+        "rotation": [
+          [
+            0.5310193055343992,
+            -0.006183747645169475,
+            -0.8473371574614352
+          ],
+          [
+            0.846336573964602,
+            -0.045255031855590086,
+            0.5307225128648769
+          ],
+          [
+            -0.041628124142509014,
+            -0.9989563270517939,
+            -0.01879776379161817
+          ]
+        ],
+        "origin": [
+          0.5107779715517787,
+          0.36179225803011217,
+          -0.3633696076411548
+        ]
+      },
+      "state": "unstable_alignment",
+      "postprocess_seconds": 0.8014270830026362,
+      "packet_bytes": 3833,
+      "packet_payload_seconds": {
+        "9600": 3.194166666666667,
+        "57600": 0.5323611111111111,
+        "115200": 0.26618055555555553,
+        "1000000": 0.030664
+      }
+    },
+    {
+      "name": "large-room-wide",
+      "label": "Room sweep \u00b7 Large",
+      "model": "depth-anything/DA3-LARGE",
+      "session": "20261002T185247Z-037db03f",
+      "indices": [
+        192,
+        216,
+        240,
+        264,
+        288,
+        312,
+        336,
+        360,
+        384,
+        408,
+        432,
+        456,
+        480,
+        504,
+        528,
+        552,
+        576,
+        600,
+        624,
+        648,
+        672,
+        696,
+        720,
+        744
+      ],
+      "source_trial": "Saved/MappingResearch/room-chain-20261003/large-room-wide",
+      "prediction_sha256": "2b04a3bea6ba31e9715821cce7cab8331258feebc2bef631de84cdfe848d5bbb",
+      "semantic_model_sha256": "6ae39addd01de6b1b8bde2cf677d43a5cd733424b8d186de3f95d1c51fee23f9",
+      "units": "arbitrary",
+      "metric_scale_available": false,
+      "live": false,
+      "imu_used": false,
+      "mapping_eligible": false,
+      "floor": {
+        "available": true,
+        "inlier_fraction": 0.9878289473684211,
+        "support_views": 3,
+        "points": 3040,
+        "median_residual_arbitrary": 0.0026275999270537758,
+        "tolerance_arbitrary": 0.015543918311595918,
+        "extent_ratio": 0.4919483756648226,
+        "source": "semantic floor pixels + RANSAC; no IMU gravity",
+        "validated": false,
+        "support_quality": "broader",
+        "reason": "Supported inferred floor patch"
+      },
+      "local_consistency_passed": false,
+      "diagnostics": {
+        "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+        "image_width": 504,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              4,
+              5
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              5,
+              6
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              6,
+              7
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              7,
+              8
+            ],
+            "mutual_ratio_matches": 2,
+            "evaluated": 2,
+            "median_pixels": 131.59979247873406,
+            "p90_pixels": 161.56651747652387
+          },
+          {
+            "pair": [
+              8,
+              9
+            ],
+            "mutual_ratio_matches": 1,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              9,
+              10
+            ],
+            "mutual_ratio_matches": 3,
+            "evaluated": 2,
+            "median_pixels": 1934.4376840165255,
+            "p90_pixels": 1934.4376840165255
+          },
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              11,
+              12
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              12,
+              13
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              15,
+              16
+            ],
+            "mutual_ratio_matches": 1,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              16,
+              17
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              17,
+              18
+            ],
+            "mutual_ratio_matches": 2,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          },
+          {
+            "pair": [
+              22,
+              23
+            ],
+            "mutual_ratio_matches": 0,
+            "evaluated": 0,
+            "median_pixels": null,
+            "p90_pixels": null
+          }
+        ],
+        "pairs_with_at_least_8_matches": 0,
+        "median_of_pair_medians_pixels": null,
+        "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+      },
+      "floor_cells": [
+        [
+          -75,
+          12
+        ],
+        [
+          -75,
+          13
+        ],
+        [
+          -74,
+          11
+        ],
+        [
+          -74,
+          12
+        ],
+        [
+          -74,
+          13
+        ],
+        [
+          -74,
+          14
+        ],
+        [
+          -74,
+          15
+        ],
+        [
+          -74,
+          16
+        ],
+        [
+          -73,
+          10
+        ],
+        [
+          -73,
+          12
+        ],
+        [
+          -73,
+          13
+        ],
+        [
+          -73,
+          14
+        ],
+        [
+          -73,
+          15
+        ],
+        [
+          -73,
+          16
+        ],
+        [
+          -73,
+          17
+        ],
+        [
+          -72,
+          10
+        ],
+        [
+          -72,
+          11
+        ],
+        [
+          -72,
+          12
+        ],
+        [
+          -72,
+          13
+        ],
+        [
+          -72,
+          14
+        ],
+        [
+          -72,
+          15
+        ],
+        [
+          -72,
+          16
+        ],
+        [
+          -71,
+          10
+        ],
+        [
+          -71,
+          11
+        ],
+        [
+          -71,
+          12
+        ],
+        [
+          -71,
+          13
+        ],
+        [
+          -71,
+          14
+        ],
+        [
+          -71,
+          15
+        ],
+        [
+          -71,
+          16
+        ],
+        [
+          -71,
+          17
+        ],
+        [
+          -70,
+          10
+        ],
+        [
+          -70,
+          11
+        ],
+        [
+          -70,
+          12
+        ],
+        [
+          -70,
+          13
+        ],
+        [
+          -70,
+          14
+        ],
+        [
+          -70,
+          15
+        ],
+        [
+          -70,
+          16
+        ],
+        [
+          -69,
+          10
+        ],
+        [
+          -69,
+          11
+        ],
+        [
+          -69,
+          12
+        ],
+        [
+          -69,
+          13
+        ],
+        [
+          -69,
+          14
+        ],
+        [
+          -69,
+          15
+        ],
+        [
+          -69,
+          16
+        ],
+        [
+          -68,
+          9
+        ],
+        [
+          -68,
+          10
+        ],
+        [
+          -68,
+          11
+        ],
+        [
+          -68,
+          12
+        ],
+        [
+          -68,
+          13
+        ],
+        [
+          -68,
+          14
+        ],
+        [
+          -68,
+          15
+        ],
+        [
+          -68,
+          16
+        ],
+        [
+          -67,
+          9
+        ],
+        [
+          -67,
+          10
+        ],
+        [
+          -67,
+          11
+        ],
+        [
+          -67,
+          12
+        ],
+        [
+          -67,
+          13
+        ],
+        [
+          -67,
+          14
+        ],
+        [
+          -67,
+          15
+        ],
+        [
+          -66,
+          9
+        ],
+        [
+          -66,
+          10
+        ],
+        [
+          -66,
+          11
+        ],
+        [
+          -66,
+          12
+        ],
+        [
+          -66,
+          13
+        ],
+        [
+          -66,
+          14
+        ],
+        [
+          -66,
+          15
+        ],
+        [
+          -65,
+          9
+        ],
+        [
+          -65,
+          10
+        ],
+        [
+          -65,
+          11
+        ],
+        [
+          -65,
+          12
+        ],
+        [
+          -65,
+          13
+        ],
+        [
+          -65,
+          14
+        ],
+        [
+          -65,
+          15
+        ],
+        [
+          -64,
+          9
+        ],
+        [
+          -64,
+          10
+        ],
+        [
+          -64,
+          11
+        ],
+        [
+          -64,
+          12
+        ],
+        [
+          -64,
+          13
+        ],
+        [
+          -64,
+          14
+        ],
+        [
+          -64,
+          15
+        ],
+        [
+          -64,
+          16
+        ],
+        [
+          -63,
+          8
+        ],
+        [
+          -63,
+          9
+        ],
+        [
+          -63,
+          10
+        ],
+        [
+          -63,
+          11
+        ],
+        [
+          -63,
+          12
+        ],
+        [
+          -63,
+          13
+        ],
+        [
+          -63,
+          14
+        ],
+        [
+          -63,
+          15
+        ],
+        [
+          -63,
+          16
+        ],
+        [
+          -62,
+          8
+        ],
+        [
+          -62,
+          9
+        ],
+        [
+          -62,
+          10
+        ],
+        [
+          -62,
+          11
+        ],
+        [
+          -62,
+          12
+        ],
+        [
+          -62,
+          13
+        ],
+        [
+          -62,
+          14
+        ],
+        [
+          -62,
+          15
+        ],
+        [
+          -61,
+          10
+        ],
+        [
+          -61,
+          11
+        ],
+        [
+          -61,
+          12
+        ],
+        [
+          -61,
+          13
+        ],
+        [
+          -61,
+          14
+        ],
+        [
+          -60,
+          14
+        ]
+      ],
+      "filled_cells": [
+        [
+          -73,
+          11
+        ],
+        [
+          -72,
+          17
+        ],
+        [
+          -67,
+          16
+        ],
+        [
+          -66,
+          16
+        ],
+        [
+          -65,
+          16
+        ]
+      ],
+      "walls": [
+        {
+          "id": "wall-0",
+          "a": [
+            -1.6144336570254627,
+            1.2934171638878198
+          ],
+          "b": [
+            0.7702866469684996,
+            0.2077937794565644
+          ],
+          "height": 0.5964693459584174,
+          "fit_views": [
+            0,
+            2,
+            6,
+            12,
+            16,
+            20
+          ],
+          "fit_points": 10905,
+          "heldout_points_within_tolerance": 16764,
+          "heldout_median_residual": 0.0062591969998564215,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-1",
+          "a": [
+            -0.6781163913340365,
+            -0.32610341103108864
+          ],
+          "b": [
+            -1.7149106875454814,
+            0.3109051631236476
+          ],
+          "height": 0.5774771538471319,
+          "fit_views": [
+            8,
+            10,
+            18
+          ],
+          "fit_points": 10196,
+          "heldout_points_within_tolerance": 725,
+          "heldout_median_residual": 0.010810395105215573,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-2",
+          "a": [
+            -1.7307174936603351,
+            0.2832760690792412
+          ],
+          "b": [
+            0.1402497092830901,
+            -0.6267387536324747
+          ],
+          "height": 0.685291567864072,
+          "fit_views": [
+            4,
+            10,
+            18,
+            22
+          ],
+          "fit_points": 4228,
+          "heldout_points_within_tolerance": 295,
+          "heldout_median_residual": 0.006928616430169565,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        },
+        {
+          "id": "wall-3",
+          "a": [
+            -0.23773780821792984,
+            0.5967975285955185
+          ],
+          "b": [
+            0.594104142335402,
+            0.38321554962312654
+          ],
+          "height": 0.5854639399813322,
+          "fit_views": [
+            0,
+            2,
+            10,
+            12
+          ],
+          "fit_points": 3858,
+          "heldout_points_within_tolerance": 39,
+          "heldout_median_residual": 0.008758342172569544,
+          "evidence": "Vertical plane fitted to labelled wall depth; panel interiors are interpolated",
+          "state": "view_supported_estimate",
+          "validated": false
+        }
+      ],
+      "objects": [],
+      "envelope": {
+        "corners": [
+          [
+            -1.7962663173675537,
+            1.34818696975708
+          ],
+          [
+            -2.1949663162231445,
+            0.08302527666091919
+          ],
+          [
+            0.5806279182434082,
+            -0.7916689515113831
+          ],
+          [
+            0.979327917098999,
+            0.47349268198013306
+          ]
+        ],
+        "height": 0.6903417986958906,
+        "state": "unsupported_envelope",
+        "measured_boundary": false,
+        "assumption": "Rectangle around the middle 96% of visible points. Unseen room extent and wall height are unconstrained; this can cut through the real room."
+      },
+      "camera_path": [
+        [
+          -8.057390394770943e-17,
+          -6.847801795315468e-17,
+          0.29749969093828327
+        ],
+        [
+          0.2020991906623174,
+          -0.009471454369654997,
+          0.3013329671343663
+        ],
+        [
+          0.07999866910901006,
+          -0.03559114032342572,
+          0.3538050767488006
+        ],
+        [
+          -0.0137375942375772,
+          -0.17543283821285224,
+          0.38328169622886693
+        ],
+        [
+          0.11019052249250397,
+          -0.2093615336877277,
+          0.3314726870733681
+        ],
+        [
+          -0.2674327333380578,
+          0.025039663190961042,
+          0.26975664054952786
+        ],
+        [
+          -0.3309132345823171,
+          0.2162572801066313,
+          0.29383963840700755
+        ],
+        [
+          -0.5543031192908238,
+          0.01818513887185817,
+          0.3144020096568857
+        ],
+        [
+          -0.6671413075144654,
+          0.04906436536161043,
+          0.2957438408496674
+        ],
+        [
+          -0.6563593467437467,
+          0.27995469348507673,
+          0.3101178326005122
+        ],
+        [
+          -0.9217931830595693,
+          0.04071133166976325,
+          0.3261275738254127
+        ],
+        [
+          -0.9041243005581794,
+          0.051636765215044685,
+          0.3254759581990846
+        ],
+        [
+          -1.0446680624302707,
+          0.07626717841625168,
+          0.3376587048735762
+        ],
+        [
+          -1.0110371433539262,
+          0.30747279077149625,
+          0.3212636630454767
+        ],
+        [
+          -1.3842848453906287,
+          0.3104954400549646,
+          0.35460961624876597
+        ],
+        [
+          -1.4156716861319967,
+          0.30041222941478296,
+          0.39549531787948033
+        ],
+        [
+          -1.5287942833589099,
+          0.636219239499115,
+          0.3279788197696869
+        ],
+        [
+          -1.569586461067732,
+          0.6724438287686036,
+          0.316133801025463
+        ],
+        [
+          -1.3261871617684868,
+          0.5543001052905869,
+          0.340404105589126
+        ],
+        [
+          -1.1059286827709176,
+          0.6293898066265884,
+          0.31239364728930125
+        ],
+        [
+          -0.9479888948010656,
+          0.566231752303049,
+          0.338042207855611
+        ],
+        [
+          -0.5811204888598522,
+          0.20975182514494856,
+          0.360612774475874
+        ],
+        [
+          -0.4032328190542025,
+          0.07406726258202168,
+          0.3498825233929601
+        ],
+        [
+          -0.4610509544426999,
+          0.2929810688099559,
+          0.3480416472131529
+        ]
+      ],
+      "floor_holdout": {
+        "fit_views": [
+          8,
+          10,
+          18
+        ],
+        "check_views": [
+          1,
+          7
+        ],
+        "median_fraction_of_depth": 0.016240475099744106,
+        "fraction_within_2_5_percent_depth": 0.9580119965724079,
+        "note": "Views withheld from plane fitting only; shared DA3 inference and semantics, no ground truth."
+      },
+      "completion_holdout": {
+        "added_cells": 0,
+        "supported_by_other_views": 0,
+        "overlapping_other_view_object_or_wall": 0,
+        "unsupported_by_other_views": 0,
+        "note": "A projected object can stand above floor. These are ambiguity flags, not physical accuracy or collision labels."
+      },
+      "selected_span_seconds": 46.181951,
+      "inference_seconds": 7.482390707999002,
+      "cell_size": 0.021761485636234285,
+      "warning": "Exploratory layout. All depth and positions are estimates. Completion never establishes free space, unseen people, or measured room dimensions.",
+      "map_from_da3": {
+        "rotation": [
+          [
+            0.986979991357858,
+            -0.02998628759669887,
+            -0.15802316037660658
+          ],
+          [
+            0.16031657210762765,
+            0.10397323745107251,
+            0.9815743286178602
+          ],
+          [
+            -0.013003590538865918,
+            -0.9941279537615423,
+            0.10742680383864428
+          ]
+        ],
+        "origin": [
+          1.4112963519471624,
+          0.214002835469926,
+          -0.9014854099689571
+        ]
+      },
+      "state": "unstable_alignment",
+      "postprocess_seconds": 0.7911919170001056,
+      "packet_bytes": 3429,
+      "packet_payload_seconds": {
+        "9600": 2.8575,
+        "57600": 0.47625,
+        "115200": 0.238125,
+        "1000000": 0.027432
+      }
+    }
+  ],
+  "evaluation_note": "No model weights trained. Geometry/completion consistency only; no physical room ground truth."
+}

@@ -1,5 +1,16 @@
 # Pick up the drone and record a room
 
+## Room completion and deployment experiment — 3 October
+
+Open the [four-way room completion lab](examples/room-chain-20261003/index.html):
+AI surfaces, fitted structure, small gap filling and an optional rectangular
+envelope guess. Five new model jobs compare Base/Large overlapping couch windows
+and Large on the wide room sweep. Large retains two of three windows; the final
+join and both wide-room alignments remain unresolved. No fine-tuning or live
+mapping defaults changed. The [reproduction bundle](examples/room-chain-20261003/README.md)
+includes 64 source images, cached labels, calibrated input, results and renders.
+See [compute placement, direct-radio deployment and next tests](../Docs/room-chain-and-deployment.md).
+
 ## Latest offline model comparison — 3 October
 
 After unloading Ollama, DA3 Large completed the same 24-image wide-view test at
