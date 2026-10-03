@@ -1,6 +1,6 @@
 # Mapping and CV handoff to Herman
 
-Updated 2 October 2026. This is the active sequence, with pass conditions to
+Updated 3 October 2026. This is the active sequence, with pass conditions to
 check before marking a stage complete. No handoff date has been set.
 
 ## Goal and ownership
@@ -17,6 +17,17 @@ availability does not complete that software integration. No message to Herman
 has been sent. Flight performance is evaluated with him after ground validation.
 
 ## Current baseline
+
+**Latest offline progress:** replacing the known streaked selected frame retains
+three DA3 Large couch windows: 40 selected camera estimates spanning 49.02 s.
+These pass the unchanged internal screens, not measured physical accuracy.
+The [ground-station scene replay](../Mapping/examples/scene-relay-20261003/README.md)
+then preserves that draft through delayed/lost updates and a simulated 10-second
+interruption, recovering the latest complete map. Camera estimates are withheld
+as current because batch inference already takes 7–8 s. The software receiver and
+reproducible demo advance Stage 5, without passing room accuracy, people placement,
+live latency or IMU integration. Work continues on saved footage; new capture is
+the point at which Evan wants to stop.
 
 - **Done:** Pi preview, 12 fps recording, bounded stop, local archive import and
   Mac DA3 inference. Latest room walk: 1,437 readable images, zero reported queue
@@ -206,6 +217,6 @@ map identity, tracking state and ownership of visual-inertial estimation.
 
 Work through one physical test at a time. Codex prepares settings and evaluates
 the result; Evan positions or moves the camera when prompted. Mark a stage done
-only after its evidence is saved. Capture quality is the active step; room-wide
+only after its evidence is saved. Saved-footage mapping and replay are active; room-wide
 mapping remains the main technical risk. Reduce observation time after the
 single-room baseline is reproducible.

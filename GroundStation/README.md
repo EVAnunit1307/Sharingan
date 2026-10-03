@@ -11,6 +11,12 @@ proxies, and sends a `spatial_people` extension to the native Quest app.
 This version assumes a stationary, rigid, level camera/radar combo with parallel
 sensor axes and a shared target floor plane. It does not track a flying drone.
 
+For the separate recorded-room experiment, open the
+[scene relay demo](../Mapping/examples/scene-relay-20261003/index.html). Its reusable
+`scene_transport.SceneReceiver` tests revisioned map assembly, delayed/reordered
+packets, reconnects and capture-time position expiry. It is not connected to this
+live people server. See the [recorded-scene contract](../Docs/recorded-scene-relay.md).
+
 ## Start the Pi and laptop
 
 Use the merged Pi setup in [SensorRig/HANDOFF.md](../SensorRig/HANDOFF.md), with

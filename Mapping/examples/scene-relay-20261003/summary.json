@@ -1,0 +1,179 @@
+{
+  "schema": "wallhack.scene_relay_result.v1",
+  "input_sha256": "f616614a9e334f2aff26e22268f9a29121156d3546de5be3fad469b135c202a4",
+  "results": [
+    {
+      "profile": {
+        "name": "clear",
+        "label": "Clear link",
+        "bits_per_second": 2000000,
+        "latency_seconds": 0.06,
+        "jitter_seconds": 0.0,
+        "drop_probability": 0.0,
+        "outage": null
+      },
+      "duration_seconds": 85.0,
+      "model_ready_seconds": [
+        35.89070750000269,
+        46.428676166998656,
+        56.71809254200542
+      ],
+      "installations": [
+        {
+          "seconds": 36.8628315,
+          "revision": 1,
+          "observation_age_seconds": 8.0820765,
+          "relay_seconds": 0.9721239999973079
+        },
+        {
+          "seconds": 47.700024167,
+          "revision": 2,
+          "observation_age_seconds": 8.839761166999999,
+          "relay_seconds": 1.2713480000013462
+        },
+        {
+          "seconds": 58.294024542,
+          "revision": 3,
+          "observation_age_seconds": 9.270947542000002,
+          "relay_seconds": 1.5759319999945802
+        }
+      ],
+      "final_revision": 3,
+      "final_visible_poses": 40,
+      "fresh_camera_samples": 0,
+      "max_queued_map_chunks": 215,
+      "max_queued_priority_packets": 2,
+      "wire_bytes_sent": 966266,
+      "wire_bytes_delivered": 965964,
+      "counters": {
+        "packets_sent": 625,
+        "heartbeat": 85,
+        "superseded_unsent_chunks": 0,
+        "camera": 3,
+        "partial": 514,
+        "installed": 3,
+        "repair_requests_received": 1,
+        "old_revision": 18
+      }
+    },
+    {
+      "profile": {
+        "name": "limited",
+        "label": "Limited bandwidth",
+        "bits_per_second": 256000,
+        "latency_seconds": 0.12,
+        "jitter_seconds": 0.0,
+        "drop_probability": 0.0,
+        "outage": null
+      },
+      "duration_seconds": 85.0,
+      "model_ready_seconds": [
+        35.89070750000269,
+        46.428676166998656,
+        56.71809254200542
+      ],
+      "installations": [
+        {
+          "seconds": 43.2473325,
+          "revision": 1,
+          "observation_age_seconds": 14.4665775,
+          "relay_seconds": 7.356624999997308
+        },
+        {
+          "seconds": 56.182988667,
+          "revision": 2,
+          "observation_age_seconds": 17.322725666999993,
+          "relay_seconds": 9.75431250000134
+        },
+        {
+          "seconds": 68.892644917,
+          "revision": 3,
+          "observation_age_seconds": 19.869567916999998,
+          "relay_seconds": 12.174552374994576
+        }
+      ],
+      "final_revision": 3,
+      "final_visible_poses": 40,
+      "fresh_camera_samples": 0,
+      "max_queued_map_chunks": 215,
+      "max_queued_priority_packets": 2,
+      "wire_bytes_sent": 1060232,
+      "wire_bytes_delivered": 1059930,
+      "counters": {
+        "packets_sent": 687,
+        "heartbeat": 85,
+        "superseded_unsent_chunks": 17,
+        "camera": 3,
+        "partial": 514,
+        "repair_requests_received": 14,
+        "installed": 3,
+        "old_revision": 67
+      }
+    },
+    {
+      "profile": {
+        "name": "interrupted",
+        "label": "Loss + interruption",
+        "bits_per_second": 512000,
+        "latency_seconds": 0.15,
+        "jitter_seconds": 0.2,
+        "drop_probability": 0.05,
+        "outage": [
+          43.0,
+          53.0
+        ]
+      },
+      "duration_seconds": 85.0,
+      "model_ready_seconds": [
+        35.89070750000269,
+        46.428676166998656,
+        56.71809254200542
+      ],
+      "installations": [
+        {
+          "seconds": 40.747467236,
+          "revision": 1,
+          "observation_age_seconds": 11.966712236,
+          "relay_seconds": 4.856759735997308
+        },
+        {
+          "seconds": 64.537667921,
+          "revision": 3,
+          "observation_age_seconds": 15.514590920999993,
+          "relay_seconds": 7.819575378994571
+        }
+      ],
+      "final_revision": 3,
+      "final_visible_poses": 40,
+      "fresh_camera_samples": 0,
+      "max_queued_map_chunks": 215,
+      "max_queued_priority_packets": 2,
+      "wire_bytes_sent": 1214444,
+      "wire_bytes_delivered": 870540,
+      "counters": {
+        "packets_sent": 771,
+        "heartbeat": 73,
+        "dropped_packets": 208,
+        "random_drops": 25,
+        "superseded_unsent_chunks": 100,
+        "partial": 429,
+        "camera": 2,
+        "repair_requests_received": 7,
+        "installed": 2,
+        "outage_drops": 183,
+        "old_revision": 6,
+        "duplicate_chunk": 44
+      }
+    }
+  ],
+  "assumptions": {
+    "pose_ttl_seconds": 2,
+    "clock_offset_ns": 0,
+    "clock_mapping": "Exact shared simulation clock only",
+    "transport": "One serialized bidirectional application-byte link. Seed 73, 2 s selective repair requests.",
+    "producer": "Last selected observation + measured warm model call. Optimistic schedule, not measured streaming latency.",
+    "excluded": "Image uplink, preprocessing, alignment, map serialization CPU, radio headers/FEC and hardware behavior.",
+    "link_scope": "Ground-computed scene to a display/relay consumer; does not show the Pi computing these scenes.",
+    "current_camera": "All scene poses remain timestamped at capture. Withheld if older than 2 s even after reconnect."
+  }
+}

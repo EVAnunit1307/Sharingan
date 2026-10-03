@@ -1,13 +1,26 @@
 # Pick up the drone and record a room
 
-## Saved-footage follow-up — paused after 3 October comparison
+## Ground-station replay — 3 October
+
+Saved-footage work is continuing; Evan only wants to stop before a new recording
+is required. The [scene relay replay](examples/scene-relay-20261003/index.html)
+sends the joined couch draft through clear, bandwidth-limited and interrupted
+simulated links. The receiver keeps the last complete map during a 10-second
+interruption and recovers the newest revision. Old camera observations stay
+historical: the 7–8 s model calls already exceed the 2 s display-freshness timeout.
+All three scenarios recover 40 camera estimates; none becomes a live pose stream.
+See [reproduction/results](examples/scene-relay-20261003/README.md) and the
+[receiver contract](../Docs/recorded-scene-relay.md). No Pi or model weights are
+needed to rerun the simulation. Existing live/Quest behavior is unchanged.
+
+## Saved-footage selection follow-up — 3 October
 
 Replacing only the known streaked row 369 with clean row 372 lets DA3 Large
 retain all three selected couch windows under the unchanged screens: 40 selected
 camera estimates over 49.02 s, versus 32 over 38.86 s before. The broader
 sharpness/feature heuristic performs worse and is not adopted. Open the
 [progressive replay](examples/selection-followup-20261003/index.html) or
-[reproduction notes and paused checkpoint](examples/selection-followup-20261003/README.md).
+[reproduction notes](examples/selection-followup-20261003/README.md).
 This is internal consistency on one capture, not measured accuracy or flight readiness.
 
 ## Room completion and deployment experiment — 3 October

@@ -2,6 +2,44 @@
 
 Updated **3 October 2026**. Read this before older handoffs.
 
+## Saved-footage stitching and scene relay — 3 October
+
+Evan clarified that the pause only applied when new recording would be needed;
+continue useful software work on saved footage. No new capture or Pi connection
+was made. Room photos/renders and commit/push remain authorized.
+
+The selection experiment replaced only reviewed streaked row 369 with row 372
+in the 40-frame couch input. All three overlapping DA3 Large sections pass the
+unchanged screens: 40 selected camera estimates across 49.02 s, versus 32 across
+38.86 s for the original selection. The broad sharpness/coverage selector failed
+the first join; it is not adopted. This is internal consistency, not physical
+accuracy or 658-frame continuous AI tracking. See
+`Mapping/examples/selection-followup-20261003/` (commit `4a2a120`). The earlier
+room-chain experiment (`af039cd`) tested geometric/semantic completion, optional
+floor-gap filling and unsupported room envelopes; wide-room alignment is still
+unresolved. Its source/model/reproduction evidence is in `room-chain-20261003`.
+
+`GroundStation.scene_transport` and `Mapping.scene_relay_trial` now use the
+retained couch result for a file-only ground-computed scene/display replay.
+The receiver installs checked complete map revisions atomically, binds identity
+and source clock explicitly, expires partial assemblies, rejects old/conflicting
+data, and ages camera samples by capture time rather than arrival. The simulator
+has prioritized messages, bounded map queues, selective repairs and late packets.
+The live `GroundStation.server`, Pi and Quest people protocol are unchanged.
+
+All three assumed links eventually recover the 40-pose map. The 512 kbit/s case
+with 5% random loss and a 43–53 s interruption retains revision 1, then installs
+revision 3 at 64.54 s, without completing revision 2. The 2 Mbit/s and 256 kbit/s
+cases install the final map at 58.29 / 68.89 s. These are simulated timings using
+7.11–7.70 s measured warm model calls; camera uplink, preprocessing and fitting
+would add delay. All current camera markers remain withheld under the 2 s display
+timeout. A slow room refiner needs a separate faster pose producer for live use.
+
+Bundle: `Mapping/examples/scene-relay-20261003/`, offline viewer, deterministic
+input/results, reference images, renders, hashes and Python-standard-library
+reproduction. No new model inference, weights, real radio or IMU data is involved.
+Receiver protocol/assumptions: `Docs/recorded-scene-relay.md`.
+
 ## Large model after Ollama unload — 3 October
 
 Evan offered heavier experiments and confirmed unloading Ollama. Previously the

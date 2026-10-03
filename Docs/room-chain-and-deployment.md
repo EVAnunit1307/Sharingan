@@ -1,11 +1,15 @@
 # Room mapping chain and deployment without a hotspot
 
-**Saved-footage follow-up and pause:** a later bounded test replaces only the
+**Saved-footage follow-up:** a later bounded test replaces only the
 known streaked frame. All three selected Large couch windows then pass the same
 screens (40 selected poses over 49.02 s). A broader sharpness/feature heuristic
 does worse. See the [replay and checkpoint](../Mapping/examples/selection-followup-20261003/README.md).
-Work pauses at Evan's request after saving this result. The earlier results below
-describe the original input selection; no physical-accuracy gate has been passed.
+Evan clarified that saved-footage work should continue until a new recording is
+needed. The [scene relay experiment](recorded-scene-relay.md) now tests atomic map
+updates, stale-camera withholding, delays, loss and reconnects using that result.
+It is a simulated ground-computed scene/display link, not an actual radio or Pi
+mapping benchmark. The earlier results below describe the original input
+selection; no physical-accuracy gate has been passed.
 
 Evan clarified the future goal on 3 October: a deployable drone that can
 eventually fly autonomously and relay information without joining someone's
@@ -78,7 +82,9 @@ IDs, units and scale state, calibration IDs and tracking state. Prioritize fresh
 poses/contacts over map chunks/video, bound queues, and never replay delayed
 contacts as current after reconnect. Large map data can be versioned/chunked;
 map changes and camera poses must remain in the same coordinate frame. These
-are requirements for the next adapter, not newly implemented live behavior.
+are requirements for a live adapter. The [recorded-scene receiver](recorded-scene-relay.md)
+now exercises session/frame identity, revisioned map chunks, bounded assembly,
+freshness and retry behavior in an offline simulation. It does not change live behavior.
 
 ## What this experiment established
 
@@ -114,8 +120,10 @@ alone does not establish supported dependencies, available VRAM or speed.
 3. Check a simple room against measured distances and independent reference
    poses. Use separate rooms for development and evaluation. Add IMU when Herman
    provides synchronized calibrated data.
-4. Replay incrementally into the ground-station display, then simulate bandwidth,
-   loss, delayed packets and reconnects before connecting real radios/Quest.
+4. Offline incremental scene delivery, bandwidth/loss simulation and reconnect
+   checks are implemented in the [recorded-scene relay](recorded-scene-relay.md).
+   Next connect a transport/display adapter and validate it with real clocks and
+   registered coordinates before real radios/Quest use.
 5. Consider fine-tuning only after identifying a repeatable model error. For
    semantic errors, collect corrected wall/floor/door masks from this camera.
    For depth, collect reference depth/poses and metric information. For completion,
