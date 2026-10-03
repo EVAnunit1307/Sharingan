@@ -1,0 +1,22 @@
+test_artifacts_and_decode_failures_cannot_win_on_sharpness (Mapping.tests.test_saved_footage_trial.SavedFootageTests.test_artifacts_and_decode_failures_cannot_win_on_sharpness) ... ok
+test_blank_image_is_finite_without_features (Mapping.tests.test_saved_footage_trial.SavedFootageTests.test_blank_image_is_finite_without_features) ... ok
+test_control_only_replaces_known_bad_frame (Mapping.tests.test_saved_footage_trial.SavedFootageTests.test_control_only_replaces_known_bad_frame) ... ok
+test_no_eligible_frame_fails_instead_of_bridging_long_gap (Mapping.tests.test_saved_footage_trial.SavedFootageTests.test_no_eligible_frame_fails_instead_of_bridging_long_gap) ... ok
+test_quality_keeps_time_bins_and_shared_windows (Mapping.tests.test_saved_footage_trial.SavedFootageTests.test_quality_keeps_time_bins_and_shared_windows) ... ok
+test_changed_heldout_views_and_wrong_recording_are_rejected (Mapping.tests.test_window_replay.OverlapTests.test_changed_heldout_views_and_wrong_recording_are_rejected) ... ok
+test_failed_initialization_can_retry_but_lost_map_never_restarts_silently (Mapping.tests.test_window_replay.OverlapTests.test_failed_initialization_can_retry_but_lost_map_never_restarts_silently) ... ok
+test_local_screen_requires_at_least_half_of_adjacent_pairs (Mapping.tests.test_window_replay.OverlapTests.test_local_screen_requires_at_least_half_of_adjacent_pairs) ... ok
+test_outliers_do_not_hide_known_similarity (Mapping.tests.test_window_replay.OverlapTests.test_outliers_do_not_hide_known_similarity) ... ok
+test_shared_pixels_recover_camera_and_surface_alignment (Mapping.tests.test_window_replay.OverlapTests.test_shared_pixels_recover_camera_and_surface_alignment) ... ok
+test_transform_composition_preserves_scale_rotation_translation (Mapping.tests.test_window_replay.OverlapTests.test_transform_composition_preserves_scale_rotation_translation) ... ok
+test_archive_does_not_extract_traversal_or_links (Mapping.tests.test_window_replay.ReferenceTests.test_archive_does_not_extract_traversal_or_links) ... ok
+test_depth_evaluation_uses_png_factor_and_one_trajectory_scale (Mapping.tests.test_window_replay.ReferenceTests.test_depth_evaluation_uses_png_factor_and_one_trajectory_scale) ... ok
+test_early_alignment_keeps_later_drift_visible (Mapping.tests.test_window_replay.ReferenceTests.test_early_alignment_keeps_later_drift_visible) ... ok
+test_import_keeps_reference_out_of_rgb_frames (Mapping.tests.test_window_replay.ReferenceTests.test_import_keeps_reference_out_of_rgb_frames) ... ok
+test_timestamp_association_rejects_outside_tolerance (Mapping.tests.test_window_replay.ReferenceTests.test_timestamp_association_rejects_outside_tolerance) ... ok
+test_tum_quaternion_order_and_reference_alignment (Mapping.tests.test_window_replay.ReferenceTests.test_tum_quaternion_order_and_reference_alignment) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.073s
+
+OK

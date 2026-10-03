@@ -1,0 +1,5604 @@
+{
+  "plan": {
+    "schema": 1,
+    "source_session": "20261002T213938Z-e3ead809",
+    "anchors": [
+      54,
+      69,
+      84,
+      99,
+      114,
+      129,
+      144,
+      159,
+      174,
+      189,
+      204,
+      219,
+      234,
+      249,
+      264,
+      279,
+      294,
+      309,
+      324,
+      339,
+      354,
+      369,
+      384,
+      399,
+      414,
+      429,
+      444,
+      459,
+      474,
+      489,
+      504,
+      519,
+      534,
+      549,
+      564,
+      579,
+      594,
+      609,
+      624,
+      639
+    ],
+    "candidate_radius_frames": 6,
+    "windows": [
+      0,
+      8,
+      16
+    ],
+    "frames": 24,
+    "resolution": 504,
+    "variant": "large",
+    "repeats": 2,
+    "undistort": true,
+    "center_principal": false,
+    "excluded_ranges": [
+      [
+        363,
+        371
+      ]
+    ],
+    "exclusion_note": "Previously visually reviewed colour-streak interval; no generic corruption detector is claimed.",
+    "selection_rule": "Streak-only: nearest eligible frame. Quality: 70% local sharpness rank + 30% feature-cell coverage rank; nearest frame breaks ties.",
+    "acceptance": "Unmodified Mapping.window_replay local/overlap screens. No parameter search or threshold relaxation after inference.",
+    "evaluation": "Same nominal temporal bins and 24-image budget; changed-image comparisons are selection ablations, not paired pixel-error comparisons.",
+    "metric_scale_available": false,
+    "live": false,
+    "imu_used": false,
+    "cases": {
+      "streak_only": {
+        "session": "streak_only/input/20261002T213938Z-e3ead809",
+        "indices": [
+          54,
+          69,
+          84,
+          99,
+          114,
+          129,
+          144,
+          159,
+          174,
+          189,
+          204,
+          219,
+          234,
+          249,
+          264,
+          279,
+          294,
+          309,
+          324,
+          339,
+          354,
+          372,
+          384,
+          399,
+          414,
+          429,
+          444,
+          459,
+          474,
+          489,
+          504,
+          519,
+          534,
+          549,
+          564,
+          579,
+          594,
+          609,
+          624,
+          639
+        ],
+        "changed_frames": 1,
+        "max_selected_gap_seconds": 1.49943,
+        "median_sharpness": 244.91647338867188,
+        "median_corner_coverage": 0.5208333333333334,
+        "decisions": [
+          {
+            "anchor": 54,
+            "selected": 54,
+            "candidates": [
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d287e2a175b599108d8dcb446ddd678d7fb7b023fdb7dc9720f91724a38b61ac",
+              "sharpness": 125.2611083984375,
+              "corner_coverage": 0.3541666666666667,
+              "corners": 70,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 69,
+            "selected": 69,
+            "candidates": [
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "37d3b467796a5bdfc68c676db29b1ffe3350d126585d3f86d5c7ce1298babd2a",
+              "sharpness": 62.44559860229492,
+              "corner_coverage": 0.375,
+              "corners": 81,
+              "dark_fraction": 0.0,
+              "bright_fraction": 6.510416666666667e-05
+            }
+          },
+          {
+            "anchor": 84,
+            "selected": 84,
+            "candidates": [
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "a196c24e5eda301ec668a82f381ae3dfc367bf1c7fb9a08f646e57a6e3ea750b",
+              "sharpness": 344.2618103027344,
+              "corner_coverage": 0.5,
+              "corners": 76,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0001171875
+            }
+          },
+          {
+            "anchor": 99,
+            "selected": 99,
+            "candidates": [
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "fca2a61c77cb7d0eeb105f86d191194aafea4814c46797124cbeb60edef6b525",
+              "sharpness": 136.24440002441406,
+              "corner_coverage": 0.4375,
+              "corners": 68,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00024739583333333335
+            }
+          },
+          {
+            "anchor": 114,
+            "selected": 114,
+            "candidates": [
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "26be1d965ab3299f459bbb7066a4d63d856a7f73ee82ce292588f83ec0605887",
+              "sharpness": 143.06997680664062,
+              "corner_coverage": 0.4375,
+              "corners": 64,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 129,
+            "selected": 129,
+            "candidates": [
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "bbf0d3577a80104e2e7c1c93eaeb6e1e252ea631253e170ad9904bb9885f38ef",
+              "sharpness": 172.21517944335938,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 79,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 144,
+            "selected": 144,
+            "candidates": [
+              138,
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "7b1770a07b55c7bab615a82bb1e3d8fa02c3bb8ebc419ab9aa9ca6574b7c1443",
+              "sharpness": 170.07244873046875,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 80,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00037760416666666666
+            }
+          },
+          {
+            "anchor": 159,
+            "selected": 159,
+            "candidates": [
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "2cb030f854b56685860b3fd2036ad76d10c4111486d8bd7b91e1332467414709",
+              "sharpness": 155.40167236328125,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 100,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00029947916666666664
+            }
+          },
+          {
+            "anchor": 174,
+            "selected": 174,
+            "candidates": [
+              168,
+              169,
+              170,
+              171,
+              172,
+              173,
+              174,
+              175,
+              176,
+              177,
+              178,
+              179,
+              180
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "e2830edf3917a6e10089cfa2e1d243b6f4840a6a33debe429fa16f96c93337f4",
+              "sharpness": 175.30572509765625,
+              "corner_coverage": 0.6458333333333334,
+              "corners": 141,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 189,
+            "selected": 189,
+            "candidates": [
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "434150edaa9485c37b8924ac29115c7dd296a252d5902e39aea22cab48e8dae3",
+              "sharpness": 202.22962951660156,
+              "corner_coverage": 0.5,
+              "corners": 121,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 204,
+            "selected": 204,
+            "candidates": [
+              198,
+              199,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              207,
+              208,
+              209,
+              210
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d6f77024b673ead1659d889c8e24c1588b84d1929644a61db1ccf8128ee59599",
+              "sharpness": 197.58364868164062,
+              "corner_coverage": 0.4583333333333333,
+              "corners": 108,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 219,
+            "selected": 219,
+            "candidates": [
+              213,
+              214,
+              215,
+              216,
+              217,
+              218,
+              219,
+              220,
+              221,
+              222,
+              223,
+              224,
+              225
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "f8d0d3c1c5f0d74f051b293a22d104fceae62a470bcd3496ed959c419c8cef04",
+              "sharpness": 242.29283142089844,
+              "corner_coverage": 0.5,
+              "corners": 108,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 234,
+            "selected": 234,
+            "candidates": [
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "61079a84b89e4192149408b1c897db3871cdb9a550df8c4a3420ea778823b20d",
+              "sharpness": 239.42556762695312,
+              "corner_coverage": 0.5,
+              "corners": 120,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 249,
+            "selected": 249,
+            "candidates": [
+              243,
+              244,
+              245,
+              246,
+              247,
+              248,
+              249,
+              250,
+              251,
+              252,
+              253,
+              254,
+              255
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "b587a7194b40b8775467535d5be19e319d5f3c4cb7bda3737fb2248ebbd95f13",
+              "sharpness": 244.52413940429688,
+              "corner_coverage": 0.5625,
+              "corners": 124,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 264,
+            "selected": 264,
+            "candidates": [
+              258,
+              259,
+              260,
+              261,
+              262,
+              263,
+              264,
+              265,
+              266,
+              267,
+              268,
+              269,
+              270
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "5b99c675e7ac3a5bc6cd35e0104577faeab904ecf06a30315eba0b3639de4adf",
+              "sharpness": 254.8152618408203,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 122,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 279,
+            "selected": 279,
+            "candidates": [
+              273,
+              274,
+              275,
+              276,
+              277,
+              278,
+              279,
+              280,
+              281,
+              282,
+              283,
+              284,
+              285
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "815cb4cfc263d02635892263a3539798fe5b59dd706aea129b150014beaa924c",
+              "sharpness": 246.9203643798828,
+              "corner_coverage": 0.6041666666666666,
+              "corners": 126,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 294,
+            "selected": 294,
+            "candidates": [
+              288,
+              289,
+              290,
+              291,
+              292,
+              293,
+              294,
+              295,
+              296,
+              297,
+              298,
+              299,
+              300
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d85de1ce84e459616503f21f74b3f3cbfe9e1c0c228a8ddf5a593ced610943f5",
+              "sharpness": 264.01318359375,
+              "corner_coverage": 0.5625,
+              "corners": 119,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 309,
+            "selected": 309,
+            "candidates": [
+              303,
+              304,
+              305,
+              306,
+              307,
+              308,
+              309,
+              310,
+              311,
+              312,
+              313,
+              314,
+              315
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "869016c15053fbfe7333b5493849e28c6b261a5cb50d9ac9c5138960a8ae8dd6",
+              "sharpness": 282.2897644042969,
+              "corner_coverage": 0.5625,
+              "corners": 124,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 324,
+            "selected": 324,
+            "candidates": [
+              318,
+              319,
+              320,
+              321,
+              322,
+              323,
+              324,
+              325,
+              326,
+              327,
+              328,
+              329,
+              330
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "f11a13b2f88a4721adbc49b9c2b31f09350c5d842982abc23d12821229a43fa6",
+              "sharpness": 264.19061279296875,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 117,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 339,
+            "selected": 339,
+            "candidates": [
+              333,
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344,
+              345
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+              "sharpness": 274.0556335449219,
+              "corner_coverage": 0.5625,
+              "corners": 127,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 354,
+            "selected": 354,
+            "candidates": [
+              348,
+              349,
+              350,
+              351,
+              352,
+              353,
+              354,
+              355,
+              356,
+              357,
+              358,
+              359,
+              360
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "c2b8943ef75f91cbc095282de9d9fe23c5c4a3bcaad0361652396d968f2f5278",
+              "sharpness": 224.36386108398438,
+              "corner_coverage": 0.5625,
+              "corners": 115,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 369,
+            "selected": 372,
+            "candidates": [
+              372,
+              373,
+              374,
+              375
+            ],
+            "anchor_excluded": true,
+            "metrics": {
+              "decoded": true,
+              "sha256": "3b2b65dca73cfdaa08585f7a4507eb706430ae5a1c25edfbf6965f1f53e35d90",
+              "sharpness": 279.0373840332031,
+              "corner_coverage": 0.6666666666666666,
+              "corners": 133,
+              "dark_fraction": 0.0,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 384,
+            "selected": 384,
+            "candidates": [
+              378,
+              379,
+              380,
+              381,
+              382,
+              383,
+              384,
+              385,
+              386,
+              387,
+              388,
+              389,
+              390
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "04014531f565bf4af81a846ed0658a7f5103cfc2d717841ea4f739bef10c175a",
+              "sharpness": 279.67474365234375,
+              "corner_coverage": 0.6041666666666666,
+              "corners": 126,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0006901041666666667
+            }
+          },
+          {
+            "anchor": 399,
+            "selected": 399,
+            "candidates": [
+              393,
+              394,
+              395,
+              396,
+              397,
+              398,
+              399,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "4c740648f0e7007932c62dac25e35614be226a1fb9fea87827f9cc502bac9e38",
+              "sharpness": 261.87664794921875,
+              "corner_coverage": 0.5625,
+              "corners": 124,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00046875
+            }
+          },
+          {
+            "anchor": 414,
+            "selected": 414,
+            "candidates": [
+              408,
+              409,
+              410,
+              411,
+              412,
+              413,
+              414,
+              415,
+              416,
+              417,
+              418,
+              419,
+              420
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "587536c4781cacade287d4220ff2c11656e2122d8ec315ef975f4f89a6db8893",
+              "sharpness": 245.30880737304688,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 107,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 429,
+            "selected": 429,
+            "candidates": [
+              423,
+              424,
+              425,
+              426,
+              427,
+              428,
+              429,
+              430,
+              431,
+              432,
+              433,
+              434,
+              435
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "7d8ff855b1582fa5a8803f56dafd1101b98db7a73722a81654da84f667b4e301",
+              "sharpness": 227.32650756835938,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 97,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00015625
+            }
+          },
+          {
+            "anchor": 444,
+            "selected": 444,
+            "candidates": [
+              438,
+              439,
+              440,
+              441,
+              442,
+              443,
+              444,
+              445,
+              446,
+              447,
+              448,
+              449,
+              450
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "6b336ccf9a49185323dae47cc6065c6cce01fb2b5af8694d8d3f4a0b463d56bf",
+              "sharpness": 132.30560302734375,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 98,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 459,
+            "selected": 459,
+            "candidates": [
+              453,
+              454,
+              455,
+              456,
+              457,
+              458,
+              459,
+              460,
+              461,
+              462,
+              463,
+              464,
+              465
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "ef0f0bb8f51159b2d573beccfca8c439025a4a730a1817f364d9636a6ba5848c",
+              "sharpness": 232.375,
+              "corner_coverage": 0.5,
+              "corners": 120,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 474,
+            "selected": 474,
+            "candidates": [
+              468,
+              469,
+              470,
+              471,
+              472,
+              473,
+              474,
+              475,
+              476,
+              477,
+              478,
+              479,
+              480
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "51942b2b5f241f65ce7d4da26e9e47d2c8a473bad2ea45b3e7def139af47f1e0",
+              "sharpness": 271.57232666015625,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 113,
+              "dark_fraction": 0.0,
+              "bright_fraction": 9.114583333333334e-05
+            }
+          },
+          {
+            "anchor": 489,
+            "selected": 489,
+            "candidates": [
+              483,
+              484,
+              485,
+              486,
+              487,
+              488,
+              489,
+              490,
+              491,
+              492,
+              493,
+              494,
+              495
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "fc6e2ca20c99e3a8a2ae63db916bb53a25213479f26ecd5c9cf2e0515dd4c654",
+              "sharpness": 263.0804138183594,
+              "corner_coverage": 0.5,
+              "corners": 103,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 504,
+            "selected": 504,
+            "candidates": [
+              498,
+              499,
+              500,
+              501,
+              502,
+              503,
+              504,
+              505,
+              506,
+              507,
+              508,
+              509,
+              510
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "6031bc2edc445811f1580104ef1f565a66197f13fa95d418448c06454f426b9a",
+              "sharpness": 283.9246520996094,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 116,
+              "dark_fraction": 0.0,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 519,
+            "selected": 519,
+            "candidates": [
+              513,
+              514,
+              515,
+              516,
+              517,
+              518,
+              519,
+              520,
+              521,
+              522,
+              523,
+              524,
+              525
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "90f75dcbaec18346b9fd48b5f1dc5dab156b9ec4bbb71d69ebba037d59083d7e",
+              "sharpness": 271.009033203125,
+              "corner_coverage": 0.5,
+              "corners": 109,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 534,
+            "selected": 534,
+            "candidates": [
+              528,
+              529,
+              530,
+              531,
+              532,
+              533,
+              534,
+              535,
+              536,
+              537,
+              538,
+              539,
+              540
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "19d2706207503501cbb3474c74916a5ce0ec080b8183d5aa5e1bcaecf1226c9f",
+              "sharpness": 250.543701171875,
+              "corner_coverage": 0.4375,
+              "corners": 91,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 549,
+            "selected": 549,
+            "candidates": [
+              543,
+              544,
+              545,
+              546,
+              547,
+              548,
+              549,
+              550,
+              551,
+              552,
+              553,
+              554,
+              555
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "a454c9226b4fbf22de33da06fc475126f5e5063bc922e48dbd40b6a7f042bf1d",
+              "sharpness": 117.13391876220703,
+              "corner_coverage": 0.6666666666666666,
+              "corners": 135,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 564,
+            "selected": 564,
+            "candidates": [
+              558,
+              559,
+              560,
+              561,
+              562,
+              563,
+              564,
+              565,
+              566,
+              567,
+              568,
+              569,
+              570
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "2d5a0d467b6ff9c658e907eabdea31deef88dc04c2e7b2c0754c2f536aeafb17",
+              "sharpness": 229.8914031982422,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 149,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 579,
+            "selected": 579,
+            "candidates": [
+              573,
+              574,
+              575,
+              576,
+              577,
+              578,
+              579,
+              580,
+              581,
+              582,
+              583,
+              584,
+              585
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "8f67ed4fb806fc05085b17200eeef4954913fed1ef01283ab93f6a0d4e8108bc",
+              "sharpness": 250.6750030517578,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 124,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 594,
+            "selected": 594,
+            "candidates": [
+              588,
+              589,
+              590,
+              591,
+              592,
+              593,
+              594,
+              595,
+              596,
+              597,
+              598,
+              599,
+              600
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "2ad582f954d7605cdb47bcf4ab5f607882cb27fe04a7789ed83959d1ae62a550",
+              "sharpness": 245.6913604736328,
+              "corner_coverage": 0.4583333333333333,
+              "corners": 116,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 609,
+            "selected": 609,
+            "candidates": [
+              603,
+              604,
+              605,
+              606,
+              607,
+              608,
+              609,
+              610,
+              611,
+              612,
+              613,
+              614,
+              615
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "956f86256412a7643c7a944a8bd6fa6db6c5032e3fc712f911a072c5f8d1ab47",
+              "sharpness": 245.71734619140625,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 118,
+              "dark_fraction": 0.0,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 624,
+            "selected": 624,
+            "candidates": [
+              618,
+              619,
+              620,
+              621,
+              622,
+              623,
+              624,
+              625,
+              626,
+              627,
+              628,
+              629,
+              630
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "f9cf0ac06e7c2fb4516a707eec2617aa3c100f0e846683dc8df6f098d9f3c339",
+              "sharpness": 242.90301513671875,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 116,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 639,
+            "selected": 639,
+            "candidates": [
+              633,
+              634,
+              635,
+              636,
+              637,
+              638,
+              639,
+              640,
+              641,
+              642,
+              643,
+              644,
+              645
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "dbdd3619bce61b3ff5c50f00a4692f5e44cd8e0d5659132c55d08df5eb2b48e1",
+              "sharpness": 274.9748840332031,
+              "corner_coverage": 0.625,
+              "corners": 136,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          }
+        ]
+      },
+      "quality_coverage": {
+        "session": "quality_coverage/input/20261002T213938Z-e3ead809",
+        "indices": [
+          48,
+          73,
+          90,
+          94,
+          116,
+          126,
+          148,
+          163,
+          178,
+          188,
+          208,
+          221,
+          236,
+          253,
+          265,
+          285,
+          293,
+          314,
+          319,
+          339,
+          351,
+          375,
+          379,
+          397,
+          417,
+          430,
+          441,
+          465,
+          479,
+          493,
+          506,
+          524,
+          530,
+          555,
+          566,
+          580,
+          596,
+          612,
+          628,
+          639
+        ],
+        "changed_frames": 38,
+        "max_selected_gap_seconds": 2.124197,
+        "median_sharpness": 254.77484893798828,
+        "median_corner_coverage": 0.5625,
+        "decisions": [
+          {
+            "anchor": 54,
+            "selected": 48,
+            "candidates": [
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "186688379cff6ca370705f67f3fdc97e89dd09d9e9fd00c0edc20ac097d4de6a",
+              "sharpness": 198.7508087158203,
+              "corner_coverage": 0.5625,
+              "corners": 112,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0029296875
+            }
+          },
+          {
+            "anchor": 69,
+            "selected": 73,
+            "candidates": [
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "ff12e2b250ace0def5aa92552ea114e8e979c661f957c09a39fd4c97940467a0",
+              "sharpness": 173.1262969970703,
+              "corner_coverage": 0.625,
+              "corners": 111,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0013802083333333333
+            }
+          },
+          {
+            "anchor": 84,
+            "selected": 90,
+            "candidates": [
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "9f8e6243aa344721252235cea32d0b998b15dfd8f8a1bcc55db01bd74eb8ec56",
+              "sharpness": 355.05865478515625,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 96,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0022395833333333334
+            }
+          },
+          {
+            "anchor": 99,
+            "selected": 94,
+            "candidates": [
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "58247154447cd23f148d2437092674b882408f6e0394c8ad48cc109ec7bd8e1a",
+              "sharpness": 339.9344787597656,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 99,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0011588541666666668
+            }
+          },
+          {
+            "anchor": 114,
+            "selected": 116,
+            "candidates": [
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "f0de78e800f92049a543d175a06b08f507ff57e8d172f5b0a78b3ab53b57cf1c",
+              "sharpness": 164.82281494140625,
+              "corner_coverage": 0.5,
+              "corners": 76,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 129,
+            "selected": 126,
+            "candidates": [
+              123,
+              124,
+              125,
+              126,
+              127,
+              128,
+              129,
+              130,
+              131,
+              132,
+              133,
+              134,
+              135
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "11bfa8806eb79980fecc6265f27d51cfe572514111d05599bcdc42d1c3ee5e55",
+              "sharpness": 173.5192108154297,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 87,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 144,
+            "selected": 148,
+            "candidates": [
+              138,
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "94e844e2b0ed529117198de0bae34df1621b8f39f854393655edb88462483f9c",
+              "sharpness": 181.67286682128906,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 88,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 159,
+            "selected": 163,
+            "candidates": [
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "1e39361aaed31764d01e9723cc2ca4e6b272d28e5261737b54f2ca8361e0a755",
+              "sharpness": 164.3542938232422,
+              "corner_coverage": 0.7083333333333334,
+              "corners": 135,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 174,
+            "selected": 178,
+            "candidates": [
+              168,
+              169,
+              170,
+              171,
+              172,
+              173,
+              174,
+              175,
+              176,
+              177,
+              178,
+              179,
+              180
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "c892c9d2712ec0949f6b4c21981c3fb3f313f08e6e3c7b3bb28fc894d0e7ec98",
+              "sharpness": 184.45526123046875,
+              "corner_coverage": 0.6041666666666666,
+              "corners": 134,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 189,
+            "selected": 188,
+            "candidates": [
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "25d0206a4f3b501219dd8094073867dbdcb6e6c2d87f6f1aba297d6c119b69ee",
+              "sharpness": 219.79119873046875,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 117,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 204,
+            "selected": 208,
+            "candidates": [
+              198,
+              199,
+              200,
+              201,
+              202,
+              203,
+              204,
+              205,
+              206,
+              207,
+              208,
+              209,
+              210
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "636002c4db89afdd9d5fd2e11eb5ee9ee79f0f5a70a17d66f59ce9c0b4d98aa1",
+              "sharpness": 252.40997314453125,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 128,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 219,
+            "selected": 221,
+            "candidates": [
+              213,
+              214,
+              215,
+              216,
+              217,
+              218,
+              219,
+              220,
+              221,
+              222,
+              223,
+              224,
+              225
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "9f372acce4ee51da124a480acb87f69ff01bd1a543564287171e6c69fcd8501a",
+              "sharpness": 250.93588256835938,
+              "corner_coverage": 0.5,
+              "corners": 115,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 234,
+            "selected": 236,
+            "candidates": [
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "5487169b506b0c324e17f0c57ae85aa1cfb4b83491e1a284d29c8d9354c83220",
+              "sharpness": 254.36721801757812,
+              "corner_coverage": 0.5,
+              "corners": 121,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 249,
+            "selected": 253,
+            "candidates": [
+              243,
+              244,
+              245,
+              246,
+              247,
+              248,
+              249,
+              250,
+              251,
+              252,
+              253,
+              254,
+              255
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "8fb62bed95b50fa11187877133ba9f9a78348e052936d97b35a9a6bf68751797",
+              "sharpness": 250.0045623779297,
+              "corner_coverage": 0.5625,
+              "corners": 119,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 264,
+            "selected": 265,
+            "candidates": [
+              258,
+              259,
+              260,
+              261,
+              262,
+              263,
+              264,
+              265,
+              266,
+              267,
+              268,
+              269,
+              270
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "4395c7bc8016f4f6fa938d9f9f11ee87352a86e0b8eab058a4459944a707572f",
+              "sharpness": 260.4910888671875,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 115,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 279,
+            "selected": 285,
+            "candidates": [
+              273,
+              274,
+              275,
+              276,
+              277,
+              278,
+              279,
+              280,
+              281,
+              282,
+              283,
+              284,
+              285
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "55b81961797451af784be7e3d081df6668f3e4fa557c6631b8e2653f2f751ca0",
+              "sharpness": 253.6174774169922,
+              "corner_coverage": 0.5625,
+              "corners": 121,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 294,
+            "selected": 293,
+            "candidates": [
+              288,
+              289,
+              290,
+              291,
+              292,
+              293,
+              294,
+              295,
+              296,
+              297,
+              298,
+              299,
+              300
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "064c1f95da61ef656bd43ab9aa1fdbe29279a6626405ba85f790098c4851d878",
+              "sharpness": 270.4179382324219,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 128,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 309,
+            "selected": 314,
+            "candidates": [
+              303,
+              304,
+              305,
+              306,
+              307,
+              308,
+              309,
+              310,
+              311,
+              312,
+              313,
+              314,
+              315
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "876f6cf404ba423d65435f6751dee17d41194994bcabddf5d48ba5dcd2e325f6",
+              "sharpness": 290.0824890136719,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 126,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 324,
+            "selected": 319,
+            "candidates": [
+              318,
+              319,
+              320,
+              321,
+              322,
+              323,
+              324,
+              325,
+              326,
+              327,
+              328,
+              329,
+              330
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "0e4d57883bf61ffa6ef29a67466da2e2aba848241dbb5281f36b29620f0660aa",
+              "sharpness": 277.80902099609375,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 118,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 339,
+            "selected": 339,
+            "candidates": [
+              333,
+              334,
+              335,
+              336,
+              337,
+              338,
+              339,
+              340,
+              341,
+              342,
+              343,
+              344,
+              345
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+              "sharpness": 274.0556335449219,
+              "corner_coverage": 0.5625,
+              "corners": 127,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 354,
+            "selected": 351,
+            "candidates": [
+              348,
+              349,
+              350,
+              351,
+              352,
+              353,
+              354,
+              355,
+              356,
+              357,
+              358,
+              359,
+              360
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "4b567e6ea40e0498f0bbab281bd35bad7a4af955114cf46638480bd098838612",
+              "sharpness": 272.5006103515625,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 124,
+              "dark_fraction": 0.0,
+              "bright_fraction": 6.510416666666667e-05
+            }
+          },
+          {
+            "anchor": 369,
+            "selected": 375,
+            "candidates": [
+              372,
+              373,
+              374,
+              375
+            ],
+            "anchor_excluded": true,
+            "metrics": {
+              "decoded": true,
+              "sha256": "078c59c951e080c00d403a6c0c6f91b3a5e567b53b8fea27b8767be5aad3cd53",
+              "sharpness": 284.3396911621094,
+              "corner_coverage": 0.6458333333333334,
+              "corners": 148,
+              "dark_fraction": 0.0,
+              "bright_fraction": 9.114583333333334e-05
+            }
+          },
+          {
+            "anchor": 384,
+            "selected": 379,
+            "candidates": [
+              378,
+              379,
+              380,
+              381,
+              382,
+              383,
+              384,
+              385,
+              386,
+              387,
+              388,
+              389,
+              390
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "927f196db977e585d192bf1676297d26430ab66692f78051f30e95800627fd3a",
+              "sharpness": 297.1627197265625,
+              "corner_coverage": 0.6041666666666666,
+              "corners": 137,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0009375
+            }
+          },
+          {
+            "anchor": 399,
+            "selected": 397,
+            "candidates": [
+              393,
+              394,
+              395,
+              396,
+              397,
+              398,
+              399,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "479539896fad0d355fc6c96fd07f55ed4d0f00e76aefda3fd03c0d8b5f09759f",
+              "sharpness": 264.57452392578125,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 119,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0003255208333333333
+            }
+          },
+          {
+            "anchor": 414,
+            "selected": 417,
+            "candidates": [
+              408,
+              409,
+              410,
+              411,
+              412,
+              413,
+              414,
+              415,
+              416,
+              417,
+              418,
+              419,
+              420
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "d8393d24ef77f03d8e5d4897e6af72453152b7ba29d899b5601d3fee1473cb45",
+              "sharpness": 259.6365051269531,
+              "corner_coverage": 0.625,
+              "corners": 119,
+              "dark_fraction": 0.0,
+              "bright_fraction": 6.510416666666667e-05
+            }
+          },
+          {
+            "anchor": 429,
+            "selected": 430,
+            "candidates": [
+              423,
+              424,
+              425,
+              426,
+              427,
+              428,
+              429,
+              430,
+              431,
+              432,
+              433,
+              434,
+              435
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "a84309c6905e2799310645696a8dc59ce4c353afc4d268752924910769247c92",
+              "sharpness": 242.88223266601562,
+              "corner_coverage": 0.5,
+              "corners": 110,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.00046875
+            }
+          },
+          {
+            "anchor": 444,
+            "selected": 441,
+            "candidates": [
+              438,
+              439,
+              440,
+              441,
+              442,
+              443,
+              444,
+              445,
+              446,
+              447,
+              448,
+              449,
+              450
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "74f54afa05d555e19ecb62900c26d94bbd192503886278f4cdfb51d08c7f623e",
+              "sharpness": 178.23345947265625,
+              "corner_coverage": 0.5625,
+              "corners": 110,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0001953125
+            }
+          },
+          {
+            "anchor": 459,
+            "selected": 465,
+            "candidates": [
+              453,
+              454,
+              455,
+              456,
+              457,
+              458,
+              459,
+              460,
+              461,
+              462,
+              463,
+              464,
+              465
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "3b85a2f530e85464f199e6088eacc31f570b204ad006421588d3de11d7159bcd",
+              "sharpness": 244.20130920410156,
+              "corner_coverage": 0.5625,
+              "corners": 120,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 474,
+            "selected": 479,
+            "candidates": [
+              468,
+              469,
+              470,
+              471,
+              472,
+              473,
+              474,
+              475,
+              476,
+              477,
+              478,
+              479,
+              480
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "13bedd345ecb70dd3ad29f52b55e46948245366e4aac18468c5d83b3cceb8ad6",
+              "sharpness": 279.9892272949219,
+              "corner_coverage": 0.5,
+              "corners": 121,
+              "dark_fraction": 0.0,
+              "bright_fraction": 7.8125e-05
+            }
+          },
+          {
+            "anchor": 489,
+            "selected": 493,
+            "candidates": [
+              483,
+              484,
+              485,
+              486,
+              487,
+              488,
+              489,
+              490,
+              491,
+              492,
+              493,
+              494,
+              495
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "a7ac77c537b62f4486e672b7eba51334fe09aa7ba76954cb33d428a0aaab2244",
+              "sharpness": 281.6477966308594,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 102,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 504,
+            "selected": 506,
+            "candidates": [
+              498,
+              499,
+              500,
+              501,
+              502,
+              503,
+              504,
+              505,
+              506,
+              507,
+              508,
+              509,
+              510
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "5f904eab105f4ee31330e6fc18991f42abd813ef848bda9e8414405d8d4e2245",
+              "sharpness": 286.80596923828125,
+              "corner_coverage": 0.5,
+              "corners": 105,
+              "dark_fraction": 1.3020833333333334e-05,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 519,
+            "selected": 524,
+            "candidates": [
+              513,
+              514,
+              515,
+              516,
+              517,
+              518,
+              519,
+              520,
+              521,
+              522,
+              523,
+              524,
+              525
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "cdf5e9281c9ef2909880ccb5db4532b85cb9f9f7c43b0b57d66b756f676d2977",
+              "sharpness": 278.25732421875,
+              "corner_coverage": 0.4791666666666667,
+              "corners": 95,
+              "dark_fraction": 0.0,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 534,
+            "selected": 530,
+            "candidates": [
+              528,
+              529,
+              530,
+              531,
+              532,
+              533,
+              534,
+              535,
+              536,
+              537,
+              538,
+              539,
+              540
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "5fac2ae8030cefd184f7a9c4e20f4019295b5ae2cd9ee77528a3f0321767e9c2",
+              "sharpness": 274.20977783203125,
+              "corner_coverage": 0.5,
+              "corners": 100,
+              "dark_fraction": 0.0,
+              "bright_fraction": 3.90625e-05
+            }
+          },
+          {
+            "anchor": 549,
+            "selected": 555,
+            "candidates": [
+              543,
+              544,
+              545,
+              546,
+              547,
+              548,
+              549,
+              550,
+              551,
+              552,
+              553,
+              554,
+              555
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "3724676d305f214203f7083b8ab0c48dbb723d65f44e842e61c6ff2f20e3c3f7",
+              "sharpness": 174.1746063232422,
+              "corner_coverage": 0.6458333333333334,
+              "corners": 139,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 564,
+            "selected": 566,
+            "candidates": [
+              558,
+              559,
+              560,
+              561,
+              562,
+              563,
+              564,
+              565,
+              566,
+              567,
+              568,
+              569,
+              570
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "dcf1b61849af167ce6972ef15dd8d9b30802a8ff45348d2d8c522da8705e5a1d",
+              "sharpness": 242.05059814453125,
+              "corner_coverage": 0.5625,
+              "corners": 140,
+              "dark_fraction": 0.0,
+              "bright_fraction": 1.3020833333333334e-05
+            }
+          },
+          {
+            "anchor": 579,
+            "selected": 580,
+            "candidates": [
+              573,
+              574,
+              575,
+              576,
+              577,
+              578,
+              579,
+              580,
+              581,
+              582,
+              583,
+              584,
+              585
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "1146684d508aaba8a9290d53d2641be77fcff9a01698f061c8a18557e7a22397",
+              "sharpness": 262.4525451660156,
+              "corner_coverage": 0.5833333333333334,
+              "corners": 134,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 594,
+            "selected": 596,
+            "candidates": [
+              588,
+              589,
+              590,
+              591,
+              592,
+              593,
+              594,
+              595,
+              596,
+              597,
+              598,
+              599,
+              600
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "5c2e317182b91dfe2e4e83e2981cd90cef6637067447af006a2fc6b5407a13fc",
+              "sharpness": 252.574951171875,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 135,
+              "dark_fraction": 0.0,
+              "bright_fraction": 5.208333333333334e-05
+            }
+          },
+          {
+            "anchor": 609,
+            "selected": 612,
+            "candidates": [
+              603,
+              604,
+              605,
+              606,
+              607,
+              608,
+              609,
+              610,
+              611,
+              612,
+              613,
+              614,
+              615
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "082e3032b189fe68676c33891961ae46a84ba2dd4143cc781d61cb2de41c23e8",
+              "sharpness": 252.0362548828125,
+              "corner_coverage": 0.5208333333333334,
+              "corners": 117,
+              "dark_fraction": 0.0,
+              "bright_fraction": 2.604166666666667e-05
+            }
+          },
+          {
+            "anchor": 624,
+            "selected": 628,
+            "candidates": [
+              618,
+              619,
+              620,
+              621,
+              622,
+              623,
+              624,
+              625,
+              626,
+              627,
+              628,
+              629,
+              630
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "3f119d8738b25486c402aecb35ef544dcdc1360d6904cc1ef177320dcf62d0b2",
+              "sharpness": 255.18247985839844,
+              "corner_coverage": 0.5416666666666666,
+              "corners": 119,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          },
+          {
+            "anchor": 639,
+            "selected": 639,
+            "candidates": [
+              633,
+              634,
+              635,
+              636,
+              637,
+              638,
+              639,
+              640,
+              641,
+              642,
+              643,
+              644,
+              645
+            ],
+            "anchor_excluded": false,
+            "metrics": {
+              "decoded": true,
+              "sha256": "dbdd3619bce61b3ff5c50f00a4692f5e44cd8e0d5659132c55d08df5eb2b48e1",
+              "sharpness": 274.9748840332031,
+              "corner_coverage": 0.625,
+              "corners": 136,
+              "dark_fraction": 0.0,
+              "bright_fraction": 0.0
+            }
+          }
+        ]
+      }
+    },
+    "baseline_quality": {
+      "median_sharpness": 243.7135772705078,
+      "median_corner_coverage": 0.5208333333333334
+    }
+  },
+  "trials": [
+    {
+      "kind": "experimental_window_replay",
+      "source_session": "20261002T213938Z-e3ead809",
+      "units": "arbitrary",
+      "imu_used": false,
+      "live": false,
+      "steps": [
+        {
+          "name": "large-couch-54",
+          "indices": [
+            54,
+            69,
+            84,
+            99,
+            114,
+            129,
+            144,
+            159,
+            174,
+            189,
+            204,
+            219,
+            234,
+            249,
+            264,
+            279,
+            294,
+            309,
+            324,
+            339,
+            354,
+            369,
+            384,
+            399
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 60,
+                  "evaluated": 56,
+                  "median_pixels": 1.14916100342271,
+                  "p90_pixels": 2.460800318734182
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 49,
+                  "evaluated": 48,
+                  "median_pixels": 4.526082977445487,
+                  "p90_pixels": 5.982267083232415
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 54,
+                  "evaluated": 50,
+                  "median_pixels": 2.3865289820536235,
+                  "p90_pixels": 4.263569603558022
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 67,
+                  "evaluated": 62,
+                  "median_pixels": 0.8227384559094928,
+                  "p90_pixels": 1.8786367221444613
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 76,
+                  "evaluated": 74,
+                  "median_pixels": 0.7537817170254347,
+                  "p90_pixels": 1.3444207647303887
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 75,
+                  "evaluated": 71,
+                  "median_pixels": 0.6130564931419301,
+                  "p90_pixels": 1.155502017281756
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 75,
+                  "evaluated": 72,
+                  "median_pixels": 1.1371978114422847,
+                  "p90_pixels": 2.3068980150803515
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 77,
+                  "evaluated": 67,
+                  "median_pixels": 0.44571555933704404,
+                  "p90_pixels": 1.0461349925680639
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 84,
+                  "evaluated": 72,
+                  "median_pixels": 0.7940766517770159,
+                  "p90_pixels": 1.549304594084995
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 104,
+                  "evaluated": 82,
+                  "median_pixels": 0.6422750823260838,
+                  "p90_pixels": 1.3629523058005582
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 83,
+                  "median_pixels": 0.7709343786338249,
+                  "p90_pixels": 1.4881453932774122
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 112,
+                  "evaluated": 89,
+                  "median_pixels": 0.7594947617366411,
+                  "p90_pixels": 1.4131621084330126
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 99,
+                  "median_pixels": 1.0905232004478977,
+                  "p90_pixels": 1.7521483169266523
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 107,
+                  "median_pixels": 0.7159096698239333,
+                  "p90_pixels": 1.3136924455193637
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 120,
+                  "evaluated": 102,
+                  "median_pixels": 1.8444399278703645,
+                  "p90_pixels": 3.661635149225434
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 83,
+                  "median_pixels": 1.55033704532072,
+                  "p90_pixels": 2.4320812020968736
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 103,
+                  "median_pixels": 0.7509436427449847,
+                  "p90_pixels": 1.9389055490265752
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 103,
+                  "median_pixels": 0.780426506054907,
+                  "p90_pixels": 1.5818881105752136
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 109,
+                  "median_pixels": 0.556225446457252,
+                  "p90_pixels": 1.293518331872047
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 96,
+                  "median_pixels": 1.4880305178354658,
+                  "p90_pixels": 2.313415873765157
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 19,
+                  "evaluated": 17,
+                  "median_pixels": 4.432074176561057,
+                  "p90_pixels": 4.839462873265625
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 16,
+                  "evaluated": 16,
+                  "median_pixels": 4.305229548716191,
+                  "p90_pixels": 5.875321674551163
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 98,
+                  "median_pixels": 1.0716965744307805,
+                  "p90_pixels": 1.726450869083276
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.8227384559094928,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 28.780755,
+          "state": "seed",
+          "reasons": [],
+          "alignment": null,
+          "retained_poses": 24
+        },
+        {
+          "name": "large-couch-174",
+          "indices": [
+            174,
+            189,
+            204,
+            219,
+            234,
+            249,
+            264,
+            279,
+            294,
+            309,
+            324,
+            339,
+            354,
+            369,
+            384,
+            399,
+            414,
+            429,
+            444,
+            459,
+            474,
+            489,
+            504,
+            519
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 84,
+                  "evaluated": 72,
+                  "median_pixels": 1.1854662103256315,
+                  "p90_pixels": 1.8074575375551467
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 104,
+                  "evaluated": 81,
+                  "median_pixels": 0.7489725343760607,
+                  "p90_pixels": 1.5338581443327644
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 84,
+                  "median_pixels": 0.8168526669853442,
+                  "p90_pixels": 1.5597062394452053
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 112,
+                  "evaluated": 92,
+                  "median_pixels": 0.501453974016061,
+                  "p90_pixels": 1.0386610742857576
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 103,
+                  "median_pixels": 1.1040706821222943,
+                  "p90_pixels": 1.8028948611623559
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 107,
+                  "median_pixels": 0.7600745789903524,
+                  "p90_pixels": 1.477321637727398
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 120,
+                  "evaluated": 100,
+                  "median_pixels": 0.6549213098870685,
+                  "p90_pixels": 1.239732603528304
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 88,
+                  "median_pixels": 1.2563592309685125,
+                  "p90_pixels": 2.300717008536948
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 104,
+                  "median_pixels": 0.8582400079725367,
+                  "p90_pixels": 1.6981402874719664
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 102,
+                  "median_pixels": 0.8591764420376277,
+                  "p90_pixels": 1.6707189176586967
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 109,
+                  "median_pixels": 1.0258922986882908,
+                  "p90_pixels": 2.3206051729061437
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 87,
+                  "median_pixels": 1.7956221060755588,
+                  "p90_pixels": 3.009153020610827
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 19,
+                  "evaluated": 18,
+                  "median_pixels": 4.653213049545363,
+                  "p90_pixels": 5.5079384623445415
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 16,
+                  "evaluated": 16,
+                  "median_pixels": 4.878372398501909,
+                  "p90_pixels": 6.6375267003807865
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 96,
+                  "median_pixels": 0.8750706461722257,
+                  "p90_pixels": 1.5356068001766796
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 77,
+                  "median_pixels": 0.7966337881351988,
+                  "p90_pixels": 1.637721718106449
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 92,
+                  "evaluated": 76,
+                  "median_pixels": 0.6547020001307587,
+                  "p90_pixels": 1.3265420027966273
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 66,
+                  "evaluated": 61,
+                  "median_pixels": 1.175871893583547,
+                  "p90_pixels": 2.367162065343509
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 71,
+                  "median_pixels": 0.9067505427089106,
+                  "p90_pixels": 1.4450069439924034
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 69,
+                  "median_pixels": 0.9035633028692808,
+                  "p90_pixels": 1.589959787915145
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 102,
+                  "evaluated": 79,
+                  "median_pixels": 0.500361530289158,
+                  "p90_pixels": 0.966195928575828
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 122,
+                  "evaluated": 98,
+                  "median_pixels": 1.6022012616029606,
+                  "p90_pixels": 2.0428348958655076
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 82,
+                  "evaluated": 65,
+                  "median_pixels": 1.4006748907752042,
+                  "p90_pixels": 2.194371970628355
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.9035633028692808,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 38.860263,
+          "state": "merged",
+          "reasons": [],
+          "alignment": {
+            "shared_views": 16,
+            "fit_views": [
+              174,
+              204,
+              234,
+              264,
+              294,
+              324,
+              354,
+              384
+            ],
+            "validation_views": [
+              189,
+              219,
+              249,
+              279,
+              309,
+              339,
+              369,
+              399
+            ],
+            "fit_points": 7019,
+            "validation_points": 6801,
+            "fit_inlier_fraction": 1.0,
+            "validation_median_fraction_of_depth": 0.002034022628775696,
+            "validation_p90_fraction_of_depth": 0.004251497021507343,
+            "camera_p90_fraction_of_depth": 0.006218260878110438,
+            "orientation_p90_degrees": 0.3082372241576139,
+            "overlap_baseline_fraction_of_depth": 0.09462419897317886,
+            "relative_scale": 1.0193909033607687,
+            "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+            "accepted": true,
+            "reasons": []
+          },
+          "retained_poses": 32
+        },
+        {
+          "name": "large-504",
+          "indices": [
+            294,
+            309,
+            324,
+            339,
+            354,
+            369,
+            384,
+            399,
+            414,
+            429,
+            444,
+            459,
+            474,
+            489,
+            504,
+            519,
+            534,
+            549,
+            564,
+            579,
+            594,
+            609,
+            624,
+            639
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 104,
+                  "median_pixels": 0.8565014346641369,
+                  "p90_pixels": 1.531284856879101
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 108,
+                  "median_pixels": 1.7095290904461473,
+                  "p90_pixels": 2.255144570783271
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 109,
+                  "median_pixels": 0.454730531796933,
+                  "p90_pixels": 0.9320966280410764
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 97,
+                  "median_pixels": 1.0785103836692085,
+                  "p90_pixels": 1.7467256113019312
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 19,
+                  "evaluated": 18,
+                  "median_pixels": 7.571275147486052,
+                  "p90_pixels": 8.08188263826206
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 16,
+                  "evaluated": 16,
+                  "median_pixels": 5.1100059544136895,
+                  "p90_pixels": 6.673665643754256
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 97,
+                  "median_pixels": 0.8508429533292073,
+                  "p90_pixels": 1.605908357713694
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 76,
+                  "median_pixels": 0.8610216012491498,
+                  "p90_pixels": 1.5984355525414013
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 92,
+                  "evaluated": 70,
+                  "median_pixels": 1.312309304352185,
+                  "p90_pixels": 2.1184644473161236
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 66,
+                  "evaluated": 58,
+                  "median_pixels": 1.449039746608169,
+                  "p90_pixels": 2.767340734958142
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 73,
+                  "median_pixels": 0.7881586282968379,
+                  "p90_pixels": 1.474646147996439
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 70,
+                  "median_pixels": 0.65493024728555,
+                  "p90_pixels": 1.273280191768086
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 102,
+                  "evaluated": 76,
+                  "median_pixels": 1.5987231352834042,
+                  "p90_pixels": 2.9622356231750446
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 122,
+                  "evaluated": 87,
+                  "median_pixels": 1.9005023401923193,
+                  "p90_pixels": 2.918327369284929
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 82,
+                  "evaluated": 65,
+                  "median_pixels": 0.7709885661090919,
+                  "p90_pixels": 2.2308225711707
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 65,
+                  "evaluated": 57,
+                  "median_pixels": 0.7055185494844366,
+                  "p90_pixels": 1.6129962266634565
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 63,
+                  "evaluated": 55,
+                  "median_pixels": 0.608829487436944,
+                  "p90_pixels": 1.2714856221726174
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 68,
+                  "evaluated": 59,
+                  "median_pixels": 0.7751173419330549,
+                  "p90_pixels": 1.4451456511132625
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 75,
+                  "median_pixels": 0.7200137841941304,
+                  "p90_pixels": 1.733234821515366
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 74,
+                  "median_pixels": 0.6951765518332471,
+                  "p90_pixels": 2.050953085478142
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 96,
+                  "evaluated": 78,
+                  "median_pixels": 1.9078851031771538,
+                  "p90_pixels": 2.8201665657422055
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 113,
+                  "evaluated": 101,
+                  "median_pixels": 0.8413112566316976,
+                  "p90_pixels": 1.7185815804794287
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 95,
+                  "median_pixels": 1.9197339080858908,
+                  "p90_pixels": 2.3900020810820166
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.8565014346641369,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 49.023077,
+          "state": "withheld",
+          "reasons": [
+            "shared camera positions disagree"
+          ],
+          "alignment": {
+            "shared_views": 16,
+            "fit_views": [
+              294,
+              324,
+              354,
+              384,
+              414,
+              444,
+              474,
+              504
+            ],
+            "validation_views": [
+              309,
+              339,
+              369,
+              399,
+              429,
+              459,
+              489,
+              519
+            ],
+            "fit_points": 6312,
+            "validation_points": 6506,
+            "fit_inlier_fraction": 1.0,
+            "validation_median_fraction_of_depth": 0.004713256007537301,
+            "validation_p90_fraction_of_depth": 0.008844356153179037,
+            "camera_p90_fraction_of_depth": 0.03073398507833812,
+            "orientation_p90_degrees": 0.8278196530704334,
+            "overlap_baseline_fraction_of_depth": 0.20310308039188385,
+            "relative_scale": 1.0799084177495475,
+            "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+            "accepted": false,
+            "reasons": [
+              "shared camera positions disagree"
+            ]
+          },
+          "retained_poses": 32
+        }
+      ],
+      "seed_poses": 24,
+      "accepted_windows": 2,
+      "reference": null,
+      "warning": "Offline stitching with heuristic rejection. No loop closure, global optimization, floor orientation, metric scale or real contact placement.",
+      "pair_checks": [
+        {
+          "shared_views": 16,
+          "fit_views": [
+            174,
+            204,
+            234,
+            264,
+            294,
+            324,
+            354,
+            384
+          ],
+          "validation_views": [
+            189,
+            219,
+            249,
+            279,
+            309,
+            339,
+            369,
+            399
+          ],
+          "fit_points": 7019,
+          "validation_points": 6801,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.002034022628775696,
+          "validation_p90_fraction_of_depth": 0.004251497021507343,
+          "camera_p90_fraction_of_depth": 0.006218260878110438,
+          "orientation_p90_degrees": 0.3082372241576139,
+          "overlap_baseline_fraction_of_depth": 0.09462419897317886,
+          "relative_scale": 1.0193909033607687,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        },
+        {
+          "shared_views": 16,
+          "fit_views": [
+            294,
+            324,
+            354,
+            384,
+            414,
+            444,
+            474,
+            504
+          ],
+          "validation_views": [
+            309,
+            339,
+            369,
+            399,
+            429,
+            459,
+            489,
+            519
+          ],
+          "fit_points": 6312,
+          "validation_points": 6506,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.004713256007537301,
+          "validation_p90_fraction_of_depth": 0.008844356153179037,
+          "camera_p90_fraction_of_depth": 0.03073398507833812,
+          "orientation_p90_degrees": 0.8278196530704334,
+          "overlap_baseline_fraction_of_depth": 0.20310308039188385,
+          "relative_scale": 1.0799084177495475,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        }
+      ],
+      "name": "baseline",
+      "selected_indices": [
+        54,
+        69,
+        84,
+        99,
+        114,
+        129,
+        144,
+        159,
+        174,
+        189,
+        204,
+        219,
+        234,
+        249,
+        264,
+        279,
+        294,
+        309,
+        324,
+        339,
+        354,
+        369,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "retained_views": 32,
+      "retained_span_seconds": 38.860263,
+      "first_camera_rotation": [
+        [
+          0.9970627427101135,
+          0.0709146186709404,
+          0.028930379077792168
+        ],
+        [
+          -0.0680651068687439,
+          0.9936316609382629,
+          -0.0897955372929573
+        ],
+        [
+          -0.03511395305395126,
+          0.08756262809038162,
+          0.9955399632453918
+        ]
+      ]
+    },
+    {
+      "kind": "experimental_window_replay",
+      "source_session": "20261002T213938Z-e3ead809",
+      "units": "arbitrary",
+      "imu_used": false,
+      "live": false,
+      "steps": [
+        {
+          "name": "window-0",
+          "indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 60,
+                  "evaluated": 55,
+                  "median_pixels": 0.6356714804257243,
+                  "p90_pixels": 1.8684653484629763
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 49,
+                  "evaluated": 48,
+                  "median_pixels": 3.5480285449465017,
+                  "p90_pixels": 4.342289838518967
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 54,
+                  "evaluated": 51,
+                  "median_pixels": 1.2656364586248878,
+                  "p90_pixels": 2.8410747802118634
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 67,
+                  "evaluated": 62,
+                  "median_pixels": 1.2487672254511684,
+                  "p90_pixels": 2.255142450476189
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 76,
+                  "evaluated": 73,
+                  "median_pixels": 1.6517185653575994,
+                  "p90_pixels": 2.2136733173519354
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 75,
+                  "evaluated": 71,
+                  "median_pixels": 1.4797779035284553,
+                  "p90_pixels": 2.2651533172664657
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 75,
+                  "evaluated": 72,
+                  "median_pixels": 0.8801272241795411,
+                  "p90_pixels": 1.6531098214198436
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 77,
+                  "evaluated": 68,
+                  "median_pixels": 0.5534771684843796,
+                  "p90_pixels": 1.2634348691128365
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 84,
+                  "evaluated": 73,
+                  "median_pixels": 0.9255066927966642,
+                  "p90_pixels": 1.579298058435158
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 104,
+                  "evaluated": 81,
+                  "median_pixels": 0.9946202172422982,
+                  "p90_pixels": 1.625118035516234
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 83,
+                  "median_pixels": 0.5696917517894295,
+                  "p90_pixels": 1.1384156161492252
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 112,
+                  "evaluated": 87,
+                  "median_pixels": 0.6510063566016653,
+                  "p90_pixels": 1.5005634885951504
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 100,
+                  "median_pixels": 0.7741234448444353,
+                  "p90_pixels": 1.344990111066563
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 106,
+                  "median_pixels": 0.6437933014037258,
+                  "p90_pixels": 1.1517140577388376
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 120,
+                  "evaluated": 100,
+                  "median_pixels": 0.5889830061824091,
+                  "p90_pixels": 1.1419069459551585
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 90,
+                  "median_pixels": 0.8789072759577611,
+                  "p90_pixels": 2.2025176505614
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 105,
+                  "median_pixels": 1.11522569623801,
+                  "p90_pixels": 2.3268985056291913
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 106,
+                  "median_pixels": 1.2283806554419725,
+                  "p90_pixels": 2.0262619301894813
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 108,
+                  "median_pixels": 0.5287631550606491,
+                  "p90_pixels": 1.202753938446417
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 96,
+                  "median_pixels": 0.7782509945291071,
+                  "p90_pixels": 1.765077118521459
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 100,
+                  "evaluated": 88,
+                  "median_pixels": 2.073208965435014,
+                  "p90_pixels": 3.400380344397251
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 84,
+                  "median_pixels": 1.4904422027449946,
+                  "p90_pixels": 2.751642465285011
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 100,
+                  "median_pixels": 1.2504725064833129,
+                  "p90_pixels": 1.8443806384721886
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.9255066927966642,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 28.780755,
+          "state": "seed",
+          "reasons": [],
+          "alignment": null,
+          "retained_poses": 24
+        },
+        {
+          "name": "window-1",
+          "indices": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 84,
+                  "evaluated": 73,
+                  "median_pixels": 1.187881625857761,
+                  "p90_pixels": 1.8989467934855508
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 104,
+                  "evaluated": 79,
+                  "median_pixels": 0.8807317730194757,
+                  "p90_pixels": 1.9049250234076784
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 82,
+                  "median_pixels": 0.510020864466994,
+                  "p90_pixels": 1.1734708941473024
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 112,
+                  "evaluated": 84,
+                  "median_pixels": 0.7237402853325436,
+                  "p90_pixels": 1.4357133518111973
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 94,
+                  "median_pixels": 0.7530912402749155,
+                  "p90_pixels": 1.6707749624866985
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 126,
+                  "evaluated": 102,
+                  "median_pixels": 0.46141689296837757,
+                  "p90_pixels": 1.029470752201547
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 120,
+                  "evaluated": 101,
+                  "median_pixels": 0.6439988706856272,
+                  "p90_pixels": 1.2129435025958775
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 88,
+                  "median_pixels": 0.6398114765347678,
+                  "p90_pixels": 1.7708920397114492
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 103,
+                  "median_pixels": 0.8002728692907722,
+                  "p90_pixels": 1.7269008134843382
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 109,
+                  "median_pixels": 1.560952569091006,
+                  "p90_pixels": 2.04093780416623
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 108,
+                  "median_pixels": 0.729472808665115,
+                  "p90_pixels": 1.2487034789175775
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 97,
+                  "median_pixels": 0.7623589830247435,
+                  "p90_pixels": 1.6573832291569164
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 100,
+                  "evaluated": 89,
+                  "median_pixels": 2.010188473002712,
+                  "p90_pixels": 3.324777345190518
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 91,
+                  "median_pixels": 1.1333148462570675,
+                  "p90_pixels": 1.7401012032532908
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 97,
+                  "median_pixels": 0.7352961537984345,
+                  "p90_pixels": 1.5250849610293484
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 75,
+                  "median_pixels": 1.1062154793483472,
+                  "p90_pixels": 1.6852394992599105
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 92,
+                  "evaluated": 70,
+                  "median_pixels": 1.001518055879328,
+                  "p90_pixels": 1.897309109550928
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 66,
+                  "evaluated": 59,
+                  "median_pixels": 1.2311804017551837,
+                  "p90_pixels": 2.711636666406276
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 73,
+                  "median_pixels": 0.7911223047327942,
+                  "p90_pixels": 1.3306738564277307
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 66,
+                  "median_pixels": 0.6773815026772829,
+                  "p90_pixels": 1.1505650036765187
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 102,
+                  "evaluated": 80,
+                  "median_pixels": 2.3098778635543127,
+                  "p90_pixels": 3.9781362731701724
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 122,
+                  "evaluated": 92,
+                  "median_pixels": 2.2146565654174144,
+                  "p90_pixels": 3.266798354243807
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 82,
+                  "evaluated": 65,
+                  "median_pixels": 0.6927178795844504,
+                  "p90_pixels": 2.055053703123462
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.7911223047327942,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 38.860263,
+          "state": "merged",
+          "reasons": [],
+          "alignment": {
+            "shared_views": 16,
+            "fit_views": [
+              8,
+              10,
+              12,
+              14,
+              16,
+              18,
+              20,
+              22
+            ],
+            "validation_views": [
+              9,
+              11,
+              13,
+              15,
+              17,
+              19,
+              21,
+              23
+            ],
+            "fit_points": 6735,
+            "validation_points": 6767,
+            "fit_inlier_fraction": 1.0,
+            "validation_median_fraction_of_depth": 0.0024104628732395934,
+            "validation_p90_fraction_of_depth": 0.005319547894669383,
+            "camera_p90_fraction_of_depth": 0.01991505963519071,
+            "orientation_p90_degrees": 0.8050260618301819,
+            "overlap_baseline_fraction_of_depth": 0.09757192432880402,
+            "relative_scale": 1.1124974641180894,
+            "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+            "accepted": true,
+            "reasons": []
+          },
+          "retained_poses": 32
+        },
+        {
+          "name": "window-2",
+          "indices": [
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 104,
+                  "median_pixels": 0.5406985810227415,
+                  "p90_pixels": 1.2566385294045854
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 108,
+                  "median_pixels": 1.2928171433334887,
+                  "p90_pixels": 1.7612935353869925
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 124,
+                  "evaluated": 111,
+                  "median_pixels": 0.45681869011953075,
+                  "p90_pixels": 0.8797121141394979
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 97,
+                  "median_pixels": 1.2037150071498406,
+                  "p90_pixels": 1.7984296435088711
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 100,
+                  "evaluated": 90,
+                  "median_pixels": 2.1545266928309683,
+                  "p90_pixels": 3.6925601774634234
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 90,
+                  "median_pixels": 1.1596767346232824,
+                  "p90_pixels": 1.705151068993273
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 97,
+                  "median_pixels": 0.8605331350506189,
+                  "p90_pixels": 1.728890977287429
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 74,
+                  "median_pixels": 0.6639647148738539,
+                  "p90_pixels": 1.3333628211847712
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 92,
+                  "evaluated": 70,
+                  "median_pixels": 0.8680590138537269,
+                  "p90_pixels": 1.631824749643542
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 66,
+                  "evaluated": 59,
+                  "median_pixels": 1.228590402777495,
+                  "p90_pixels": 2.889149091868602
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 73,
+                  "median_pixels": 0.8145875734360375,
+                  "p90_pixels": 1.4701950506099681
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 68,
+                  "median_pixels": 0.5849729421570766,
+                  "p90_pixels": 1.2888642999529145
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 102,
+                  "evaluated": 78,
+                  "median_pixels": 1.8466282950676018,
+                  "p90_pixels": 3.903031063798177
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 122,
+                  "evaluated": 86,
+                  "median_pixels": 1.8279895729329985,
+                  "p90_pixels": 3.0175892414404593
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 82,
+                  "evaluated": 67,
+                  "median_pixels": 0.7499374858516438,
+                  "p90_pixels": 2.2759093912575037
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 65,
+                  "evaluated": 55,
+                  "median_pixels": 0.8164794706556411,
+                  "p90_pixels": 1.836617233636947
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 63,
+                  "evaluated": 56,
+                  "median_pixels": 0.6626092506472777,
+                  "p90_pixels": 1.2872762532360178
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 68,
+                  "evaluated": 58,
+                  "median_pixels": 0.7703838580550786,
+                  "p90_pixels": 1.6007836848039425
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 74,
+                  "median_pixels": 0.7912338124740774,
+                  "p90_pixels": 1.3176653259981492
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 72,
+                  "median_pixels": 0.6940844852221524,
+                  "p90_pixels": 2.208240760418885
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 96,
+                  "evaluated": 78,
+                  "median_pixels": 1.4615388648941885,
+                  "p90_pixels": 2.404925086809405
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 113,
+                  "evaluated": 101,
+                  "median_pixels": 0.9486344319581613,
+                  "p90_pixels": 1.9315058677541017
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 95,
+                  "median_pixels": 1.369609489956199,
+                  "p90_pixels": 1.8914960008355577
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.8605331350506189,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 49.023077,
+          "state": "merged",
+          "reasons": [],
+          "alignment": {
+            "shared_views": 16,
+            "fit_views": [
+              16,
+              18,
+              20,
+              22,
+              24,
+              26,
+              28,
+              30
+            ],
+            "validation_views": [
+              17,
+              19,
+              21,
+              23,
+              25,
+              27,
+              29,
+              31
+            ],
+            "fit_points": 7363,
+            "validation_points": 7376,
+            "fit_inlier_fraction": 1.0,
+            "validation_median_fraction_of_depth": 0.0011946914420421161,
+            "validation_p90_fraction_of_depth": 0.0022883421648277327,
+            "camera_p90_fraction_of_depth": 0.023235643969336292,
+            "orientation_p90_degrees": 0.567990266721689,
+            "overlap_baseline_fraction_of_depth": 0.2024034559726715,
+            "relative_scale": 1.0193043424857848,
+            "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+            "accepted": true,
+            "reasons": []
+          },
+          "retained_poses": 40
+        }
+      ],
+      "seed_poses": 24,
+      "accepted_windows": 3,
+      "reference": null,
+      "warning": "Offline stitching with heuristic rejection. No loop closure, global optimization, floor orientation, metric scale or real contact placement.",
+      "pair_checks": [
+        {
+          "shared_views": 16,
+          "fit_views": [
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22
+          ],
+          "validation_views": [
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23
+          ],
+          "fit_points": 6735,
+          "validation_points": 6767,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.0024104628732395934,
+          "validation_p90_fraction_of_depth": 0.005319547894669383,
+          "camera_p90_fraction_of_depth": 0.01991505963519071,
+          "orientation_p90_degrees": 0.8050260618301819,
+          "overlap_baseline_fraction_of_depth": 0.09757192432880402,
+          "relative_scale": 1.1124974641180894,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        },
+        {
+          "shared_views": 16,
+          "fit_views": [
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "validation_views": [
+            17,
+            19,
+            21,
+            23,
+            25,
+            27,
+            29,
+            31
+          ],
+          "fit_points": 7363,
+          "validation_points": 7376,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.0011946914420421161,
+          "validation_p90_fraction_of_depth": 0.0022883421648277327,
+          "camera_p90_fraction_of_depth": 0.023235643969336292,
+          "orientation_p90_degrees": 0.567990266721689,
+          "overlap_baseline_fraction_of_depth": 0.2024034559726715,
+          "relative_scale": 1.0193043424857848,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        }
+      ],
+      "name": "streak_only",
+      "selected_indices": [
+        54,
+        69,
+        84,
+        99,
+        114,
+        129,
+        144,
+        159,
+        174,
+        189,
+        204,
+        219,
+        234,
+        249,
+        264,
+        279,
+        294,
+        309,
+        324,
+        339,
+        354,
+        372,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "retained_views": 40,
+      "retained_span_seconds": 49.023077,
+      "first_camera_rotation": [
+        [
+          0.9989494681358337,
+          -0.018805241212248802,
+          0.041789695620536804
+        ],
+        [
+          0.020231574773788452,
+          0.9992179274559021,
+          -0.03397452458739281
+        ],
+        [
+          -0.041118115186691284,
+          0.03478430211544037,
+          0.9985486268997192
+        ]
+      ]
+    },
+    {
+      "kind": "experimental_window_replay",
+      "source_session": "20261002T213938Z-e3ead809",
+      "units": "arbitrary",
+      "imu_used": false,
+      "live": false,
+      "steps": [
+        {
+          "name": "window-0",
+          "indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 77,
+                  "evaluated": 71,
+                  "median_pixels": 2.7348975485304705,
+                  "p90_pixels": 3.2029362120604423
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 58,
+                  "evaluated": 51,
+                  "median_pixels": 2.0547077085795977,
+                  "p90_pixels": 2.72831807805128
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 96,
+                  "evaluated": 75,
+                  "median_pixels": 1.5170326015978026,
+                  "p90_pixels": 2.5882800637692793
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 71,
+                  "evaluated": 68,
+                  "median_pixels": 1.0417206057537096,
+                  "p90_pixels": 1.850638790745514
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 85,
+                  "evaluated": 81,
+                  "median_pixels": 0.7191694846648051,
+                  "p90_pixels": 1.0975832808923869
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 78,
+                  "evaluated": 68,
+                  "median_pixels": 1.5033619014934918,
+                  "p90_pixels": 1.8792722055385955
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 62,
+                  "evaluated": 56,
+                  "median_pixels": 1.222140377219509,
+                  "p90_pixels": 2.240265253077367
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 65,
+                  "evaluated": 61,
+                  "median_pixels": 0.4410101762719635,
+                  "p90_pixels": 1.391354288091961
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 78,
+                  "median_pixels": 0.41224699802500087,
+                  "p90_pixels": 0.940100269467368
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 103,
+                  "evaluated": 84,
+                  "median_pixels": 0.6641130615138422,
+                  "p90_pixels": 1.0814945518558479
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 97,
+                  "evaluated": 81,
+                  "median_pixels": 0.6969112932066022,
+                  "p90_pixels": 1.426276717267642
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 117,
+                  "evaluated": 95,
+                  "median_pixels": 0.6178973934587608,
+                  "p90_pixels": 1.091934696630249
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 130,
+                  "evaluated": 115,
+                  "median_pixels": 1.5859352996881808,
+                  "p90_pixels": 2.309348875959824
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 141,
+                  "evaluated": 117,
+                  "median_pixels": 0.5511937152844263,
+                  "p90_pixels": 1.075022820580638
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 81,
+                  "median_pixels": 2.9737743330634365,
+                  "p90_pixels": 4.063203431101228
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 105,
+                  "evaluated": 88,
+                  "median_pixels": 1.6604828485230907,
+                  "p90_pixels": 2.626249650740806
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 90,
+                  "median_pixels": 0.8546525433747652,
+                  "p90_pixels": 1.7075666514888916
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 128,
+                  "evaluated": 104,
+                  "median_pixels": 0.2946477751692459,
+                  "p90_pixels": 0.6866268810874396
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 116,
+                  "evaluated": 98,
+                  "median_pixels": 0.4431773579968804,
+                  "p90_pixels": 1.05964811327483
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 102,
+                  "median_pixels": 1.15528182415731,
+                  "p90_pixels": 2.2818925882987076
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 89,
+                  "median_pixels": 1.6414654625726561,
+                  "p90_pixels": 3.206656416306422
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 133,
+                  "evaluated": 118,
+                  "median_pixels": 1.7023704058320868,
+                  "p90_pixels": 2.3307676035790683
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 109,
+                  "evaluated": 100,
+                  "median_pixels": 0.8405222881102112,
+                  "p90_pixels": 1.763906638339388
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 1.0417206057537096,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 29.11396,
+          "state": "seed",
+          "reasons": [],
+          "alignment": null,
+          "retained_poses": 24
+        },
+        {
+          "name": "window-1",
+          "indices": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 90,
+                  "evaluated": 80,
+                  "median_pixels": 0.41096086542583565,
+                  "p90_pixels": 0.8525871491776059
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 103,
+                  "evaluated": 88,
+                  "median_pixels": 0.8489014344868675,
+                  "p90_pixels": 1.3775783251712523
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 97,
+                  "evaluated": 83,
+                  "median_pixels": 0.87896792405599,
+                  "p90_pixels": 1.4870974039865623
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 117,
+                  "evaluated": 101,
+                  "median_pixels": 1.1084499256103775,
+                  "p90_pixels": 1.596154652948682
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 130,
+                  "evaluated": 117,
+                  "median_pixels": 0.8350477088225146,
+                  "p90_pixels": 1.5537775949702108
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 141,
+                  "evaluated": 115,
+                  "median_pixels": 0.49892751633940385,
+                  "p90_pixels": 1.0427595260127764
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 82,
+                  "median_pixels": 0.9329581285246593,
+                  "p90_pixels": 1.841172454700917
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 105,
+                  "evaluated": 86,
+                  "median_pixels": 0.82798511360697,
+                  "p90_pixels": 1.5038904447300072
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 91,
+                  "median_pixels": 0.6696338208663266,
+                  "p90_pixels": 1.3085993642810665
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 128,
+                  "evaluated": 107,
+                  "median_pixels": 0.3573795444515577,
+                  "p90_pixels": 0.8569690989707601
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 116,
+                  "evaluated": 99,
+                  "median_pixels": 0.4917309412121429,
+                  "p90_pixels": 0.9820690376972068
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 103,
+                  "median_pixels": 0.9734387156004721,
+                  "p90_pixels": 1.664766542218471
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 87,
+                  "median_pixels": 1.4963636896386494,
+                  "p90_pixels": 3.4500746244459397
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 133,
+                  "evaluated": 117,
+                  "median_pixels": 0.9332373497963655,
+                  "p90_pixels": 1.5274675108567943
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 109,
+                  "evaluated": 98,
+                  "median_pixels": 2.3404291679131024,
+                  "p90_pixels": 3.483628856398612
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 97,
+                  "median_pixels": 2.0386559340193404,
+                  "p90_pixels": 3.2236075581475006
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 95,
+                  "evaluated": 81,
+                  "median_pixels": 0.48720363925361,
+                  "p90_pixels": 1.1565479535040772
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 74,
+                  "evaluated": 61,
+                  "median_pixels": 0.9530162195119143,
+                  "p90_pixels": 2.014395039805859
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 59,
+                  "evaluated": 55,
+                  "median_pixels": 0.685047955749975,
+                  "p90_pixels": 1.6435929520168315
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 91,
+                  "evaluated": 80,
+                  "median_pixels": 0.7277261108134148,
+                  "p90_pixels": 1.259514807068321
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 95,
+                  "median_pixels": 1.9476589989750202,
+                  "p90_pixels": 2.4539579627147723
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 109,
+                  "median_pixels": 1.639110934128964,
+                  "p90_pixels": 2.2238871184207114
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 71,
+                  "evaluated": 64,
+                  "median_pixels": 1.3932416410546022,
+                  "p90_pixels": 2.5199436501024017
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.87896792405599,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 39.776582,
+          "state": "withheld",
+          "reasons": [
+            "shared camera positions disagree"
+          ],
+          "alignment": {
+            "shared_views": 16,
+            "fit_views": [
+              8,
+              10,
+              12,
+              14,
+              16,
+              18,
+              20,
+              22
+            ],
+            "validation_views": [
+              9,
+              11,
+              13,
+              15,
+              17,
+              19,
+              21,
+              23
+            ],
+            "fit_points": 7107,
+            "validation_points": 7103,
+            "fit_inlier_fraction": 1.0,
+            "validation_median_fraction_of_depth": 0.004500931987776932,
+            "validation_p90_fraction_of_depth": 0.00802524289143995,
+            "camera_p90_fraction_of_depth": 0.07210252871460415,
+            "orientation_p90_degrees": 1.9855276772248094,
+            "overlap_baseline_fraction_of_depth": 0.09522026032209396,
+            "relative_scale": 1.1216817591510493,
+            "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+            "accepted": false,
+            "reasons": [
+              "shared camera positions disagree"
+            ]
+          },
+          "retained_poses": 24
+        },
+        {
+          "name": "window-2",
+          "indices": [
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "local": {
+            "accepted": true,
+            "diagnostics": {
+              "method": "Mutual SIFT ratio matches, source depth confidence above per-view 40th percentile; predicted poses project source pixels into the next view.",
+              "image_width": 504,
+              "pairs": [
+                {
+                  "pair": [
+                    0,
+                    1
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 91,
+                  "median_pixels": 0.8219153511317098,
+                  "p90_pixels": 1.4233491849646196
+                },
+                {
+                  "pair": [
+                    1,
+                    2
+                  ],
+                  "mutual_ratio_matches": 128,
+                  "evaluated": 107,
+                  "median_pixels": 0.31215384169192,
+                  "p90_pixels": 0.776444429294007
+                },
+                {
+                  "pair": [
+                    2,
+                    3
+                  ],
+                  "mutual_ratio_matches": 116,
+                  "evaluated": 103,
+                  "median_pixels": 0.4942034993175779,
+                  "p90_pixels": 0.9320981498426089
+                },
+                {
+                  "pair": [
+                    3,
+                    4
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 106,
+                  "median_pixels": 0.8587705415903784,
+                  "p90_pixels": 1.569407424817204
+                },
+                {
+                  "pair": [
+                    4,
+                    5
+                  ],
+                  "mutual_ratio_matches": 99,
+                  "evaluated": 88,
+                  "median_pixels": 1.4247182582537334,
+                  "p90_pixels": 3.299232651186727
+                },
+                {
+                  "pair": [
+                    5,
+                    6
+                  ],
+                  "mutual_ratio_matches": 133,
+                  "evaluated": 117,
+                  "median_pixels": 0.9376868645705648,
+                  "p90_pixels": 1.5355161481365855
+                },
+                {
+                  "pair": [
+                    6,
+                    7
+                  ],
+                  "mutual_ratio_matches": 109,
+                  "evaluated": 98,
+                  "median_pixels": 2.5284080153622956,
+                  "p90_pixels": 3.6978679980370033
+                },
+                {
+                  "pair": [
+                    7,
+                    8
+                  ],
+                  "mutual_ratio_matches": 115,
+                  "evaluated": 99,
+                  "median_pixels": 2.0009460326042885,
+                  "p90_pixels": 3.0661465988231718
+                },
+                {
+                  "pair": [
+                    8,
+                    9
+                  ],
+                  "mutual_ratio_matches": 95,
+                  "evaluated": 80,
+                  "median_pixels": 0.4434120261088378,
+                  "p90_pixels": 1.1750246831544482
+                },
+                {
+                  "pair": [
+                    9,
+                    10
+                  ],
+                  "mutual_ratio_matches": 74,
+                  "evaluated": 61,
+                  "median_pixels": 0.7744561294925056,
+                  "p90_pixels": 1.7917921996719255
+                },
+                {
+                  "pair": [
+                    10,
+                    11
+                  ],
+                  "mutual_ratio_matches": 59,
+                  "evaluated": 55,
+                  "median_pixels": 0.7159276948398684,
+                  "p90_pixels": 1.7276456240116094
+                },
+                {
+                  "pair": [
+                    11,
+                    12
+                  ],
+                  "mutual_ratio_matches": 91,
+                  "evaluated": 81,
+                  "median_pixels": 0.655321496529915,
+                  "p90_pixels": 1.153096023495052
+                },
+                {
+                  "pair": [
+                    12,
+                    13
+                  ],
+                  "mutual_ratio_matches": 107,
+                  "evaluated": 93,
+                  "median_pixels": 1.8615503450205821,
+                  "p90_pixels": 2.533266482177401
+                },
+                {
+                  "pair": [
+                    13,
+                    14
+                  ],
+                  "mutual_ratio_matches": 121,
+                  "evaluated": 109,
+                  "median_pixels": 1.4819092955707074,
+                  "p90_pixels": 2.0963410418429596
+                },
+                {
+                  "pair": [
+                    14,
+                    15
+                  ],
+                  "mutual_ratio_matches": 71,
+                  "evaluated": 63,
+                  "median_pixels": 1.173672794071593,
+                  "p90_pixels": 2.142190486996594
+                },
+                {
+                  "pair": [
+                    15,
+                    16
+                  ],
+                  "mutual_ratio_matches": 93,
+                  "evaluated": 75,
+                  "median_pixels": 0.43058088203978845,
+                  "p90_pixels": 1.1959267713875352
+                },
+                {
+                  "pair": [
+                    16,
+                    17
+                  ],
+                  "mutual_ratio_matches": 64,
+                  "evaluated": 60,
+                  "median_pixels": 0.8825237794068883,
+                  "p90_pixels": 2.05587279331079
+                },
+                {
+                  "pair": [
+                    17,
+                    18
+                  ],
+                  "mutual_ratio_matches": 84,
+                  "evaluated": 75,
+                  "median_pixels": 1.1491133142347885,
+                  "p90_pixels": 2.02347461536772
+                },
+                {
+                  "pair": [
+                    18,
+                    19
+                  ],
+                  "mutual_ratio_matches": 93,
+                  "evaluated": 79,
+                  "median_pixels": 0.6489748495328787,
+                  "p90_pixels": 1.3434602875206898
+                },
+                {
+                  "pair": [
+                    19,
+                    20
+                  ],
+                  "mutual_ratio_matches": 103,
+                  "evaluated": 89,
+                  "median_pixels": 0.7297659028838901,
+                  "p90_pixels": 1.8558052658096047
+                },
+                {
+                  "pair": [
+                    20,
+                    21
+                  ],
+                  "mutual_ratio_matches": 110,
+                  "evaluated": 92,
+                  "median_pixels": 0.9297785794363742,
+                  "p90_pixels": 1.7938698972657654
+                },
+                {
+                  "pair": [
+                    21,
+                    22
+                  ],
+                  "mutual_ratio_matches": 136,
+                  "evaluated": 120,
+                  "median_pixels": 0.6750800227358625,
+                  "p90_pixels": 1.4315135609924015
+                },
+                {
+                  "pair": [
+                    22,
+                    23
+                  ],
+                  "mutual_ratio_matches": 119,
+                  "evaluated": 108,
+                  "median_pixels": 0.5143446196826961,
+                  "p90_pixels": 0.9990516684862843
+                }
+              ],
+              "pairs_with_at_least_8_matches": 23,
+              "median_of_pair_medians_pixels": 0.8219153511317098,
+              "note": "Image correspondence consistency only. Repeated textures, moving objects, calibration and occlusion can affect this diagnostic."
+            },
+            "rule": "Median pair reprojection <=2% image width; >=8 evaluated matches in at least half the adjacent pairs (minimum two). Heuristic only."
+          },
+          "observation_end_seconds": 49.522886,
+          "state": "blocked",
+          "reasons": [
+            "An earlier window failed; no relocalization is implemented"
+          ],
+          "alignment": null,
+          "retained_poses": 24
+        }
+      ],
+      "seed_poses": 24,
+      "accepted_windows": 1,
+      "reference": null,
+      "warning": "Offline stitching with heuristic rejection. No loop closure, global optimization, floor orientation, metric scale or real contact placement.",
+      "pair_checks": [
+        {
+          "shared_views": 16,
+          "fit_views": [
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22
+          ],
+          "validation_views": [
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23
+          ],
+          "fit_points": 7107,
+          "validation_points": 7103,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.004500931987776932,
+          "validation_p90_fraction_of_depth": 0.00802524289143995,
+          "camera_p90_fraction_of_depth": 0.07210252871460415,
+          "orientation_p90_degrees": 1.9855276772248094,
+          "overlap_baseline_fraction_of_depth": 0.09522026032209396,
+          "relative_scale": 1.1216817591510493,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": false,
+          "reasons": [
+            "shared camera positions disagree"
+          ]
+        },
+        {
+          "shared_views": 16,
+          "fit_views": [
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "validation_views": [
+            17,
+            19,
+            21,
+            23,
+            25,
+            27,
+            29,
+            31
+          ],
+          "fit_points": 7441,
+          "validation_points": 7423,
+          "fit_inlier_fraction": 1.0,
+          "validation_median_fraction_of_depth": 0.000999633881251107,
+          "validation_p90_fraction_of_depth": 0.0017893346440950367,
+          "camera_p90_fraction_of_depth": 0.006395909288762749,
+          "orientation_p90_degrees": 0.3517260044003635,
+          "overlap_baseline_fraction_of_depth": 0.19904033839702606,
+          "relative_scale": 1.0026251408847642,
+          "note": "Alternating shared views fit/check the transform. These correlated image predictions are not independent ground truth.",
+          "accepted": true,
+          "reasons": []
+        }
+      ],
+      "name": "quality_coverage",
+      "selected_indices": [
+        48,
+        73,
+        90,
+        94,
+        116,
+        126,
+        148,
+        163,
+        178,
+        188,
+        208,
+        221,
+        236,
+        253,
+        265,
+        285,
+        293,
+        314,
+        319,
+        339,
+        351,
+        375,
+        379,
+        397,
+        417,
+        430,
+        441,
+        465,
+        479,
+        493,
+        506,
+        524,
+        530,
+        555,
+        566,
+        580,
+        596,
+        612,
+        628,
+        639
+      ],
+      "retained_views": 24,
+      "retained_span_seconds": 29.11396,
+      "first_camera_rotation": [
+        [
+          0.9985960721969604,
+          -0.022185208275914192,
+          -0.04810098931193352
+        ],
+        [
+          0.02052183635532856,
+          0.9991834759712219,
+          -0.03480313718318939
+        ],
+        [
+          0.04883382469415665,
+          0.033767156302928925,
+          0.9982359409332275
+        ]
+      ]
+    }
+  ],
+  "note": "Same acceptance screens. No physical accuracy, IMU, live stream or production default change. Selected images differ between cases."
+}

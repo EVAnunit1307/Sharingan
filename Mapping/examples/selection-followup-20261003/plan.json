@@ -1,0 +1,2481 @@
+{
+  "schema": 1,
+  "source_session": "20261002T213938Z-e3ead809",
+  "anchors": [
+    54,
+    69,
+    84,
+    99,
+    114,
+    129,
+    144,
+    159,
+    174,
+    189,
+    204,
+    219,
+    234,
+    249,
+    264,
+    279,
+    294,
+    309,
+    324,
+    339,
+    354,
+    369,
+    384,
+    399,
+    414,
+    429,
+    444,
+    459,
+    474,
+    489,
+    504,
+    519,
+    534,
+    549,
+    564,
+    579,
+    594,
+    609,
+    624,
+    639
+  ],
+  "candidate_radius_frames": 6,
+  "windows": [
+    0,
+    8,
+    16
+  ],
+  "frames": 24,
+  "resolution": 504,
+  "variant": "large",
+  "repeats": 2,
+  "undistort": true,
+  "center_principal": false,
+  "excluded_ranges": [
+    [
+      363,
+      371
+    ]
+  ],
+  "exclusion_note": "Previously visually reviewed colour-streak interval; no generic corruption detector is claimed.",
+  "selection_rule": "Streak-only: nearest eligible frame. Quality: 70% local sharpness rank + 30% feature-cell coverage rank; nearest frame breaks ties.",
+  "acceptance": "Unmodified Mapping.window_replay local/overlap screens. No parameter search or threshold relaxation after inference.",
+  "evaluation": "Same nominal temporal bins and 24-image budget; changed-image comparisons are selection ablations, not paired pixel-error comparisons.",
+  "metric_scale_available": false,
+  "live": false,
+  "imu_used": false,
+  "cases": {
+    "streak_only": {
+      "session": "streak_only/input/20261002T213938Z-e3ead809",
+      "indices": [
+        54,
+        69,
+        84,
+        99,
+        114,
+        129,
+        144,
+        159,
+        174,
+        189,
+        204,
+        219,
+        234,
+        249,
+        264,
+        279,
+        294,
+        309,
+        324,
+        339,
+        354,
+        372,
+        384,
+        399,
+        414,
+        429,
+        444,
+        459,
+        474,
+        489,
+        504,
+        519,
+        534,
+        549,
+        564,
+        579,
+        594,
+        609,
+        624,
+        639
+      ],
+      "changed_frames": 1,
+      "max_selected_gap_seconds": 1.49943,
+      "median_sharpness": 244.91647338867188,
+      "median_corner_coverage": 0.5208333333333334,
+      "decisions": [
+        {
+          "anchor": 54,
+          "selected": 54,
+          "candidates": [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d287e2a175b599108d8dcb446ddd678d7fb7b023fdb7dc9720f91724a38b61ac",
+            "sharpness": 125.2611083984375,
+            "corner_coverage": 0.3541666666666667,
+            "corners": 70,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 69,
+          "selected": 69,
+          "candidates": [
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "37d3b467796a5bdfc68c676db29b1ffe3350d126585d3f86d5c7ce1298babd2a",
+            "sharpness": 62.44559860229492,
+            "corner_coverage": 0.375,
+            "corners": 81,
+            "dark_fraction": 0.0,
+            "bright_fraction": 6.510416666666667e-05
+          }
+        },
+        {
+          "anchor": 84,
+          "selected": 84,
+          "candidates": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "a196c24e5eda301ec668a82f381ae3dfc367bf1c7fb9a08f646e57a6e3ea750b",
+            "sharpness": 344.2618103027344,
+            "corner_coverage": 0.5,
+            "corners": 76,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0001171875
+          }
+        },
+        {
+          "anchor": 99,
+          "selected": 99,
+          "candidates": [
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "fca2a61c77cb7d0eeb105f86d191194aafea4814c46797124cbeb60edef6b525",
+            "sharpness": 136.24440002441406,
+            "corner_coverage": 0.4375,
+            "corners": 68,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00024739583333333335
+          }
+        },
+        {
+          "anchor": 114,
+          "selected": 114,
+          "candidates": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "26be1d965ab3299f459bbb7066a4d63d856a7f73ee82ce292588f83ec0605887",
+            "sharpness": 143.06997680664062,
+            "corner_coverage": 0.4375,
+            "corners": 64,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 129,
+          "selected": 129,
+          "candidates": [
+            123,
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "bbf0d3577a80104e2e7c1c93eaeb6e1e252ea631253e170ad9904bb9885f38ef",
+            "sharpness": 172.21517944335938,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 79,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 144,
+          "selected": 144,
+          "candidates": [
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "7b1770a07b55c7bab615a82bb1e3d8fa02c3bb8ebc419ab9aa9ca6574b7c1443",
+            "sharpness": 170.07244873046875,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 80,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00037760416666666666
+          }
+        },
+        {
+          "anchor": 159,
+          "selected": 159,
+          "candidates": [
+            153,
+            154,
+            155,
+            156,
+            157,
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "2cb030f854b56685860b3fd2036ad76d10c4111486d8bd7b91e1332467414709",
+            "sharpness": 155.40167236328125,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 100,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00029947916666666664
+          }
+        },
+        {
+          "anchor": 174,
+          "selected": 174,
+          "candidates": [
+            168,
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177,
+            178,
+            179,
+            180
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "e2830edf3917a6e10089cfa2e1d243b6f4840a6a33debe429fa16f96c93337f4",
+            "sharpness": 175.30572509765625,
+            "corner_coverage": 0.6458333333333334,
+            "corners": 141,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 189,
+          "selected": 189,
+          "candidates": [
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "434150edaa9485c37b8924ac29115c7dd296a252d5902e39aea22cab48e8dae3",
+            "sharpness": 202.22962951660156,
+            "corner_coverage": 0.5,
+            "corners": 121,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 204,
+          "selected": 204,
+          "candidates": [
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204,
+            205,
+            206,
+            207,
+            208,
+            209,
+            210
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d6f77024b673ead1659d889c8e24c1588b84d1929644a61db1ccf8128ee59599",
+            "sharpness": 197.58364868164062,
+            "corner_coverage": 0.4583333333333333,
+            "corners": 108,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 219,
+          "selected": 219,
+          "candidates": [
+            213,
+            214,
+            215,
+            216,
+            217,
+            218,
+            219,
+            220,
+            221,
+            222,
+            223,
+            224,
+            225
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "f8d0d3c1c5f0d74f051b293a22d104fceae62a470bcd3496ed959c419c8cef04",
+            "sharpness": 242.29283142089844,
+            "corner_coverage": 0.5,
+            "corners": 108,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 234,
+          "selected": 234,
+          "candidates": [
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "61079a84b89e4192149408b1c897db3871cdb9a550df8c4a3420ea778823b20d",
+            "sharpness": 239.42556762695312,
+            "corner_coverage": 0.5,
+            "corners": 120,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 249,
+          "selected": 249,
+          "candidates": [
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "b587a7194b40b8775467535d5be19e319d5f3c4cb7bda3737fb2248ebbd95f13",
+            "sharpness": 244.52413940429688,
+            "corner_coverage": 0.5625,
+            "corners": 124,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 264,
+          "selected": 264,
+          "candidates": [
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "5b99c675e7ac3a5bc6cd35e0104577faeab904ecf06a30315eba0b3639de4adf",
+            "sharpness": 254.8152618408203,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 122,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 279,
+          "selected": 279,
+          "candidates": [
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "815cb4cfc263d02635892263a3539798fe5b59dd706aea129b150014beaa924c",
+            "sharpness": 246.9203643798828,
+            "corner_coverage": 0.6041666666666666,
+            "corners": 126,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 294,
+          "selected": 294,
+          "candidates": [
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d85de1ce84e459616503f21f74b3f3cbfe9e1c0c228a8ddf5a593ced610943f5",
+            "sharpness": 264.01318359375,
+            "corner_coverage": 0.5625,
+            "corners": 119,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 309,
+          "selected": 309,
+          "candidates": [
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "869016c15053fbfe7333b5493849e28c6b261a5cb50d9ac9c5138960a8ae8dd6",
+            "sharpness": 282.2897644042969,
+            "corner_coverage": 0.5625,
+            "corners": 124,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 324,
+          "selected": 324,
+          "candidates": [
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "f11a13b2f88a4721adbc49b9c2b31f09350c5d842982abc23d12821229a43fa6",
+            "sharpness": 264.19061279296875,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 117,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 339,
+          "selected": 339,
+          "candidates": [
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+            "sharpness": 274.0556335449219,
+            "corner_coverage": 0.5625,
+            "corners": 127,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 354,
+          "selected": 354,
+          "candidates": [
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "c2b8943ef75f91cbc095282de9d9fe23c5c4a3bcaad0361652396d968f2f5278",
+            "sharpness": 224.36386108398438,
+            "corner_coverage": 0.5625,
+            "corners": 115,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 369,
+          "selected": 372,
+          "candidates": [
+            372,
+            373,
+            374,
+            375
+          ],
+          "anchor_excluded": true,
+          "metrics": {
+            "decoded": true,
+            "sha256": "3b2b65dca73cfdaa08585f7a4507eb706430ae5a1c25edfbf6965f1f53e35d90",
+            "sharpness": 279.0373840332031,
+            "corner_coverage": 0.6666666666666666,
+            "corners": 133,
+            "dark_fraction": 0.0,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 384,
+          "selected": 384,
+          "candidates": [
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "04014531f565bf4af81a846ed0658a7f5103cfc2d717841ea4f739bef10c175a",
+            "sharpness": 279.67474365234375,
+            "corner_coverage": 0.6041666666666666,
+            "corners": 126,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0006901041666666667
+          }
+        },
+        {
+          "anchor": 399,
+          "selected": 399,
+          "candidates": [
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "4c740648f0e7007932c62dac25e35614be226a1fb9fea87827f9cc502bac9e38",
+            "sharpness": 261.87664794921875,
+            "corner_coverage": 0.5625,
+            "corners": 124,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00046875
+          }
+        },
+        {
+          "anchor": 414,
+          "selected": 414,
+          "candidates": [
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "587536c4781cacade287d4220ff2c11656e2122d8ec315ef975f4f89a6db8893",
+            "sharpness": 245.30880737304688,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 107,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 429,
+          "selected": 429,
+          "candidates": [
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "7d8ff855b1582fa5a8803f56dafd1101b98db7a73722a81654da84f667b4e301",
+            "sharpness": 227.32650756835938,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 97,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00015625
+          }
+        },
+        {
+          "anchor": 444,
+          "selected": 444,
+          "candidates": [
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "6b336ccf9a49185323dae47cc6065c6cce01fb2b5af8694d8d3f4a0b463d56bf",
+            "sharpness": 132.30560302734375,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 98,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 459,
+          "selected": 459,
+          "candidates": [
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "ef0f0bb8f51159b2d573beccfca8c439025a4a730a1817f364d9636a6ba5848c",
+            "sharpness": 232.375,
+            "corner_coverage": 0.5,
+            "corners": 120,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 474,
+          "selected": 474,
+          "candidates": [
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "51942b2b5f241f65ce7d4da26e9e47d2c8a473bad2ea45b3e7def139af47f1e0",
+            "sharpness": 271.57232666015625,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 113,
+            "dark_fraction": 0.0,
+            "bright_fraction": 9.114583333333334e-05
+          }
+        },
+        {
+          "anchor": 489,
+          "selected": 489,
+          "candidates": [
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "fc6e2ca20c99e3a8a2ae63db916bb53a25213479f26ecd5c9cf2e0515dd4c654",
+            "sharpness": 263.0804138183594,
+            "corner_coverage": 0.5,
+            "corners": 103,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 504,
+          "selected": 504,
+          "candidates": [
+            498,
+            499,
+            500,
+            501,
+            502,
+            503,
+            504,
+            505,
+            506,
+            507,
+            508,
+            509,
+            510
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "6031bc2edc445811f1580104ef1f565a66197f13fa95d418448c06454f426b9a",
+            "sharpness": 283.9246520996094,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 116,
+            "dark_fraction": 0.0,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 519,
+          "selected": 519,
+          "candidates": [
+            513,
+            514,
+            515,
+            516,
+            517,
+            518,
+            519,
+            520,
+            521,
+            522,
+            523,
+            524,
+            525
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "90f75dcbaec18346b9fd48b5f1dc5dab156b9ec4bbb71d69ebba037d59083d7e",
+            "sharpness": 271.009033203125,
+            "corner_coverage": 0.5,
+            "corners": 109,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 534,
+          "selected": 534,
+          "candidates": [
+            528,
+            529,
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "19d2706207503501cbb3474c74916a5ce0ec080b8183d5aa5e1bcaecf1226c9f",
+            "sharpness": 250.543701171875,
+            "corner_coverage": 0.4375,
+            "corners": 91,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 549,
+          "selected": 549,
+          "candidates": [
+            543,
+            544,
+            545,
+            546,
+            547,
+            548,
+            549,
+            550,
+            551,
+            552,
+            553,
+            554,
+            555
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "a454c9226b4fbf22de33da06fc475126f5e5063bc922e48dbd40b6a7f042bf1d",
+            "sharpness": 117.13391876220703,
+            "corner_coverage": 0.6666666666666666,
+            "corners": 135,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 564,
+          "selected": 564,
+          "candidates": [
+            558,
+            559,
+            560,
+            561,
+            562,
+            563,
+            564,
+            565,
+            566,
+            567,
+            568,
+            569,
+            570
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "2d5a0d467b6ff9c658e907eabdea31deef88dc04c2e7b2c0754c2f536aeafb17",
+            "sharpness": 229.8914031982422,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 149,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 579,
+          "selected": 579,
+          "candidates": [
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583,
+            584,
+            585
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "8f67ed4fb806fc05085b17200eeef4954913fed1ef01283ab93f6a0d4e8108bc",
+            "sharpness": 250.6750030517578,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 124,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 594,
+          "selected": 594,
+          "candidates": [
+            588,
+            589,
+            590,
+            591,
+            592,
+            593,
+            594,
+            595,
+            596,
+            597,
+            598,
+            599,
+            600
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "2ad582f954d7605cdb47bcf4ab5f607882cb27fe04a7789ed83959d1ae62a550",
+            "sharpness": 245.6913604736328,
+            "corner_coverage": 0.4583333333333333,
+            "corners": 116,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 609,
+          "selected": 609,
+          "candidates": [
+            603,
+            604,
+            605,
+            606,
+            607,
+            608,
+            609,
+            610,
+            611,
+            612,
+            613,
+            614,
+            615
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "956f86256412a7643c7a944a8bd6fa6db6c5032e3fc712f911a072c5f8d1ab47",
+            "sharpness": 245.71734619140625,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 118,
+            "dark_fraction": 0.0,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 624,
+          "selected": 624,
+          "candidates": [
+            618,
+            619,
+            620,
+            621,
+            622,
+            623,
+            624,
+            625,
+            626,
+            627,
+            628,
+            629,
+            630
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "f9cf0ac06e7c2fb4516a707eec2617aa3c100f0e846683dc8df6f098d9f3c339",
+            "sharpness": 242.90301513671875,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 116,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 639,
+          "selected": 639,
+          "candidates": [
+            633,
+            634,
+            635,
+            636,
+            637,
+            638,
+            639,
+            640,
+            641,
+            642,
+            643,
+            644,
+            645
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "dbdd3619bce61b3ff5c50f00a4692f5e44cd8e0d5659132c55d08df5eb2b48e1",
+            "sharpness": 274.9748840332031,
+            "corner_coverage": 0.625,
+            "corners": 136,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        }
+      ]
+    },
+    "quality_coverage": {
+      "session": "quality_coverage/input/20261002T213938Z-e3ead809",
+      "indices": [
+        48,
+        73,
+        90,
+        94,
+        116,
+        126,
+        148,
+        163,
+        178,
+        188,
+        208,
+        221,
+        236,
+        253,
+        265,
+        285,
+        293,
+        314,
+        319,
+        339,
+        351,
+        375,
+        379,
+        397,
+        417,
+        430,
+        441,
+        465,
+        479,
+        493,
+        506,
+        524,
+        530,
+        555,
+        566,
+        580,
+        596,
+        612,
+        628,
+        639
+      ],
+      "changed_frames": 38,
+      "max_selected_gap_seconds": 2.124197,
+      "median_sharpness": 254.77484893798828,
+      "median_corner_coverage": 0.5625,
+      "decisions": [
+        {
+          "anchor": 54,
+          "selected": 48,
+          "candidates": [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "186688379cff6ca370705f67f3fdc97e89dd09d9e9fd00c0edc20ac097d4de6a",
+            "sharpness": 198.7508087158203,
+            "corner_coverage": 0.5625,
+            "corners": 112,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0029296875
+          }
+        },
+        {
+          "anchor": 69,
+          "selected": 73,
+          "candidates": [
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "ff12e2b250ace0def5aa92552ea114e8e979c661f957c09a39fd4c97940467a0",
+            "sharpness": 173.1262969970703,
+            "corner_coverage": 0.625,
+            "corners": 111,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0013802083333333333
+          }
+        },
+        {
+          "anchor": 84,
+          "selected": 90,
+          "candidates": [
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "9f8e6243aa344721252235cea32d0b998b15dfd8f8a1bcc55db01bd74eb8ec56",
+            "sharpness": 355.05865478515625,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 96,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0022395833333333334
+          }
+        },
+        {
+          "anchor": 99,
+          "selected": 94,
+          "candidates": [
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "58247154447cd23f148d2437092674b882408f6e0394c8ad48cc109ec7bd8e1a",
+            "sharpness": 339.9344787597656,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 99,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0011588541666666668
+          }
+        },
+        {
+          "anchor": 114,
+          "selected": 116,
+          "candidates": [
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "f0de78e800f92049a543d175a06b08f507ff57e8d172f5b0a78b3ab53b57cf1c",
+            "sharpness": 164.82281494140625,
+            "corner_coverage": 0.5,
+            "corners": 76,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 129,
+          "selected": 126,
+          "candidates": [
+            123,
+            124,
+            125,
+            126,
+            127,
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            135
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "11bfa8806eb79980fecc6265f27d51cfe572514111d05599bcdc42d1c3ee5e55",
+            "sharpness": 173.5192108154297,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 87,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 144,
+          "selected": 148,
+          "candidates": [
+            138,
+            139,
+            140,
+            141,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "94e844e2b0ed529117198de0bae34df1621b8f39f854393655edb88462483f9c",
+            "sharpness": 181.67286682128906,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 88,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 159,
+          "selected": 163,
+          "candidates": [
+            153,
+            154,
+            155,
+            156,
+            157,
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "1e39361aaed31764d01e9723cc2ca4e6b272d28e5261737b54f2ca8361e0a755",
+            "sharpness": 164.3542938232422,
+            "corner_coverage": 0.7083333333333334,
+            "corners": 135,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 174,
+          "selected": 178,
+          "candidates": [
+            168,
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177,
+            178,
+            179,
+            180
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "c892c9d2712ec0949f6b4c21981c3fb3f313f08e6e3c7b3bb28fc894d0e7ec98",
+            "sharpness": 184.45526123046875,
+            "corner_coverage": 0.6041666666666666,
+            "corners": 134,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 189,
+          "selected": 188,
+          "candidates": [
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "25d0206a4f3b501219dd8094073867dbdcb6e6c2d87f6f1aba297d6c119b69ee",
+            "sharpness": 219.79119873046875,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 117,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 204,
+          "selected": 208,
+          "candidates": [
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204,
+            205,
+            206,
+            207,
+            208,
+            209,
+            210
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "636002c4db89afdd9d5fd2e11eb5ee9ee79f0f5a70a17d66f59ce9c0b4d98aa1",
+            "sharpness": 252.40997314453125,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 128,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 219,
+          "selected": 221,
+          "candidates": [
+            213,
+            214,
+            215,
+            216,
+            217,
+            218,
+            219,
+            220,
+            221,
+            222,
+            223,
+            224,
+            225
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "9f372acce4ee51da124a480acb87f69ff01bd1a543564287171e6c69fcd8501a",
+            "sharpness": 250.93588256835938,
+            "corner_coverage": 0.5,
+            "corners": 115,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 234,
+          "selected": 236,
+          "candidates": [
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "5487169b506b0c324e17f0c57ae85aa1cfb4b83491e1a284d29c8d9354c83220",
+            "sharpness": 254.36721801757812,
+            "corner_coverage": 0.5,
+            "corners": 121,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 249,
+          "selected": 253,
+          "candidates": [
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "8fb62bed95b50fa11187877133ba9f9a78348e052936d97b35a9a6bf68751797",
+            "sharpness": 250.0045623779297,
+            "corner_coverage": 0.5625,
+            "corners": 119,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 264,
+          "selected": 265,
+          "candidates": [
+            258,
+            259,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            268,
+            269,
+            270
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "4395c7bc8016f4f6fa938d9f9f11ee87352a86e0b8eab058a4459944a707572f",
+            "sharpness": 260.4910888671875,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 115,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 279,
+          "selected": 285,
+          "candidates": [
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            279,
+            280,
+            281,
+            282,
+            283,
+            284,
+            285
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "55b81961797451af784be7e3d081df6668f3e4fa557c6631b8e2653f2f751ca0",
+            "sharpness": 253.6174774169922,
+            "corner_coverage": 0.5625,
+            "corners": 121,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 294,
+          "selected": 293,
+          "candidates": [
+            288,
+            289,
+            290,
+            291,
+            292,
+            293,
+            294,
+            295,
+            296,
+            297,
+            298,
+            299,
+            300
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "064c1f95da61ef656bd43ab9aa1fdbe29279a6626405ba85f790098c4851d878",
+            "sharpness": 270.4179382324219,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 128,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 309,
+          "selected": 314,
+          "candidates": [
+            303,
+            304,
+            305,
+            306,
+            307,
+            308,
+            309,
+            310,
+            311,
+            312,
+            313,
+            314,
+            315
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "876f6cf404ba423d65435f6751dee17d41194994bcabddf5d48ba5dcd2e325f6",
+            "sharpness": 290.0824890136719,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 126,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 324,
+          "selected": 319,
+          "candidates": [
+            318,
+            319,
+            320,
+            321,
+            322,
+            323,
+            324,
+            325,
+            326,
+            327,
+            328,
+            329,
+            330
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "0e4d57883bf61ffa6ef29a67466da2e2aba848241dbb5281f36b29620f0660aa",
+            "sharpness": 277.80902099609375,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 118,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 339,
+          "selected": 339,
+          "candidates": [
+            333,
+            334,
+            335,
+            336,
+            337,
+            338,
+            339,
+            340,
+            341,
+            342,
+            343,
+            344,
+            345
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+            "sharpness": 274.0556335449219,
+            "corner_coverage": 0.5625,
+            "corners": 127,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 354,
+          "selected": 351,
+          "candidates": [
+            348,
+            349,
+            350,
+            351,
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358,
+            359,
+            360
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "4b567e6ea40e0498f0bbab281bd35bad7a4af955114cf46638480bd098838612",
+            "sharpness": 272.5006103515625,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 124,
+            "dark_fraction": 0.0,
+            "bright_fraction": 6.510416666666667e-05
+          }
+        },
+        {
+          "anchor": 369,
+          "selected": 375,
+          "candidates": [
+            372,
+            373,
+            374,
+            375
+          ],
+          "anchor_excluded": true,
+          "metrics": {
+            "decoded": true,
+            "sha256": "078c59c951e080c00d403a6c0c6f91b3a5e567b53b8fea27b8767be5aad3cd53",
+            "sharpness": 284.3396911621094,
+            "corner_coverage": 0.6458333333333334,
+            "corners": 148,
+            "dark_fraction": 0.0,
+            "bright_fraction": 9.114583333333334e-05
+          }
+        },
+        {
+          "anchor": 384,
+          "selected": 379,
+          "candidates": [
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "927f196db977e585d192bf1676297d26430ab66692f78051f30e95800627fd3a",
+            "sharpness": 297.1627197265625,
+            "corner_coverage": 0.6041666666666666,
+            "corners": 137,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0009375
+          }
+        },
+        {
+          "anchor": 399,
+          "selected": 397,
+          "candidates": [
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "479539896fad0d355fc6c96fd07f55ed4d0f00e76aefda3fd03c0d8b5f09759f",
+            "sharpness": 264.57452392578125,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 119,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0003255208333333333
+          }
+        },
+        {
+          "anchor": 414,
+          "selected": 417,
+          "candidates": [
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "d8393d24ef77f03d8e5d4897e6af72453152b7ba29d899b5601d3fee1473cb45",
+            "sharpness": 259.6365051269531,
+            "corner_coverage": 0.625,
+            "corners": 119,
+            "dark_fraction": 0.0,
+            "bright_fraction": 6.510416666666667e-05
+          }
+        },
+        {
+          "anchor": 429,
+          "selected": 430,
+          "candidates": [
+            423,
+            424,
+            425,
+            426,
+            427,
+            428,
+            429,
+            430,
+            431,
+            432,
+            433,
+            434,
+            435
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "a84309c6905e2799310645696a8dc59ce4c353afc4d268752924910769247c92",
+            "sharpness": 242.88223266601562,
+            "corner_coverage": 0.5,
+            "corners": 110,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.00046875
+          }
+        },
+        {
+          "anchor": 444,
+          "selected": 441,
+          "candidates": [
+            438,
+            439,
+            440,
+            441,
+            442,
+            443,
+            444,
+            445,
+            446,
+            447,
+            448,
+            449,
+            450
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "74f54afa05d555e19ecb62900c26d94bbd192503886278f4cdfb51d08c7f623e",
+            "sharpness": 178.23345947265625,
+            "corner_coverage": 0.5625,
+            "corners": 110,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0001953125
+          }
+        },
+        {
+          "anchor": 459,
+          "selected": 465,
+          "candidates": [
+            453,
+            454,
+            455,
+            456,
+            457,
+            458,
+            459,
+            460,
+            461,
+            462,
+            463,
+            464,
+            465
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "3b85a2f530e85464f199e6088eacc31f570b204ad006421588d3de11d7159bcd",
+            "sharpness": 244.20130920410156,
+            "corner_coverage": 0.5625,
+            "corners": 120,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 474,
+          "selected": 479,
+          "candidates": [
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476,
+            477,
+            478,
+            479,
+            480
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "13bedd345ecb70dd3ad29f52b55e46948245366e4aac18468c5d83b3cceb8ad6",
+            "sharpness": 279.9892272949219,
+            "corner_coverage": 0.5,
+            "corners": 121,
+            "dark_fraction": 0.0,
+            "bright_fraction": 7.8125e-05
+          }
+        },
+        {
+          "anchor": 489,
+          "selected": 493,
+          "candidates": [
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492,
+            493,
+            494,
+            495
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "a7ac77c537b62f4486e672b7eba51334fe09aa7ba76954cb33d428a0aaab2244",
+            "sharpness": 281.6477966308594,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 102,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 504,
+          "selected": 506,
+          "candidates": [
+            498,
+            499,
+            500,
+            501,
+            502,
+            503,
+            504,
+            505,
+            506,
+            507,
+            508,
+            509,
+            510
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "5f904eab105f4ee31330e6fc18991f42abd813ef848bda9e8414405d8d4e2245",
+            "sharpness": 286.80596923828125,
+            "corner_coverage": 0.5,
+            "corners": 105,
+            "dark_fraction": 1.3020833333333334e-05,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 519,
+          "selected": 524,
+          "candidates": [
+            513,
+            514,
+            515,
+            516,
+            517,
+            518,
+            519,
+            520,
+            521,
+            522,
+            523,
+            524,
+            525
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "cdf5e9281c9ef2909880ccb5db4532b85cb9f9f7c43b0b57d66b756f676d2977",
+            "sharpness": 278.25732421875,
+            "corner_coverage": 0.4791666666666667,
+            "corners": 95,
+            "dark_fraction": 0.0,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 534,
+          "selected": 530,
+          "candidates": [
+            528,
+            529,
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537,
+            538,
+            539,
+            540
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "5fac2ae8030cefd184f7a9c4e20f4019295b5ae2cd9ee77528a3f0321767e9c2",
+            "sharpness": 274.20977783203125,
+            "corner_coverage": 0.5,
+            "corners": 100,
+            "dark_fraction": 0.0,
+            "bright_fraction": 3.90625e-05
+          }
+        },
+        {
+          "anchor": 549,
+          "selected": 555,
+          "candidates": [
+            543,
+            544,
+            545,
+            546,
+            547,
+            548,
+            549,
+            550,
+            551,
+            552,
+            553,
+            554,
+            555
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "3724676d305f214203f7083b8ab0c48dbb723d65f44e842e61c6ff2f20e3c3f7",
+            "sharpness": 174.1746063232422,
+            "corner_coverage": 0.6458333333333334,
+            "corners": 139,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 564,
+          "selected": 566,
+          "candidates": [
+            558,
+            559,
+            560,
+            561,
+            562,
+            563,
+            564,
+            565,
+            566,
+            567,
+            568,
+            569,
+            570
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "dcf1b61849af167ce6972ef15dd8d9b30802a8ff45348d2d8c522da8705e5a1d",
+            "sharpness": 242.05059814453125,
+            "corner_coverage": 0.5625,
+            "corners": 140,
+            "dark_fraction": 0.0,
+            "bright_fraction": 1.3020833333333334e-05
+          }
+        },
+        {
+          "anchor": 579,
+          "selected": 580,
+          "candidates": [
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583,
+            584,
+            585
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "1146684d508aaba8a9290d53d2641be77fcff9a01698f061c8a18557e7a22397",
+            "sharpness": 262.4525451660156,
+            "corner_coverage": 0.5833333333333334,
+            "corners": 134,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 594,
+          "selected": 596,
+          "candidates": [
+            588,
+            589,
+            590,
+            591,
+            592,
+            593,
+            594,
+            595,
+            596,
+            597,
+            598,
+            599,
+            600
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "5c2e317182b91dfe2e4e83e2981cd90cef6637067447af006a2fc6b5407a13fc",
+            "sharpness": 252.574951171875,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 135,
+            "dark_fraction": 0.0,
+            "bright_fraction": 5.208333333333334e-05
+          }
+        },
+        {
+          "anchor": 609,
+          "selected": 612,
+          "candidates": [
+            603,
+            604,
+            605,
+            606,
+            607,
+            608,
+            609,
+            610,
+            611,
+            612,
+            613,
+            614,
+            615
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "082e3032b189fe68676c33891961ae46a84ba2dd4143cc781d61cb2de41c23e8",
+            "sharpness": 252.0362548828125,
+            "corner_coverage": 0.5208333333333334,
+            "corners": 117,
+            "dark_fraction": 0.0,
+            "bright_fraction": 2.604166666666667e-05
+          }
+        },
+        {
+          "anchor": 624,
+          "selected": 628,
+          "candidates": [
+            618,
+            619,
+            620,
+            621,
+            622,
+            623,
+            624,
+            625,
+            626,
+            627,
+            628,
+            629,
+            630
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "3f119d8738b25486c402aecb35ef544dcdc1360d6904cc1ef177320dcf62d0b2",
+            "sharpness": 255.18247985839844,
+            "corner_coverage": 0.5416666666666666,
+            "corners": 119,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        },
+        {
+          "anchor": 639,
+          "selected": 639,
+          "candidates": [
+            633,
+            634,
+            635,
+            636,
+            637,
+            638,
+            639,
+            640,
+            641,
+            642,
+            643,
+            644,
+            645
+          ],
+          "anchor_excluded": false,
+          "metrics": {
+            "decoded": true,
+            "sha256": "dbdd3619bce61b3ff5c50f00a4692f5e44cd8e0d5659132c55d08df5eb2b48e1",
+            "sharpness": 274.9748840332031,
+            "corner_coverage": 0.625,
+            "corners": 136,
+            "dark_fraction": 0.0,
+            "bright_fraction": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "baseline_quality": {
+    "median_sharpness": 243.7135772705078,
+    "median_corner_coverage": 0.5208333333333334
+  }
+}

@@ -1,5 +1,15 @@
 # Pick up the drone and record a room
 
+## Saved-footage follow-up — paused after 3 October comparison
+
+Replacing only the known streaked row 369 with clean row 372 lets DA3 Large
+retain all three selected couch windows under the unchanged screens: 40 selected
+camera estimates over 49.02 s, versus 32 over 38.86 s before. The broader
+sharpness/feature heuristic performs worse and is not adopted. Open the
+[progressive replay](examples/selection-followup-20261003/index.html) or
+[reproduction notes and paused checkpoint](examples/selection-followup-20261003/README.md).
+This is internal consistency on one capture, not measured accuracy or flight readiness.
+
 ## Room completion and deployment experiment — 3 October
 
 Open the [four-way room completion lab](examples/room-chain-20261003/index.html):

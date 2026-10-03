@@ -1,0 +1,116 @@
+{
+  "camera_model": "OPENCV",
+  "width": 640,
+  "height": 480,
+  "matrix": [
+    [
+      793.3775298001209,
+      0.0,
+      299.10551722780485
+    ],
+    [
+      0.0,
+      793.3281643145524,
+      349.7120548868098
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "distortion": [
+    -0.3626288455180754,
+    0.18997122324869864,
+    -0.0008148224492431933,
+    0.002366943226173688,
+    0.0
+  ],
+  "params": [
+    793.3775298001209,
+    793.3281643145524,
+    299.10551722780485,
+    349.7120548868098,
+    -0.3626288455180754,
+    0.18997122324869864,
+    -0.0008148224492431933,
+    0.002366943226173688
+  ],
+  "training_rms_px": 0.250765894280999,
+  "held_out_median_px": 0.20233722031116486,
+  "held_out_p90_px": 0.5110569179058075,
+  "board_image_span_fraction": [
+    0.897611141204834,
+    0.7784974416097005
+  ],
+  "training_views": 30,
+  "held_out_views": 10,
+  "passes_basic_checks": true,
+  "status": "reviewed_for_recording",
+  "note": "Lens calibration candidate; planar-board held-out reprojection only. No measured room-map scale or physical accuracy.",
+  "source_session": "20260925T202722Z-b884439e",
+  "images": [
+    "000066422.jpg",
+    "000066431.jpg",
+    "000066440.jpg",
+    "000066449.jpg",
+    "000066458.jpg",
+    "000066714.jpg",
+    "000066731.jpg",
+    "000066740.jpg",
+    "000066749.jpg",
+    "000066758.jpg",
+    "000066767.jpg",
+    "000066775.jpg",
+    "000066783.jpg",
+    "000066799.jpg",
+    "000066808.jpg",
+    "000066817.jpg",
+    "000066866.jpg",
+    "000066874.jpg",
+    "000066882.jpg",
+    "000066890.jpg",
+    "000066954.jpg",
+    "000066962.jpg",
+    "000066970.jpg",
+    "000067026.jpg",
+    "000067034.jpg",
+    "000067115.jpg",
+    "000067455.jpg",
+    "000067464.jpg",
+    "000067639.jpg",
+    "000067810.jpg",
+    "000067819.jpg",
+    "000067828.jpg",
+    "000067872.jpg",
+    "000067880.jpg",
+    "000067889.jpg",
+    "000067916.jpg",
+    "000068024.jpg",
+    "000068032.jpg",
+    "000068040.jpg",
+    "000068048.jpg"
+  ],
+  "processed_geometry": {
+    "width": 640,
+    "height": 480,
+    "rotation": 180,
+    "source": "picamera2",
+    "intrinsics": "not_calibrated"
+  },
+  "pixel_coordinates": "opencv_integer_pixel_centers",
+  "application_review": {
+    "recording": "20261002T213938Z-e3ead809",
+    "candidate_path": "Saved/Mapping/20261002T204006Z-fb75b05e/camera-calibration.json",
+    "candidate_sha256": "ed6e001e84c14dc912d7aa7f67818d1b11b786f2514e79f41154f5cec2c59a63",
+    "operator_confirmation": "Evan confirmed unchanged camera/focus since checkerboard on 2026-10-02; same camera in next couch test.",
+    "matching_processed_geometry": {
+      "width": 640,
+      "height": 480,
+      "rotation": 180,
+      "source": "picamera2",
+      "intrinsics": "not_calibrated"
+    },
+    "note": "Lens calibration only. No measured scale, ground truth, or IMU registration."
+  }
+}

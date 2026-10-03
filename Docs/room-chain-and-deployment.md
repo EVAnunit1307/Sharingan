@@ -1,5 +1,12 @@
 # Room mapping chain and deployment without a hotspot
 
+**Saved-footage follow-up and pause:** a later bounded test replaces only the
+known streaked frame. All three selected Large couch windows then pass the same
+screens (40 selected poses over 49.02 s). A broader sharpness/feature heuristic
+does worse. See the [replay and checkpoint](../Mapping/examples/selection-followup-20261003/README.md).
+Work pauses at Evan's request after saving this result. The earlier results below
+describe the original input selection; no physical-accuracy gate has been passed.
+
 Evan clarified the future goal on 3 October: a deployable drone that can
 eventually fly autonomously and relay information without joining someone's
 Wi-Fi/hotspot. Autonomous flight is a separate workstream; Herman owns flight

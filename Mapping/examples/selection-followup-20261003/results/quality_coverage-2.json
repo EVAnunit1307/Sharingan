@@ -1,0 +1,444 @@
+{
+  "state": "complete",
+  "model": "depth-anything/DA3-LARGE",
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "device": "mps",
+  "torch": "2.14.0",
+  "session_id": "20261002T213938Z-e3ead809",
+  "indices": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39
+  ],
+  "frames": [
+    {
+      "frame_id": 246525,
+      "host_capture_mono_ns": 10703467732841,
+      "sensor_timestamp_ns": 10703460896000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 62.07,
+      "image": "images/000246525.jpg",
+      "source_row_index": 293
+    },
+    {
+      "frame_id": 246567,
+      "host_capture_mono_ns": 10705217019677,
+      "sensor_timestamp_ns": 10705210232000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 64.56,
+      "image": "images/000246567.jpg",
+      "source_row_index": 314
+    },
+    {
+      "frame_id": 246577,
+      "host_capture_mono_ns": 10705633638361,
+      "sensor_timestamp_ns": 10705626741000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 63.27,
+      "image": "images/000246577.jpg",
+      "source_row_index": 319
+    },
+    {
+      "frame_id": 246617,
+      "host_capture_mono_ns": 10707299748517,
+      "sensor_timestamp_ns": 10707292776000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 62.38,
+      "image": "images/000246617.jpg",
+      "source_row_index": 339
+    },
+    {
+      "frame_id": 246641,
+      "host_capture_mono_ns": 10708299404782,
+      "sensor_timestamp_ns": 10708292396000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 62.07,
+      "image": "images/000246641.jpg",
+      "source_row_index": 351
+    },
+    {
+      "frame_id": 246688,
+      "host_capture_mono_ns": 10710298554382,
+      "sensor_timestamp_ns": 10710291637000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 67.11,
+      "image": "images/000246688.jpg",
+      "source_row_index": 375
+    },
+    {
+      "frame_id": 246696,
+      "host_capture_mono_ns": 10710631766773,
+      "sensor_timestamp_ns": 10710624845000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 67.07,
+      "image": "images/000246696.jpg",
+      "source_row_index": 379
+    },
+    {
+      "frame_id": 246732,
+      "host_capture_mono_ns": 10712131087398,
+      "sensor_timestamp_ns": 10712124277000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 61.03,
+      "image": "images/000246732.jpg",
+      "source_row_index": 397
+    },
+    {
+      "frame_id": 246772,
+      "host_capture_mono_ns": 10713797198851,
+      "sensor_timestamp_ns": 10713790312000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 62.15,
+      "image": "images/000246772.jpg",
+      "source_row_index": 417
+    },
+    {
+      "frame_id": 246798,
+      "host_capture_mono_ns": 10714880183240,
+      "sensor_timestamp_ns": 10714873235000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 56.63,
+      "image": "images/000246798.jpg",
+      "source_row_index": 430
+    },
+    {
+      "frame_id": 246819,
+      "host_capture_mono_ns": 10715879587372,
+      "sensor_timestamp_ns": 10715872854000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 42.28,
+      "image": "images/000246819.jpg",
+      "source_row_index": 441
+    },
+    {
+      "frame_id": 246867,
+      "host_capture_mono_ns": 10717878980363,
+      "sensor_timestamp_ns": 10717872097000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 60.46,
+      "image": "images/000246867.jpg",
+      "source_row_index": 465
+    },
+    {
+      "frame_id": 246895,
+      "host_capture_mono_ns": 10719045169117,
+      "sensor_timestamp_ns": 10719038322000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 67.1,
+      "image": "images/000246895.jpg",
+      "source_row_index": 479
+    },
+    {
+      "frame_id": 246923,
+      "host_capture_mono_ns": 10720211386779,
+      "sensor_timestamp_ns": 10720204545000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 67.48,
+      "image": "images/000246923.jpg",
+      "source_row_index": 493
+    },
+    {
+      "frame_id": 246948,
+      "host_capture_mono_ns": 10721294288593,
+      "sensor_timestamp_ns": 10721287468000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 69.1,
+      "image": "images/000246948.jpg",
+      "source_row_index": 506
+    },
+    {
+      "frame_id": 246984,
+      "host_capture_mono_ns": 10722793809053,
+      "sensor_timestamp_ns": 10722786899000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 66.91,
+      "image": "images/000246984.jpg",
+      "source_row_index": 524
+    },
+    {
+      "frame_id": 246996,
+      "host_capture_mono_ns": 10723293632823,
+      "sensor_timestamp_ns": 10723286711000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 64.38,
+      "image": "images/000246996.jpg",
+      "source_row_index": 530
+    },
+    {
+      "frame_id": 247046,
+      "host_capture_mono_ns": 10725376192789,
+      "sensor_timestamp_ns": 10725369255000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 40.44,
+      "image": "images/000247046.jpg",
+      "source_row_index": 555
+    },
+    {
+      "frame_id": 247068,
+      "host_capture_mono_ns": 10726375923294,
+      "sensor_timestamp_ns": 10726368872000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 52.69,
+      "image": "images/000247068.jpg",
+      "source_row_index": 566
+    },
+    {
+      "frame_id": 247096,
+      "host_capture_mono_ns": 10727541972046,
+      "sensor_timestamp_ns": 10727535097000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 60.06,
+      "image": "images/000247096.jpg",
+      "source_row_index": 580
+    },
+    {
+      "frame_id": 247128,
+      "host_capture_mono_ns": 10728874755106,
+      "sensor_timestamp_ns": 10728867925000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 59.29,
+      "image": "images/000247128.jpg",
+      "source_row_index": 596
+    },
+    {
+      "frame_id": 247160,
+      "host_capture_mono_ns": 10730207632241,
+      "sensor_timestamp_ns": 10730200753000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 58.85,
+      "image": "images/000247160.jpg",
+      "source_row_index": 612
+    },
+    {
+      "frame_id": 247192,
+      "host_capture_mono_ns": 10731540515338,
+      "sensor_timestamp_ns": 10731533584000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 58.16,
+      "image": "images/000247192.jpg",
+      "source_row_index": 628
+    },
+    {
+      "frame_id": 247214,
+      "host_capture_mono_ns": 10732540087526,
+      "sensor_timestamp_ns": 10732533203000,
+      "exposure_us": 19995,
+      "analogue_gain": 4.0,
+      "camera_generation": 1,
+      "sharpness": 60.78,
+      "image": "images/000247214.jpg",
+      "source_row_index": 639
+    }
+  ],
+  "resolution": 504,
+  "requested_window_seconds": null,
+  "selected_span_seconds": 29.072307,
+  "imu_used": false,
+  "source_sha256": {
+    "000246525.jpg": "064c1f95da61ef656bd43ab9aa1fdbe29279a6626405ba85f790098c4851d878",
+    "000246567.jpg": "876f6cf404ba423d65435f6751dee17d41194994bcabddf5d48ba5dcd2e325f6",
+    "000246577.jpg": "0e4d57883bf61ffa6ef29a67466da2e2aba848241dbb5281f36b29620f0660aa",
+    "000246617.jpg": "d20e0e80ee95bcd273d0d31116d4cd4459e8b4b4dd1afb19fcf097369d413068",
+    "000246641.jpg": "4b567e6ea40e0498f0bbab281bd35bad7a4af955114cf46638480bd098838612",
+    "000246688.jpg": "078c59c951e080c00d403a6c0c6f91b3a5e567b53b8fea27b8767be5aad3cd53",
+    "000246696.jpg": "927f196db977e585d192bf1676297d26430ab66692f78051f30e95800627fd3a",
+    "000246732.jpg": "479539896fad0d355fc6c96fd07f55ed4d0f00e76aefda3fd03c0d8b5f09759f",
+    "000246772.jpg": "d8393d24ef77f03d8e5d4897e6af72453152b7ba29d899b5601d3fee1473cb45",
+    "000246798.jpg": "a84309c6905e2799310645696a8dc59ce4c353afc4d268752924910769247c92",
+    "000246819.jpg": "74f54afa05d555e19ecb62900c26d94bbd192503886278f4cdfb51d08c7f623e",
+    "000246867.jpg": "3b85a2f530e85464f199e6088eacc31f570b204ad006421588d3de11d7159bcd",
+    "000246895.jpg": "13bedd345ecb70dd3ad29f52b55e46948245366e4aac18468c5d83b3cceb8ad6",
+    "000246923.jpg": "a7ac77c537b62f4486e672b7eba51334fe09aa7ba76954cb33d428a0aaab2244",
+    "000246948.jpg": "5f904eab105f4ee31330e6fc18991f42abd813ef848bda9e8414405d8d4e2245",
+    "000246984.jpg": "cdf5e9281c9ef2909880ccb5db4532b85cb9f9f7c43b0b57d66b756f676d2977",
+    "000246996.jpg": "5fac2ae8030cefd184f7a9c4e20f4019295b5ae2cd9ee77528a3f0321767e9c2",
+    "000247046.jpg": "3724676d305f214203f7083b8ab0c48dbb723d65f44e842e61c6ff2f20e3c3f7",
+    "000247068.jpg": "dcf1b61849af167ce6972ef15dd8d9b30802a8ff45348d2d8c522da8705e5a1d",
+    "000247096.jpg": "1146684d508aaba8a9290d53d2641be77fcff9a01698f061c8a18557e7a22397",
+    "000247128.jpg": "5c2e317182b91dfe2e4e83e2981cd90cef6637067447af006a2fc6b5407a13fc",
+    "000247160.jpg": "082e3032b189fe68676c33891961ae46a84ba2dd4143cc781d61cb2de41c23e8",
+    "000247192.jpg": "3f119d8738b25486c402aecb35ef544dcdc1360d6904cc1ef177320dcf62d0b2",
+    "000247214.jpg": "dbdd3619bce61b3ff5c50f00a4692f5e44cd8e0d5659132c55d08df5eb2b48e1"
+  },
+  "checkpoint_sha256": "eaf2ae06df55889ad23eb245c82e2dd2a30c0cbf7e3d873a118fa5ed27a3e421",
+  "pose_conditioned": false,
+  "pose_estimation": "camera_decoder",
+  "undistorted": true,
+  "center_principal": false,
+  "scale": "unknown",
+  "units": "arbitrary",
+  "validated": false,
+  "warning": "AI-inferred geometry and camera poses. No measured scale, tracking validation or unseen-room coverage.",
+  "mps_recommended_bytes": 20401094656,
+  "mps_memory_fraction": 0.6,
+  "mps_allocator_limit_bytes": 12240656793,
+  "restored_tied_parameters": {
+    "head.scratch.output_conv2_aux.1.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.1.2.bias": "head.scratch.output_conv2_aux.0.2.bias",
+    "head.scratch.output_conv2_aux.2.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.2.2.bias": "head.scratch.output_conv2_aux.0.2.bias",
+    "head.scratch.output_conv2_aux.3.2.weight": "head.scratch.output_conv2_aux.0.2.weight",
+    "head.scratch.output_conv2_aux.3.2.bias": "head.scratch.output_conv2_aux.0.2.bias"
+  },
+  "model_load_seconds": 0.8379745419952087,
+  "camera_inputs": {
+    "calibration_sha256": "41443a453c6c2f9c7e8876183e73f51ddc0394644709409cbd8c8efbea96f0e9",
+    "undistortion": "OpenCV remap, original K",
+    "center_principal": false,
+    "output_intrinsics": [
+      [
+        793.3775024414062,
+        0.0,
+        299.10552978515625
+      ],
+      [
+        0.0,
+        793.3281860351562,
+        349.7120666503906
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "principal_point_note": "Original principal offset is retained. DA3 cannot encode this offset; this is a diagnostic baseline, not a corrected conditioning input.",
+    "valid_undistorted_fraction": 1.0,
+    "intrinsics_resize": "Official DA3 InputProcessor scales K with the same resize as the pixels",
+    "undistorted_rgb_sha256": "d7b0e8682a1f769e81278596264781106d70f10408b0966111a114b70eb88341"
+  },
+  "input_shape": [
+    1,
+    24,
+    3,
+    378,
+    504
+  ],
+  "inference_samples_seconds": [
+    12.546062957990216,
+    14.415272707992699
+  ],
+  "inference_seconds": 14.415272707992699,
+  "timing_note": "Model-only calls in order within one process; later calls are warm. Pipeline time includes imports, loading, preprocessing, all repetitions and output writes, excluding interpreter startup.",
+  "shapes": {
+    "depth": [
+      24,
+      378,
+      504
+    ],
+    "confidence": [
+      24,
+      378,
+      504
+    ],
+    "extrinsics": [
+      24,
+      3,
+      4
+    ],
+    "intrinsics": [
+      24,
+      3,
+      3
+    ],
+    "images": [
+      24,
+      378,
+      504,
+      3
+    ]
+  },
+  "predicted_depth_percentiles": [
+    0.839288934469223,
+    0.9956148862838745,
+    1.1486753380298613
+  ],
+  "exported_depth_percentiles": [
+    0.839288934469223,
+    0.9956148862838745,
+    1.1486753380298613
+  ],
+  "confidence_percentiles": [
+    5.918125963211059,
+    8.315496444702148,
+    12.04246063232422
+  ],
+  "mps_driver_allocated_bytes_after_inference": 10850369536,
+  "memory": {
+    "sampled_mps_driver_peak_bytes": 10850385920,
+    "sampled_mps_tensor_peak_bytes": 5490374400,
+    "process_peak_rss_bytes": 5275484160,
+    "sample_interval_seconds": 0.01,
+    "samples": 2392,
+    "sampling_error": null,
+    "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+  },
+  "pipeline_seconds": 31.565283167001326
+}
