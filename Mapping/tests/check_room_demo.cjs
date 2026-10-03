@@ -18,7 +18,7 @@ async function main() {
     page.on('request',r=>{if(/^https?:/.test(r.url())) external.push(r.url());});
     const viewer = process.env.VIEWER_FILE || path.resolve(__dirname,'../examples/room-draft-20261002/index.html');
     await page.goto(pathToFileURL(path.resolve(viewer)).href);
-    assert.equal(await page.locator('#trial option').count(),4);
+    assert.equal(await page.locator('#trial option').count(),Number(process.env.VIEWER_TRIALS || 4));
     await page.evaluate(async()=>{
       for(const t of DATA.trials) for(const src of [...t.images,...t.overlays]) {
         const image=new Image(); image.src=src; await image.decode();
@@ -55,7 +55,7 @@ async function main() {
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     assert.deepEqual(errors,[]);
     assert.deepEqual(external,[],'The bundled viewer must open fully offline');
-    console.log('PASS: 4 estimates, all images, uncertainty/labels/single-view/scrub controls, mobile layout, offline loading');
+    console.log(`PASS: ${names.length} estimates, all images, uncertainty/labels/single-view/scrub controls, mobile layout, offline loading`);
   } finally { await browser.close(); }
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

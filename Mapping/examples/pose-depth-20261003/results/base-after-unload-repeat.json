@@ -1,0 +1,10 @@
+{
+  "arrays_equal_to_prior_base": {
+    "depth": true,
+    "confidence": true,
+    "extrinsics": true,
+    "intrinsics": true,
+    "images": true
+  },
+  "note": "Identical arrays after unloading Ollama; this does not isolate the cause of timing differences."
+}

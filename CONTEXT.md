@@ -2,6 +2,37 @@
 
 Updated **3 October 2026**. Read this before older handoffs.
 
+## Large model after Ollama unload — 3 October
+
+Evan offered heavier experiments and confirmed unloading Ollama. Previously the
+llama-server process used ~15 GB and swap ~9 GB; after unloading the system
+memory tool reports 82% free vs 8%, and that large worker is absent. Remaining
+old swap occupancy is not evidence the model is still loaded. No process was
+killed by Codex. Tested Large with a fresh Base control, no Pi access required.
+
+Pinned DA3 Large: `c54c26b16ec04d218e8d584ecf4bce082a9fcc20`, 1,643,843,860 bytes,
+SHA256 `eaf2ae06df55889ad23eb245c82e2dd2a30c0cbf7e3d873a118fa5ed27a3e421`.
+License **CC BY-NC 4.0**; Small/Base remain Apache-2.0. Source unchanged. Same
+couch rows 294…639 stride 15, 24 images, original-K undistortion, own predicted
+cameras, resolution 504, 3 calls, MPS fraction .6. Both fit; no fallback needed.
+Base calls 2.867/2.369/2.372 s, Large 7.362/7.264/7.487 s. Warm averages 2.370/
+7.376 s; sampled Metal peaks 6.414/10.122 GiB. Do not add overlapping CPU RSS.
+Fresh Base arrays exactly match the prior Base run; memory unload did not change
+its geometry, and these timings alone do not prove the earlier slowdown's cause.
+
+Identical paired checks: Base/Large adjacent 1.7357/0.8631 px, revisit 1.9309/
+1.3554 px; 23 adjacent and 3 revisit pairs supported. Symmetric relative depth
+discrepancy adjacent .003143/.002607 and revisit .005857/.002395. Large improves
+this one clip's image consistency, with roughly 3x model time; no metric map or
+navigation claim. Its render has a more coherent seat outline but remains an
+unverified visible-scene hypothesis. Camera-centre/FOV issue still open.
+
+Local `Saved/MappingResearch/large-after-unload-20261003/` holds immutable runs,
+download pins, pre-run plan, comparison, viewer and renders. The existing team
+bundle now has `large.html`, results and renders; `pose_depth_demo --variant large
+--original-principal` reproduces this wider-view case. No full capture/weights
+added to Git and no live mapping defaults changed.
+
 ## Offline pose-guided depth and heavier model — 3 October
 
 Evan is disconnected from the Pi and authorized trying pose-guided depth and a

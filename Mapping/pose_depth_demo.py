@@ -55,7 +55,7 @@ def main():
     sub.add_parser('verify')
     for name in ('fetch','run'):
         p=sub.add_parser(name)
-        p.add_argument('--variant',choices=('small','base'),required=True)
+        p.add_argument('--variant',choices=('small','base','large'),required=True)
         p.add_argument('--assets',type=Path,default=Path('Saved/MappingResearch/pose-depth-assets'))
         if name=='run':
             p.add_argument('--source',type=Path)

@@ -50,8 +50,8 @@ def run(args):
     undistort = bool(getattr(args, 'undistort', False))
     center_principal = bool(getattr(args, 'center_principal', False))
     pose_tracking = getattr(args, 'pose_tracking', None)
-    if variant not in ('small', 'base'):
-        raise ValueError('Use the small or base any-view model')
+    if variant not in ('small', 'base', 'large'):
+        raise ValueError('Use the small, base or large any-view model')
     if pose_tracking is not None and not undistort:
         raise ValueError('Pose conditioning requires reviewed lens undistortion')
     if center_principal and not undistort:
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     parser.add_argument('--resolution', type=int, choices=(280,392,504), default=392)
     parser.add_argument('--device', choices=('mps','cpu'), default='mps')
     parser.add_argument('--ray-pose', action='store_true', help='Experimental ray-head poses; use --device cpu on the tested Mac because MPS ray fitting failed')
-    parser.add_argument('--variant', choices=('small','base'), default='small')
+    parser.add_argument('--variant', choices=('small','base','large'), default='small')
     parser.add_argument('--undistort', action='store_true', help='Apply the recording-reviewed lens calibration before inference')
     parser.add_argument('--center-principal', action='store_true', help='Crop the corrected view to a centered principal point compatible with DA3 camera encoding')
     parser.add_argument('--pose-tracking', type=Path, help='Use retained poses from this recording; requires --undistort. Exported camera agreement is imposed, not validation.')

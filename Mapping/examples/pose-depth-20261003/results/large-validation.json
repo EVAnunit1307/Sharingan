@@ -1,0 +1,33 @@
+{
+  "arrays_equal_to_original": {
+    "depth": true,
+    "confidence": true,
+    "extrinsics": true,
+    "intrinsics": true,
+    "images": true
+  },
+  "inference_seconds": [
+    7.3655597920005675,
+    7.471345124999061
+  ],
+  "pipeline_seconds": 18.848810124996817,
+  "memory": {
+    "sampled_mps_driver_peak_bytes": 10850385920,
+    "sampled_mps_tensor_peak_bytes": 5490374400,
+    "process_peak_rss_bytes": 5277908992,
+    "sample_interval_seconds": 0.01,
+    "samples": 1382,
+    "sampling_error": null,
+    "note": "Sampled Metal peak may miss brief allocations. Driver includes caches; RSS and Metal overlap and must not be added. Other apps are excluded."
+  },
+  "browser": {
+    "two_estimates": true,
+    "all_images_decode": true,
+    "controls_pass": true,
+    "mobile_overflow": false,
+    "javascript_errors": [],
+    "external_requests": []
+  },
+  "tests": "16 targeted geometry/export tests passed; official Large strict checkpoint load and packaged reproduction passed.",
+  "note": "Observed exact equality on this Mac only. Cached labels verified by processed RGB hash. This is reproduction, not physical validation."
+}

@@ -1,0 +1,45 @@
+{
+  "source_session": "20261002T213938Z-e3ead809",
+  "indices": [
+    294,
+    309,
+    324,
+    339,
+    354,
+    369,
+    384,
+    399,
+    414,
+    429,
+    444,
+    459,
+    474,
+    489,
+    504,
+    519,
+    534,
+    549,
+    564,
+    579,
+    594,
+    609,
+    624,
+    639
+  ],
+  "variants": [
+    "base",
+    "large"
+  ],
+  "resolution": 504,
+  "repeats": 3,
+  "mps_memory_fraction": 0.6,
+  "rectification": "Original K, undistorted, estimated cameras; same wide-view input as the previous comparison. No ORB conditioning.",
+  "test": "Base control and Large after Ollama unload. Identical input pixels, paired projection/depth consistency, renders and observed warm time/memory. No physical accuracy claim.",
+  "fallback": "If Large reaches the allocator limit at 504, preserve the failed attempt and compare both models at 392; do not change frames or relax mapping checks.",
+  "memory_before": {
+    "system_memory_free_percentage": 82,
+    "swap_used_MiB": 7321.12,
+    "ollama_large_worker_present": false
+  },
+  "model_license": "Large checkpoint CC-BY-NC-4.0; experimental evaluation, not a production-license change."
+}

@@ -63,6 +63,13 @@ The strong crop reduces coverage, and the groups are not directly comparable.
 The bridge remains experimental. Next: calibration/pose consistency and preserving
 field of view; no guided map, physical accuracy or IMU fusion has been validated.
 
+A later same-input Large test after unloading Ollama halves adjacent image
+discrepancy against Base (0.86 vs 1.74 px), with 7.4 vs 2.4 s warm model time for
+24 images. Large fits the M5 with a sampled 10.12 GiB Metal peak. Its output is
+an offline-draft candidate; this does not pass a room-map or localization stage.
+Large's checkpoint is CC BY-NC 4.0; the demo records that separately from the
+Apache-2.0 Small/Base models. All results and reconstruction inputs are published.
+
 Evidence: `Saved/MappingResearch/room-walk-20261002/review.html` and
 [current context](../CONTEXT.md). Original recordings remain intact.
 

@@ -1,5 +1,56 @@
 # Small, Base and camera-pose conditioning
 
+## Latest: Large after freeing memory
+
+Open [Base versus Large](large.html) for the newest comparison. Evan unloaded the
+~15 GB Ollama worker; the system memory tool's free-memory percentage rose from
+8% to 82%. A fresh Base control and Large used exactly the same 24 wider-view
+images at 504×378, without supplied poses. Both fit the existing 60% Metal
+allocator limit; no lower-resolution fallback was used. The packaged Large run
+reproduced all output arrays exactly in the isolated environment on this Mac, and
+the two-view browser checks passed; see [validation](results/large-validation.json).
+
+| Model | Adjacent image error ↓ | Revisit image error ↓ | Warm model time | Sampled Metal peak |
+| --- | ---: | ---: | ---: | ---: |
+| Base | 1.74 px | 1.93 px | 2.37 s | 6.41 GiB |
+| Large | **0.86 px** | **1.36 px** | 7.38 s | 10.12 GiB |
+
+Warm time is the mean of calls 2 and 3 in one process, for all 24 images. Base
+output arrays are identical to the earlier Base result; unloading Ollama did not
+change the predicted geometry. These observations do not isolate the cause of
+earlier timing variation. Large's image discrepancy is about 50% lower adjacent
+and 30% lower on the fixed revisits, at roughly three times Base's model time.
+All 23 adjacent and three revisit pairs have sufficient identical matches.
+The same caveats about arbitrary scale and correspondence quality apply.
+
+Large produces a more coherent seat outline in this example, but this is one
+couch recording, not validated room dimensions or navigation. It is a promising
+offline-draft candidate; the remaining camera/field-of-view issue is unchanged.
+See [paired measurements](results/large-comparison.json) and
+[run plan](results/large-plan.json). The first three model times, pipeline costs
+and memory measurements are retained in `results/after-unload-*.json`.
+
+![Large room draft](large-renders/large-504.png)
+
+The official [DA3 Large checkpoint](https://huggingface.co/depth-anything/DA3-LARGE)
+is **CC BY-NC 4.0**, unlike Small/Base's Apache-2.0 checkpoints. It is included as
+an experimental noncommercial evaluation option; weights remain outside Git.
+Its pinned 1.64 GB checkpoint and source metadata are in `demo.json`.
+
+```sh
+Saved/MappingResearch/team-demo-venv/bin/python -m Mapping.pose_depth_demo fetch --variant large
+Saved/MappingResearch/team-demo-venv/bin/python -m Mapping.pose_depth_demo run \
+  --variant large --original-principal --device mps \
+  --output Saved/MappingResearch/new-large-wide
+```
+
+`--original-principal` reproduces this wider-view test with estimated cameras.
+The general runner defaults to the centered crop used in the earlier follow-up.
+For the two-viewer browser check, set `VIEWER_FILE` to `large.html` and
+`VIEWER_TRIALS=2`; the remaining options below are unchanged.
+
+## Earlier Small/Base comparisons
+
 Open [index.html](index.html) locally after cloning. The four saved estimates,
 source images, relative depth and tentative labels work offline, without a Pi or
 model download. Select **Base · estimated cameras** to inspect the strongest

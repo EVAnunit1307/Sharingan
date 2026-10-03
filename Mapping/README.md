@@ -2,6 +2,13 @@
 
 ## Latest offline model comparison — 3 October
 
+After unloading Ollama, DA3 Large completed the same 24-image wide-view test at
+504 resolution: 0.86 vs Base's 1.74 px adjacent image discrepancy, with warm model
+time about 7.4 vs 2.4 s and a sampled Metal peak of 10.12 GiB. This is one
+same-input consistency check, not physical accuracy. Open the
+[Large comparison](examples/pose-depth-20261003/large.html) or its
+[reproduction notes](examples/pose-depth-20261003/README.md).
+
 The [Small/Base and pose-conditioning experiment](examples/pose-depth-20261003/README.md)
 includes both fixed-image comparisons, source frames, selected tracked poses,
 renders and reproduction commands. Base runs on the M5 and improves the first

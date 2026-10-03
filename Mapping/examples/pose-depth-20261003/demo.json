@@ -29,6 +29,21 @@
           "sha256": "5e34115ebc17bd2d8d43033c5f72e9446ac8833fd61d3fa160b7e67e0bb5b7b5"
         }
       }
+    },
+    "large": {
+      "repo": "depth-anything/DA3-LARGE",
+      "revision": "c54c26b16ec04d218e8d584ecf4bce082a9fcc20",
+      "license": "CC-BY-NC-4.0",
+      "files": {
+        "model.safetensors": {
+          "bytes": 1643843860,
+          "sha256": "eaf2ae06df55889ad23eb245c82e2dd2a30c0cbf7e3d873a118fa5ed27a3e421"
+        },
+        "config.json": {
+          "bytes": 1213,
+          "sha256": "744dcaf53859490ed92fc6cb98d68d3daf624b8c54533aaf604bdb53f06321f5"
+        }
+      }
     }
   },
   "session": "inputs/20261002T213938Z-e3ead809",
